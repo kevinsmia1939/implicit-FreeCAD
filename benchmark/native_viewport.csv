@@ -1,0 +1,5 @@
+cells,resolution,evaluation_points,evaluation_ms,extraction_and_transfer_ms,parameter_recompute_upload_redraw_ms,qt_frame_swaps,qt_frame_swaps_per_second,viewport_width,viewport_height,vertices,triangles,packed_mesh_bytes,process_peak_rss_kib,platform,software_gl
+1,6,4096,0.648,2.063,18.014,12,140.039,1024,456,562,960,50016,365412,Linux,1
+3,18,4096,0.546,52.749,66.414,12,80.859,1024,456,13518,25920,1270944,380900,Linux,1
+5,30,4096,0.544,242.992,224.851,12,39.108,1024,456,61130,120000,5814240,429416,Linux,1
+10,60,4096,0.548,1966.607,1448.438,12,9.352,1024,456,480460,960000,46102080,881768,Linux,1

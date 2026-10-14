@@ -8,6 +8,7 @@ option(IMPLICIT_BUILD_OCCT_PROBE "Build the explicit mesh-only OCCT bridge probe
 option(IMPLICIT_BUILD_OCCT_DISTANCE "Build OCCT fork signed-distance extension and tests" OFF)
 set(IMPLICIT_NATIVE_FREECADCMD "" CACHE FILEPATH "FreeCADCmd built with the native Implicit module")
 set(IMPLICIT_NATIVE_FREECADGUI "" CACHE FILEPATH "FreeCAD GUI built with ImplicitGui")
+option(IMPLICIT_NATIVE_PART_TESTS "Test live Part inputs (requires built native Part bridge)" OFF)
 
 add_library(implicit_geometry
     src/ImplicitSurface.cpp
@@ -34,12 +35,20 @@ if(IMPLICIT_BUILD_TESTS)
         set_tests_properties(implicit_native_gui PROPERTIES
             PASS_REGULAR_EXPRESSION "native implicit GUI smoke test passed"
             FAIL_REGULAR_EXPRESSION "Traceback" TIMEOUT 180)
+        if(IMPLICIT_NATIVE_PART_TESTS)
+            set_tests_properties(implicit_native_gui PROPERTIES
+                ENVIRONMENT "IMPLICIT_TEST_PART_BRIDGE=1")
+        endif()
     endif()
     if(IMPLICIT_NATIVE_FREECADCMD)
         if(NOT EXISTS "${IMPLICIT_NATIVE_FREECADCMD}")
             message(FATAL_ERROR "IMPLICIT_NATIVE_FREECADCMD does not exist")
         endif()
-        foreach(native_test IN ITEMS native_smoke mesh_smoke)
+        set(_native_tests native_smoke mesh_smoke linked_smoke cancellation_smoke)
+        if(IMPLICIT_NATIVE_PART_TESTS)
+            list(APPEND _native_tests part_linked_smoke)
+        endif()
+        foreach(native_test IN LISTS _native_tests)
             add_test(NAME implicit_${native_test}
                 COMMAND "${IMPLICIT_NATIVE_FREECADCMD}"
                     "${CMAKE_CURRENT_SOURCE_DIR}/FreeCAD/src/Mod/Implicit/Tests/${native_test}.py")
@@ -111,6 +120,8 @@ endif()
 if(IMPLICIT_BUILD_BENCHMARK)
     add_executable(implicit_benchmark benchmark/benchmark.cpp)
     target_link_libraries(implicit_benchmark PRIVATE implicit_geometry)
+    add_executable(implicit_intersection_benchmark benchmark/intersections.cpp)
+    target_link_libraries(implicit_intersection_benchmark PRIVATE implicit_geometry)
 endif()
 
 if(IMPLICIT_BUILD_OCCT_PROBE)

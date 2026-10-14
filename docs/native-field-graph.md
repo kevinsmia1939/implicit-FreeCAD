@@ -2,8 +2,10 @@
 
 The in-tree FreeCAD `Implicit` module stores a composable field graph in the
 `FieldGraph` property of `Implicit::Feature`. The property is versioned JSON and
-is persisted directly in the FreeCAD document. An empty value retains the
-single-primitive property interface for compatibility and simple editing.
+is persisted directly in the FreeCAD document. In `Operation=Definition`, an
+empty value uses the single-primitive properties. Other operations use live
+document links, not `FieldGraph`; the JSON schema remains 1 while new features
+have document `SchemaVersion=3`.
 
 ## Schema 1
 
@@ -117,13 +119,15 @@ This uniform-grid baseline is also the reference for octree-pruned sampling. Sam
 thin components, tangencies, and multiple roots along an edge. Connectivity is
 regression-tested on enclosed spheres and a hollow sphere, without a general
 topology or watertightness guarantee. Vertices and triangles each have a one
-million element budget; exceeding either raises an error. Extraction and Python
-conversion currently run synchronously with the GIL held. There is no dedicated
-asynchronous extraction yet. The new native `ImplicitGui::ViewProviderShape`
+million element budget; exceeding either raises an error. Native Python
+extraction releases the GIL after capturing immutable geometry; argument parsing
+and Python-result conversion still hold it. There is no background GUI scheduler
+yet. The native `ImplicitGui::ViewProviderShape`
 consumes and caches the extractors; view properties control resolution,
 adaptive sampling, color and shaded/wire/flat-line modes. Adaptive display
-rounds the requested resolution up to the next power of two. Native workbench Boolean commands create
-snapshots and currently require matching placements and negative-inside inputs.
+rounds the requested resolution up to the next power of two. Workbench Boolean
+commands create live links, including direct single-solid Part operands when
+the Part/OCCT bridge is built.
 
 ## Adaptive sampling and batches
 
@@ -140,7 +144,69 @@ triangle-interior approximation error.
 `Implicit.evaluateBatch(feature, [(x,y,z), ...])` returns scalar values and uses
 one compiled graph for the call. Input points must have three finite numeric
 coordinates. The batch limit is one million points. Compiled field graphs are
-cached on the feature and invalidated on relevant property changes.
+cached on the feature and invalidated on relevant property changes. Its numeric
+evaluation loop releases the GIL; conversion into/out of Python does not.
+
+## Live document composition
+
+```python
+left = doc.addObject("Implicit::Feature", "EditableSphere")
+left.Function = "Sphere"
+left.Radius = 5
+right = doc.addObject("Implicit::Feature", "OtherSphere")
+right.Function = "Sphere"
+right.Radius = 3
+right.Placement.Base = (4, 0, 0)
+result = doc.addObject("Implicit::Feature", "Cut")
+result.Operation = "Difference"
+result.Left, result.Right = left, right
+doc.recompute()
+left.Radius = 6
+doc.recompute()  # propagates through persistent PropertyLink dependencies
+```
+
+Operations are `Definition`, `Union`, `Intersection`, `Difference`, `Band`,
+`Offset`, and `BRep`. `Band`/`Offset` use `Left` and `Amount`, in input field
+units. `BRep` uses a single-solid Part feature as `Left`; binary operations also
+accept Part features directly. This requires `BUILD_PART` and
+`IMPLICIT_OCCT_SOURCE_DIR`; JSON snapshot support does not require Part.
+
+Operands' global placements are mapped into the result's parent frame; the
+result's own Placement is an additional transform of the assembled field.
+Gradients are rotated back, and positive-inside operands are sign-normalized. Recompute
+after edits before querying results. Native links share immutable child fields
+instead of duplicating JSON. This is a document-level DAG, not a new JSON DAG
+format or dedicated geometry property. Missing/failed sources are errors, not
+usable stale geometry; cycles and excessive native dependency depth are rejected.
+Skipped downstream features are invalidated after document recompute when a
+source fails; `StatusMessage` reports the reason. Use `feature.isValid()` for
+validity checks, not a search for an `Error` string in Python's `State` list.
+
+`AutoDomain=True` uses the transformed union of implicit operand domains, or
+padded transformed B-Rep bounds. It is conservative for all binary operations.
+`Implicit.bounds(feature)` returns the effective local evaluation domain.
+`DomainMin`/`DomainMax` are the manual override when `AutoDomain=False`, and
+always apply to definitions. A sampling domain does not cap a field or restrict
+the operand's mathematical sign set. Expanded offsets may need a larger manual
+domain: field units are not universally physical length, so no automatic offset
+padding is inferred. Changes to enclosing document containers, App::Link
+instances, and cross-document links are not yet broadly regression-tested.
+
+## Python extraction cancellation
+
+```python
+token = Implicit.newCancellationToken()
+# Another Python thread may call Implicit.cancel(token).
+mesh = Implicit.tessellate(feature, 64, token)
+```
+
+Both extractors accept the optional third token (or `None`). Tokens are one-shot
+and atomic; cancellation raises `RuntimeError` containing `cancelled`, returning
+no partial mesh. Checks occur during sampling and cell/root processing. A single
+expensive OCCT evaluation is not interruptible mid-query. Python-result
+conversion is not cancellable. Background code should signal only the token;
+FreeCAD document and GUI APIs remain main-thread operations. The API does not
+make arbitrary concurrent document mutation safe.
 
 ## Bounded bands and B-Rep snapshots
 
@@ -159,9 +225,11 @@ band width is dimensionless and does not prescribe uniform physical thickness.
 
 With `IMPLICIT_OCCT_SOURCE_DIR` configured, a `brep` node stores `data` as ASCII
 BRep text and a positive model-length `tolerance`. Only valid single bounded
-outward-oriented solids are accepted. The native workbench's B-Rep snapshot
-command accepts an existing Part shape, captures its solid and records its label.
-Source changes do not update snapshots automatically. Mixed field Booleans
+outward-oriented solids are accepted. JSON snapshots never track source edits.
+The workbench's **Live B-Rep field** command instead stores a Part source link;
+recompute captures a new isolated BRep evaluator and updates automatic bounds.
+The source must contain a genuine single solid, not an arbitrary compound.
+Mixed field Booleans
 produce implicit fields, not `TopoDS_Shape` results. A node's numerical distance
 and finite-difference gradients can be expensive. Combining distance and gyroid
 fields preserves sign-set operations but gives no common physical distance unit.

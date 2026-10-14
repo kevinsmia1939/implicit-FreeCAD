@@ -82,6 +82,14 @@ graph/display caches, a batch query API, conservative octree pruning, band/box
 nodes and optional OCCT signed-distance snapshot fields. See
 [`PROGRESS.md`](PROGRESS.md) for their tested contracts and current limitations.
 
+The live-operation increment adds persistent document-level operand links,
+placement/sign-aware field composition, direct single-solid Part dispatch and
+live B-Rep distance fields. Source failures invalidate skipped downstream caches.
+Python extraction releases the GIL and accepts cancellation tokens. The mixed
+GUI and persistence paths are tested; `Part`, `PartGui`, and `PartScripts` are
+built on the development machine. These changes do not provide an OCCT implicit
+face or a manufacturing B-Rep approximation.
+
 This is the document-model and kernel seam, not completion of Stage F1. A
 dedicated complex-geometry property, shared-node/DAG representation, richer
 field nodes, field-aware selection and variable-resolution surface extraction

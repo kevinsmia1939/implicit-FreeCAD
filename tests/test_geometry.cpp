@@ -209,6 +209,26 @@ void testCylinderIntersection()
     try { (void)implicit::CylinderIntersection::trace(sphere, patch); }
     catch (const std::invalid_argument&) { rejected = true; }
     check(rejected, "out-of-domain cylinder rejected");
+
+    // Chart angles must not be mistaken for model lengths when radius grows.
+    GyroidSurface large(10, 0.17, {{0, 0, 0}, {100, 100, 100}});
+    implicit::CylinderPatch largePatch;
+    largePatch.origin = {50, 50, 50};
+    largePatch.radius = 25;
+    largePatch.heightMinimum = -50;
+    largePatch.heightMaximum = 50;
+    largePatch.angleCells = 480;
+    largePatch.heightCells = 160;
+    const auto largeCurves = implicit::CylinderIntersection::trace(large, largePatch);
+    check(!largeCurves.empty(), "large-radius gyroid-cylinder contours found");
+    for (const auto& curve : largeCurves) {
+        for (const auto& point : curve.points) {
+            check(std::abs(large.evaluate(point)) < 1e-9,
+                  "large-radius roots honor scaled chart tolerance");
+            near(std::hypot(point.x - 50, point.y - 50), 25, 1e-11,
+                 "large-radius points remain on cylinder");
+        }
+    }
 }
 
 } // namespace

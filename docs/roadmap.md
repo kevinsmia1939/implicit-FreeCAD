@@ -17,11 +17,13 @@
 | Native graph GUI view provider | Implemented and fork-GUI-tested | C++ retained scene nodes, placement, restore and workbench commands |
 | Octree sampling | Implemented | Conservative empty-space pruning, common finest surface cells |
 | Native batches | Implemented | Scalar batch API and cached compiled graph |
+| Live document composition | Implemented and native command-line/GUI tested | Source links, rigid placements, signs, band/offset and direct Part dispatch |
+| Python extraction cancellation | Implemented and runtime-tested | Atomic one-shot token, GIL released during native extraction |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
 | Cylinder intersection | Implemented in standalone engine | Refined chart roots and periodic seam joining; tangencies unsupported |
 | Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
 | Closed gyroid visualization | Implemented for explicit band/box graphs | Paired-edge regression; no general solid/topology guarantee |
-| B-Rep-to-field | Implemented | OCCT core signed-distance extension; snapshot persistence |
+| B-Rep-to-field | Snapshot and live bridge tested | OCCT core signed-distance extension; live Part source or JSON snapshot |
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
 | Native OCCT implicit-face Boolean | Unsupported | Requires geometry/topology/algorithm dispatch work |
 | STEP export | Unsupported | Only after valid supported B-Rep approximation |
@@ -33,6 +35,11 @@ conservative octree sampling, batch queries, capped band graphs, cylinder
 contours and an OCCT signed-distance core extension used for mixed field graphs.
 See [`PROGRESS.md`](PROGRESS.md) for implementation details and verification scope,
 and [`HANDOFF.md`](HANDOFF.md) for commands and environment.
+
+The current increment replaces workbench snapshots with document-linked
+operations, adds direct Part operands, GIL release/cancellation, and a native
+viewport benchmark. These do not complete the manufacturing or OCCT-native face
+stages. Remaining work is evaluated by the acceptance gates below.
 
 Remaining stages:
 
@@ -66,8 +73,18 @@ Remaining stages:
 
 Track equation evaluation, sampling/extraction, cache upload, recompute latency,
 and viewport FPS separately for 1, 3, 5, and 10 cells. The current executable
-measures the first two and estimated vector storage. Add Coin timing inside a
-real FreeCAD runtime before reporting rendering performance.
+measures the first two and estimated vector storage. The native GUI benchmark
+adds redraw and parameter-update timings; actual hardware/presentation FPS and
+systematic intersection-time sweeps remain open.
+
+`benchmark/native_viewport.py` now provides native GUI measurements at six grid
+cells per period, including completed Qt frame-swap throughput and
+parameter-change latency. Its peak RSS includes the entire process. Software
+Xvfb results must be distinguished from hardware presentation FPS; no universal
+accuracy or speed claim follows from these samples.
+`benchmark/native_viewport.csv` records the software-rendered baseline.
+`./build/implicit_intersection_benchmark` measures local projection and sampled
+ray/plane/cylinder operations; `benchmark/intersections.csv` records one run.
 
 Baseline on the development host with six grid cells per unit cell:
 

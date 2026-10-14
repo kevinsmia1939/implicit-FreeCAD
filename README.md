@@ -19,7 +19,9 @@ entry point for coding agents.
 
 See [the architecture report](docs/architecture.md) for the OCCT findings and
 [the roadmap](docs/roadmap.md) for the proposed progression toward interoperable
-CAD operations. The [core integration plan](docs/core-integration-plan.md)
+CAD operations. [Development-stage acceptance gates](docs/DEVELOPMENT_STAGES.md)
+distinguish delivered prototypes from unfinished production/kernel work.
+The [core integration plan](docs/core-integration-plan.md)
 defines which FreeCAD and OCCT seams must change for an nTop-class target.
 The [native field-graph documentation](docs/native-field-graph.md) describes the
 current persistence schema and Python API. The
@@ -42,6 +44,10 @@ The FreeCAD submodule tracks `feature/native-implicit` in
 for the core changes and remaining milestones.
 
 ## Build and test
+
+To try the existing development build interactively, run
+`bash tools/launch_demo.sh`. See [the hands-on guide](docs/TRY_IT.md) for editable
+examples, display settings, save/reload, and current limitations.
 
 The standalone component has no dependency on OCCT or FreeCAD:
 
@@ -108,9 +114,11 @@ module currently provides:
 - conservative octree sampling through `Implicit.tessellateAdaptive`, plus
   scalar batch evaluation and compiled-graph caching;
 - a native C++ view provider with retained Coin buffers and display properties;
-- a Native Implicit workbench with primitives, bands and snapshot Booleans;
-- optional B-Rep signed-distance snapshots and mixed field composition, using
-  the OCCT fork extension;
+- a Native Implicit workbench with editable primitives, bands and live linked Booleans;
+- optional live Part inputs, B-Rep signed-distance snapshots and mixed field
+  composition using the OCCT fork extension;
+- placement-aware document dependencies and cancellable Python extraction
+  that releases the interpreter lock;
 - `FreeCADCmd` smoke tests covering numerical behavior, mesh connectivity,
   orientation, clipping, input validation, and save/reload.
 
@@ -121,9 +129,9 @@ contract, limits, and examples. The native view provider uses this cache.
 The older addon remains available as a separate gyroid-only prototype.
 
 This foundation does not yet make implicit geometry interchangeable with every
-Part/B-Rep operation. The next integration stages are adaptive native rendering,
-field-aware selection, mixed implicit/B-Rep conversion and Booleans, and a
-tolerance-controlled B-spline B-Rep bridge.
+Part/B-Rep operation. Remaining stages include variable-resolution rendering,
+field-aware selection, a tolerance-controlled B-spline manufacturing bridge,
+and genuine OCCT implicit-face topology/Boolean dispatch.
 
 ## Environment observed
 

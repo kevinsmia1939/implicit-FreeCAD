@@ -4,9 +4,93 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Published implementation heads: FreeCAD `db838e8cb7` on
-`feature/native-implicit`, OCCT `1ce4cd29e4` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `7d6ec00e18` on
+`feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Current increment: live dependencies and extraction control
+
+Native `Implicit::Feature` now has document schema 3 with `Operation`, `Left`,
+`Right`, `Amount`, and `AutoDomain`. Definitions retain schema-1 JSON or editable
+primitive properties. Linked union/intersection/difference, band and offset
+nodes share immutable child fields through FreeCAD document dependencies.
+Recompute invalidates downstream compiled/display caches after source edits;
+missing or failed sources produce errors and clear stale display results.
+FreeCAD skips downstream execution after an upstream failure; a post-recompute
+dependency check explicitly invalidates those skipped features. Queries validate
+the dependency DAG before returning cached geometry. `StatusMessage` exposes the
+error; tests and commands use `isValid()` (FreeCAD's Python state label is
+`Invalid`, not `Error`).
+Queries guard against cycles and excessive native dependency depth. Undo and
+FCStd restore retain the actual links rather than duplicated field snapshots.
+
+Rigid source placements map into the result's parent frame, with transformed
+gradients and sign normalization for positive-inside operands. The result's own
+Placement remains an additional object transform. Automatic sampling domains
+enclose transformed operand domains; `Implicit.bounds` reports effective bounds.
+Manual domains remain available, particularly for expanded offsets. Domains
+remain computational limits, not artificial cap surfaces.
+
+With Part and the OCCT bridge enabled, linked operations accept single-solid
+Part features directly. `Operation=BRep` supplies a reusable live B-Rep distance
+field. Each recompute captures isolated BRep geometry and refreshes automatic
+bounds. Source dimensions and placements propagate. The workbench offers live
+B-Rep creation and linked Booleans; primitive commands no longer mask parameter
+editing with JSON graphs. Earlier snapshots remain supported and do not
+silently become live objects.
+
+Python extraction and the scalar batch numeric loop release the GIL after
+capturing immutable geometry. One-shot atomic cancellation tokens interrupt
+sampling/root extraction, returning an explicit error instead of partial mesh
+data. No background GUI scheduler, interruption inside a single OCCT query, or
+cancellable Python-container conversion is claimed. FreeCAD document APIs must
+still be called from the main thread.
+
+The OCCT signed-distance evaluator now retains the fixed boundary operand's
+distance-query maps/bounds between points. Additional native GoogleTests check
+alternating interior/exterior/boundary queries and recovery after invalid input.
+All **13 combined CTest tests pass** (13.41 seconds in the captured run),
+including the fork GUI with direct Part selections, live B-Rep creation,
+failed-source display clearing/recovery and the new linked/cancellation/Part
+regressions. `Part`, `PartGui` and `PartScripts` are built. The separate ordinary
+interactive demo and live Part/gyroid demo both pass automated GUI checks. The
+live demo verifies that a Part dimension edit updates its linked result.
+`PartScripts` is required alongside PartGui: it supplies AttachmentEditor and
+other Python resources that are not copied by building PartGui alone.
+
+`benchmark/native_viewport.py` adds the 1/3/5/10-cell GUI benchmark with six grid
+cells per period. It separates scalar batch evaluation, extraction plus Python
+transfer, combined parameter recompute/upload/render latency, completed Qt frame
+swaps, packed mesh storage and entire-process peak RSS. It explicitly disables
+Quarter's frame cap and waits for `frameSwapped`; counting deferred `redraw()`
+calls produced invalid results and was corrected before recording this baseline.
+Qt swaps/second are not monitor presentation/vsync FPS, and software-rendered
+Xvfb observations are not GPU performance claims.
+
+The recorded single-pass software-rendered run in `benchmark/native_viewport.csv`
+used a 1024x456 viewport. At 1/3/5/10 cells it observed approximately
+140/81/39/9 completed Qt swaps per second and 18/66/225/1448 ms for a parameter
+change including recompute, upload and rendering. The largest case had 960,000
+triangles, approximately 46 MB packed mesh storage, and 861 MiB entire-process
+peak RSS. Compilation was stopped for measurement; unrelated desktop workloads,
+software rendering and single-run variability still limit interpretation.
+
+`implicit_intersection_benchmark` adds projection/ray/plane/cylinder timings for
+the same four cell counts; the recorded run is `benchmark/intersections.csv`.
+The radius-scaling sweep exposed a chart-tolerance issue: cylinder angles are
+not model lengths. Chart stopping tolerance now accounts for the map's maximum
+stretch. The radius-25 gyroid regression catches the former approximately 1e-8
+residual; the corrected benchmark's sampled roots are below 1e-10. This is
+vertex residual evidence, not a curve-interior error or completeness guarantee.
+
+Reproduce the added measurements from the umbrella root:
+
+```sh
+cmake --build build --target implicit_intersection_benchmark --parallel 2
+./build/implicit_intersection_benchmark
+IMPLICIT_VIEWPORT_CSV=benchmark/native_viewport.csv python3 tools/with_xvfb.py \
+  build-freecad-implicit/bin/FreeCAD --safe-mode benchmark/native_viewport.py
+```
 
 ## Native display and document integration
 
@@ -21,9 +105,9 @@ graphs and meshes are cached in the native document object. Field/domain edits
 invalidate them, including edits during restoration; ordinary camera/placement
 changes reuse local geometry. Invalid recomputes clear display geometry.
 
-`ImplicitCommands.py` provides a Native Implicit workbench with sphere, gyroid,
+The earlier display increment provided a Native Implicit workbench with sphere, gyroid,
 bounded band, field Boolean and B-Rep snapshot commands. Commands are undoable.
-Boolean snapshots currently require matching Placement and negative-inside
+Those historical Boolean snapshots required matching Placement and negative-inside
 operands. They copy definitions rather than maintaining live dependency links.
 B-Rep snapshot results retain the source label for provenance, but source edits
 do not update them. Native GUI tests exercise cache reuse, buffer shrink,
@@ -117,9 +201,10 @@ singular graph intersections are not guaranteed; curves are sampled polylines.
 
 The following are not completed by these increments:
 
-- native complex-geometry property, shared-node DAG persistence and graph editor;
-- field-aware semantic picking, source-linked Booleans and B-Rep dependencies;
-- asynchronous evaluation, cancellation, GIL release, SIMD/GPU and cache budgets;
+- native complex-geometry property, shared-node JSON DAG format and graph editor
+  (document-level source-link DAGs are now implemented);
+- field-aware semantic picking and broader container/App::Link integration tests;
+- asynchronous GUI scheduling, SIMD/GPU and cache budgets;
 - variable-resolution surface cells, transition meshing, rigorous approximation
   error control, broader topology and singularity tests;
 - general plane-box polygon clipping, trimming topology and validated distance
@@ -135,7 +220,7 @@ not merely the presence of code in the two source trees.
 
 ## Verified results
 
-On 2026-10-15, all **10 CTest tests passed** in one combined run (5.50 seconds),
+Before the current live increment, all **10 CTest tests passed** in one combined run (5.50 seconds),
 including the fork's native GUI on an isolated Xvfb software-rendered display.
 The GUI test uses FreeCAD safe mode to isolate user-installed addons. It checks
 the workbench command/undo, retained nodes, buffer shrink, adaptive-mode changes,
@@ -154,21 +239,24 @@ and extra octree overhead. This is evidence for selective use, not a general
 speedup claim. The gyroid sweep fixes resolution at 32, so increasing unit-cell
 count reduces samples per period and does not preserve geometric accuracy.
 Packed mesh bytes exclude working buffers, root maps, allocator overhead and
-Python copies; viewport FPS is not measured.
+Python copies; that sampling script does not measure rendering. The new GUI
+benchmark and its completed-frame measurements are described above.
 
 Reproduce the full test run after building the native targets:
 
 ```sh
 cmake -S . -B build -DIMPLICIT_BUILD_OCCT_DISTANCE=ON \
   -DIMPLICIT_NATIVE_FREECADCMD="$PWD/build-freecad-implicit/bin/FreeCADCmd" \
-  -DIMPLICIT_NATIVE_FREECADGUI="$PWD/build-freecad-implicit/bin/FreeCAD"
+  -DIMPLICIT_NATIVE_FREECADGUI="$PWD/build-freecad-implicit/bin/FreeCAD" \
+  -DIMPLICIT_NATIVE_PART_TESTS=ON
 cmake --build build --parallel 2
 python3 tools/with_xvfb.py ctest --test-dir build --output-on-failure
 ./build-freecad-implicit/bin/FreeCADCmd benchmark/native_sampling.py
 ```
 
-The reduced build commands build the core GUI and Implicit workbench. Other
-configured workbenches, including Part/PartGui, are not automatically compiled
-by those targets. The B-Rep snapshot GUI command needs a built Part module to
-create/select conventional source solids; the native mixed regression uses a
-BRep fixture and does not depend on Part's Python module.
+The earlier reduced build omitted Part/PartGui. This increment explicitly builds
+`Part`, `PartGui` and `PartScripts` for interactive conventional-solid workflows.
+The original `mixed_smoke.py` still uses a BRep fixture without Part's Python
+module; `part_linked_smoke.py` and the optional mixed GUI checks test live Part
+dependencies. Build only the relevant targets with two compile jobs; do not
+mistake a configured workbench for a built one.

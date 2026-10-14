@@ -6,11 +6,20 @@
 
 namespace implicit {
 namespace {
+NumericalSettings chartSettings(const ImplicitSurface& field, const CylinderPatch& patch)
+{
+    auto settings = field.settings();
+    // A unit angular displacement has world-space speed radius. A chart-space
+    // stopping tolerance must therefore account for the map's maximum stretch,
+    // rather than treating radians and model lengths as interchangeable.
+    settings.distanceTolerance /= std::max(1.0, patch.radius);
+    return settings;
+}
 class CylinderChart final : public ImplicitSurface {
 public:
     CylinderChart(const ImplicitSurface& field, const CylinderPatch& patch)
         : ImplicitSurface({{0, patch.heightMinimum, -1},
-                           {2 * std::acos(-1.0), patch.heightMaximum, 1}}, field.settings()),
+                           {2 * std::acos(-1.0), patch.heightMaximum, 1}}, chartSettings(field, patch)),
           field(field), patch(patch), axis(normalized(patch.axis)),
           u(normalized(patch.radialDirection)), v(cross(axis, u))
     {

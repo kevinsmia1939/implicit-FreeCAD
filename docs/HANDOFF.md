@@ -2,10 +2,12 @@
 
 Last updated: 2026-10-15. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
-FreeCAD GUI, adaptive sampling, capped band, cylinder and OCCT core increments.
+FreeCAD GUI, live Part dependencies, cancellation, benchmarks and OCCT core increments.
 The user has authorized implementation, commits and pushes in both core source
 trees. This file records the state of the code, not a claim
 that all goals in the original brief are complete.
+[`DEVELOPMENT_STAGES.md`](DEVELOPMENT_STAGES.md) maps the original phases to
+delivered prototypes and explicit remaining production/kernel acceptance gates.
 
 ## Goal and repository layout
 
@@ -13,7 +15,8 @@ Build a FreeCAD fork with native implicit modelling, ultimately competitive
 with nTop in field composition, lattices, performance, and interoperability.
 The user's original brief is `instructions.txt`. Its initial Phases 1–3 have
 working prototypes; later work added plane intersections and an in-tree native
-FreeCAD module. Mixed B-Rep operations are still future work.
+FreeCAD module. Mixed operations in field space exist; manufacturing B-Rep
+results and native OCCT implicit-face operations are still future work.
 
 | Location | Purpose |
 |---|---|
@@ -93,13 +96,22 @@ licenses remain applicable to their respective code.
    OCCT signed-distance snapshots and mixed field composition; standalone
    cylinder contours. All ten combined tests pass. See `PROGRESS.md` for scope,
    performance observations and remaining stages.
+9. Live-operation increment (FreeCAD `7d6ec00e18`, OCCT `711d0d0275`): schema-3 native feature links, placed/sign-
+   normalized composition, direct Part operands and live B-Rep distance fields,
+   automatic bounds, downstream cache invalidation, editable workbench primitives,
+   Python extraction cancellation and GIL release. The OCCT evaluator reuses its
+   fixed distance operand. All 13 combined tests pass, including the full mixed
+   GUI path; both interactive demos pass checks. Part/PartGui/PartScripts are
+   built. Viewport/intersection benchmarks are recorded; cylinder chart tolerance
+   now accounts for radius. See `PROGRESS.md` for measured scope and limitations.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
 smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
-passes **10/10 tests**, including the fork's native GUI on Xvfb; see results
+passed **10/10 tests** before the live increment. The latest run passes
+**13/13**, including the mixed fork GUI on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
 has not been performed. The earlier addon GUI tests used installed FreeCAD.
@@ -159,6 +171,8 @@ cmake -S FreeCAD -B build-freecad-implicit -DIMPLICIT_OCCT_SOURCE_DIR="$PWD/OCCT
 cmake --build build-freecad-implicit --target Implicit ImplicitScripts FreeCADMainCmd --parallel 2
 # Full native GUI after the command-line targets pass:
 cmake --build build-freecad-implicit --target ImplicitGui FreeCADMain FreeCADGui_Resources Stylesheets_data --parallel 2
+# Live conventional Part inputs (requires the configured OCCT bridge):
+cmake --build build-freecad-implicit --target Part PartGui PartScripts Implicit ImplicitGui --parallel 2
 
 # Native tests also run directly without enabling all FreeCAD developer tests.
 ./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/native_smoke.py
@@ -167,6 +181,9 @@ cmake --build build-freecad-implicit --target ImplicitGui FreeCADMain FreeCADGui
 # GUI test requires a desktop display or Xvfb:
 ./build-freecad-implicit/bin/FreeCAD --safe-mode FreeCAD/src/Mod/Implicit/Tests/gui_smoke.py
 # Or set IMPLICIT_NATIVE_FREECADGUI during root configuration, then:
+python3 tools/with_xvfb.py ctest --test-dir build --output-on-failure
+# Add live Part tests after the Part targets have actually been built:
+cmake -S . -B build -DIMPLICIT_NATIVE_PART_TESTS=ON
 python3 tools/with_xvfb.py ctest --test-dir build --output-on-failure
 
 # Existing addon GUI test, on a desktop session using installed FreeCAD.
@@ -191,10 +208,17 @@ for success markers and failure patterns for the two native tests.
 GoogleTest targets. Native module tests are registered inside FreeCAD only with
 that option on; the umbrella registration is the tested alternative.
 
+The native command-line test set now also includes `linked_smoke.py` and
+`cancellation_smoke.py`. `IMPLICIT_NATIVE_PART_TESTS=ON` additionally registers
+`part_linked_smoke.py` and enables direct mixed-selection/B-Rep commands inside
+the GUI regression. Do not enable that flag with an older or Part-less build.
+The earlier six-/ten-test counts below are historical; consult `PROGRESS.md`
+for the current combined run.
+
 ## Remaining limits
 
-- The new native GUI provider and workbench cover basic display and snapshot
-  commands. Field-aware semantic picking and background evaluation remain open.
+- The native GUI provider and workbench cover basic display and live linked
+  commands. Field-aware semantic picking and background GUI scheduling remain open.
 - The graph lives in `App::PropertyString`; there is no dedicated complex geometry
   property, shared-node DAG, graph editor or SIMD/GPU backend. Scalar batch
   evaluation and compiled-graph caching are now implemented.
@@ -204,7 +228,8 @@ that option on; the umbrella registration is the tested alternative.
   crossings. Hard Boolean creases can be smoothed by interpolated vertex normals.
 - Native extraction uses 2–64 cells per axis and limits vertices and triangles
   independently to one million. It retains full grid samples, a root map, and
-  Python result copies. No asynchronous cancellation or GIL release is implemented.
+  Python result copies. Python extraction now releases the GIL and supports
+  cancellation tokens; the GUI still extracts synchronously without a scheduler.
 - Root positions and native scalar APIs are local to the feature. Rendering must
   apply `Placement` once. Domain clipping does not generate caps. Sphere/shell
   connectivity checks do not guarantee topology for arbitrary graphs.
@@ -236,9 +261,10 @@ that option on; the umbrella registration is the tested alternative.
 4. **Geometry operations:** cylinder contour tracing and capped visualization
    bands are implemented; general domain boundaries,
    capped visualization solids and quantitative distance/offset validation.
-5. **Mixed representation:** signed-distance snapshot fields and mixed field
-   composition are implemented. Retain a live source B-Rep link, sample signed distance or
-   classification, compose with native fields, record sampling error and tolerance.
+5. **Mixed representation:** snapshot fields and mixed composition are implemented;
+   live Part source links and direct Part operand dispatch are added in the current
+   increment. Strengthen container/App::Link tests, measure approximation error
+   separately from the OCCT distance/classification tolerance, and document costs.
 6. **Manufacturing bridge:** local charts and fitted B-spline patches, common
    boundaries/p-curves, sewing and shape validation, then OCCT Booleans and STEP
    export with measured approximation error and retained implicit provenance.
