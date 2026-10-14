@@ -1,0 +1,287 @@
+# Project: Native Implicit-Surface Geometry Support for FreeCAD and Open CASCADE (OCCT)
+
+## Objective
+
+Investigate, design, and implement a prototype that allows FreeCAD and OCCT to work with mathematically defined implicit surfaces, using the gyroid as the primary example. Source code for FreeCAD and OCCT provided in the same folder as this instruction.
+
+The long-term objective is to support implicit surfaces as first-class CAD geometry rather than requiring them to be permanently converted into polygonal meshes.
+
+The implementation should eventually support:
+
+- Interactive visualization in FreeCAD.
+- Parametric modification of the implicit-surface equation.
+- Accurate point and surface evaluation.
+- Surface intersection and trimming.
+- Boolean operations with conventional OCCT B-Rep shapes.
+- Generation of bounded solids suitable for CAD and manufacturing.
+- STEP export where geometrically feasible.
+
+However, implement these capabilities progressively. Do not assume that all operations can immediately work with implicit geometry.
+
+## Background
+
+FreeCAD uses OCCT for B-Rep geometry and Coin3D for viewport rendering.
+
+OCCT traditionally represents surfaces using classes derived from `Geom_Surface`, such as `Geom_Plane`, `Geom_CylindricalSurface`, and `Geom_BSplineSurface`.
+
+An implicit surface, by contrast, is represented as:
+
+F(x,y,z) = 0
+
+For a gyroid:
+
+F(x,y,z) = sin(k*x)*cos(k*y) + sin(k*y)*cos(k*z) + sin(k*z)*cos(k*x) - c
+
+where:
+
+k = 2*pi/L
+
+L is the periodic unit-cell dimension and c is an adjustable level-set constant.
+
+A true implicit surface does not necessarily have a convenient global two-dimensional parameterization.
+
+The purpose of this project is to investigate how OCCT can be extended or integrated with an implicit geometry representation without immediately approximating the entire shape using thousands of NURBS patches or planar triangles.
+
+## Development environment
+
+- Language: C++ for performance-critical geometry and OCCT integration.
+- Python for FreeCAD integration, prototyping and automated testing.
+- CAD framework: Open CASCADE Technology.
+- Application: FreeCAD.
+- Operating system: Linux.
+- Build system: CMake.
+- Version control: Git.
+
+Use the installed OCCT and FreeCAD versions rather than assuming API compatibility.
+
+Prefer an isolated FreeCAD addon or experimental C++ module initially. Do not modify OCCT core until there is a clear technical justification.
+
+## Phase 1 — Architecture investigation
+
+Inspect the relevant OCCT source code and documentation.
+
+Focus on:
+
+- `Geom_Surface`
+- `Geom_BoundedSurface`
+- `Adaptor3d_Surface`
+- `BRepAdaptor_Surface`
+- `BRepBuilderAPI_MakeFace`
+- `BRep_Builder`
+- `BRepMesh_IncrementalMesh`
+- `BRepAlgoAPI_Common`
+- `BRepAlgoAPI_Cut`
+- `IntTools`
+- `Poly_Triangulation`
+- OCCT intersection and projection algorithms
+
+Also investigate FreeCAD's Part module and Coin3D view-provider architecture.
+
+Determine:
+
+1. Whether an implicit surface can realistically be represented through an existing OCCT surface abstraction.
+2. Which OCCT operations fundamentally require U,V parameterization.
+3. Which operations can be adapted to operate directly on F(x,y,z).
+4. Whether a new implicit-surface geometry class can coexist with standard `TopoDS_Shape` objects.
+5. Which changes would be necessary to support exact or numerically accurate intersection, trimming and Boolean operations.
+
+Pay particular attention to the difference between a standalone implicit geometry object and a genuine OCCT B-Rep face with valid topology.
+
+Do not implement a fake `Geom_Surface` that returns arbitrary or mathematically inconsistent parameterization results merely to satisfy an API.
+
+Produce a concise architectural report before choosing the implementation strategy.
+
+## Phase 2 — Implicit geometry engine
+
+Create a reusable C++ geometry abstraction:
+
+`ImplicitSurface`
+
+It should support:
+
+- Evaluation of F(x,y,z).
+- Analytical gradient evaluation when available.
+- Numerical gradient fallback.
+- Surface normal calculation.
+- Closest-point projection using a numerical solver.
+- Ray-surface intersection using robust numerical root finding.
+- Bounding boxes and finite computational domains.
+- User-defined numerical tolerances.
+
+Implement a gyroid subclass as the initial example.
+
+For the gyroid, provide analytical derivatives.
+
+Ensure that the geometry engine is independent of FreeCAD so it can be tested separately.
+
+Use double-precision floating-point arithmetic.
+
+Implement unit tests for points on the zero level set, gradients, normals, projections and ray intersections.
+
+## Phase 3 — FreeCAD viewport integration
+
+Create a FreeCAD parametric feature for displaying an implicit gyroid surface.
+
+Expose properties for:
+
+- Unit-cell period.
+- Level-set parameter.
+- X, Y and Z dimensions.
+- Spatial position.
+- Rendering resolution.
+- Surface color.
+- Display mode.
+
+Start with a bounded gyroid surface inside a rectangular domain.
+
+Implement a polygonal visualization backend using a suitable isosurface extraction method, such as marching cubes.
+
+Important requirements:
+
+- The mathematical implicit surface must remain the authoritative geometry.
+- The generated mesh is only a visualization cache.
+- Modifying any geometric parameter must trigger regeneration.
+- Avoid regenerating geometry during ordinary camera rotation.
+- Reuse Coin3D vertex and index buffers where possible.
+- Separate geometry evaluation from rendering code.
+- Provide an appropriate quality/performance tradeoff.
+
+A mesh-backed FreeCAD feature is acceptable for this initial visualization stage, but do not describe it as a native OCCT B-Rep surface.
+
+Ensure the object survives FreeCAD document save/reload, assuming the addon remains installed.
+
+## Phase 4 — OCCT integration prototype
+
+Investigate and implement the most technically defensible path toward integrating implicit surfaces with OCCT.
+
+Consider at least three architectures:
+
+A. Native OCCT extension introducing an implicit geometry representation.
+
+B. An external implicit geometry engine integrated with FreeCAD, using OCCT only when conventional B-Rep geometry is required.
+
+C. Localized numerical surface parameterization into bounded B-spline patches for compatibility with existing OCCT operations.
+
+Compare these approaches based on:
+
+- Geometric fidelity.
+- Computational cost.
+- Memory requirements.
+- Boolean operation support.
+- Compatibility with FreeCAD.
+- Maintenance complexity.
+- Dependence on modifications to OCCT source code.
+
+Choose one architecture for a proof of concept.
+
+Do not claim to have implemented native implicit B-Rep support if the implementation only converts a mesh into a collection of planar faces.
+
+## Phase 5 — Geometry operations
+
+Investigate the following operations in order of complexity:
+
+1. Point classification relative to the implicit function.
+2. Point projection onto the implicit surface.
+3. Ray-surface intersection.
+4. Intersection with a plane.
+5. Intersection with a cylinder.
+6. Trimming the implicit surface to a rectangular domain.
+7. Forming a closed gyroid-based solid.
+8. Boolean intersection with an ordinary OCCT solid.
+
+Develop numerical intersection curves whenever possible.
+
+Distinguish between exact analytical operations and tolerance-controlled numerical approximations.
+
+Document which functions are implemented, experimental or unsupported.
+
+## Phase 6 — Gyroid solid
+
+Extend the prototype to generate a wall-like gyroid solid defined by:
+
+abs(F(x,y,z)) <= t
+
+where t is a dimensionless level-set band parameter, not a physical wall thickness.
+
+Also support the alternative single-domain solid:
+
+F(x,y,z) <= c0
+
+Use a finite bounding volume for both.
+
+A physical wall-thickness parameter should eventually be supported using approximate signed-distance calculations or other appropriate offset methods.
+
+Do not assume that an equal level-set offset produces uniform physical wall thickness.
+
+Investigate how these solids can be intersected with conventional OCCT geometry.
+
+## Phase 7 — Performance testing
+
+Benchmark several configurations:
+
+- 1 × 1 × 1 gyroid unit cells.
+- 3 × 3 × 3 unit cells.
+- 5 × 5 × 5 unit cells.
+- 10 × 10 × 10 unit cells.
+
+Measure:
+
+- Implicit-function evaluation time.
+- Mesh generation time.
+- Memory usage.
+- Viewport frame rate.
+- Time required for parameter changes.
+- Intersection calculation time.
+
+Distinguish geometry-generation performance from rendering performance.
+
+Avoid unnecessary recalculation and introduce caching where appropriate.
+
+## Development practices
+
+- Inspect the existing repository before making changes.
+- Use upstream OCCT APIs whenever possible.
+- Maintain clear separation between geometry, topology, meshing and rendering.
+- Prefer incremental, testable changes.
+- Add unit tests and a minimal FreeCAD demonstration.
+- Do not introduce unnecessary dependencies.
+- Avoid modifying FreeCAD or OCCT internals in the initial prototype unless essential.
+- Explain limitations explicitly.
+- Prioritize a working vertical slice over implementing every feature at once.
+
+## Initial deliverables
+
+For the first implementation iteration, deliver:
+
+1. An architecture report describing the feasibility of native implicit-surface support in OCCT.
+2. A standalone C++ implicit gyroid geometry evaluator.
+3. A numerical surface extraction implementation.
+4. A FreeCAD addon that displays an editable gyroid.
+5. Automated tests for geometry calculations.
+6. A benchmark comparing multiple gyroid resolutions.
+7. A technical roadmap toward native OCCT integration.
+
+First inspect the available environment and repository, then implement Phase 1 through Phase 3.
+
+Proceed autonomously with reasonable engineering decisions. Ask for clarification only if essential information is genuinely unavailable.
+
+## Build dependencies and environment setup
+
+Before compiling FreeCAD, OCCT, or any C++ component, inspect the existing development environment and determine which dependencies are already installed.
+
+If compiling FreeCAD or OCCT from source is necessary:
+
+1. Identify the operating system, distribution, version, compiler, and available build tools.
+2. Consult the official FreeCAD and OCCT build documentation for the relevant versions.
+3. Determine all required build dependencies, including development libraries, compilers, CMake, Qt, Python bindings, Coin3D, and other relevant packages.
+4. Provide the exact package names and installation commands appropriate for my Linux distribution.
+5. Clearly distinguish between mandatory dependencies, optional dependencies, and dependencies already installed.
+6. Explain whether a complete FreeCAD or OCCT rebuild is necessary, or whether the proposed changes can be compiled as a standalone library or FreeCAD addon.
+7. Prefer using the existing system installations of FreeCAD and OCCT when possible.
+8. Do not automatically install system packages, modify system libraries, or begin compiling FreeCAD or OCCT before informing me of the required dependencies and receiving my approval.
+
+**Important:** If additional dependencies or a source build are necessary, stop at that point and provide a clear dependency checklist and installation instructions. Wait for my confirmation before proceeding.
+
+Once the required dependencies are available, continue implementation and compilation.
+
+For ordinary modifications to project source files, tests, or scripts that do not require additional system dependencies, proceed autonomously without requesting approval.
