@@ -5,6 +5,7 @@ option(IMPLICIT_BUILD_TESTS "Build the standalone geometry tests" ON)
 option(IMPLICIT_BUILD_BENCHMARK "Build the mesh benchmark" ON)
 option(IMPLICIT_BUILD_FREECAD_TESTS "Run addon tests when FreeCADCmd is available" ON)
 option(IMPLICIT_BUILD_OCCT_PROBE "Build the explicit mesh-only OCCT bridge probe" ON)
+set(IMPLICIT_NATIVE_FREECADCMD "" CACHE FILEPATH "FreeCADCmd built with the native Implicit module")
 
 add_library(implicit_geometry
     src/ImplicitSurface.cpp
@@ -18,6 +19,20 @@ target_compile_options(implicit_geometry PRIVATE -Wall -Wextra -Wpedantic)
 
 if(IMPLICIT_BUILD_TESTS)
     enable_testing()
+    if(IMPLICIT_NATIVE_FREECADCMD)
+        if(NOT EXISTS "${IMPLICIT_NATIVE_FREECADCMD}")
+            message(FATAL_ERROR "IMPLICIT_NATIVE_FREECADCMD does not exist")
+        endif()
+        foreach(native_test IN ITEMS native_smoke mesh_smoke)
+            add_test(NAME implicit_${native_test}
+                COMMAND "${IMPLICIT_NATIVE_FREECADCMD}"
+                    "${CMAKE_CURRENT_SOURCE_DIR}/FreeCAD/src/Mod/Implicit/Tests/${native_test}.py")
+            set_tests_properties(implicit_${native_test} PROPERTIES
+                PASS_REGULAR_EXPRESSION "native implicit .*smoke test passed"
+                FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+                TIMEOUT 120)
+        endforeach()
+    endif()
     add_executable(implicit_tests tests/test_geometry.cpp)
     target_link_libraries(implicit_tests PRIVATE implicit_geometry)
     add_test(NAME implicit_geometry_tests COMMAND implicit_tests)

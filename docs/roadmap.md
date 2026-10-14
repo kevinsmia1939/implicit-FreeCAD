@@ -12,6 +12,9 @@
 | Ray intersection | Implemented | Sampled bracketing plus safeguarded refinement |
 | Bounded surface visualization | Implemented | Marching-tetrahedra cache |
 | FreeCAD editable feature | Implemented and runtime-tested with FreeCAD 1.1.4 | Python feature + retained Coin nodes |
+| Native FreeCAD field graph | Implemented and command-line runtime-tested | C++ feature, primitives/Booleans/transforms, versioned JSON persistence |
+| Native graph surface extraction | Implemented and command-line runtime-tested | Indexed uniform-grid tetrahedra, shared refined roots, gradient normals; no boundary caps |
+| Native graph GUI view provider | Next milestone | Must retain scene nodes, honor placement and rebuild after restore |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
 | Cylinder intersection | Planned | Numerical curve tracing in a cylindrical chart |
 | Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
@@ -21,9 +24,19 @@
 
 ## Next increments
 
+The current native increment completes the indexed uniform-grid extraction
+baseline. The immediate next native integration step is a dedicated view
+provider for `Implicit::Feature`: consume this cache, retain Coin nodes, expose
+resolution/color/modes, invalidate only on geometry changes, apply Placement
+once, and restore display after FCStd reload. A full fork GUI target still needs
+to be built and tested. See [`HANDOFF.md`](HANDOFF.md) for commands and evidence.
+
+After that GUI milestone:
+
 1. Add an adaptive octree sampler with shared edge vertices, ambiguity handling,
    deterministic topology, boundary clipping, and error estimates. Preserve the
-   current simple extractor as a correctness baseline.
+   current standalone extractor and indexed native extractor as regression
+   references. Avoid pruning merely on same-sign corners without field bounds.
 2. Generalize the implemented plane-patch contour tracer to arbitrary clipped
    plane/box polygons and cylinders in their native `(angle,height)` chart.
 3. Add band and domain classifiers for `abs(F)<=t` and `F<=c0`. Treat `t` as a

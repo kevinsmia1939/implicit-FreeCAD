@@ -72,13 +72,22 @@ The first in-tree foundation now exists under `FreeCAD/src/Mod/Implicit`:
   and point classification;
 - an automated `FreeCADCmd` smoke test covering recompute and `.FCStd`
   save/reload in addition to numerical behavior.
+- native indexed surface extraction for arbitrary supported graphs, exposed as
+  `Implicit.tessellate`, with shared roots, gradient normals, input/resource
+  limits, and a second smoke test for residuals, orientation, connectivity,
+  domain clipping, and restoration.
 
 This is the document-model and kernel seam, not completion of Stage F1. A
 dedicated complex-geometry property, shared-node/DAG representation, richer
 field nodes, native view provider, field-aware selection, and batch/adaptive
-evaluation remain to be implemented. The existing addon continues to provide
-the working visualization while these native layers are added. The current
+evaluation remain to be implemented. The new uniform-grid native extractor is
+the reference backend for the next native view-provider milestone; it is not
+yet adaptive or automatically attached to native feature recompute. The existing
+addon continues to provide the working visualization while these native layers
+are added. The current
 graph schema is documented in `docs/native-field-graph.md`.
+Build commands, toolchain, tested scope, and the continuation checklist are in
+[`HANDOFF.md`](HANDOFF.md).
 
 ### Stage F2: cross-workbench integration
 

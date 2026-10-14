@@ -1,9 +1,13 @@
 # FreeCAD core-build dependency audit: openSUSE Tumbleweed
 
-Audit date: 2026-10-14. No package installation, FreeCAD configuration, or
-FreeCAD compilation was performed.
+Initial audit and latest verification: 2026-10-14. The package checklist below
+records what was missing before the user installed dependencies. Configuration
+and the `Implicit` and `FreeCADMainCmd` targets now build successfully; no
+additional packages are needed for the current native extraction work. The
+fork's GUI executable has not yet been built or tested.
 
-The checked-out FreeCAD tree is 27.1.0-dev at `d732e2f13a`. It requires Qt 6
+The FreeCAD tree is based on 27.1.0-dev at `d732e2f13a`, with project changes on
+`feature/native-implicit`. It requires Qt 6
 and defaults to bundled Coin/Pivy, PyCXX, Clipper2, and several other third-party
 components. The host has GCC 16.2.1, CMake 4.4.3, Ninja 1.13.2, Python 3.13
 development headers, Boost, OCCT 7.9.3 development files, Qt 6 base development
@@ -14,7 +18,7 @@ The official FreeCAD Linux compilation guide lists openSUSE package names, but
 its Tumbleweed section still describes the older Qt 5 stack. The checked-out
 source is authoritative for this tree and explicitly calls `find_package(Qt6)`.
 
-## Missing mandatory packages for a reduced Implicit-module build
+## Initially missing packages (subsequently installed by the user)
 
 - `libxerces-c-devel`
 - `qt6-svg-devel`
@@ -22,7 +26,7 @@ source is authoritative for this tree and explicitly calls `find_package(Qt6)`.
 - `python313-pyside6-devel`
 - `python313-shiboken6-devel`
 
-Installation command, to be run only after approval:
+Historical installation command (already completed; do not rerun unnecessarily):
 
 ```sh
 sudo zypper install \
@@ -53,15 +57,16 @@ packages:
 - `doxygen`, required only for generated documentation;
 - optional PCL/OpenCV/ODE packages.
 
-## Proposed first configuration
+## Reproduce the native configuration
 
-After dependency approval and after adding the module skeleton, configure an
-out-of-tree development build with Ninja and a constrained parallel job pool:
+Dependency installation and the native build were authorized. The native module
+is implemented; configure out of tree with Ninja and constrained job pools:
 
 ```sh
 cmake -S FreeCAD -B build-freecad-implicit -G Ninja \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DBUILD_GUI=ON \
+  -DBUILD_IMPLICIT=ON \
   -DBUILD_PART=ON \
   -DBUILD_PART_DESIGN=OFF \
   -DBUILD_FEM=OFF \
@@ -75,17 +80,37 @@ cmake -S FreeCAD -B build-freecad-implicit -G Ninja \
   -DBUILD_TECHDRAW=OFF \
   -DBUILD_WEB=OFF \
   -DBUILD_HELP=OFF \
+  -DBUILD_DRAFT=OFF \
+  -DBUILD_IMPORT=OFF \
+  -DBUILD_INSPECTION=OFF \
+  -DBUILD_JTREADER=OFF \
+  -DBUILD_REVERSEENGINEERING=OFF \
+  -DBUILD_SPREADSHEET=OFF \
   -DENABLE_DEVELOPER_TESTS=OFF \
   -DFREECAD_USE_3DCONNEXION_LEGACY=OFF \
   -DFREECAD_PARALLEL_COMPILE_JOBS=2 \
   -DFREECAD_PARALLEL_LINK_JOBS=1
 ```
 
-The host currently has about 45 GiB free and roughly 2 GiB readily available
-RAM plus swap. Two compile jobs and one link job are therefore safer than using
-all CPU cores. Configuration may reveal an additional package requirement due
-to the development snapshot; if so, stop and report it rather than installing
-anything automatically.
+Build only the needed targets and run the module smoke tests:
+
+```sh
+cmake --build build-freecad-implicit --target Implicit FreeCADMainCmd --parallel 2
+./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/native_smoke.py
+./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/mesh_smoke.py
+```
+
+This configuration uses GCC 16.2.1, Python 3.13.15, Qt/PySide/Shiboken 6.11.2,
+installed OCCT 7.9.3, bundled Coin 4.0.10, Pivy 0.6.11 and PyCXX 7.1.11.
+`BUILD_GUI=ON` configures GUI dependencies but building the targets above does
+not build the complete GUI. Installed FreeCAD was used for the earlier addon GUI
+test. The OCCT source checkout is not used to build OCCT here.
+
+The host has about 44 GiB disk free and roughly 1.3 GiB readily available RAM
+plus swap at the latest check. Keep two compile jobs and one link job.
+Configuration may reveal another dependency on a different host; report it
+instead of installing anything automatically. See [`HANDOFF.md`](HANDOFF.md) for
+the full continuation context and unified CTest invocation.
 
 Official references:
 

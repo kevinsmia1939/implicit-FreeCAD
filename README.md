@@ -1,11 +1,20 @@
-# Native implicit geometry for FreeCAD
+# implicit-FreeCAD
 
-This repository contains a working implicit-geometry vertical slice and the
-first native FreeCAD integration. It combines a standalone C++ field engine,
-numerical surface extraction, tests and benchmarks, an editable FreeCAD/Coin3D
-visualization addon, and a pinned FreeCAD branch containing the native
-`Implicit` module. Triangle meshes are explicitly transient display caches; they
-are not presented as OCCT B-Reps.
+An experimental **FreeCAD fork for implicit modelling**, working toward native
+field-based workflows, lattices, and mixed implicit/B-Rep operations. The
+long-term target is an nTop-class implicit modelling system.
+
+This repository is the development umbrella: the actual FreeCAD fork is pinned
+in the `FreeCAD/` submodule on
+[`feature/native-implicit`](https://github.com/kevinsmia1939/FreeCAD/tree/feature/native-implicit).
+The root also contains
+the standalone geometry engine, prototype addon, benchmarks, and project notes.
+`OCCT/` is a pinned reference checkout; its source has not been modified.
+
+**Continuing development? Start with [the handoff](docs/HANDOFF.md).** It records
+completed work, source locations, exact build/test commands, tools, known gaps,
+and the next implementation milestones. [AGENTS.md](AGENTS.md) provides a short
+entry point for coding agents.
 
 See [the architecture report](docs/architecture.md) for the OCCT findings and
 [the roadmap](docs/roadmap.md) for the proposed progression toward interoperable
@@ -91,7 +100,16 @@ module currently provides:
 - versioned JSON field-graph persistence in `.FCStd` documents;
 - Python evaluation, gradient, classification, graph validation, and graph
   getter/setter APIs;
-- a `FreeCADCmd` smoke test covering numerical behavior and save/reload.
+- indexed C++ surface extraction for native field graphs, exposed through
+  `Implicit.tessellate(feature, resolution)`;
+- `FreeCADCmd` smoke tests covering numerical behavior, mesh connectivity,
+  orientation, clipping, input validation, and save/reload.
+
+Native extraction returns local-coordinate vertices, normals, and triangles.
+It uses a uniform grid with shared edge vertices and refined field roots. See
+[the extraction API](docs/native-field-graph.md#surface-extraction) for the
+contract, limits, and an example. Rendering those native features in a dedicated
+view provider is the next milestone; the existing addon renders gyroids today.
 
 This foundation does not yet make implicit geometry interchangeable with every
 Part/B-Rep operation. The next integration stages are adaptive native rendering,
@@ -104,18 +122,21 @@ tolerance-controlled B-spline B-Rep bridge.
 - GCC 16.2.1, CMake 4.4.3, Ninja 1.13.2, Python available
 - installed FreeCAD: 1.1.4, revision 20260928
 - installed OCCT development package: 7.9.3
-- source trees: FreeCAD 27.1.0-dev (`da2682dcd9` on
-  `feature/native-implicit`) and OCCT 8.1.0-dev1 (`3d097a0328`)
+- source trees: FreeCAD 27.1.0-dev on `feature/native-implicit` and
+  OCCT 8.1.0-dev1 (`3d097a0328`); `git submodule status` shows exact revisions
 
-The FreeCAD source tree was modified, built, and runtime-tested; its native
-module branch is published in the project fork. OCCT remains unmodified. A
-FreeCAD runtime remains optional for the standalone library. The addon has also
-been validated in both `FreeCADCmd` and the live Coin3D GUI.
+The native module and `FreeCADCmd` were built and runtime-tested. The build is
+configured with GUI support, but a complete fork GUI executable has not yet
+been built. Addon GUI testing used the installed FreeCAD. A FreeCAD runtime
+remains optional for the standalone library.
 
 ## Current limitations
 
-- Marching tetrahedra is a visualization approximation and duplicates triangle
-  vertices; it is neither a watertight bounded solid nor a B-Rep.
+- Surface extraction is a visualization approximation. The standalone/addon
+  baseline duplicates triangle vertices; native extraction shares vertices.
+  Domain boundaries are not capped. Grid sampling can miss thin components,
+  tangencies, and multiple roots along an edge. There is no general guarantee
+  of watertightness, geometric error, or correct topology for arbitrary fields.
 - Ray intersection detects sign-changing roots and sampled roots. Even-multiplicity
   tangencies can be missed unless a sample falls within tolerance.
 - Projection is a local constrained Newton solve; convergence to the global
@@ -126,4 +147,11 @@ been validated in both `FreeCADCmd` and the live Coin3D GUI.
   construction, OCCT Boolean interoperability, physical wall thickness, and
   STEP export remain roadmap work. Bounded plane-patch intersection curves are
   implemented in the standalone engine.
+
+## License
+
+Project code is licensed under **LGPL-2.1-or-later**, matching FreeCAD. The
+[LICENSE](LICENSE) contains the same LGPL 2.1 text as `FreeCAD/LICENSE`.
+Upstream and third-party components retain their own license notices,
+including the OCCT submodule.
 
