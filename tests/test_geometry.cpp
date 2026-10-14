@@ -1,6 +1,7 @@
 #include "implicit/GyroidSurface.h"
 #include "implicit/MarchingTetrahedra.h"
 #include "implicit/PlaneIntersection.h"
+#include "implicit/CylinderIntersection.h"
 
 #include <cmath>
 #include <cstdlib>
@@ -172,6 +173,44 @@ void testValidation()
     check(threw, "invalid gyroid period is rejected");
 }
 
+void testCylinderIntersection()
+{
+    Sphere sphere;
+    implicit::CylinderPatch patch;
+    patch.radius = 0.65;
+    patch.heightMinimum = -1.5;
+    patch.heightMaximum = 1.5;
+    patch.angleCells = 40;
+    patch.heightCells = 50;
+    auto curves = implicit::CylinderIntersection::trace(sphere, patch);
+    check(curves.size() == 2, "sphere-cylinder intersection has two circles");
+    for (const auto& curve : curves) {
+        check(curve.closed, "cylinder seam is joined into a closed loop");
+        check(curve.maximumResidual < 2e-9, "cylinder contour field residual");
+        for (const auto& point : curve.points) {
+            near(std::hypot(point.x, point.y), patch.radius, 1e-12,
+                "refined contour remains exactly on cylinder");
+            near(std::abs(point.z), std::sqrt(1 - patch.radius * patch.radius), 2e-9,
+                "sphere-cylinder circle height");
+        }
+    }
+    patch.axis = {1, 0, 0};
+    patch.radialDirection = {0, 1, 0};
+    curves = implicit::CylinderIntersection::trace(sphere, patch);
+    check(curves.size() == 2, "rotated cylinder has two circles");
+    for (const auto& curve : curves) {
+        check(curve.closed, "rotated seam is joined");
+        for (const auto& point : curve.points) {
+            near(std::hypot(point.y, point.z), patch.radius, 1e-12, "rotated radial distance");
+        }
+    }
+    bool rejected = false;
+    patch.radius = 4;
+    try { (void)implicit::CylinderIntersection::trace(sphere, patch); }
+    catch (const std::invalid_argument&) { rejected = true; }
+    check(rejected, "out-of-domain cylinder rejected");
+}
+
 } // namespace
 
 int main()
@@ -183,6 +222,7 @@ int main()
     testRayIntersection();
     testExtraction();
     testPlaneIntersection();
+    testCylinderIntersection();
     testValidation();
     if (failures != 0) {
         std::cerr << failures << " test assertion(s) failed\n";

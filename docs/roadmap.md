@@ -14,34 +14,38 @@
 | FreeCAD editable feature | Implemented and runtime-tested with FreeCAD 1.1.4 | Python feature + retained Coin nodes |
 | Native FreeCAD field graph | Implemented and command-line runtime-tested | C++ feature, primitives/Booleans/transforms, versioned JSON persistence |
 | Native graph surface extraction | Implemented and command-line runtime-tested | Indexed uniform-grid tetrahedra, shared refined roots, gradient normals; no boundary caps |
-| Native graph GUI view provider | Next milestone | Must retain scene nodes, honor placement and rebuild after restore |
+| Native graph GUI view provider | Implemented and fork-GUI-tested | C++ retained scene nodes, placement, restore and workbench commands |
+| Octree sampling | Implemented | Conservative empty-space pruning, common finest surface cells |
+| Native batches | Implemented | Scalar batch API and cached compiled graph |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
-| Cylinder intersection | Planned | Numerical curve tracing in a cylindrical chart |
+| Cylinder intersection | Implemented in standalone engine | Refined chart roots and periodic seam joining; tangencies unsupported |
 | Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
-| Closed gyroid solid | Planned | Implicit classification and capped extraction first |
-| OCCT Boolean | Unsupported | Later B-spline B-Rep bridge |
+| Closed gyroid visualization | Implemented for explicit band/box graphs | Paired-edge regression; no general solid/topology guarantee |
+| B-Rep-to-field | Implemented | OCCT core signed-distance extension; snapshot persistence |
+| Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
+| Native OCCT implicit-face Boolean | Unsupported | Requires geometry/topology/algorithm dispatch work |
 | STEP export | Unsupported | Only after valid supported B-Rep approximation |
 
 ## Next increments
 
-The current native increment completes the indexed uniform-grid extraction
-baseline. The immediate next native integration step is a dedicated view
-provider for `Implicit::Feature`: consume this cache, retain Coin nodes, expose
-resolution/color/modes, invalidate only on geometry changes, apply Placement
-once, and restore display after FCStd reload. A full fork GUI target still needs
-to be built and tested. See [`HANDOFF.md`](HANDOFF.md) for commands and evidence.
+The latest increments add the native view provider, workbench commands,
+conservative octree sampling, batch queries, capped band graphs, cylinder
+contours and an OCCT signed-distance core extension used for mixed field graphs.
+See [`PROGRESS.md`](PROGRESS.md) for implementation details and verification scope,
+and [`HANDOFF.md`](HANDOFF.md) for commands and environment.
 
-After that GUI milestone:
+Remaining stages:
 
-1. Add an adaptive octree sampler with shared edge vertices, ambiguity handling,
+1. Extend the conservative octree sampler to variable-resolution surface cells,
+   shared edge vertices, transition handling,
    deterministic topology, boundary clipping, and error estimates. Preserve the
    current standalone extractor and indexed native extractor as regression
    references. Avoid pruning merely on same-sign corners without field bounds.
-2. Generalize the implemented plane-patch contour tracer to arbitrary clipped
-   plane/box polygons and cylinders in their native `(angle,height)` chart.
-3. Add band and domain classifiers for `abs(F)<=t` and `F<=c0`. Treat `t` as a
+2. Generalize plane-patch contours to arbitrary clipped plane/box polygons and
+   strengthen cylinder tracing for tangencies and singular cases.
+3. Extend the implemented band/box classifiers for `abs(F)<=t` and `F<=c0`. Treat `t` as a
    dimensionless level-set band, never as physical thickness. Create capped,
-   validated visualization solids inside finite domains.
+   broader validated visualization solids inside finite domains.
 4. Add approximate signed-distance evaluation (`F/|grad F|` as a local seed,
    followed by projection) and quantify its failure near critical points before
    exposing physical thickness.
@@ -76,4 +80,11 @@ Baseline on the development host with six grid cells per unit cell:
 
 These are single-run engineering baselines, not statistically rigorous results.
 They exclude allocator overhead, FreeCAD/Coin upload, and viewport rendering.
+
+The current native comparison is in `benchmark/native_sampling.csv`; run it
+with the fork's `FreeCADCmd benchmark/native_sampling.py`. It measures extraction
+plus Python transfer, not rendering. Conservative pruning helps the sparse
+sphere but adds overhead to dense gyroids; the fixed-grid gyroid sweep is not
+an equal-accuracy comparison. Full results and verification scope are recorded
+in [`PROGRESS.md`](PROGRESS.md).
 

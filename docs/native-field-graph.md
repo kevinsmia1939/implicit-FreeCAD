@@ -26,6 +26,9 @@ Supported nodes are:
 |---|---|---|
 | `sphere` | `center`, `radius` | `length(p-center) - radius` |
 | `gyroid` | `period`, `iso` | analytical gyroid field minus `iso` |
+| `box` | `center`, `halfSize` | axis-aligned box signed distance |
+| `band` | `field`, `halfWidth` | `abs(field)-halfWidth`; width has input field units |
+| `brep` | `data`, `tolerance` | numerical signed distance to an ASCII BRep solid snapshot; requires OCCT extension build |
 | `union` | `left`, `right` | `min(left, right)` |
 | `intersection` | `left`, `right` | `max(left, right)` |
 | `difference` | `left`, `right` | `max(left, -right)` |
@@ -110,10 +113,55 @@ renderer applies `Placement` once. The extractor does not cap domain boundaries.
 A field with no sampled sign change returns empty arrays; that result is not
 proof that no surface exists between samples.
 
-This is a uniform-grid baseline for later adaptive extraction. Sampling can miss
+This uniform-grid baseline is also the reference for octree-pruned sampling. Sampling can miss
 thin components, tangencies, and multiple roots along an edge. Connectivity is
 regression-tested on enclosed spheres and a hollow sphere, without a general
 topology or watertightness guarantee. Vertices and triangles each have a one
 million element budget; exceeding either raises an error. Extraction and Python
 conversion currently run synchronously with the GIL held. There is no dedicated
-native feature view provider yet.
+asynchronous extraction yet. The new native `ImplicitGui::ViewProviderShape`
+consumes and caches the extractors; view properties control resolution,
+adaptive sampling, color and shaded/wire/flat-line modes. Adaptive display
+rounds the requested resolution up to the next power of two. Native workbench Boolean commands create
+snapshots and currently require matching placements and negative-inside inputs.
+
+## Adaptive sampling and batches
+
+`Implicit.tessellateAdaptive(feature, 32)` uses Lipschitz bounds to reject empty
+octree blocks. Resolution must be a power of two in `[2,64]`. It returns the same
+mesh fields plus `pruned_blocks`; `sample_count` counts evaluated grid nodes,
+excluding root refinement. Uniform extraction also returns `pruned_blocks=0`.
+Surface cells all reach the finest grid level, preserving common edge keys and
+avoiding mixed-level seams. The sample storage remains dense. Fields without a
+finite conservative bound (currently B-Rep fields) fall back to complete
+sampling. This does not guarantee detection of all sub-grid geometry or bound
+triangle-interior approximation error.
+
+`Implicit.evaluateBatch(feature, [(x,y,z), ...])` returns scalar values and uses
+one compiled graph for the call. Input points must have three finite numeric
+coordinates. The batch limit is one million points. Compiled field graphs are
+cached on the feature and invalidated on relevant property changes.
+
+## Bounded bands and B-Rep snapshots
+
+A capped gyroid visualization region can be defined as:
+
+```json
+{"schema":1,"root":{"type":"intersection",
+  "left":{"type":"band","halfWidth":0.3,
+    "field":{"type":"gyroid","period":10,"iso":0}},
+  "right":{"type":"box","center":[0,0,0],"halfSize":[8,8,8]}}}
+```
+
+Set the computational domain larger than the box. These box boundaries supply
+cap surfaces; clipping to the computational domain alone does not. A gyroid
+band width is dimensionless and does not prescribe uniform physical thickness.
+
+With `IMPLICIT_OCCT_SOURCE_DIR` configured, a `brep` node stores `data` as ASCII
+BRep text and a positive model-length `tolerance`. Only valid single bounded
+outward-oriented solids are accepted. The native workbench's B-Rep snapshot
+command accepts an existing Part shape, captures its solid and records its label.
+Source changes do not update snapshots automatically. Mixed field Booleans
+produce implicit fields, not `TopoDS_Shape` results. A node's numerical distance
+and finite-difference gradients can be expensive. Combining distance and gyroid
+fields preserves sign-set operations but gives no common physical distance unit.

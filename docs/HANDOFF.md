@@ -1,7 +1,10 @@
 # Development handoff
 
-Last updated: 2026-10-14. This file is the entry point for a developer or coding
-agent continuing the project. It records the state of the code, not a claim
+Last updated: 2026-10-15. This file is the entry point for a developer or coding
+agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
+FreeCAD GUI, adaptive sampling, capped band, cylinder and OCCT core increments.
+The user has authorized implementation, commits and pushes in both core source
+trees. This file records the state of the code, not a claim
 that all goals in the original brief are complete.
 
 ## Goal and repository layout
@@ -15,7 +18,7 @@ FreeCAD module. Mixed B-Rep operations are still future work.
 | Location | Purpose |
 |---|---|
 | `FreeCAD/` | Actual FreeCAD fork; native work on `feature/native-implicit` |
-| `OCCT/` | Unmodified OCCT source for investigation; pinned at `3d097a0328` |
+| `OCCT/` | OCCT fork with TKTopAlgo signed-distance extension on `feature/implicit-distance` |
 | `include/implicit/`, `src/` | Standalone C++17 evaluator and numerical algorithms |
 | `addon/ImplicitGyroid/` | Editable Python gyroid feature and retained Coin scene graph |
 | `tests/` | Standalone, addon command-line/GUI tests and OCCT bridge probe |
@@ -40,10 +43,10 @@ field derive from `Geom_Surface`. Do not represent a mesh-only face as a fully
 supported CAD surface. The architecture report and runnable OCCT probe document
 why triangulation-only faces do not satisfy the surface adaptor contract.
 
-Native support initially lives in `FreeCAD/src/Mod/Implicit` with build-system
-registration. Shared App/Gui/Part dispatch changes should follow demonstrated
-integration needs. OCCT changes are deferred until there is evidence that a
-native OCCT representation is worth its broad geometry/topology/Boolean impact.
+Native support lives in `FreeCAD/src/Mod/Implicit` with build-system registration
+and a native GUI provider. OCCT now has a core B-Rep signed-distance evaluator;
+it supports mixed field workflows while native OCCT implicit face representation
+and general Boolean dispatch remain a separate, larger milestone.
 
 Licensing matches FreeCAD: project code is LGPL-2.1-or-later, with the same LGPL
 2.1 license text copied to root `LICENSE`. Existing upstream and third-party
@@ -84,15 +87,22 @@ licenses remain applicable to their respective code.
    sphere and hollow sphere for paired oriented edges and Euler characteristic,
    vertex residuals, repeated results, gyroid extraction, open clipped boundaries,
    local Placement semantics, invalid resolution/domain, and FCStd restoration.
+8. Native integration and operations (FreeCAD `db838e8cb7`, OCCT `1ce4cd29e4`):
+   native GUI/workbench, transient compiled and display caches, conservative
+   octree pruning, scalar batches, box/band nodes, capped band winding tests,
+   OCCT signed-distance snapshots and mixed field composition; standalone
+   cylinder contours. All ten combined tests pass. See `PROGRESS.md` for scope,
+   performance observations and remaining stages.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
 smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
-`BUILD_GUI=ON` is a configuration setting: the fork's GUI executable has **not**
-yet been built or tested. The previously tested GUI was installed FreeCAD.
-OCCT was neither modified nor built from the reference source; the native build
-links the installed OCCT 7.9.3 libraries.
+That six-test result predates the current increments. The current combined run
+passes **10/10 tests**, including the fork's native GUI on Xvfb; see results
+and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
+installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
+has not been performed. The earlier addon GUI tests used installed FreeCAD.
 
 ## Tools and development environment
 
@@ -116,6 +126,8 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | ripgrep (`rg`), shell, `apply_patch` | Source inspection and edits during assisted development |
 | CTest | Standalone and native regression orchestration |
 | clang-format | Available; use the FreeCAD formatting configuration |
+| Xvfb | Available for isolated native GUI regression runs |
+| GoogleTest | 1.18.0 available; new OCCT tests also run through the compatibility build |
 
 The initial audit found missing Xerces, Qt SVG/tools, and PySide/Shiboken
 development packages. The user installed requested packages and authorized
@@ -137,16 +149,25 @@ the existing build on this machine rather than configuring another copy.
 ```sh
 # Standalone build, with native tests when the native command exists.
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+  -DIMPLICIT_BUILD_OCCT_DISTANCE=ON \
   -DIMPLICIT_NATIVE_FREECADCMD="$PWD/build-freecad-implicit/bin/FreeCADCmd"
 cmake --build build --parallel 2
 ctest --test-dir build --output-on-failure
 
 # Incremental native build; no installation into the system.
-cmake --build build-freecad-implicit --target Implicit FreeCADMainCmd --parallel 2
+cmake -S FreeCAD -B build-freecad-implicit -DIMPLICIT_OCCT_SOURCE_DIR="$PWD/OCCT"
+cmake --build build-freecad-implicit --target Implicit ImplicitScripts FreeCADMainCmd --parallel 2
+# Full native GUI after the command-line targets pass:
+cmake --build build-freecad-implicit --target ImplicitGui FreeCADMain FreeCADGui_Resources Stylesheets_data --parallel 2
 
 # Native tests also run directly without enabling all FreeCAD developer tests.
 ./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/native_smoke.py
 ./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/mesh_smoke.py
+# B-Rep fixture generation and mixed test ordering are handled by CTest.
+# GUI test requires a desktop display or Xvfb:
+./build-freecad-implicit/bin/FreeCAD --safe-mode FreeCAD/src/Mod/Implicit/Tests/gui_smoke.py
+# Or set IMPLICIT_NATIVE_FREECADGUI during root configuration, then:
+python3 tools/with_xvfb.py ctest --test-dir build --output-on-failure
 
 # Existing addon GUI test, on a desktop session using installed FreeCAD.
 FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
@@ -157,7 +178,11 @@ FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
 
 Without a native build, omit `IMPLICIT_NATIVE_FREECADCMD` (or set it to an empty
 string to clear a cached setting). Standard CTest then has four tests on this
-host; enabling the native executable adds two for six total. Installed
+host; enabling the native executable adds two for six total. Enabling the OCCT
+distance extension adds its C++ test and the native mixed test for eight total
+when both native flags are configured. GTest adds one more test when found;
+`IMPLICIT_NATIVE_FREECADGUI` optionally adds the GUI test (requires DISPLAY).
+Installed
 `FreeCADCmd` cannot import this fork's `Implicit` module. Python scripts can
 print tracebacks even when FreeCADCmd exits successfully: CTest explicitly checks
 for success markers and failure patterns for the two native tests.
@@ -168,11 +193,12 @@ that option on; the umbrella registration is the tested alternative.
 
 ## Remaining limits
 
-- Native graphs have no dedicated native GUI view provider, workbench commands,
-  field-aware picking, cache invalidation machinery or background evaluation yet.
+- The new native GUI provider and workbench cover basic display and snapshot
+  commands. Field-aware semantic picking and background evaluation remain open.
 - The graph lives in `App::PropertyString`; there is no dedicated complex geometry
-  property, shared-node DAG, graph editor, SIMD/GPU or batch evaluation API.
-- The native extractor is a bounded uniform-grid baseline, **not adaptive**.
+  property, shared-node DAG, graph editor or SIMD/GPU backend. Scalar batch
+  evaluation and compiled-graph caching are now implemented.
+- The native extractor has uniform and conservative octree-pruned sampling paths.
   Refining edge roots improves vertex residuals, not triangle-interior error or
   a Hausdorff bound. Grid cells can hide small components, tangencies and multiple
   crossings. Hard Boolean creases can be smoothed by interpolated vertex normals.
@@ -184,30 +210,34 @@ that option on; the umbrella registration is the tested alternative.
   connectivity checks do not guarantee topology for arbitrary graphs.
 - Classification uses the field's sign and a field-value tolerance. Raw gyroid
   values and offsets are dimensionless; they are not distances in millimetres.
-- No cylinder contours, general trimming topology, capped gyroid solids, uniform
-  physical thickness, B-Rep-to-field evaluator, mixed OCCT Boolean or STEP bridge.
+- Cylinder contours are implemented in the standalone engine. Capped gyroid-band
+  visualization and mixed B-Rep/implicit field operations are implemented.
+  General trimming topology, uniform physical thickness, native OCCT implicit
+  face Booleans and a manufacturing/STEP bridge remain open.
 - Projection can converge to a local component; sampled ray roots can miss
   tangencies. These standalone algorithms have not all been ported into the
   native graph API.
 
 ## Next milestones and acceptance criteria
 
-1. **Native feature display:** implement `ImplicitGui` view-provider registration,
+1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,
    use indexed native extraction, retain Coin nodes, expose resolution/color/modes,
    rebuild only when relevant field/domain properties change, apply Placement
    once, and regenerate after FCStd restore. Build the fork GUI target and verify
    a composed graph, save/reload, buffer shrink, parameter edits, and camera motion.
-2. **Adaptive extraction:** keep the uniform native extractor as a regression
+2. **Adaptive extraction (conservative pruning implemented):** keep the uniform native extractor as a regression
    reference. Add conservative bounds/error criteria, shared vertices across
    refinement levels, transition handling, cancellation and explicit budgets.
    Test topology across coarse/fine cells and measure performance separately
    from viewport upload. Do not prune cells merely because all corners agree.
-3. **Field usability:** batch evaluation, shared-node graph representation,
+3. **Field usability:** batch evaluation is implemented; shared-node graph representation,
    dimensional contracts, more transforms, band/shell nodes and distance estimates.
    A level-set band must remain distinct from physical thickness.
-4. **Geometry operations:** cylinder contour tracing, general domain boundaries,
+4. **Geometry operations:** cylinder contour tracing and capped visualization
+   bands are implemented; general domain boundaries,
    capped visualization solids and quantitative distance/offset validation.
-5. **Mixed representation:** retain a source B-Rep link, sample signed distance or
+5. **Mixed representation:** signed-distance snapshot fields and mixed field
+   composition are implemented. Retain a live source B-Rep link, sample signed distance or
    classification, compose with native fields, record sampling error and tolerance.
 6. **Manufacturing bridge:** local charts and fitted B-spline patches, common
    boundaries/p-curves, sewing and shape validation, then OCCT Booleans and STEP
@@ -218,9 +248,9 @@ that option on; the umbrella registration is the tested alternative.
 
 ## Publishing changes
 
-There are two relevant repositories. Commit and push native changes inside
-`FreeCAD` first, then stage that submodule pointer alongside umbrella changes.
-OCCT should stay clean unless an explicit implementation justifies changing it.
+There are three repositories. Commit and push changes inside `OCCT` and
+`FreeCAD` first, then stage their submodule pointers alongside umbrella changes.
+OCCT tracks `feature/implicit-distance`; FreeCAD tracks `feature/native-implicit`.
 
 ```sh
 git -C FreeCAD switch feature/native-implicit
@@ -228,6 +258,7 @@ git -C FreeCAD status --short
 git -C FreeCAD diff --check
 # Add only the intended native module/build files, commit, then:
 git -C FreeCAD push origin feature/native-implicit
+git -C OCCT push origin feature/implicit-distance
 # In the umbrella, stage intended changes including the FreeCAD gitlink.
 git status --short
 git diff --check

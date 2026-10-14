@@ -7,7 +7,9 @@ for the original brief and `docs/core-integration-plan.md` for the native plan.
 
 - This root is the development umbrella. Native FreeCAD changes belong in the
   `FreeCAD` submodule on `feature/native-implicit`; standalone/addon/docs changes
-  belong in this root repository. OCCT has no project modifications.
+  belong in this root repository. OCCT extensions belong on
+  `feature/implicit-distance`; the user explicitly authorized changes in both
+  FreeCAD and OCCT core source.
 - Keep field definitions authoritative and generated meshes transient.
 - Do not put arbitrary fields into `Part::Feature::Shape` or claim mesh faces
   are native implicit B-Reps. Record approximation and tolerance policies.
@@ -22,3 +24,6 @@ for the original brief and `docs/core-integration-plan.md` for the native plan.
   implemented in the native module from the older standalone/Python prototypes.
 - When publishing native changes, push the submodule branch first, then commit
   and push the parent gitlink. Preserve upstream licensing and history.
+- The OCCT reference is 8.1 development, while the installed library is 7.9.3.
+  Compatibility builds stage only the new extension header and use installed
+  headers for existing OCCT types. Never mix general 8.1 headers with 7.9 libs.

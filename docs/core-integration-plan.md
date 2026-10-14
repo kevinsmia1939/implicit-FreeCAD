@@ -77,14 +77,18 @@ The first in-tree foundation now exists under `FreeCAD/src/Mod/Implicit`:
   limits, and a second smoke test for residuals, orientation, connectivity,
   domain clipping, and restoration.
 
+Subsequent increments add a native C++ GUI view provider and workbench, compiled
+graph/display caches, a batch query API, conservative octree pruning, band/box
+nodes and optional OCCT signed-distance snapshot fields. See
+[`PROGRESS.md`](PROGRESS.md) for their tested contracts and current limitations.
+
 This is the document-model and kernel seam, not completion of Stage F1. A
 dedicated complex-geometry property, shared-node/DAG representation, richer
-field nodes, native view provider, field-aware selection, and batch/adaptive
-evaluation remain to be implemented. The new uniform-grid native extractor is
-the reference backend for the next native view-provider milestone; it is not
-yet adaptive or automatically attached to native feature recompute. The existing
-addon continues to provide the working visualization while these native layers
-are added. The current
+field nodes, field-aware selection and variable-resolution surface extraction
+remain to be implemented. The uniform-grid native extractor remains the
+reference backend alongside octree-pruned sampling. Native geometry revisions
+now drive display-cache updates. The older addon remains a separate prototype.
+The current
 graph schema is documented in `docs/native-field-graph.md`.
 Build commands, toolchain, tested scope, and the continuation checklist are in
 [`HANDOFF.md`](HANDOFF.md).
@@ -153,8 +157,10 @@ with an upstream design discussion and conformance tests.
 ## Modification policy
 
 The validated geometry algorithms remain reusable outside both upstream trees,
-and the first core change is now isolated in FreeCAD's new Implicit module. No
-OCCT source has been modified. Changes to shared FreeCAD `App`, `Gui`, or `Part`
+and FreeCAD changes currently live in the in-tree Implicit App/Gui module.
+OCCT's TKTopAlgo now contains `BRepClass3d_SignedDistance`, a core evaluator used
+for mixed field composition. This does not add native implicit B-Rep faces.
+Changes to shared FreeCAD `App`, `Gui`, or `Part`
 code should follow only when the module exposes a proven cross-representation
 contract. OCCT changes remain a separate, evidence-driven project gated by
 successful mixed-intersection and topology prototypes.

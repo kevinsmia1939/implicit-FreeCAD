@@ -9,7 +9,8 @@ in the `FreeCAD/` submodule on
 [`feature/native-implicit`](https://github.com/kevinsmia1939/FreeCAD/tree/feature/native-implicit).
 The root also contains
 the standalone geometry engine, prototype addon, benchmarks, and project notes.
-`OCCT/` is a pinned reference checkout; its source has not been modified.
+`OCCT/` contains the core signed-distance extension used by mixed field graphs,
+on `feature/implicit-distance`.
 
 **Continuing development? Start with [the handoff](docs/HANDOFF.md).** It records
 completed work, source locations, exact build/test commands, tools, known gaps,
@@ -35,9 +36,10 @@ git clone --recurse-submodules https://github.com/kevinsmia1939/implicit-FreeCAD
 cd implicit-FreeCAD
 ```
 
-The FreeCAD submodule tracks the `feature/native-implicit` branch in
-`kevinsmia1939/FreeCAD`. The OCCT submodule is an unmodified reference used for
-architecture research and future integration work.
+The FreeCAD submodule tracks `feature/native-implicit` in
+`kevinsmia1939/FreeCAD`; OCCT tracks `feature/implicit-distance` in
+`kevinsmia1939/OCCT`. See [current implementation progress](docs/PROGRESS.md)
+for the core changes and remaining milestones.
 
 ## Build and test
 
@@ -96,20 +98,27 @@ module currently provides:
 
 - native `Implicit::Field`, `Implicit::Shape`, and `Implicit::Feature` types;
 - sphere and gyroid primitives;
+- box signed-distance and field-band nodes for bounded gyroid regions;
 - union, intersection, difference, translation, and offset field nodes;
 - versioned JSON field-graph persistence in `.FCStd` documents;
 - Python evaluation, gradient, classification, graph validation, and graph
   getter/setter APIs;
 - indexed C++ surface extraction for native field graphs, exposed through
   `Implicit.tessellate(feature, resolution)`;
+- conservative octree sampling through `Implicit.tessellateAdaptive`, plus
+  scalar batch evaluation and compiled-graph caching;
+- a native C++ view provider with retained Coin buffers and display properties;
+- a Native Implicit workbench with primitives, bands and snapshot Booleans;
+- optional B-Rep signed-distance snapshots and mixed field composition, using
+  the OCCT fork extension;
 - `FreeCADCmd` smoke tests covering numerical behavior, mesh connectivity,
   orientation, clipping, input validation, and save/reload.
 
 Native extraction returns local-coordinate vertices, normals, and triangles.
 It uses a uniform grid with shared edge vertices and refined field roots. See
 [the extraction API](docs/native-field-graph.md#surface-extraction) for the
-contract, limits, and an example. Rendering those native features in a dedicated
-view provider is the next milestone; the existing addon renders gyroids today.
+contract, limits, and examples. The native view provider uses this cache.
+The older addon remains available as a separate gyroid-only prototype.
 
 This foundation does not yet make implicit geometry interchangeable with every
 Part/B-Rep operation. The next integration stages are adaptive native rendering,
@@ -125,16 +134,19 @@ tolerance-controlled B-spline B-Rep bridge.
 - source trees: FreeCAD 27.1.0-dev on `feature/native-implicit` and
   OCCT 8.1.0-dev1 (`3d097a0328`); `git submodule status` shows exact revisions
 
-The native module and `FreeCADCmd` were built and runtime-tested. The build is
-configured with GUI support, but a complete fork GUI executable has not yet
-been built. Addon GUI testing used the installed FreeCAD. A FreeCAD runtime
-remains optional for the standalone library.
+The native module and `FreeCADCmd` were built and runtime-tested; fork GUI
+verification is covered by `FreeCAD/src/Mod/Implicit/Tests/gui_smoke.py`.
+Earlier addon GUI testing used installed FreeCAD. The new OCCT class is compiled
+against installed OCCT 7.9.3 using isolated staged headers. The complete OCCT 8.1
+source toolkit has not been rebuilt. A FreeCAD runtime remains optional for the
+standalone library.
 
 ## Current limitations
 
 - Surface extraction is a visualization approximation. The standalone/addon
   baseline duplicates triangle vertices; native extraction shares vertices.
-  Domain boundaries are not capped. Grid sampling can miss thin components,
+  Computational-domain boundaries are not capped; explicit box fields can
+  supply cap surfaces. Grid sampling can miss thin components,
   tangencies, and multiple roots along an edge. There is no general guarantee
   of watertightness, geometric error, or correct topology for arbitrary fields.
 - Ray intersection detects sign-changing roots and sampled roots. Even-multiplicity
@@ -143,10 +155,11 @@ remains optional for the standalone library.
   closest component is not guaranteed for arbitrary starting points. Projection
   operates on the mathematical surface; callers must test the returned point
   against the finite domain when they require bounded-surface semantics.
-- General plane-box clipping, cylinder intersection, trimming topology, solid
-  construction, OCCT Boolean interoperability, physical wall thickness, and
-  STEP export remain roadmap work. Bounded plane-patch intersection curves are
-  implemented in the standalone engine.
+- Bounded plane-patch and cylinder intersection curves are implemented in the
+  standalone engine. General trimming topology, validated manufacturing solids,
+  physical wall thickness and STEP export remain roadmap work. Mixed Booleans
+  operate in field space; arbitrary implicit faces are not yet accepted by
+  OCCT's existing B-Rep Boolean algorithms.
 
 ## License
 
