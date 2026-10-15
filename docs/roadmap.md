@@ -22,6 +22,7 @@
 | Background viewport extraction | Implemented, opt-in and GUI-tested | One worker, request coalescing, cancellation and checked main-thread uploads |
 | Viewport field probe | Implemented, GUI-tested | One-shot selected-field ray query; not integrated semantic selection |
 | Sampled extraction diagnostics | Implemented | Vertex/centroid/edge residuals and edge-incidence checks; not a solid/error certificate |
+| Field-bound refinement | Implemented | Doubled global grids until triangle-wide Lipschitz field bound meets target or explicit limit; coverage unverified |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
 | Cylinder intersection | Implemented in standalone engine | Refined chart roots and periodic seam joining; tangencies unsupported |
 | Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
@@ -59,6 +60,10 @@ global memory budgets and field-aware picking are still open. See
 [`background-meshing.md`](background-meshing.md).
 
 Remaining stages:
+
+Global-grid [controlled extraction](controlled-extraction.md) now uses conservative
+triangle-wide field bounds with explicit resolution-limit and empty-result
+failure states. It is not the variable-resolution surface-cell milestone below.
 
 1. Extend the conservative octree sampler to variable-resolution surface cells,
    shared edge vertices, transition handling,

@@ -4,11 +4,22 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `0048ed4f0a` on
+Implementation heads: FreeCAD `5b49906704` on
 `feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: Stage 2–3 projection, probes and quality diagnostics
+## Current increment: field-bound-controlled extraction
+
+`Implicit.tessellateControlled` adds global-grid refinement against a
+conservative triangle-wide field residual bound, plus per-attempt history,
+explicit resolution-limit/empty-unverified status and cancellation through
+quality inspection. The previous mesh is dropped before the next extraction.
+Unsupported Lipschitz bounds are rejected rather than inventing accuracy.
+These are field-value bounds, not geometric-distance/coverage certificates or
+variable-resolution cells. [Contract](controlled-extraction.md).
+All **17 combined tests passed** (22.27 seconds), including both fork GUI tests.
+
+## Previous increment: Stage 2–3 projection, probes and quality diagnostics
 
 Native `Shape::project` / `Implicit.project` now solve for a local constrained
 stationary point on a compiled graph. Row-scaled pivoted KKT steps use a numerical

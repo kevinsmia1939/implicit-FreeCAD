@@ -44,6 +44,12 @@ selects one branch deterministically at such points.
 
 ## Python interface
 
+`Implicit.tessellateControlled(feature, fieldTolerance, minResolution=8,
+maxResolution=64, cancellationToken=None)` adds bounded global-grid refinement
+with triangle-wide field bounds, explicit limit failure and attempt history.
+See [controlled extraction](controlled-extraction.md); field residual control
+is not surface-coverage or geometric-distance certification.
+
 `Implicit.project` now exposes local stationary projection with convergence and
 failure diagnostics. `Implicit.inspectTessellation` measures sampled residuals
 and edge topology on a fresh transient extraction. See

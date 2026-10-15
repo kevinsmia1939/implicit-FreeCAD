@@ -125,6 +125,12 @@ licenses remain applicable to their respective code.
     incidence/winding defects. This is not integrated semantic selection, true
     adaptive refinement, a nearest-point certificate or CAD solid validation.
     See `native-projection-and-quality.md`; the combined suite now has 16 tests.
+13. Field-bound-controlled extraction: `Implicit.tessellateControlled` doubles
+    common-grid resolution against a triangle-wide Lipschitz field bound,
+    releases prior meshes between levels, supports cancellation through quality
+    checks and returns explicit limit/empty-unverified statuses. This does not
+    certify surface coverage or implement variable-resolution surface cells.
+    All 17 tests passed (22.27 seconds). See `controlled-extraction.md`.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -132,7 +138,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**16/16**, including native geometry queries and synchronous/background mixed fork GUIs on Xvfb; see results
+**17/17**, including controlled extraction and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
 has not been performed. The earlier addon GUI tests used installed FreeCAD.
@@ -215,13 +221,13 @@ FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
 ```
 
 Without a native build, omit `IMPLICIT_NATIVE_FREECADCMD` (or set it to an empty
-string to clear a cached setting). NativeCmd now registers six native tests;
+string to clear a cached setting). NativeCmd now registers seven native tests;
 the Part option adds one more. NativeGUI registers synchronous and async GUI
 tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest,
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 16 tests. Installed `FreeCADCmd` cannot import this fork's native module.
+has 17 tests. Installed `FreeCADCmd` cannot import this fork's native module.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
