@@ -23,7 +23,7 @@ restricted analytic sphere trimming/Boolean boundaries now exist.
 | Location | Purpose |
 |---|---|
 | `FreeCAD/` | Actual FreeCAD fork; native work on `feature/native-implicit` |
-| `OCCT/` | OCCT fork with TKTopAlgo signed-distance extension on `feature/implicit-distance` |
+| `OCCT/` | Native implicit faces/queries/restricted operations and signed-distance bridge on `feature/implicit-distance` |
 | `include/implicit/`, `src/` | Standalone C++17 evaluator and numerical algorithms |
 | `addon/ImplicitGyroid/` | Editable Python gyroid feature and retained Coin scene graph |
 | `tests/` | Standalone, addon command-line/GUI tests and OCCT bridge probe |
@@ -32,7 +32,7 @@ restricted analytic sphere trimming/Boolean boundaries now exist.
 | `docs/` | Architecture findings, capability roadmap, build notes, API and this handoff |
 | `build/` | Ignored standalone build; optionally registers native tests |
 | `build-freecad-implicit/` | Ignored native development build |
-| `build-freecad-occt8/` | Separate OCCT 8 migration build; not yet runtime-validated |
+| `build-freecad-occt8/` | OCCT 8 command-line/Part/Implicit validated; GUI build underway |
 
 The public umbrella repo is `kevinsmia1939/implicit-FreeCAD`. The FreeCAD fork
 is `kevinsmia1939/FreeCAD`. The parent gitlink pins a commit, even though
@@ -212,17 +212,33 @@ licenses remain applicable to their respective code.
     the fork's `TKTopAlgo` instead of compiling another copy into `Implicit.so`;
     the OCCT 7 compatibility path still stages/compiles only the extension.
     Both configurations succeed, and their generated Ninja graphs confirm this
-    distinction. `Implicit`, `ImplicitScripts`, `PartScripts` and
-    `FreeCADMainCmd` are building; completion and runtime compatibility are
-    **not yet verified**. Inspect `/tmp/implicit-freecad-occt8-build.log` and
-    running Ninja/compiler processes before resuming the documented command.
-    Do not configure/build concurrently within that same build directory.
-    After successful compilation, test the migration's own command-line binary,
-    audit OCCT runtime linkage, then build/test GUI targets. This does not expose
+    distinction. The first build stopped on legacy OCCT headers; milestone 21
+    below records the fix and command-line validation. This does not expose
     native implicit faces through Part or implement missing trimming/BOP support.
-    The existing combined suite passes 24/24 after the OCCT dependency build
-    and both configurations (31.35 seconds); its FreeCAD tests still use the
-    working OCCT 7 runtime, not the unfinished migration binary.
+    The existing combined suite passed 24/24 after the OCCT dependency build
+    and both configurations (31.35 seconds); its FreeCAD tests used the
+    working OCCT 7 runtime, not the then-unfinished migration binary.
+21. OCCT 8 command-line migration validated (FreeCAD `189f6156d8`): FindOCC
+    propagates the selected OCCT source manifest's install-only compatibility
+    aliases through imported `TKernel`; it never searches installed headers.
+    The removed `Standard_Byte.hxx` include is guarded for OCCT 7 in Part's
+    umbrella header. `Part`, `Implicit`, scripts and `FreeCADMainCmd` now build.
+    Bundled `pivy`/Coin must also be built in a fresh GUI-enabled configuration:
+    otherwise Cmd startup reports an initialization traceback despite later
+    printing a script success marker. Do not suppress these failures.
+    The separate `tests/freecad_occt8` harness passes **12/12** (4.90 seconds).
+    Its runtime fixture checks actual module paths, all 32 loaded OCCT libraries
+    against the selected 8.1 build directory, a conventional Boolean and the
+    kernel's signed-distance bridge. Eleven native smoke tests then cover field
+    graphs, queries, extraction, FCStd, live Part links and local patch/STEP work.
+    The fixture correctly rejects the OCCT 7 binary. The compiled alias-header
+    probe also passes. The affected OCCT 7 targets rebuild successfully and
+    the existing combined suite passes 24/24 afterward (35.61 seconds).
+    OCCT 8 GUI targets are now building (two compile jobs, one link job), log
+    `/tmp/implicit-freecad-occt8-gui-build.log`; completion and GUI runtime tests
+    remain unverified. Inspect that log and running Ninja processes before
+    resuming. Native implicit-face Part exposure/persistence and general BOP
+    remain separate, unfinished acceptance gates.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -233,10 +249,11 @@ passed **10/10 tests** before the live increment. The latest run passes
 **24/24** with the isolated native-face executable, worker GUI/protocol tests and migration preflight registered, including scalar
 controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
-installed OCCT 7.9.3 through isolated staged headers. Separately, OCCT 8.1
-required modeling/exchange/OCAF/visualization toolkit dependencies are built and
+installed OCCT 7.9.3 through isolated staged headers. Separately, the required
+OCCT 8.1 modeling/exchange/OCAF/visualization toolkit dependencies are built and
 the strict FreeCAD dependency preflight passes. The full upstream OCCT test suite
-is not built or tested; a wholly OCCT-8-linked FreeCAD runtime remains unverified.
+is not built or tested. The separate OCCT 8 command-line/Part/Implicit runtime
+passes targeted migration tests; GUI build/runtime validation remains pending.
 The earlier addon GUI tests used installed FreeCAD.
 
 ## Tools and development environment
@@ -292,7 +309,7 @@ ctest --test-dir build --output-on-failure
 
 # Incremental native build; no installation into the system.
 cmake -S FreeCAD -B build-freecad-implicit -DIMPLICIT_OCCT_SOURCE_DIR="$PWD/OCCT"
-cmake --build build-freecad-implicit --target Implicit ImplicitScripts FreeCADMainCmd --parallel 2
+cmake --build build-freecad-implicit --target Implicit ImplicitScripts FreeCADMainCmd pivy --parallel 2
 # Full native GUI after the command-line targets pass:
 cmake --build build-freecad-implicit --target ImplicitGui FreeCADMain FreeCADGui_Resources Stylesheets_data --parallel 2
 # Live conventional Part inputs (requires the configured OCCT bridge):
@@ -408,11 +425,11 @@ native milestone is open/domain-side trim topology, arbitrary/nested trimming
 and shared topology-aware surface meshing, plus singular/tangent resolution,
 then generic splitting/classification/history and full native persistence.
 Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
-For the wholly OCCT-8 FreeCAD build, the required OCCT toolkits are built and
-strict preflight passes. Finish the separate `build-freecad-occt8` targets (see
-`native-gyroid-sections.md` for commands and the build log), address API failures
-and test runtime linkage/behaviour before proceeding to GUI/native exposure.
-Configuration/preflight alone do not establish API/runtime/native persistence support.
+For the wholly OCCT-8 FreeCAD build, required toolkits and command-line targets
+are built; strict preflight and all 12 targeted migration tests pass. Finish
+the separate `build-freecad-occt8` GUI targets and test their runtime (see
+`native-gyroid-sections.md` for commands/logs) before native exposure. Command-line
+validation alone does not establish GUI/native-face persistence/consumer support.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

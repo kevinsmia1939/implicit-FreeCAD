@@ -23,5 +23,7 @@ with tempfile.TemporaryDirectory(prefix="implicit-occt8-preflight-") as temporar
             assert "found version \"8." in output, output
         else:
             assert "Using explicit OCCT build-tree targets only" in output, output
-            print("OCCT dependencies are built; FreeCAD source/API/runtime migration is still unverified")
+            if not (native / "include/opencascade/TopTools_ListOfShape.hxx").exists():
+                assert "OCCT source-build compatibility headers:" in output, output
+            print("OCCT dependencies are built; preflight alone does not verify FreeCAD API/runtime migration")
 print("strict OCCT source-build preflight test passed")

@@ -9,9 +9,12 @@ field/section work. The user installed and confirmed
 `USE_RAPIDJSON=ON` succeeds and includes `TKDEGLTF`, which FreeCAD requires.
 The required OCCT toolkit build completed all 5,202 steps with exit code zero,
 and strict FreeCAD dependency preflight passes. Separate FreeCAD configuration
-in `build-freecad-occt8` also succeeds; the command-line/Part/Implicit targets are
-now building with two compile jobs and one link job. Build/runtime completion
-is not yet verified. No package installation or system-library replacement was performed by
+in `build-freecad-occt8` also succeeds; command-line/Part/Implicit and bundled
+Pivy/Coin targets build and the separate migration suite passes 12/12, including
+an actual loaded-library audit. OCCT's install-only alias headers are taken from
+the selected source manifest; no OCCT 7 headers are used in that build. GUI
+targets are building with two compile jobs and one link job; GUI completion and
+runtime validation remain pending. No package installation or system-library replacement was performed by
 the agent. Other requested OCCT modules configure using existing dependencies,
 including FreeType 2.14.3. Configuration is not a completed FreeCAD build; see
 [strict migration preflight and remaining gates](native-gyroid-sections.md#occt-8-migration-dependency-gate).
@@ -115,7 +118,7 @@ cmake -S FreeCAD -B build-freecad-implicit -G Ninja \
 Build only the needed targets and run the module smoke tests:
 
 ```sh
-cmake --build build-freecad-implicit --target Implicit ImplicitScripts FreeCADMainCmd --parallel 2
+cmake --build build-freecad-implicit --target Implicit ImplicitScripts FreeCADMainCmd pivy --parallel 2
 ./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/native_smoke.py
 ./build-freecad-implicit/bin/FreeCADCmd FreeCAD/src/Mod/Implicit/Tests/mesh_smoke.py
 # Build the fork's GUI and provider when GUI verification is needed:
@@ -131,6 +134,12 @@ extension with installed OCCT headers/libraries. This does not rebuild all OCCT
 toolkits or replace system libraries. Only the new header is staged to avoid an
 8.1-source/7.9-library ABI mismatch. No new dependencies are needed for these
 increments; Xvfb is already available for isolated GUI testing.
+
+In a fresh `BUILD_GUI=ON` build with bundled Coin/Pivy, build `pivy` even before
+command-line smoke tests: startup checks the bundled package location and
+rejects system Pivy when the bundled package has not been built. A printed
+smoke-test success marker does not override a startup traceback. This builds
+bundled sources; it does not install a package or require a complete FreeCAD GUI.
 
 The host has about 44 GiB disk free and roughly 1.3 GiB readily available RAM
 plus swap at the latest check. Keep two compile jobs and one link job.

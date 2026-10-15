@@ -4,7 +4,7 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `a5257ddff3` on
+Implementation heads: FreeCAD `189f6156d8` on
 `feature/native-implicit`, OCCT `e5422e4ced` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
@@ -51,16 +51,35 @@ documented minimal module settings and existing dependencies. The Implicit
 bridge uses the signed-distance class exported by the fork's `TKTopAlgo`, rather
 than compiling duplicate definitions into `Implicit.so`. The OCCT 7 configuration
 still stages/compiles only that extension; both configurations and generated
-Ninja graphs were checked. The command-line/Part/Implicit build is underway
-with two compile jobs and one link job (log
-`/tmp/implicit-freecad-occt8-build.log`). Build completion, API/runtime validation,
-GUI migration and native implicit-face consumer/persistence support remain open.
+Ninja graphs were checked. The first Part build stopped on legacy alias headers
+that OCCT provides only during installation. FindOCC now propagates the selected
+source tree's compatibility aliases through `TKernel`, with no system fallback;
+Part's removed `Standard_Byte.hxx` include is guarded for OCCT 7. The compiled
+alias-header regression passes. Command-line/Part/Implicit targets now build,
+as does bundled Pivy/Coin, required by startup in this GUI-enabled configuration.
+An initialization traceback remains a test failure even if the script later
+prints a success marker.
 
-After the OCCT dependency build and both FreeCAD configurations, the existing
-combined regression suite passes **24/24** (31.35 seconds), including the
+The separate migration harness passes **12/12** tests (4.90 seconds), using
+`build-freecad-occt8/bin/FreeCADCmd`. Its runtime fixture verifies Part/Implicit
+module paths, all 32 actual loaded OCCT libraries under the fork's 8.1 library
+directory, conventional Booleans and the kernel signed-distance bridge, followed
+by the eleven native smoke tests including live Part links and local patch/STEP
+round-trip. It rejects the working OCCT 7 binary as an intentional negative
+check. The affected OCCT 7 targets also rebuild successfully. GUI targets are
+now building with two compile jobs and one link job (log
+`/tmp/implicit-freecad-occt8-gui-build.log`); GUI runtime validation and native
+implicit-face consumer/persistence support remain open.
+
+After rebuilding the affected OCCT 7 targets, the existing combined suite passes
+**24/24** (35.61 seconds). This includes the isolated 24-case OCCT 8 conformance
+executable, but is separate from the new 12-entry FreeCAD OCCT 8 migration suite.
+
+Earlier, after the OCCT dependency build and both FreeCAD configurations, the
+existing combined regression suite passed **24/24** (31.35 seconds), including the
 24-case isolated OCCT 8 conformance executable. The FreeCAD runtime tests still
-use the working OCCT 7 build; this does not validate the unfinished FreeCAD 8
-migration binary.
+used the working OCCT 7 build; that run did not validate the then-unfinished
+FreeCAD 8 migration binary.
 
 Before the expanded dependency build, all **24 native GTest cases** and
 **24/24 combined CTest entries** passed (25.72 seconds after rebuilding all six kernel libraries), including
