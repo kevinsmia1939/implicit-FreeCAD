@@ -11,6 +11,7 @@ endif()
 include("${IMPLICIT_OCCT_NATIVE_BUILD}/OpenCASCADETargets.cmake")
 find_package(GTest REQUIRED)
 add_executable(implicit_occt_native_face_tests
+    ../../OCCT/src/ModelingData/TKBRep/GTests/BRep_ImplicitPlaneSection_Test.cxx
     ../../OCCT/src/ModelingData/TKBRep/GTests/BRep_ImplicitSphereOps_Test.cxx
     ../../OCCT/src/ModelingData/TKBRep/GTests/BRep_ImplicitFace_Test.cxx)
 target_compile_features(implicit_occt_native_face_tests PRIVATE cxx_std_17)

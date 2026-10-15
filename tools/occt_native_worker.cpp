@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 // OCCT 8-only subprocess. Never load this kernel into the OCCT 7 FreeCAD GUI.
 #include <BRep_ImplicitSphereOps.hxx>
+#include <BRep_ImplicitPlaneSection.hxx>
+#include <Geom_ImplicitGyroid.hxx>
 #include <BRep_TImplicitSpherePatch.hxx>
 #include <BRep_ImplicitTool.hxx>
 #include <BRep_Builder.hxx>
@@ -38,14 +40,63 @@ void point(std::ostream& out, const gp_XYZ& p)
 {
     out << '[' << p.X() << ',' << p.Y() << ',' << p.Z() << ']';
 }
+std::string section(char** argv)
+{
+    BRep_ImplicitPlaneSection::Settings settings;
+    settings.DistanceTolerance = number(argv[2]);
+    const double period = number(argv[3]), iso = number(argv[4]);
+    const double nx = number(argv[5]), ny = number(argv[6]), nz = number(argv[7]);
+    const double length = std::hypot(nx, ny, nz);
+    if (!std::isfinite(length) || length <= 0) throw std::runtime_error("Invalid section normal");
+    const gp_Dir normal(nx/length, ny/length, nz/length);
+    const double offset = number(argv[8]), span = number(argv[9]), budget = number(argv[10]);
+    if (span <= 0 || budget < 4 || budget > 512 || std::floor(budget) != budget)
+        throw std::runtime_error("Invalid section span or cell budget");
+    settings.Frame = gp_Ax2(gp_Pnt(normal.X()*offset, normal.Y()*offset, normal.Z()*offset), normal);
+    settings.UMinimum = settings.VMinimum = -span/2;
+    settings.UMaximum = settings.VMaximum = span/2;
+    settings.MaximumCells = int(budget);
+    const double extent = 2*span + std::abs(offset) + period;
+    TopoDS_Face face;
+    BRep_Builder().MakeImplicitFace(face, new Geom_ImplicitGyroid(period, iso),
+        gp_Pnt(-extent,-extent,-extent), gp_Pnt(extent,extent,extent), TopLoc_Location(), settings.DistanceTolerance);
+    const auto result = BRep_ImplicitPlaneSection::Trace(face, settings);
+    std::ostringstream out;
+    out.imbue(std::locale::classic());
+    out << std::setprecision(17);
+    out << "{\"schema\":1,\"backend\":\"OCCT-8.1-native-section\",\"resolved\":"
+        << (result.Resolved ? "true" : "false") << ",\"resolution\":" << result.Resolution
+        << ",\"unresolved_cells\":" << result.UnresolvedCells
+        << ",\"potential_critical_cells\":" << result.PotentialCriticalCells
+        << ",\"ambiguous_cells\":" << result.AmbiguousCells
+        << ",\"graph_defects\":" << result.GraphDefects
+        << ",\"geometric_bound\":" << result.GeometricBound
+        << ",\"maximum_residual\":" << result.MaximumResidual
+        << ",\"maximum_root_bracket\":" << result.MaximumRootBracket << ",\"curves\":[";
+    for (size_t i=0; i<result.Curves.size(); ++i) {
+        if (i) out << ',';
+        out << "{\"closed\":" << (result.Curves[i].Closed ? "true" : "false") << ",\"points\":[";
+        for (size_t j=0; j<result.Curves[i].Points.size(); ++j) {
+            if (j) out << ',';
+            point(out,result.Curves[i].Points[j].XYZ());
+        }
+        out << "]}";
+    }
+    out << "]}\n";
+    return out.str();
+}
 }
 int main(int argc, char** argv)
 {
     try {
         if (argc != 11)
-            throw std::runtime_error("Usage: worker sphere|trim|common|fuse|cut tolerance ax ay az radius bx by bz radiusOrPlaneOffset");
+            throw std::runtime_error("Usage: worker sphere|trim|common|fuse|cut tolerance ax ay az radius bx by bz radiusOrPlaneOffset; or worker section tolerance period iso nx ny nz offset span maximumCells");
         using Ops = BRep_ImplicitSphereOps;
         const std::string mode(argv[1]);
+        if (mode == "section") {
+            std::cout << section(argv);
+            return std::cout ? 0 : 2;
+        }
         const double tolerance = number(argv[2]);
         const gp_Pnt a(number(argv[3]), number(argv[4]), number(argv[5]));
         const double ar = number(argv[6]);

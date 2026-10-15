@@ -35,6 +35,10 @@
 | Native sphere-plane trimming | Restricted analytic prototype, tested | Plane predicate + exact circle wire; open patch, no general field trimming |
 | Native OCCT implicit-face Boolean | Restricted two-sphere analytic boundary prototype | Shared exact circle, classifications/orientation/source provenance; NOT generic BOP or validated solids |
 | Native sphere geometric-bound meshing | Restricted analytic prototype, tested at 0.1 mm | Parameter-interpolation bound; no gyroid meshing, mesh welding or solid validity claim |
+| Native gyroid-plane section | Implemented for bounded rectangles, derivative-bound resolved cases | Geometric cell bound, shared roots and explicit unresolved statuses; tangent/singular cases reject |
+| Native gyroid Z-split seams | Restricted closed-loop prototype | Opposite authoritative plane predicates, shared approximate seam edges; no open-domain boundaries or conforming surface mesh |
+| Native gyroid section GUI | Experimental, worker/GUI/FCStd tested | Native contour previews only, not a trimmed-surface Part object |
+| Wholly OCCT-8 FreeCAD | Migration preflight implemented; build pending | Strict source targets, no system fallback; RapidJSON headers and required toolkit builds outstanding |
 | OCCT native-boundary GUI examples | Experimental in-tree Python adapter, GUI/FCStd tested | Process-isolated OCCT 8 worker -> OCCT 7 GUI; editable recipes, transient Coin data, no Part handles |
 | Local B-spline bridge | Experimental, tested | Native height charts; sampled field/normal validation; open face only |
 | STEP export | Local fitted open-face round-trip tested | Whole implicit solid export remains unsupported |
@@ -46,8 +50,11 @@ OCCT faces. The [native representation/query foundation](occt-native-faces.md)
 is now implemented and conformance-tested in rebuilt OCCT 8.1 libraries.
 [Restricted sphere trimming, Boolean boundaries and GUI examples](native-sphere-operations.md)
 are also implemented. Next native gates are general field-aware consumer/meshing
-dispatch, graph/topology persistence, trim and
-intersection topology, Boolean splitting/history and a wholly OCCT-8-linked
+dispatch and open/domain-side trim topology. [Native gyroid sections and restricted
+closed split seams](native-gyroid-sections.md) are now implemented; singular/tangent
+resolution and trim-conforming surface meshes remain open. Other gates are
+graph/topology persistence, general intersection topology, Boolean
+splitting/history and a wholly OCCT-8-linked
 FreeCAD build. These are not completed by attaching a field to a face. See the
 [accuracy policy](accuracy-policy.md); field residuals are not millimetre errors.
 

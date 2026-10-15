@@ -34,3 +34,10 @@ The first native OCCT-face layer stores and evaluates the mathematical field
 directly; it is not a mesh or B-spline approximation. The new ray tests exercise
 the 0.1 mm bracket policy. Generic BOP, general trimming, topology persistence and exchange support
 remain separate milestones, not implied by native geometry storage.
+
+Native gyroid-plane sections now have a geometric cell-diagonal bound on
+derivative-bound **resolved** rectangle sections, with independent analytic
+reference checks. Unresolved results do not claim whole-section coverage.
+Shared split seam edges are approximate, while field/plane predicates remain
+authoritative. No trim-conforming gyroid surface mesh or solid certificate
+follows; see [native section contracts](native-gyroid-sections.md).

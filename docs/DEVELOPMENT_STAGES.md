@@ -56,7 +56,7 @@ different completion criteria.
    intersections and BOP integration. Require conformance tests and a full OCCT
    toolkit build/regression run; a new class name or triangulation is insufficient.
    The first native field-backed face storage/query layer now exists in OCCT 8.1
-   with 19 isolated conformance cases and UV/generic-persistence rejection guards.
+   with 24 isolated conformance cases and UV/generic-persistence rejection guards.
    Explicit schema-1 single-face sphere/gyroid persistence is implemented;
    Restricted analytic sphere trimming, two-sphere Boolean boundaries and a
    sphere-specific geometric-bound mesher are implemented. An in-tree Python
@@ -65,6 +65,13 @@ different completion criteria.
    The user's target is 0.1 mm geometric accuracy; general native trimming/BOP,
    field graph/topology persistence, full-toolkit conformance and in-process
    OCCT-8 FreeCAD exposure remain open. See `native-sphere-operations.md`.
+   Native gyroid/plane-rectangle sections now have derivative-bound acceptance
+   and explicit unresolved status. Restricted closed-loop Z splits share
+   approximate seam edges; contour GUI previews are tested. Open/domain-side
+   seams and conforming surface meshing remain open, as do general mixed BOP
+   and whole-model validity. Strict OCCT build-tree selection/preflight is added;
+   full migration awaits RapidJSON headers and toolkit builds. See
+   `native-gyroid-sections.md` for the four requested steps' actual status.
 6. Cross-workbench and scale: explicit consumer contracts for FEM/CAM/mesh,
    container/App::Link and cross-document behavior, systematic cache budgets,
    optional SIMD/GPU backends and reproducible accuracy/performance measurements.

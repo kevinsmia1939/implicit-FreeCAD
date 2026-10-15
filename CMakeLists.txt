@@ -11,6 +11,7 @@ set(IMPLICIT_NATIVE_FREECADGUI "" CACHE FILEPATH "FreeCAD GUI built with Implici
 option(IMPLICIT_NATIVE_PART_TESTS "Test live Part inputs (requires built native Part bridge)" OFF)
 set(IMPLICIT_OCCT_NATIVE_FACE_TESTS "" CACHE FILEPATH "Isolated OCCT 8.1 native-face test executable")
 set(IMPLICIT_OCCT_NATIVE_WORKER "" CACHE FILEPATH "Isolated OCCT 8.1 sphere boundary worker")
+set(IMPLICIT_OCCT_NATIVE_BUILD "" CACHE PATH "OCCT source build for strict FreeCAD migration preflight")
 
 add_library(implicit_geometry
     src/ImplicitSurface.cpp
@@ -97,6 +98,12 @@ if(IMPLICIT_BUILD_TESTS)
     target_link_libraries(implicit_tests PRIVATE implicit_geometry)
     add_test(NAME implicit_geometry_tests COMMAND implicit_tests)
     find_package(Python3 COMPONENTS Interpreter QUIET)
+    if(Python3_Interpreter_FOUND AND IMPLICIT_OCCT_NATIVE_BUILD)
+        add_test(NAME implicit_occt8_preflight
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_occt8_preflight.py
+                "${IMPLICIT_OCCT_NATIVE_BUILD}")
+        set_tests_properties(implicit_occt8_preflight PROPERTIES TIMEOUT 120)
+    endif()
     if(Python3_Interpreter_FOUND AND IMPLICIT_OCCT_NATIVE_WORKER)
         add_test(NAME implicit_occt_native_worker
             COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_occt_native_worker.py

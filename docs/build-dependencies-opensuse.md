@@ -1,5 +1,19 @@
 # FreeCAD core-build dependency audit: openSUSE Tumbleweed
 
+## OCCT 8 migration addition (2026-10-15)
+
+The existing OCCT 7 FreeCAD build still needs no new packages for the native
+field/section work. A wholly OCCT-8-linked build has a new dependency gate:
+`rapidjson-devel` is absent, so OCCT omits `TKDEGLTF`, which FreeCAD requires.
+The local openSUSE repository query confirms the header package is available.
+The user has been asked to install it with `sudo zypper install rapidjson-devel`
+and confirm. No package installation or system-library replacement was performed.
+Other requested OCCT modules configure using existing dependencies, including
+FreeType 2.14.3. Configuration is not a completed toolkit or FreeCAD build; see
+[strict migration preflight and remaining gates](native-gyroid-sections.md#occt-8-migration-dependency-gate).
+
+## Original working-build audit
+
 Initial audit and latest verification: 2026-10-14. The package checklist below
 records what was missing before the user installed dependencies. Configuration
 and the `Implicit` and `FreeCADMainCmd` targets now build successfully; no

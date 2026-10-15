@@ -4,11 +4,52 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `1ed832505a` on
-`feature/native-implicit`, OCCT `4ba228482d` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `c94a5aae85` on
+`feature/native-implicit`, OCCT `e5422e4ced` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: restricted native sphere trimming/Boolean/GUI vertical slice
+## Current increment: native gyroid sections, closed seams and migration preflight
+
+`BRep_ImplicitPlaneSection` now traces native gyroid/plane rectangles in OCCT 8.1,
+using placed-coordinate Lipschitz/Hessian bounds, monotone-edge root isolation,
+interior regularity checks and shared grid-edge connectivity. Only fully
+resolved cells count as successful coverage; grid zeros, ambiguity, potential
+critical regions or resolution exhaustion return explicit unresolved results.
+The geometric bound is an accepted-cell diagonal plus numerical reserve, not a
+dimensionless field residual. Independent analytic fixed-Z reference points,
+placed planes, verified emptiness and saddle rejection are tested.
+
+`BRep_ImplicitGyroidOps::SplitZ` accepts only resolved closed-loop sections and
+creates opposite `BRep_TImplicitPlanePatch` predicates sharing tolerance-bearing
+degree-1 B-spline seam edges. It rejects open/domain-side and unresolved cases.
+The edges approximate intersection curves; the field and plane remain
+authoritative. There are no trim-conforming meshes, p-curves, general mixed BOP
+results, caps or validated solids. This is part of requested step 2, not its
+completion or completion of step 3.
+
+The native worker's section mode and in-tree `ImplicitSection.py` adapter expose
+editable gyroid-plane contour previews with retained Coin lines and FCStd
+recipe reconstruction. Unresolved/error states clear old buffers. This is not
+a trimmed-surface GUI object or OCCT 8 handles in the OCCT 7.9 Part process.
+
+For requested step 4, FreeCAD's `FREECAD_OCCT_BUILD_DIR` now supports strict
+source-build target imports and rejects missing/unbuilt toolkit dependencies,
+without installed-library fallback. ApplicationFramework/DataExchange/
+Visualization configure in the existing OCCT tree using installed dependencies.
+Only the original six libraries have actually been built. Preflight currently
+reports 27 configured-but-unbuilt toolkits and `TKDEGLTF` missing because
+`rapidjson-devel` is absent. The package is available in the local openSUSE
+repository; user installation/confirmation has been requested. No packages or
+system libraries were installed/replaced, and the working FreeCAD build stays
+on OCCT 7.9. This is migration preparation, not a completed OCCT-8 FreeCAD build.
+
+All **24 native GTest cases** and **24/24 combined CTest entries** pass (25.72
+seconds in the final run after rebuilding all six kernel libraries), including
+the strict source-build preflight and extended GUI/protocol tests. Only TKBRep,
+the isolated harness/worker and `ImplicitScripts` were built. See
+[contracts, stage status, try commands and migration gate](native-gyroid-sections.md).
+
+## Previous increment: restricted native sphere trimming/Boolean/GUI vertical slice
 
 OCCT now has `BRep_TImplicitSpherePatch` (sphere + plane predicate + exact circle
 wire) and `BRep_ImplicitSphereOps` for transverse plane trims and two-sphere

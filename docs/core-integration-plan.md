@@ -150,6 +150,11 @@ have explicit native predicates, exact shared circle edges and source mapping.
 Sphere-only geometric-bound meshing and an isolated-worker Python GUI adapter
 are tested. They do not complete general trimming/BOP or in-process native Part
 exposure; see [restricted sphere contracts](native-sphere-operations.md).
+Native gyroid/plane sections now use derivative bounds and explicit unresolved
+status. Restricted closed-loop Z splits share approximate seam edges with exact
+field/plane predicates. Strict OCCT source-build selection is implemented in
+FreeCAD, but the complete migration and general mixed BOP remain pending. See
+[gyroid sections and current four-step gates](native-gyroid-sections.md).
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

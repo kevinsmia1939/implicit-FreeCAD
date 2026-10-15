@@ -181,6 +181,28 @@ licenses remain applicable to their respective code.
     native handles in Part. Nineteen native conformance cases and all 23 combined
     CTest entries pass (26.47 seconds in the final run). See `native-sphere-operations.md` for
     exact supported cases, build/try commands, toolchain boundaries and next gates.
+19. Native gyroid-plane sections (OCCT `e5422e4ced`, FreeCAD `c94a5aae85`): `BRep_ImplicitPlaneSection` uses Lipschitz/
+    Hessian bounds, unique edge roots and regular-cell connectivity, returning
+    explicit unresolved diagnostics rather than guessed topology. Resolved
+    sections carry a geometric cell-diagonal bound at the 0.1 mm target.
+    `BRep_ImplicitGyroidOps::SplitZ` constructs opposite plane-mask faces sharing
+    approximate closed seam edges only when the entire section resolves and
+    every loop is closed. No open/domain-side seams, trim-conforming meshes,
+    general mixed BOP, caps or validated solids are implemented.
+    `ImplicitSection.py` previews native curves through the isolated worker and
+    reconstructs recipe properties on FCStd restore. It is not a trimmed-surface
+    GUI object or native OCCT 8 handles in Part. Independent analytic reference,
+    saddle rejection, source immutability and split seam tests bring native
+    conformance to 24 GTest cases; all 24 combined CTest entries pass (25.72
+    seconds after the six-library rebuild triggered by changed module settings).
+    FreeCAD now has strict source-build selection via `FREECAD_OCCT_BUILD_DIR`,
+    with a tested migration preflight prohibiting system-library fallback.
+    ApplicationFramework/DataExchange/Visualization now configure in the existing
+    OCCT build, but only six libraries are built. **Migration awaits user
+    installation of `rapidjson-devel`**, then `USE_RAPIDJSON=ON`, building
+    `TKDEGLTF` plus 27 other required toolkits, and a separate whole-FreeCAD
+    API/runtime migration.
+    Do not retarget the working OCCT 7 FreeCAD tree. See `native-gyroid-sections.md`.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -188,7 +210,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**23/23** with the isolated native-face executable and worker GUI/protocol tests registered, including scalar
+**24/24** with the isolated native-face executable, worker GUI/protocol tests and migration preflight registered, including scalar
 controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers. Separately, OCCT 8.1
@@ -280,15 +302,19 @@ tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 23 tests with the isolated OCCT-face executable and worker tests registered
-(21 without worker tests, 20 without native-face tests either).
-The native-face entry contains 19 GTest cases. See `occt-native-faces.md` for its
+has 24 tests with the isolated OCCT-face executable, worker tests and migration preflight registered
+(23 without migration preflight; 21 without worker/preflight tests; 20 without
+the isolated native-face entry as well).
+The native-face entry contains 24 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
 `IMPLICIT_OCCT_NATIVE_WORKER`; see `native-sphere-operations.md`. Rebuild only
 `ImplicitScripts` for this Python GUI adapter increment; FreeCAD's C++ linkage
 remains OCCT 7.9. The isolated worker/test harness links only OCCT 8.1.
+`IMPLICIT_OCCT_NATIVE_BUILD` additionally registers the strict source-build
+migration preflight. It reports incomplete dependencies without changing system
+libraries; see `native-gyroid-sections.md` for the package/build gate.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
@@ -354,10 +380,16 @@ native storage/query foundation is implemented, but no whole-model production
 accuracy, trimming, BOP or general native B-Rep persistence claim follows from it.
 Primitive single-face persistence and restricted sphere trimming, Boolean
 boundaries, geometric-bound meshing and process-isolated GUI exposure are now
-implemented. The immediate native milestone is general intersection/trim
-contracts (including gyroids and singularities), shared topology-aware meshing,
+implemented. Native derivative-bound gyroid/plane-rectangle sections, restricted
+closed Z-split seams and contour previews are also implemented. The immediate
+native milestone is open/domain-side trim topology, arbitrary/nested trimming
+and shared topology-aware surface meshing, plus singular/tangent resolution,
 then generic splitting/classification/history and full native persistence.
 Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
+For the wholly OCCT-8 FreeCAD build, first wait for the requested RapidJSON
+header package, enable it in the existing OCCT build and build missing toolkit
+dependencies. The new strict preflight must pass before a separate migration
+build; passing it alone does not establish API/runtime/native persistence support.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

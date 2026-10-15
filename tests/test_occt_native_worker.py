@@ -44,3 +44,27 @@ for result in (run("invalid"), run("trim", b=(0, 0, 0, 1)),
 empty = run("common", b=(10, 0, 0, 2))
 assert empty.returncode == 0 and not json.loads(empty.stdout)["faces"]
 print("OCCT native worker protocol test passed")
+
+def section(tolerance=.1, iso=.21, budget=512):
+    return subprocess.run([worker, "section", str(tolerance), "10", str(iso),
+                           "0", "0", "1", ".37", "8", str(budget)],
+                          capture_output=True, text=True, timeout=30)
+
+resolved = section()
+assert resolved.returncode == 0, resolved.stderr
+data = json.loads(resolved.stdout)
+assert data["resolved"] is True and data["curves"]
+assert data["backend"] == "OCCT-8.1-native-section"
+assert 0 < data["geometric_bound"] <= .1
+assert data["maximum_root_bracket"] <= .1/16
+assert data["graph_defects"] == 0 and data["unresolved_cells"] == 0
+for curve in data["curves"]:
+    assert len(curve["points"]) >= 2
+    assert all(abs(p[2] - .37) < 1e-14 and all(math.isfinite(v) for v in p) for p in curve["points"])
+unresolved = json.loads(section(budget=4).stdout)
+assert unresolved["resolved"] is False and unresolved["unresolved_cells"] > 0
+empty = json.loads(section(iso=3).stdout)
+assert empty["resolved"] is True and not empty["curves"]
+invalid = section(budget=513)
+assert invalid.returncode and not invalid.stdout
+print("OCCT native section protocol test passed")

@@ -10,6 +10,10 @@ The subsequent [restricted sphere vertical slice](native-sphere-operations.md)
 adds sphere-plane predicates/circle wires, two-sphere Boolean boundaries,
 sphere-specific geometric-bound meshing and process-isolated GUI examples.
 That does not supply general gyroid trimming, BOP or validated solids.
+The subsequent [native gyroid section increment](native-gyroid-sections.md)
+adds derivative-bound plane-rectangle traces and restricted closed split seams,
+not general trimmed-surface meshing or mixed BOP. Its GUI exposes contour
+previews through the worker; the wholly OCCT-8 FreeCAD migration is still gated.
 
 ## Representation and contracts
 

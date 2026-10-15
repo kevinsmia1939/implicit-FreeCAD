@@ -15,6 +15,9 @@ storage/query and primitive persistence layer. Restricted sphere trimming and
 Boolean boundaries now have [experimental GUI examples](docs/native-sphere-operations.md)
 through a separate OCCT 8 worker. The GUI remains OCCT 7.9-linked; these are not
 general implicit Booleans or validated Part solids.
+[Native gyroid-plane sections](docs/native-gyroid-sections.md) now have geometric-
+bound curve previews and a restricted closed-loop split prototype. General
+gyroid surface trimming/Booleans and the wholly OCCT-8 FreeCAD build remain open.
 
 **Continuing development? Start with [the handoff](docs/HANDOFF.md).** It records
 completed work, source locations, exact build/test commands, tools, known gaps,

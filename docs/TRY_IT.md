@@ -13,6 +13,11 @@ temporary preferences and isolates installed addons. The ordinary system
 
 ## What to try
 
+**OCCT gyroid-plane section (experimental)** now previews native gyroid/plane
+intersection curves. Edit period, level, plane, span, tolerance and cell budget.
+Unresolved cases report an error and clear old curves. It is not yet a rendered
+trimmed gyroid surface or Part shape. See [contracts and commands](native-gyroid-sections.md).
+
 New OCCT-core examples: the Native Implicit menu now also has experimental
 **OCCT sphere trim/common/fuse/cut** commands. These reconstruct restricted native
 sphere boundaries in an isolated OCCT 8 worker, while the GUI stays on OCCT 7.9.
