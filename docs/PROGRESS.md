@@ -4,11 +4,36 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `4615917cde` on
+Implementation heads: FreeCAD `28dd78d22a` on
 `feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: opt-in background viewport extraction
+## Current increment: native ray–field queries
+
+Native `Shape::intersectRay` and Python `Implicit.intersectRay` query compiled
+immutable field graphs independently of display tessellation. The direction is
+normalized, the finite interval is clipped to the effective local domain, and
+sampled sign brackets are bisected to an explicit model-length tolerance. Each
+sorted hit carries local distance/point, absolute field residual and bracket
+width. The GIL is released only after capturing the Shape snapshot. Input and
+iteration limits bound work; failed refinement and adjacent zero samples raise
+explicit errors. See [query contract](native-ray-queries.md).
+
+The new regression covers sphere/gyroid/band roots, normalization, negative and
+zero-length intervals, domain clipping without artificial caps, placement/sign
+conventions, tangencies sampled or missed, ambiguity and invalid arguments.
+The live Part regression now checks mixed ray roots before and after editing
+the source. These queries are a foundation for picking, not an implemented GUI
+selection feature. Unsampled tangencies, thin crossings, close-root merging and
+non-isolated/tolerance-plateau ambiguity remain explicit limitations. Native
+local projection, chart fitting and manufacturing topology remain open.
+
+Verification: native `Implicit` and `ImplicitGui` rebuilt with two compile jobs;
+all **15 combined CTest tests passed** (21.14 seconds), including both GUI tests
+under Xvfb, the new ray regression and live Part ray invalidation. No new OCCT
+change or dependency installation was needed for this increment.
+
+## Previous increment: opt-in background viewport extraction
 
 `ImplicitGui::ViewProviderShape.BackgroundMeshing` now offers experimental
 background extraction; the default remains synchronous. A module-local Qt

@@ -101,6 +101,10 @@ field nodes, field-aware selection and variable-resolution surface extraction
 remain to be implemented. The uniform-grid native extractor remains the
 reference backend alongside octree-pruned sampling. Native geometry revisions
 now drive display-cache updates. The older addon remains a separate prototype.
+The native `Shape::intersectRay` and Python `Implicit.intersectRay` provide
+domain-clipped sampled roots with explicit bracket widths and field residuals.
+This is a query seam for future picking, not GUI selection or certified OCCT
+intersection topology. See [native ray queries](native-ray-queries.md).
 The current
 graph schema is documented in `docs/native-field-graph.md`.
 Build commands, toolchain, tested scope, and the continuation checklist are in

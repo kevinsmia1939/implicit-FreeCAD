@@ -2,7 +2,8 @@
 
 Last updated: 2026-10-15. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
-FreeCAD GUI, live Part dependencies, background meshing, benchmarks and OCCT core increments.
+FreeCAD GUI, live Part dependencies, native ray queries, background meshing,
+benchmarks and OCCT core increments.
 The user has authorized implementation, commits and pushes in both core source
 trees. This file records the state of the code, not a claim
 that all goals in the original brief are complete.
@@ -109,6 +110,12 @@ licenses remain applicable to their respective code.
     uploads, cache reuse, hidden/deleted/restored provider handling and status
     diagnostics. The combined suite passes 14 tests; both demos support
     `--background`. See `docs/background-meshing.md` for architecture and limits.
+11. Native ray–field queries (FreeCAD `28dd78d22a`): `Shape::intersectRay` / `Implicit.intersectRay`
+    query immutable compiled graphs with the GIL released, clip to the effective
+    domain, sample sign brackets and refine by local distance tolerance. Results
+    report distance, point, field residual and bracket width. Primitive, band,
+    gyroid and live mixed Part roots are tested. See `native-ray-queries.md`.
+    Tangencies/thin features may be missed; GUI picking is not yet wired up.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -116,7 +123,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**14/14**, including synchronous and background mixed fork GUIs on Xvfb; see results
+**15/15**, including native ray queries and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
 has not been performed. The earlier addon GUI tests used installed FreeCAD.
@@ -205,7 +212,7 @@ tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 14 tests. Installed `FreeCADCmd` cannot import this fork's native module.
+has 15 tests. Installed `FreeCADCmd` cannot import this fork's native module.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
@@ -248,9 +255,10 @@ for the current combined run.
   visualization and mixed B-Rep/implicit field operations are implemented.
   General trimming topology, uniform physical thickness, native OCCT implicit
   face Booleans and a manufacturing/STEP bridge remain open.
-- Projection can converge to a local component; sampled ray roots can miss
-  tangencies. These standalone algorithms have not all been ported into the
-  native graph API.
+- Standalone projection can converge to a local component and is not yet ported
+  to the native graph API. Sampled rays now work in both engines, but can miss
+  tangencies/thin components. Native ray roots carry bracket widths and residuals;
+  they are not certified complete intersections or GUI semantic selection.
 
 ## Next milestones and acceptance criteria
 

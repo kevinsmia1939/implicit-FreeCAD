@@ -44,6 +44,11 @@ selects one branch deterministically at such points.
 
 ## Python interface
 
+Native `Implicit.intersectRay(feature, origin, direction, minDistance,
+maxDistance, samples=512, distanceTolerance=1e-7)` now queries compiled fields
+directly. See [native ray queries](native-ray-queries.md) for local-coordinate,
+distance/residual, domain-clipping and sampled-root limitations.
+
 ```python
 import json
 import FreeCAD

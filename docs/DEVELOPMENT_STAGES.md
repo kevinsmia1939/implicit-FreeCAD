@@ -32,6 +32,9 @@ different completion criteria.
 3. Geometry robustness: arbitrary plane/domain clipping, consistent boundary
    loops, singular and tangent intersection handling, and validated distance
    estimates before exposing millimetre wall-thickness controls.
+   Native graph ray queries now report domain-clipped sampled roots and explicit
+   bracket widths/residuals, including live mixed fields; this does not complete
+   tangency handling, certified intersection completeness or semantic selection.
 4. Manufacturing bridge: local charts, fitted B-spline patches with common
    boundaries and p-curves, sewing/healing, shape checks, quantified geometric
    error and explicit failure policies. Test OCCT Booleans and STEP round-trips

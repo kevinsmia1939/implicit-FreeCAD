@@ -9,7 +9,7 @@
 | Normal | Implemented | Normalized gradient; undefined at critical points |
 | Point classification | Implemented | Explicit negative/on-surface/positive result with caller tolerance |
 | Closest-point projection | Implemented | Local constrained Newton solve |
-| Ray intersection | Implemented | Sampled bracketing plus safeguarded refinement |
+| Ray intersection | Standalone and native graph APIs implemented | Domain-clipped sign sampling and refined brackets; tangencies/thin features may be missed |
 | Bounded surface visualization | Implemented | Marching-tetrahedra cache |
 | FreeCAD editable feature | Implemented and runtime-tested with FreeCAD 1.1.4 | Python feature + retained Coin nodes |
 | Native FreeCAD field graph | Implemented and command-line runtime-tested | C++ feature, primitives/Booleans/transforms, versioned JSON persistence |
@@ -30,6 +30,12 @@
 | STEP export | Unsupported | Only after valid supported B-Rep approximation |
 
 ## Next increments
+
+Native ray queries now expose local zero-set hits independently of viewport
+meshes, including live mixed fields. Next geometry increments are native local
+projection, field-aware picking, and chart/intersection work toward validated
+manufacturing patches. See [ray contracts](native-ray-queries.md). Native ray
+queries do not constitute GUI picking or OCCT intersection topology.
 
 The latest increments add the native view provider, workbench commands,
 conservative octree sampling, batch queries, capped band graphs, cylinder
