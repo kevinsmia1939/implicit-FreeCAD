@@ -131,6 +131,15 @@ licenses remain applicable to their respective code.
     checks and returns explicit limit/empty-unverified statuses. This does not
     certify surface coverage or implement variable-resolution surface cells.
     All 17 tests passed (22.27 seconds). See `controlled-extraction.md`.
+14. Native fixed-normal local charts and an experimental B-spline bridge:
+    `Implicit.sampleChart` samples projected regular height patches;
+    `ImplicitPatch.fit_patch` uses Part/OCCT interpolation and rejects failed
+    sampled field/normal/domain checks. A genuine open B-spline face is tested
+    with OCCT Common clipping and STEP round-trip. This is not a global atlas,
+    closed/manufacturing solid or native implicit face. Reports retain source
+    identity/revision/settings; returned faces are static local approximations.
+    Cancellation/source-change checks are implemented. See `local-patch-bridge.md`.
+    The complete configuration now registers 19 tests.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -138,7 +147,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**17/17**, including controlled extraction and synchronous/background mixed fork GUIs on Xvfb; see results
+**19/19**, including chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
 has not been performed. The earlier addon GUI tests used installed FreeCAD.
@@ -221,13 +230,13 @@ FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
 ```
 
 Without a native build, omit `IMPLICIT_NATIVE_FREECADCMD` (or set it to an empty
-string to clear a cached setting). NativeCmd now registers seven native tests;
-the Part option adds one more. NativeGUI registers synchronous and async GUI
+string to clear a cached setting). NativeCmd now registers eight native tests;
+the Part option adds two more. NativeGUI registers synchronous and async GUI
 tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest,
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 17 tests. Installed `FreeCADCmd` cannot import this fork's native module.
+has 19 tests. Installed `FreeCADCmd` cannot import this fork's native module.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
@@ -270,7 +279,8 @@ for the current combined run.
 - Cylinder contours are implemented in the standalone engine. Capped gyroid-band
   visualization and mixed B-Rep/implicit field operations are implemented.
   General trimming topology, uniform physical thickness, native OCCT implicit
-  face Booleans and a manufacturing/STEP bridge remain open.
+  face Booleans and a whole-solid manufacturing/STEP bridge remain open. Local
+  B-spline open-face fitting, clipping and STEP round-trip are now tested.
 - Both engines now support local projection and sampled rays. Native projection
   reports stationary-point convergence/failure, not a globally nearest point;
   hard creases, critical points and ill conditioning can fail. Rays can miss

@@ -45,6 +45,9 @@ different completion criteria.
    error and explicit failure policies. Test OCCT Booleans and STEP round-trips
    only on validated approximations, retaining implicit provenance. A mesh
    or triangle-face conversion does not pass this gate.
+   Native local height charts and individually fitted open B-spline faces are
+   now implemented with sampled residual/normal checks and open-face Part/STEP
+   tests. This is a first prototype, not completion of the gate above.
 5. OCCT-native representation: geometry ownership and persistence independent of
    `Geom_Surface`, face/adaptor dispatch, chart/trimming conventions, robust
    intersections and BOP integration. Require conformance tests and a full OCCT

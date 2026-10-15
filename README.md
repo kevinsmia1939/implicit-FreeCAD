@@ -111,6 +111,8 @@ module currently provides:
   getter/setter APIs;
 - native ray queries and local stationary projection, with explicit numerical
   diagnostics; [viewport field probes and sampled mesh-quality inspection](docs/native-projection-and-quality.md);
+- [field-bound-controlled extraction](docs/controlled-extraction.md) with explicit
+  refinement limits, and an [experimental local B-spline face bridge](docs/local-patch-bridge.md);
 - indexed C++ surface extraction for native field graphs, exposed through
   `Implicit.tessellate(feature, resolution)`;
 - conservative octree sampling through `Implicit.tessellateAdaptive`, plus
@@ -171,7 +173,9 @@ standalone library.
   FreeCAD semantic selection, and sampled quality reports do not certify solids.
 - Bounded plane-patch and cylinder intersection curves are implemented in the
   standalone engine. General trimming topology, validated manufacturing solids,
-  physical wall thickness and STEP export remain roadmap work. Mixed Booleans
+  physical wall thickness and whole-solid STEP export remain roadmap work.
+  Local fitted open B-spline faces now support tested Part clipping and STEP
+  round-trips, not global implicit conversion or a manufacturing certificate. Mixed Booleans
   operate in field space; arbitrary implicit faces are not yet accepted by
   OCCT's existing B-Rep Boolean algorithms.
 

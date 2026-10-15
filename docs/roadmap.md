@@ -30,7 +30,8 @@
 | B-Rep-to-field | Snapshot and live bridge tested | OCCT core signed-distance extension; live Part source or JSON snapshot |
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
 | Native OCCT implicit-face Boolean | Unsupported | Requires geometry/topology/algorithm dispatch work |
-| STEP export | Unsupported | Only after valid supported B-Rep approximation |
+| Local B-spline bridge | Experimental, tested | Native height charts; sampled field/normal validation; open face only |
+| STEP export | Local fitted open-face round-trip tested | Whole implicit solid export remains unsupported |
 
 ## Next increments
 
@@ -60,6 +61,11 @@ global memory budgets and field-aware picking are still open. See
 [`background-meshing.md`](background-meshing.md).
 
 Remaining stages:
+
+The [local patch prototype](local-patch-bridge.md) now fits and validates sampled
+B-spline faces, with open-face Part clipping and STEP round-trip tests. It does
+not complete atlas construction, common boundaries, sewing, solid validation or
+native OCCT implicit-face topology.
 
 Global-grid [controlled extraction](controlled-extraction.md) now uses conservative
 triangle-wide field bounds with explicit resolution-limit and empty-result

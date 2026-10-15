@@ -110,6 +110,11 @@ sampled tessellation diagnostics are now implemented. They establish query and
 inspection seams, not global closest-point certification, integrated semantic
 selection or error-controlled extraction. See
 [projection and quality contracts](native-projection-and-quality.md).
+The experimental native chart / Part B-spline bridge now produces individually
+checked local open faces, with conventional face clipping and STEP round-trip
+tests. It does not provide shared patch topology, a manufacturing solid, global
+coverage or native OCCT implicit face dispatch. See
+[local patch bridge](local-patch-bridge.md).
 The current
 graph schema is documented in `docs/native-field-graph.md`.
 Build commands, toolchain, tested scope, and the continuation checklist are in

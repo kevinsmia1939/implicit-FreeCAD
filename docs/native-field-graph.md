@@ -44,6 +44,12 @@ selects one branch deterministically at such points.
 
 ## Python interface
 
+`Implicit.sampleChart` now samples a fixed-normal local height chart from a
+compiled field. `ImplicitPatch.fit_patch` fits an ordinary OCCT B-spline face and
+rejects failed sampled residual/normal checks. See the
+[experimental local bridge](local-patch-bridge.md): these are open patch
+approximations, not a global implicit solid or manufacturing certificate.
+
 `Implicit.tessellateControlled(feature, fieldTolerance, minResolution=8,
 maxResolution=64, cancellationToken=None)` adds bounded global-grid refinement
 with triangle-wide field bounds, explicit limit failure and attempt history.

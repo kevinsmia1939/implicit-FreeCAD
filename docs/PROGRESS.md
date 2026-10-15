@@ -4,11 +4,31 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `5b49906704` on
+Implementation heads: FreeCAD `66cfd45cd5` on
 `feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: field-bound-controlled extraction
+## Current increment: native local charts and experimental B-spline patches
+
+Native `Implicit.sampleChart` projects a seed, builds a fixed-normal tangent
+chart and samples unique ray roots with normal-alignment/resource/cancellation
+checks. `ImplicitPatch.fit_patch` orchestrates this C++ sampler with Part/OCCT
+B-spline interpolation, shape validity and sampled field/normal/domain checks.
+It rejects dirty/error sources and changes during fitting; reports retain local
+frame, source identity/revision and all approximation settings. The one-shot
+cancellation state is readable through `Implicit.isCancelled`.
+
+Sphere and gyroid open patches pass checks. A genuine B-spline face is clipped
+against a conventional Part box and round-tripped through STEP, retaining face
+validity, B-spline representation and area. No document/file mutation occurs
+unless a caller explicitly stores/exports the returned face. This is not a
+sewn atlas, closed solid, geometric error certificate or OCCT implicit face.
+See [local patch bridge](local-patch-bridge.md). The native scripts target now
+installs `ImplicitPatch.py`; no additional dependencies or system changes.
+All **19 tests passed** in the final combined run (**21.81 seconds**), including
+the new chart/patch checks, both native GUI tests and existing OCCT regressions.
+
+## Previous increment: field-bound-controlled extraction
 
 `Implicit.tessellateControlled` adds global-grid refinement against a
 conservative triangle-wide field residual bound, plus per-attempt history,
