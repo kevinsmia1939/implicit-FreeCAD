@@ -13,6 +13,14 @@ temporary preferences and isolates installed addons. The ordinary system
 
 ## What to try
 
+New inspection tools: select a native field in the tree, then choose **Probe
+selected implicit surface** in Native Implicit and left-click a surface location
+(right-click cancels). Open **View > Panels > Report view** to see mathematical
+ray hits. **Inspect implicit mesh quality** reports sampled residuals and edge
+topology at resolution 24. These do not create geometry or persistent selections.
+See [projection and quality](native-projection-and-quality.md) for limitations
+and the native `Implicit.project` Python API.
+
 1. Select **1 - Gyroid** in the tree. In **Data**, change `Period` from 8 to 6,
    then change `IsoValue` from 0.17 to 0.4. Recompute if the document is marked
    for recompute (Edit > Refresh, or `App.ActiveDocument.recompute()` in the

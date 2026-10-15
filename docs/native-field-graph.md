@@ -44,6 +44,12 @@ selects one branch deterministically at such points.
 
 ## Python interface
 
+`Implicit.project` now exposes local stationary projection with convergence and
+failure diagnostics. `Implicit.inspectTessellation` measures sampled residuals
+and edge topology on a fresh transient extraction. See
+[projection and quality](native-projection-and-quality.md) for signatures and
+accuracy contracts; neither API certifies a closest point or manufacturing solid.
+
 Native `Implicit.intersectRay(feature, origin, direction, minDistance,
 maxDistance, samples=512, distanceTolerance=1e-7)` now queries compiled fields
 directly. See [native ray queries](native-ray-queries.md) for local-coordinate,

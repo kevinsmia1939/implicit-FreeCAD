@@ -8,7 +8,7 @@
 | Numerical-gradient fallback | Implemented | Centered finite difference |
 | Normal | Implemented | Normalized gradient; undefined at critical points |
 | Point classification | Implemented | Explicit negative/on-surface/positive result with caller tolerance |
-| Closest-point projection | Implemented | Local constrained Newton solve |
+| Surface projection | Standalone and native graph APIs implemented | Local constrained stationary solve; no global nearest-point certificate |
 | Ray intersection | Standalone and native graph APIs implemented | Domain-clipped sign sampling and refined brackets; tangencies/thin features may be missed |
 | Bounded surface visualization | Implemented | Marching-tetrahedra cache |
 | FreeCAD editable feature | Implemented and runtime-tested with FreeCAD 1.1.4 | Python feature + retained Coin nodes |
@@ -20,6 +20,8 @@
 | Live document composition | Implemented and native command-line/GUI tested | Source links, rigid placements, signs, band/offset and direct Part dispatch |
 | Python extraction cancellation | Implemented and runtime-tested | Atomic one-shot token, GIL released during native extraction |
 | Background viewport extraction | Implemented, opt-in and GUI-tested | One worker, request coalescing, cancellation and checked main-thread uploads |
+| Viewport field probe | Implemented, GUI-tested | One-shot selected-field ray query; not integrated semantic selection |
+| Sampled extraction diagnostics | Implemented | Vertex/centroid/edge residuals and edge-incidence checks; not a solid/error certificate |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
 | Cylinder intersection | Implemented in standalone engine | Refined chart roots and periodic seam joining; tangencies unsupported |
 | Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
@@ -31,11 +33,13 @@
 
 ## Next increments
 
-Native ray queries now expose local zero-set hits independently of viewport
-meshes, including live mixed fields. Next geometry increments are native local
-projection, field-aware picking, and chart/intersection work toward validated
-manufacturing patches. See [ray contracts](native-ray-queries.md). Native ray
-queries do not constitute GUI picking or OCCT intersection topology.
+Native ray queries and local stationary projection now query fields independently
+of viewport meshes, including live mixed fields. A one-shot viewport probe and
+sampled mesh-quality command are implemented. These are partial deliveries for
+Stages 2–3: integrated semantic selection/snapping, richer editing, truly adaptive
+error-controlled extraction and robust chart/intersection work remain open. See
+[query contracts](native-projection-and-quality.md). Probes do not provide stable
+subelements, and diagnostics do not certify OCCT topology or geometric accuracy.
 
 The latest increments add the native view provider, workbench commands,
 conservative octree sampling, batch queries, capped band graphs, cylinder

@@ -29,12 +29,17 @@ different completion criteria.
    suppression and memory budgets. Opt-in background extraction with bounded
    concurrency and stale suppression is implemented; whole-workflow scheduling,
    global memory budgets and richer progress remain open.
+   One-shot viewport field probes now work with placed objects and both camera
+   types; integrated semantic selection, snapping and stable subelements remain open.
 3. Geometry robustness: arbitrary plane/domain clipping, consistent boundary
    loops, singular and tangent intersection handling, and validated distance
    estimates before exposing millimetre wall-thickness controls.
    Native graph ray queries now report domain-clipped sampled roots and explicit
    bracket widths/residuals, including live mixed fields; this does not complete
    tangency handling, certified intersection completeness or semantic selection.
+   Native local stationary projection and sampled mesh-quality reports are also
+   implemented. Their explicit failures/interior residuals expose numerical
+   limitations, without certifying nearest points, topology or Hausdorff error.
 4. Manufacturing bridge: local charts, fitted B-spline patches with common
    boundaries and p-curves, sewing/healing, shape checks, quantified geometric
    error and explicit failure policies. Test OCCT Booleans and STEP round-trips

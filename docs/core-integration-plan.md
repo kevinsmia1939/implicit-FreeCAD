@@ -105,6 +105,11 @@ The native `Shape::intersectRay` and Python `Implicit.intersectRay` provide
 domain-clipped sampled roots with explicit bracket widths and field residuals.
 This is a query seam for future picking, not GUI selection or certified OCCT
 intersection topology. See [native ray queries](native-ray-queries.md).
+Local stationary projection, a selected-field one-shot viewport probe and
+sampled tessellation diagnostics are now implemented. They establish query and
+inspection seams, not global closest-point certification, integrated semantic
+selection or error-controlled extraction. See
+[projection and quality contracts](native-projection-and-quality.md).
 The current
 graph schema is documented in `docs/native-field-graph.md`.
 Build commands, toolchain, tested scope, and the continuation checklist are in

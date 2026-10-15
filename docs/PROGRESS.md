@@ -4,11 +4,45 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `28dd78d22a` on
+Implementation heads: FreeCAD `0048ed4f0a` on
 `feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: native ray–field queries
+## Current increment: Stage 2–3 projection, probes and quality diagnostics
+
+Native `Shape::project` / `Implicit.project` now solve for a local constrained
+stationary point on a compiled graph. Row-scaled pivoted KKT steps use a numerical
+gradient Hessian, domain-bounded backtracking and separate field/distance tests.
+Critical points, singular systems, line-search failure and iteration exhaustion
+return explicit non-convergence diagnostics. A gradient-scaled residual criterion
+avoids treating a small-valued field as a geometric success at the seed.
+
+The Native Implicit workbench now offers a selected-field, one-shot viewport
+probe and a resolution-24 sampled mesh-quality report. Probes use actual
+orthographic/perspective rays, transform global placement, and query the field
+rather than its mesh. Pending callbacks cancel on replacement, target deletion
+and document close. They do not create persistent subelements or replace normal
+FreeCAD selection. Inspection samples vertices, triangle centroids and unique
+edge midpoints and reports edge-incidence/winding defects and exact degeneracy.
+
+These are partial deliveries toward Stages 2–3. No globally nearest-point,
+Hausdorff-error, complete-intersection or valid-solid claim follows. True
+variable-resolution extraction, error-controlled refinement, robust tangencies,
+arbitrary boundary intersection, integrated semantic selection/snapping and
+richer editing remain open. Full API and limitation contracts:
+[native projection and quality](native-projection-and-quality.md).
+
+Verification includes 60 deterministic analytical sphere projections, gyroid
+stationarity/field scaling, failure and invalid-input tests, coarse/fine sphere
+interior residual reduction, uniform/pruned quality equality, clipping and empty
+results, live mixed Part projection, actual GUI camera rays, cancellation,
+deletion and document-close lifecycle handling. Native modules and scripts were
+built with the existing toolchain and two compile jobs. No OCCT change or package
+installation was needed.
+The final combined CTest run passed **16/16 tests** in **20.48 seconds**, including
+both native GUI regressions under Xvfb and the new native geometry-query test.
+
+## Previous increment: native ray–field queries
 
 Native `Shape::intersectRay` and Python `Implicit.intersectRay` query compiled
 immutable field graphs independently of display tessellation. The direction is

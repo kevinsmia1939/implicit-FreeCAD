@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-15. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
-FreeCAD GUI, live Part dependencies, native ray queries, background meshing,
+FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
 The user has authorized implementation, commits and pushes in both core source
 trees. This file records the state of the code, not a claim
@@ -116,6 +116,15 @@ licenses remain applicable to their respective code.
     report distance, point, field residual and bracket width. Primitive, band,
     gyroid and live mixed Part roots are tested. See `native-ray-queries.md`.
     Tangencies/thin features may be missed; GUI picking is not yet wired up.
+12. Stages 2–3 increment (FreeCAD `0048ed4f0a`): native local stationary projection with row-scaled KKT
+    solve, bounded/backtracked steps, separate field/distance convergence checks
+    and explicit failure statuses. A selected-field viewport probe handles world
+    placement and orthographic/perspective cameras without relying on triangle
+    hits; callbacks cancel on replacement, deletion and document close. Sampled
+    mesh-quality inspection measures vertex/centroid/edge residuals and edge
+    incidence/winding defects. This is not integrated semantic selection, true
+    adaptive refinement, a nearest-point certificate or CAD solid validation.
+    See `native-projection-and-quality.md`; the combined suite now has 16 tests.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -123,7 +132,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**15/15**, including native ray queries and synchronous/background mixed fork GUIs on Xvfb; see results
+**16/16**, including native geometry queries and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
 has not been performed. The earlier addon GUI tests used installed FreeCAD.
@@ -206,13 +215,13 @@ FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
 ```
 
 Without a native build, omit `IMPLICIT_NATIVE_FREECADCMD` (or set it to an empty
-string to clear a cached setting). NativeCmd now registers four native tests;
+string to clear a cached setting). NativeCmd now registers six native tests;
 the Part option adds one more. NativeGUI registers synchronous and async GUI
 tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest,
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 15 tests. Installed `FreeCADCmd` cannot import this fork's native module.
+has 16 tests. Installed `FreeCADCmd` cannot import this fork's native module.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
@@ -231,8 +240,9 @@ for the current combined run.
 
 ## Remaining limits
 
-- The native GUI provider and workbench cover basic display and live linked
-  commands. Field-aware semantic picking and whole-workflow async scheduling remain open.
+- The native GUI provider and workbench cover basic display, live linked
+  commands, a selected-field viewport probe and sampled quality inspection.
+  Integrated semantic selection/snapping and whole-workflow async scheduling remain open.
 - The graph lives in `App::PropertyString`; there is no dedicated complex geometry
   property, shared-node JSON DAG format, graph editor or SIMD/GPU backend. Scalar batch
   evaluation and compiled-graph caching are now implemented.
@@ -255,10 +265,12 @@ for the current combined run.
   visualization and mixed B-Rep/implicit field operations are implemented.
   General trimming topology, uniform physical thickness, native OCCT implicit
   face Booleans and a manufacturing/STEP bridge remain open.
-- Standalone projection can converge to a local component and is not yet ported
-  to the native graph API. Sampled rays now work in both engines, but can miss
+- Both engines now support local projection and sampled rays. Native projection
+  reports stationary-point convergence/failure, not a globally nearest point;
+  hard creases, critical points and ill conditioning can fail. Rays can miss
   tangencies/thin components. Native ray roots carry bracket widths and residuals;
-  they are not certified complete intersections or GUI semantic selection.
+  viewport probes are not integrated semantic selection. Mesh-quality interior
+  residuals and edge counts do not certify geometric error or solid validity.
 
 ## Next milestones and acceptance criteria
 

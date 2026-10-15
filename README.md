@@ -109,6 +109,8 @@ module currently provides:
 - versioned JSON field-graph persistence in `.FCStd` documents;
 - Python evaluation, gradient, classification, graph validation, and graph
   getter/setter APIs;
+- native ray queries and local stationary projection, with explicit numerical
+  diagnostics; [viewport field probes and sampled mesh-quality inspection](docs/native-projection-and-quality.md);
 - indexed C++ surface extraction for native field graphs, exposed through
   `Implicit.tessellate(feature, resolution)`;
 - conservative octree sampling through `Implicit.tessellateAdaptive`, plus
@@ -159,12 +161,14 @@ standalone library.
   supply cap surfaces. Grid sampling can miss thin components,
   tangencies, and multiple roots along an edge. There is no general guarantee
   of watertightness, geometric error, or correct topology for arbitrary fields.
-- Ray intersection detects sign-changing roots and sampled roots. Even-multiplicity
-  tangencies can be missed unless a sample falls within tolerance.
-- Projection is a local constrained Newton solve; convergence to the global
-  closest component is not guaranteed for arbitrary starting points. Projection
-  operates on the mathematical surface; callers must test the returned point
-  against the finite domain when they require bounded-surface semantics.
+- Ray intersection detects sign-changing roots and sampled roots; unsampled
+  tangencies and thin crossings may be missed. Native rays require exact zeros
+  for unbracketed sampled hits; see the separate native query tolerance contract.
+- Projection finds a local constrained stationary point, not a certified global
+  nearest point. The native solver constrains accepted iterates to the domain
+  and returns explicit convergence/failure diagnostics. The older standalone
+  solver requires a separate domain check. Viewport probes do not replace
+  FreeCAD semantic selection, and sampled quality reports do not certify solids.
 - Bounded plane-patch and cylinder intersection curves are implemented in the
   standalone engine. General trimming topology, validated manufacturing solids,
   physical wall thickness and STEP export remain roadmap work. Mixed Booleans
