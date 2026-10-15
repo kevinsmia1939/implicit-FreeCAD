@@ -5,10 +5,40 @@ including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
 Implementation heads: FreeCAD `d891427f11` on
-`feature/native-implicit`, OCCT `1205038a3e` on `feature/implicit-distance`.
+`feature/native-implicit`, OCCT `df05db9b07` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: OCCT-native implicit face foundation
+## Current increment: explicit OCCT-native single-face persistence
+
+`BRep_ImplicitIO` now provides experimental schema-1 stream persistence for a
+single childless native sphere/gyroid face. The authoritative equation,
+finite local domain, raw geometric tolerance, geometry/instance placements and
+orientation survive round-trip; triangles and shape flags do not. The format
+does not depend on a display mesh or fake UV surface.
+
+Writers preflight before touching output and reject custom/derived equations
+and child topology rather than lose data. Readers consume a bounded record,
+reject malformed/unknown/trailing/nonfinite input and invalid transforms, and
+replace the destination only after validation. Matrix validation prevents
+OCCT's loader from silently repairing shear/nonuniform scale. Locale, locks,
+stream failures, every truncated record prefix, scaled/reflected placements,
+both primitives and retained 0.1 mm sphere ray brackets are regression-tested.
+
+All **14 isolated native-face GTest cases** and **21/21 combined CTest entries**
+passed (23.00 seconds for the combined run), including the existing fork GUI
+and command-line tests. The isolated executable still links only rebuilt OCCT
+8.1 libraries; FreeCAD and compatibility tests remain on OCCT 7.9.3. Only
+TKBRep and its existing dependencies/conformance harness were rebuilt. No
+packages or system libraries were modified.
+
+This is not generic BRepTools/BinTools, OCAF, FCStd or STEP persistence for
+native implicit faces. Those guards remain intact. Native meshing, trim/wire
+contracts, BOP, general graph/topology persistence and FreeCAD exposure remain
+open. The next kernel increment is field-aware meshing with explicit geometric
+error/coverage limits, distinct from dimensionless gyroid residuals. See
+[native face contracts](occt-native-faces.md).
+
+## Previous increment: OCCT-native implicit face foundation
 
 The user selected **0.1 mm geometric tolerance** and directed work on native
 OCCT implicit faces. The OCCT 8.1 fork now has immutable `Geom_ImplicitField`

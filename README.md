@@ -10,7 +10,9 @@ in the `FreeCAD/` submodule on
 The root also contains
 the standalone geometry engine, prototype addon, benchmarks, and project notes.
 `OCCT/` contains the core signed-distance extension used by mixed field graphs,
-on `feature/implicit-distance`.
+on `feature/implicit-distance`, plus the experimental OCCT 8.1 native field-face
+storage/query and primitive persistence layer. These native faces are tested in
+isolation, not yet exposed in the current OCCT 7.9-linked FreeCAD GUI.
 
 **Continuing development? Start with [the handoff](docs/HANDOFF.md).** It records
 completed work, source locations, exact build/test commands, tools, known gaps,

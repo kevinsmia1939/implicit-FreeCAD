@@ -143,6 +143,8 @@ The user explicitly directed this work with a **0.1 mm geometric tolerance
 target**. The first native representation/query increment now exists in OCCT 8.1:
 `Geom_ImplicitField`, a `BRep_TImplicitFace` subtype, builder/tool dispatch and
 field-aware queries, with guarded rejection of UV access and lossy persistence.
+Explicit schema-1 single-face sphere/gyroid persistence is now implemented;
+general B-Rep/OCAF persistence and child topology remain unsupported.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

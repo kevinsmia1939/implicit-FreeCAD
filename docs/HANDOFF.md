@@ -156,6 +156,15 @@ licenses remain applicable to their respective code.
     loss. Eleven isolated conformance tests pass, including 0.1 mm ray brackets.
     This is storage/query support, not trimming/BOP/persistence/FreeCAD exposure.
     See `occt-native-faces.md` and `accuracy-policy.md`.
+17. Explicit native single-face persistence (OCCT `df05db9b07`): `BRep_ImplicitIO` schema 1 stores
+    exact sphere/gyroid definitions, local domain, raw tolerance, separate
+    geometry/instance placements and orientation. Meshes/shape flags are not
+    persisted. Unsupported custom/derived fields or child topology reject before
+    output; malformed/oversized/trailing input leaves the destination unchanged.
+    Fourteen isolated native-face cases now cover round-trips, transform and
+    locale validation, I/O failures and retained 0.1 mm ray brackets. Generic
+    BRepTools/BinTools, OCAF, FCStd and STEP persistence remain unsupported for
+    these OCCT-native faces. The existing FreeCAD graph persistence is separate.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -256,7 +265,7 @@ and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
 has 21 tests when the isolated OCCT-face executable is registered (20 otherwise).
-The native-face entry contains 11 GTest cases. See `occt-native-faces.md` for its
+The native-face entry contains 14 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
@@ -319,7 +328,10 @@ open, as are native property/DAG, integrated selection and variable-resolution
 cells. The user has now selected **0.1 mm geometric tolerance** and directed
 OCCT-native face development; minimum feature size remains unspecified. The
 native storage/query foundation is implemented, but no whole-model production
-accuracy, trimming, BOP or native persistence claim follows from it.
+accuracy, trimming, BOP or general native B-Rep persistence claim follows from it.
+Primitive single-face persistence is now implemented; the immediate native
+milestone is field-aware meshing with explicit geometric-error/coverage limits,
+then boundary/trim contracts. Do not route these faces through generic BRepMesh.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

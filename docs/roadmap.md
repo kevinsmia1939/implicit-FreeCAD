@@ -31,6 +31,7 @@
 | B-Rep-to-field | Snapshot and live bridge tested | OCCT core signed-distance extension; live Part source or JSON snapshot |
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
 | OCCT-native field-backed face storage/queries | Experimental, isolated OCCT 8.1 tests | No UV surface; explicit unsupported-operation guards; not yet exposed in the OCCT 7.9 FreeCAD GUI |
+| OCCT-native single-face persistence | Experimental schema 1, isolated OCCT 8.1 tests | Sphere/gyroid, domain, tolerance, placements/orientation; no child topology, mesh, generic B-Rep/OCAF or FCStd support |
 | Native OCCT implicit-face Boolean | Unsupported | Requires geometry/topology/algorithm dispatch work |
 | Local B-spline bridge | Experimental, tested | Native height charts; sampled field/normal validation; open face only |
 | STEP export | Local fitted open-face round-trip tested | Whole implicit solid export remains unsupported |
@@ -40,7 +41,7 @@
 The user selected **0.1 mm geometric tolerance** and explicitly requested native
 OCCT faces. The [native representation/query foundation](occt-native-faces.md)
 is now implemented and conformance-tested in rebuilt OCCT 8.1 libraries. Next
-native gates are persistence, field-aware consumer/meshing dispatch, trim and
+native gates are field-aware consumer/meshing dispatch, graph/topology persistence, trim and
 intersection topology, Boolean splitting/history and a wholly OCCT-8-linked
 FreeCAD build. These are not completed by attaching a field to a face. See the
 [accuracy policy](accuracy-policy.md); field residuals are not millimetre errors.

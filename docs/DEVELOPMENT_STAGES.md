@@ -56,9 +56,10 @@ different completion criteria.
    intersections and BOP integration. Require conformance tests and a full OCCT
    toolkit build/regression run; a new class name or triangulation is insufficient.
    The first native field-backed face storage/query layer now exists in OCCT 8.1
-   with 11 isolated conformance cases and UV/persistence rejection guards.
+   with 14 isolated conformance cases and UV/generic-persistence rejection guards.
+   Explicit schema-1 single-face sphere/gyroid persistence is implemented;
    The user's target is 0.1 mm geometric accuracy; native trimming, BOP, field
-   persistence, full-toolkit conformance and FreeCAD exposure remain open.
+   graph/topology persistence, full-toolkit conformance and FreeCAD exposure remain open.
 6. Cross-workbench and scale: explicit consumer contracts for FEM/CAM/mesh,
    container/App::Link and cross-document behavior, systematic cache budgets,
    optional SIMD/GPU backends and reproducible accuracy/performance measurements.

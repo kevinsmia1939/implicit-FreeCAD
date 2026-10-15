@@ -4,7 +4,7 @@ The user authorized proceeding with OCCT-native faces at a **0.1 mm geometric
 tolerance target**. This increment implements a field-backed `TopoDS_Face`
 representation and explicit native queries in the OCCT 8.1 fork. It is **not**
 full implicit B-Rep support: wires/trimming topology, meshing, global validation,
-generic Boolean dispatch, persistence/exchange and FreeCAD integration remain
+generic Boolean dispatch, general B-Rep persistence/exchange and FreeCAD integration remain
 unsupported. See [accuracy policy](accuracy-policy.md).
 
 ## Representation and contracts
@@ -81,11 +81,58 @@ silently losing the field or inventing a surface. Generic algorithms that
 require these paths are not supported. **Do not assume every legacy entrypoint
 has been audited or try ordinary BOP/meshing/validation on this subtype.**
 Writers may have emitted partial output before an exception; discard failed
-exports. A versioned field/topology persistence format is still needed.
+exports. Use the explicit single-face format below for supported primitives;
+general field/topology persistence is still needed.
 
 Consumers must be rebuilt against the fork: inline Surface guards cannot be
 retroactively installed into binaries compiled with older headers. The changes
 are experimental source-level contracts, not a binary compatibility promise.
+
+## Explicit single-face persistence (schema 1)
+
+`BRep_ImplicitIO::Write(face, ostream)` and `Read(istream, face)` provide a
+separate experimental stream format, beginning with `OCCT_IMPLICIT_FACE 1`.
+It is **not** ASCII/binary BRep, FCStd, OCAF or STEP support. Generic serializer
+guards remain unchanged. It stores exactly one childless native face:
+
+- Exact sphere or gyroid primitive parameters (custom fields and derived
+  equations are rejected, not serialized as their base class).
+- Finite local minimum/maximum, positive raw stored geometric tolerance and
+  all four face orientations.
+- Geometry and face-instance transforms separately, including rigid placement,
+  uniform scale and reflection. Datum identity/sharing is not preserved.
+
+Numbers use classic-locale text at double round-trip precision. The reader
+consumes through EOF with a 64 KiB limit, rejects unknown versions, trailing
+data, invalid/nonfinite parameters, singular transforms, shear and nonuniform
+scale. Transform validation precedes OCCT's orthogonalizing matrix loader;
+reconstruction differences above relative `1e-12` are rejected. Normal
+floating-point reconstruction error is possible, not an exact matrix-bit
+identity guarantee.
+
+The writer preflights before touching its output: unsupported fields, child
+topology (including wires) and invalid data cannot produce a partial record.
+Actual stream I/O failure may still leave partial output; discard it. Standard
+stream exceptions propagate if enabled by the caller. The
+reader replaces its destination only after complete validation and rejects a
+locked destination before consuming input. Shape flags and triangulations are
+not persisted; a restored face has standard builder flags and no display mesh.
+The field remains authoritative and model units remain caller-owned.
+
+```cpp
+std::ostringstream saved;
+BRep_ImplicitIO::Write(face, saved);
+std::istringstream input(saved.str());
+TopoDS_Face restored;
+BRep_ImplicitIO::Read(input, restored);
+```
+
+Tests cover both primitives, all orientations, combined translated/rotated/
+scaled/reflected placements, gradient/value parity, cache omission, truncation
+at every prefix, unknown schemas/types, trailing/oversized input, invalid
+transforms, lock protection, stream failures and non-default decimal locale.
+The restored sphere retains 0.1 mm ray brackets and analytic-root error checks;
+this is not a whole-surface geometric accuracy or coverage certificate.
 
 ## Isolated build and tests
 
@@ -120,14 +167,15 @@ The GTest source is also registered in the OCCT TKBRep GTests manifest. The
 isolated harness deliberately builds just these tests, not the full upstream
 test suite or every modeling/exchange toolkit.
 
-Captured verification: all **11 native-face GTest cases passed**; the combined
+Captured verification: all **14 native-face GTest cases passed**; the combined
 suite including existing FreeCAD/OCCT 7.9 regressions passed **21/21 CTest entries**
-in 24.02 seconds. Runtime library dependencies were checked to use exclusively
+in 23.00 seconds. Runtime library dependencies were checked to use exclusively
 the rebuilt OCCT 8.1 libraries for the isolated native-face executable.
 
 ## Next gates
 
-1. Versioned native field/face persistence and explicit geometry dispatch audits.
+1. Extend persistence to future field graphs/topology only alongside explicit
+   schema/dispatch contracts; the primitive single-face format is implemented.
 2. Field-aware meshing and bounding/selection consumers, with geometry-error and
    coverage criteria distinct from field residuals.
 3. Trim regions, boundary curves/chart contracts, singularities and intersections.
