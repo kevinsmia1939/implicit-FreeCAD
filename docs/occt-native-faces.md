@@ -3,9 +3,13 @@
 The user authorized proceeding with OCCT-native faces at a **0.1 mm geometric
 tolerance target**. This increment implements a field-backed `TopoDS_Face`
 representation and explicit native queries in the OCCT 8.1 fork. It is **not**
-full implicit B-Rep support: wires/trimming topology, meshing, global validation,
+full implicit B-Rep support: general trimming topology, meshing, global validation,
 generic Boolean dispatch, general B-Rep persistence/exchange and FreeCAD integration remain
 unsupported. See [accuracy policy](accuracy-policy.md).
+The subsequent [restricted sphere vertical slice](native-sphere-operations.md)
+adds sphere-plane predicates/circle wires, two-sphere Boolean boundaries,
+sphere-specific geometric-bound meshing and process-isolated GUI examples.
+That does not supply general gyroid trimming, BOP or validated solids.
 
 ## Representation and contracts
 
@@ -167,18 +171,21 @@ The GTest source is also registered in the OCCT TKBRep GTests manifest. The
 isolated harness deliberately builds just these tests, not the full upstream
 test suite or every modeling/exchange toolkit.
 
-Captured verification: all **14 native-face GTest cases passed**; the combined
+At the primitive-persistence milestone, all **14 native-face GTest cases passed**; the combined
 suite including existing FreeCAD/OCCT 7.9 regressions passed **21/21 CTest entries**
 in 23.00 seconds. Runtime library dependencies were checked to use exclusively
 the rebuilt OCCT 8.1 libraries for the isolated native-face executable.
+The restricted sphere increment expands this to 19 native cases and 23 combined
+entries (26.47 seconds in the final run); see `native-sphere-operations.md` for the new contracts.
 
 ## Next gates
 
 1. Extend persistence to future field graphs/topology only alongside explicit
    schema/dispatch contracts; the primitive single-face format is implemented.
-2. Field-aware meshing and bounding/selection consumers, with geometry-error and
+2. General field-aware meshing and bounding/selection consumers, with geometry-error and
    coverage criteria distinct from field residuals.
-3. Trim regions, boundary curves/chart contracts, singularities and intersections.
+3. General trim regions, boundary curves/chart contracts, singularities and intersections;
+   the current sphere-plane circle/predicate contract is only a restricted seed.
 4. Classification, splitting and history integration in native Boolean algorithms.
 5. A FreeCAD build linked wholly to the OCCT fork before exposing the new native
    face through Part; no mixing with the current 7.9 executable.

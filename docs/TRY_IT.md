@@ -13,6 +13,13 @@ temporary preferences and isolates installed addons. The ordinary system
 
 ## What to try
 
+New OCCT-core examples: the Native Implicit menu now also has experimental
+**OCCT sphere trim/common/fuse/cut** commands. These reconstruct restricted native
+sphere boundaries in an isolated OCCT 8 worker, while the GUI stays on OCCT 7.9.
+Edit centres/radii, plane settings and `GeometricTolerance` (default 0.1 mm).
+They are not Part solids or general gyroid Booleans. See
+[build, try and limitations](native-sphere-operations.md#build-try-and-verify).
+
 New inspection tools: select a native field in the tree, then choose **Probe
 selected implicit surface** in Native Implicit and left-click a surface location
 (right-click cancels). Open **View > Panels > Report view** to see mathematical

@@ -4,11 +4,48 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `d891427f11` on
-`feature/native-implicit`, OCCT `df05db9b07` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `1ed832505a` on
+`feature/native-implicit`, OCCT `4ba228482d` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: explicit OCCT-native single-face persistence
+## Current increment: restricted native sphere trimming/Boolean/GUI vertical slice
+
+OCCT now has `BRep_TImplicitSpherePatch` (sphere + plane predicate + exact circle
+wire) and `BRep_ImplicitSphereOps` for transverse plane trims and two-sphere
+common/fuse/cut boundary decomposition. Transverse results share a circle edge;
+orientation, operand provenance, disjoint/containment/cavity cases and immutable
+inputs are covered. Near-tangent/coincident or tolerance-ambiguous cases,
+non-sphere fields, incomplete input domains and nested trims reject explicitly.
+This is a compound of native boundary faces, not a validated solid or general
+`BRepAlgoAPI`/BOP support. No fake UV surface or mesh-face substitution is used.
+
+A sphere-specific display mesher has a geometric parameter-interpolation bound
+and precision/resource guards, tested at the 0.1 mm target. It does not mesh
+gyroids, cap trimmed patches or weld result meshes across shared analytic edges.
+Patch domain/ray filtering honors the plane; sampled roots still have the
+documented completeness and near-trim-boundary limitations. Schema-1 persistence
+rejects the trim subtype even after children are removed, preventing field loss.
+
+The OCCT 8 worker executable runs these native operations in a separate process.
+The in-tree FreeCAD `ImplicitNative.py` GUI adapter adds editable experimental
+sphere/trim/common/fuse/cut examples. It persists mathematical recipe properties,
+reconstructs native geometry on restore and displays transient retained Coin
+buffers. It never places OCCT 8 handles in the current OCCT 7.9 GUI/Part process
+or fills a `Part::Feature::Shape`. This is Python GUI integration inside the
+native module, not a new C++ native geometry property or wholly OCCT-8 FreeCAD.
+Worker calls currently block recompute with a timeout; global async budgets and
+semantic selection/operand linking remain future work.
+
+All **19 native GTest cases** and **23/23 combined CTest entries** passed
+(26.47 seconds in the final run), including new worker protocol and fork GUI/FCStd tests plus
+all previous GUI, command-line and mixed Part regressions. `ldd` verifies the
+worker loads only OCCT 8.1 libraries; no system libraries/packages changed.
+Only TKBRep/dependencies, the isolated test/worker project and FreeCAD
+`ImplicitScripts` were built. General trimming/intersections/BOP, topology
+persistence, validated solids, gyroid accuracy and in-process Part exposure
+remain open. See [native sphere contracts/try guide](native-sphere-operations.md).
+
+## Previous increment: explicit OCCT-native single-face persistence
 
 `BRep_ImplicitIO` now provides experimental schema-1 stream persistence for a
 single childless native sphere/gyroid face. The authoritative equation,

@@ -23,8 +23,14 @@ already satisfy a whole-model accuracy or manufacturing acceptance certificate.
   establish a 0.1 mm geometric approximation. A manufacturing bridge must measure
   or conservatively bound geometric error separately, validate boundaries,
   topology and solids, and explicitly reject unmet targets.
+- The restricted native sphere/plane-patch mesher now reports a geometric
+  parameter-interpolation bound in model-length units and reserves a numerical
+  coordinate margin. It is tested at 0.1 mm. This analytic sphere-only bound is
+  not a gyroid bound, interval-arithmetic floating-point proof, result-mesh
+  welding guarantee or whole-solid manufacturing certificate. See
+  [sphere operations](native-sphere-operations.md).
 
 The first native OCCT-face layer stores and evaluates the mathematical field
 directly; it is not a mesh or B-spline approximation. The new ray tests exercise
-the 0.1 mm bracket policy. Generic BOP, trimming, persistence and exchange support
+the 0.1 mm bracket policy. Generic BOP, general trimming, topology persistence and exchange support
 remain separate milestones, not implied by native geometry storage.

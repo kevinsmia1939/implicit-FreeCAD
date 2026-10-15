@@ -144,7 +144,12 @@ target**. The first native representation/query increment now exists in OCCT 8.1
 `Geom_ImplicitField`, a `BRep_TImplicitFace` subtype, builder/tool dispatch and
 field-aware queries, with guarded rejection of UV access and lossy persistence.
 Explicit schema-1 single-face sphere/gyroid persistence is now implemented;
-general B-Rep/OCAF persistence and child topology remain unsupported.
+general B-Rep/OCAF persistence, including child topology, remains unsupported.
+Restricted sphere-plane trimming and two-sphere Boolean boundary splitting now
+have explicit native predicates, exact shared circle edges and source mapping.
+Sphere-only geometric-bound meshing and an isolated-worker Python GUI adapter
+are tested. They do not complete general trimming/BOP or in-process native Part
+exposure; see [restricted sphere contracts](native-sphere-operations.md).
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

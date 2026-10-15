@@ -56,10 +56,15 @@ different completion criteria.
    intersections and BOP integration. Require conformance tests and a full OCCT
    toolkit build/regression run; a new class name or triangulation is insufficient.
    The first native field-backed face storage/query layer now exists in OCCT 8.1
-   with 14 isolated conformance cases and UV/generic-persistence rejection guards.
+   with 19 isolated conformance cases and UV/generic-persistence rejection guards.
    Explicit schema-1 single-face sphere/gyroid persistence is implemented;
-   The user's target is 0.1 mm geometric accuracy; native trimming, BOP, field
-   graph/topology persistence, full-toolkit conformance and FreeCAD exposure remain open.
+   Restricted analytic sphere trimming, two-sphere Boolean boundaries and a
+   sphere-specific geometric-bound mesher are implemented. An in-tree Python
+   adapter exposes editable GUI examples via an isolated OCCT 8 worker while
+   FreeCAD remains on OCCT 7.9. This is not a validated solid or Part handle.
+   The user's target is 0.1 mm geometric accuracy; general native trimming/BOP,
+   field graph/topology persistence, full-toolkit conformance and in-process
+   OCCT-8 FreeCAD exposure remain open. See `native-sphere-operations.md`.
 6. Cross-workbench and scale: explicit consumer contracts for FEM/CAM/mesh,
    container/App::Link and cross-document behavior, systematic cache budgets,
    optional SIMD/GPU backends and reproducible accuracy/performance measurements.

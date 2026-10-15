@@ -17,7 +17,8 @@ with nTop in field composition, lattices, performance, and interoperability.
 The user's original brief is `instructions.txt`. Its initial Phases 1–3 have
 working prototypes; later work added plane intersections and an in-tree native
 FreeCAD module. Mixed operations in field space exist; manufacturing B-Rep
-results and native OCCT implicit-face operations are still future work.
+results and general native OCCT implicit-face operations are still future work;
+restricted analytic sphere trimming/Boolean boundaries now exist.
 
 | Location | Purpose |
 |---|---|
@@ -165,6 +166,21 @@ licenses remain applicable to their respective code.
     locale validation, I/O failures and retained 0.1 mm ray brackets. Generic
     BRepTools/BinTools, OCAF, FCStd and STEP persistence remain unsupported for
     these OCCT-native faces. The existing FreeCAD graph persistence is separate.
+18. Restricted analytic native sphere operations (OCCT `4ba228482d`, FreeCAD `1ed832505a`): `BRep_TImplicitSpherePatch`
+    retains a plane predicate and exact 3D circle wire. `BRep_ImplicitSphereOps`
+    trims a sphere and computes common/fuse/cut boundary decompositions for two
+    spheres, with shared transverse circle edges and source provenance. It
+    rejects tangencies/uncertain cases and nested/non-sphere operations. Results
+    are boundary face compounds, NOT validated solids or generic BOP support.
+    A sphere-specific mesher reports a geometric interpolation bound at the
+    0.1 mm target; no general gyroid/whole-model certificate follows.
+    An isolated OCCT 8 worker and in-tree FreeCAD `ImplicitNative.py` adapter
+    expose editable experimental sphere commands through transient Coin buffers.
+    FCStd stores recipe properties and reconstructs geometry on restore, not
+    native OCCT topology. The current GUI remains OCCT 7.9; no ABI mixing or
+    native handles in Part. Nineteen native conformance cases and all 23 combined
+    CTest entries pass (26.47 seconds in the final run). See `native-sphere-operations.md` for
+    exact supported cases, build/try commands, toolchain boundaries and next gates.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -172,7 +188,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**21/21** with the isolated native-face executable registered, including scalar
+**23/23** with the isolated native-face executable and worker GUI/protocol tests registered, including scalar
 controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers. Separately, OCCT 8.1
@@ -264,10 +280,15 @@ tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 21 tests when the isolated OCCT-face executable is registered (20 otherwise).
-The native-face entry contains 14 GTest cases. See `occt-native-faces.md` for its
+has 23 tests with the isolated OCCT-face executable and worker tests registered
+(21 without worker tests, 20 without native-face tests either).
+The native-face entry contains 19 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
+The new worker/GUI tests additionally use the executable-path cache option
+`IMPLICIT_OCCT_NATIVE_WORKER`; see `native-sphere-operations.md`. Rebuild only
+`ImplicitScripts` for this Python GUI adapter increment; FreeCAD's C++ linkage
+remains OCCT 7.9. The isolated worker/test harness links only OCCT 8.1.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
@@ -310,7 +331,9 @@ for the current combined run.
 - Cylinder contours are implemented in the standalone engine. Capped gyroid-band
   visualization and mixed B-Rep/implicit field operations are implemented.
   General trimming topology, uniform physical thickness, native OCCT implicit
-  face Booleans and a whole-solid manufacturing/STEP bridge remain open. Local
+  general face Booleans and a whole-solid manufacturing/STEP bridge remain open.
+  Restricted sphere-plane trims and two-sphere native Boolean boundaries are now
+  implemented, with process-isolated experimental GUI exposure, not valid Part solids. Local
   B-spline open-face fitting, clipping and STEP round-trip are now tested.
 - Both engines now support local projection and sampled rays. Native projection
   reports stationary-point convergence/failure, not a globally nearest point;
@@ -329,9 +352,12 @@ cells. The user has now selected **0.1 mm geometric tolerance** and directed
 OCCT-native face development; minimum feature size remains unspecified. The
 native storage/query foundation is implemented, but no whole-model production
 accuracy, trimming, BOP or general native B-Rep persistence claim follows from it.
-Primitive single-face persistence is now implemented; the immediate native
-milestone is field-aware meshing with explicit geometric-error/coverage limits,
-then boundary/trim contracts. Do not route these faces through generic BRepMesh.
+Primitive single-face persistence and restricted sphere trimming, Boolean
+boundaries, geometric-bound meshing and process-isolated GUI exposure are now
+implemented. The immediate native milestone is general intersection/trim
+contracts (including gyroids and singularities), shared topology-aware meshing,
+then generic splitting/classification/history and full native persistence.
+Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,
