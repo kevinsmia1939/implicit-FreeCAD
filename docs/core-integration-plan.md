@@ -90,6 +90,11 @@ GUI and persistence paths are tested; `Part`, `PartGui`, and `PartScripts` are
 built on the development machine. These changes do not provide an OCCT implicit
 face or a manufacturing B-Rep approximation.
 
+Opt-in background viewport extraction is now implemented with a bounded worker,
+coalesced requests, cancellation and snapshot/generation-checked main-thread
+uploads. It does not move document recompute, B-Rep validation or Coin uploads off
+the GUI thread. Global memory budgets and broader scheduling remain future work.
+
 This is the document-model and kernel seam, not completion of Stage F1. A
 dedicated complex-geometry property, shared-node/DAG representation, richer
 field nodes, field-aware selection and variable-resolution surface extraction

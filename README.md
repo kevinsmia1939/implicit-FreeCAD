@@ -114,6 +114,8 @@ module currently provides:
 - conservative octree sampling through `Implicit.tessellateAdaptive`, plus
   scalar batch evaluation and compiled-graph caching;
 - a native C++ view provider with retained Coin buffers and display properties;
+- opt-in [background viewport meshing](docs/background-meshing.md), with bounded
+  jobs, cancellation and stale-result suppression;
 - a Native Implicit workbench with editable primitives, bands and live linked Booleans;
 - optional live Part inputs, B-Rep signed-distance snapshots and mixed field
   composition using the OCCT fork extension;

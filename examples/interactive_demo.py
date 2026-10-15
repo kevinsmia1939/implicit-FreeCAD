@@ -51,6 +51,9 @@ def create_demo():
         "left": {"type": "sphere", "center": [0, 0, 0], "radius": 6},
         "right": {"type": "sphere", "center": [4, 0, 0], "radius": 5}}}))
     document.recompute()
+    if os.environ.get("IMPLICIT_BACKGROUND_MESHING") == "1":
+        for obj in document.Objects:
+            obj.ViewObject.BackgroundMeshing = True
     Gui.activeDocument().activeView().viewAxonometric()
     Gui.activeDocument().activeView().fitAll()
     Gui.Selection.clearSelection()

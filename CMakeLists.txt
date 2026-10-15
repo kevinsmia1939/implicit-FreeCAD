@@ -39,6 +39,18 @@ if(IMPLICIT_BUILD_TESTS)
             set_tests_properties(implicit_native_gui PROPERTIES
                 ENVIRONMENT "IMPLICIT_TEST_PART_BRIDGE=1")
         endif()
+        add_test(NAME implicit_async_gui COMMAND "${IMPLICIT_NATIVE_FREECADGUI}"
+            --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/implicit-async-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/implicit-async-system.cfg"
+            "${CMAKE_CURRENT_SOURCE_DIR}/FreeCAD/src/Mod/Implicit/Tests/async_gui_smoke.py")
+        set_tests_properties(implicit_async_gui PROPERTIES
+            PASS_REGULAR_EXPRESSION "native implicit async GUI smoke test passed"
+            FAIL_REGULAR_EXPRESSION "Traceback" TIMEOUT 180)
+        if(IMPLICIT_NATIVE_PART_TESTS)
+            set_tests_properties(implicit_async_gui PROPERTIES
+                ENVIRONMENT "IMPLICIT_TEST_PART_BRIDGE=1")
+        endif()
     endif()
     if(IMPLICIT_NATIVE_FREECADCMD)
         if(NOT EXISTS "${IMPLICIT_NATIVE_FREECADCMD}")

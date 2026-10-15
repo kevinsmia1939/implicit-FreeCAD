@@ -19,6 +19,7 @@
 | Native batches | Implemented | Scalar batch API and cached compiled graph |
 | Live document composition | Implemented and native command-line/GUI tested | Source links, rigid placements, signs, band/offset and direct Part dispatch |
 | Python extraction cancellation | Implemented and runtime-tested | Atomic one-shot token, GIL released during native extraction |
+| Background viewport extraction | Implemented, opt-in and GUI-tested | One worker, request coalescing, cancellation and checked main-thread uploads |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
 | Cylinder intersection | Implemented in standalone engine | Refined chart roots and periodic seam joining; tangencies unsupported |
 | Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
@@ -40,6 +41,12 @@ The current increment replaces workbench snapshots with document-linked
 operations, adds direct Part operands, GIL release/cancellation, and a native
 viewport benchmark. These do not complete the manufacturing or OCCT-native face
 stages. Remaining work is evaluated by the acceptance gates below.
+
+The subsequent background increment adds opt-in asynchronous viewport extraction
+with bounded concurrency, stale-result suppression and safe lifecycle handling.
+Full document recompute, source validation and Coin uploads remain synchronous;
+global memory budgets and field-aware picking are still open. See
+[`background-meshing.md`](background-meshing.md).
 
 Remaining stages:
 

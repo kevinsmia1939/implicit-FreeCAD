@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-15. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
-FreeCAD GUI, live Part dependencies, cancellation, benchmarks and OCCT core increments.
+FreeCAD GUI, live Part dependencies, background meshing, benchmarks and OCCT core increments.
 The user has authorized implementation, commits and pushes in both core source
 trees. This file records the state of the code, not a claim
 that all goals in the original brief are complete.
@@ -104,6 +104,11 @@ licenses remain applicable to their respective code.
    GUI path; both interactive demos pass checks. Part/PartGui/PartScripts are
    built. Viewport/intersection benchmarks are recorded; cylinder chart tolerance
    now accounts for radius. See `PROGRESS.md` for measured scope and limitations.
+10. Background viewport extraction (FreeCAD `4615917cde`): opt-in per-view jobs on one bounded Qt
+    worker, request coalescing, atomic cancellation, generation/snapshot-checked
+    uploads, cache reuse, hidden/deleted/restored provider handling and status
+    diagnostics. The combined suite passes 14 tests; both demos support
+    `--background`. See `docs/background-meshing.md` for architecture and limits.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -111,7 +116,7 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**13/13**, including the mixed fork GUI on Xvfb; see results
+**14/14**, including synchronous and background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
 has not been performed. The earlier addon GUI tests used installed FreeCAD.
@@ -194,15 +199,15 @@ FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
 ```
 
 Without a native build, omit `IMPLICIT_NATIVE_FREECADCMD` (or set it to an empty
-string to clear a cached setting). Standard CTest then has four tests on this
-host; enabling the native executable adds two for six total. Enabling the OCCT
-distance extension adds its C++ test and the native mixed test for eight total
-when both native flags are configured. GTest adds one more test when found;
-`IMPLICIT_NATIVE_FREECADGUI` optionally adds the GUI test (requires DISPLAY).
-Installed
-`FreeCADCmd` cannot import this fork's `Implicit` module. Python scripts can
-print tracebacks even when FreeCADCmd exits successfully: CTest explicitly checks
-for success markers and failure patterns for the two native tests.
+string to clear a cached setting). NativeCmd now registers four native tests;
+the Part option adds one more. NativeGUI registers synchronous and async GUI
+tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest,
+and the native mixed snapshot test when NativeCmd is present. Other standalone,
+addon and OCCT-probe tests depend on detected/configured components; inspect
+`ctest --test-dir build -N` for the actual set. The complete host configuration
+has 14 tests. Installed `FreeCADCmd` cannot import this fork's native module.
+Python scripts can print tracebacks while exiting successfully: CTest explicitly
+checks success markers and failure patterns for the native tests.
 
 `ENABLE_DEVELOPER_TESTS=OFF` avoids the dependency and cost of FreeCAD-wide
 GoogleTest targets. Native module tests are registered inside FreeCAD only with
@@ -212,15 +217,17 @@ The native command-line test set now also includes `linked_smoke.py` and
 `cancellation_smoke.py`. `IMPLICIT_NATIVE_PART_TESTS=ON` additionally registers
 `part_linked_smoke.py` and enables direct mixed-selection/B-Rep commands inside
 the GUI regression. Do not enable that flag with an older or Part-less build.
-The earlier six-/ten-test counts below are historical; consult `PROGRESS.md`
+The separate `implicit_async_gui` test checks background jobs and uses the same
+optional Part flag for B-Rep source coverage.
+The earlier six-/ten-/thirteen-test counts are historical; consult `PROGRESS.md`
 for the current combined run.
 
 ## Remaining limits
 
 - The native GUI provider and workbench cover basic display and live linked
-  commands. Field-aware semantic picking and background GUI scheduling remain open.
+  commands. Field-aware semantic picking and whole-workflow async scheduling remain open.
 - The graph lives in `App::PropertyString`; there is no dedicated complex geometry
-  property, shared-node DAG, graph editor or SIMD/GPU backend. Scalar batch
+  property, shared-node JSON DAG format, graph editor or SIMD/GPU backend. Scalar batch
   evaluation and compiled-graph caching are now implemented.
 - The native extractor has uniform and conservative octree-pruned sampling paths.
   Refining edge roots improves vertex residuals, not triangle-interior error or
@@ -229,7 +236,9 @@ for the current combined run.
 - Native extraction uses 2–64 cells per axis and limits vertices and triangles
   independently to one million. It retains full grid samples, a root map, and
   Python result copies. Python extraction now releases the GIL and supports
-  cancellation tokens; the GUI still extracts synchronously without a scheduler.
+  cancellation tokens. The GUI has opt-in background extraction, with one worker
+  and per-view request coalescing; Part recompute, snapshots and Coin uploads
+  remain synchronous, and global snapshot/cache budgets remain open.
 - Root positions and native scalar APIs are local to the feature. Rendering must
   apply `Placement` once. Domain clipping does not generate caps. Sphere/shell
   connectivity checks do not guarantee topology for arbitrary graphs.
@@ -255,15 +264,15 @@ for the current combined run.
    refinement levels, transition handling, cancellation and explicit budgets.
    Test topology across coarse/fine cells and measure performance separately
    from viewport upload. Do not prune cells merely because all corners agree.
-3. **Field usability:** batch evaluation is implemented; shared-node graph representation,
+3. **Field usability:** batch evaluation is implemented; shared-node JSON graph representation,
    dimensional contracts, more transforms, band/shell nodes and distance estimates.
    A level-set band must remain distinct from physical thickness.
 4. **Geometry operations:** cylinder contour tracing and capped visualization
    bands are implemented; general domain boundaries,
    capped visualization solids and quantitative distance/offset validation.
 5. **Mixed representation:** snapshot fields and mixed composition are implemented;
-   live Part source links and direct Part operand dispatch are added in the current
-   increment. Strengthen container/App::Link tests, measure approximation error
+   live Part source links and direct Part operand dispatch are implemented and
+   tested. Strengthen container/App::Link tests, measure approximation error
    separately from the OCCT distance/classification tolerance, and document costs.
 6. **Manufacturing bridge:** local charts and fitted B-spline patches, common
    boundaries/p-curves, sewing and shape validation, then OCCT Booleans and STEP

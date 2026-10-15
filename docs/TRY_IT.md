@@ -72,6 +72,19 @@ Only the mixed result is visible. Edit `Band.Amount` (dimensionless),
 The result follows those inputs. You can inspect `Left`/`Right` in Data and save
 the document with all dependencies intact.
 
+To opt into background extraction for subsequent edits:
+
+```sh
+bash tools/launch_demo.sh --live-part --background
+```
+
+Or enable **View > Meshing > BackgroundMeshing** on an existing native field.
+`Meshing` and `MeshStatus` report pending work; set `CancelMeshing` to true to
+cancel it. The initial demo model is built synchronously, then the flag enables
+background updates. Part recompute, field snapshots and Coin upload still run on
+the GUI thread. See [background meshing](background-meshing.md) for the precise
+ownership, scheduling and limitation contracts.
+
 ## Automated checks
 
 ```sh

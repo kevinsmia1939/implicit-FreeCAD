@@ -121,9 +121,11 @@ regression-tested on enclosed spheres and a hollow sphere, without a general
 topology or watertightness guarantee. Vertices and triangles each have a one
 million element budget; exceeding either raises an error. Native Python
 extraction releases the GIL after capturing immutable geometry; argument parsing
-and Python-result conversion still hold it. There is no background GUI scheduler
-yet. The native `ImplicitGui::ViewProviderShape`
-consumes and caches the extractors; view properties control resolution,
+and Python-result conversion still hold it. Python tessellation calls remain
+synchronous. The native `ImplicitGui::ViewProviderShape` also
+offers opt-in `BackgroundMeshing` with bounded/coalesced jobs, cancellation and
+generation-checked uploads; see [the background contract](background-meshing.md).
+The provider consumes and caches the extractors; view properties control resolution,
 adaptive sampling, color and shaded/wire/flat-line modes. Adaptive display
 rounds the requested resolution up to the next power of two. Workbench Boolean
 commands create live links, including direct single-solid Part operands when

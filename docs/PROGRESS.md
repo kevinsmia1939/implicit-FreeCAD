@@ -4,11 +4,51 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `7d6ec00e18` on
+Implementation heads: FreeCAD `4615917cde` on
 `feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: live dependencies and extraction control
+## Current increment: opt-in background viewport extraction
+
+`ImplicitGui::ViewProviderShape.BackgroundMeshing` now offers experimental
+background extraction; the default remains synchronous. A module-local Qt
+Concurrent pool allows one viewport extraction at a time. Each provider has one
+dispatched job and one replaceable pending request, so rapid edits coalesce.
+Immutable `Shape` snapshots and atomic cancellation flags are the only worker
+inputs. Document objects, Python, Coin nodes and widgets stay on the GUI thread.
+
+Completed meshes upload only if their generation is still current and the
+native feature accepts the snapshot identity/domain/inside convention. They
+populate the existing display cache, including reuse after switching back to
+synchronous mode. Geometry edits clear obsolete data and await recompute;
+invalid inputs, cancellation, hidden views, deletion and document close cannot
+resurrect an obsolete result. Retained Coin nodes are reused. Tolerance-only
+definition edits now notify cache revision changes as well, avoiding a blank
+background view waiting forever for a recompute notification.
+
+`CancelMeshing` is a self-resetting action. `Meshing`, `MeshStatus`, request and
+displayed generation IDs, and `MeshJobCount` expose transient diagnostics.
+The enabled mode persists in FCStd; meshes/jobs/diagnostics do not. There is no
+whole-document async recompute or global memory budget: source Part recompute,
+B-Rep snapshots/validation, graph compilation and Coin uploads can still block.
+Cancellation cannot interrupt a single OCCT query mid-call. See
+[`background-meshing.md`](background-meshing.md) for the full contract.
+
+All **14 combined CTest tests passed** (19.82 seconds in the captured final run),
+including the new async GUI regression with live Part coverage. The regression
+checks GUI heartbeat during extraction, coalescing, stale suppression, retained
+nodes, final coordinates/counts, cache reuse, mode switching, tolerance/error
+recovery, empty results, hidden views, cancellation, live B-Rep edits/deletion,
+provider deletion/document close with outstanding jobs, and restore. The async
+test also passed three consecutive final repeat runs (17.84 seconds total) to
+stress lifecycle handling, including the final result-cleanup path.
+Both demo launchers passed
+checks with `--background`, including a live Part edit followed by async upload.
+
+Try `bash tools/launch_demo.sh --live-part --background`. The demo first builds
+its initial model synchronously, then enables background extraction for edits.
+
+## Live dependencies and extraction control
 
 Native `Implicit::Feature` now has document schema 3 with `Operation`, `Left`,
 `Right`, `Amount`, and `AutoDomain`. Definitions retain schema-1 JSON or editable
@@ -42,9 +82,10 @@ silently become live objects.
 Python extraction and the scalar batch numeric loop release the GIL after
 capturing immutable geometry. One-shot atomic cancellation tokens interrupt
 sampling/root extraction, returning an explicit error instead of partial mesh
-data. No background GUI scheduler, interruption inside a single OCCT query, or
-cancellable Python-container conversion is claimed. FreeCAD document APIs must
-still be called from the main thread.
+data. These Python calls remain synchronous; optional background GUI scheduling
+is added by the later increment above. Neither interruption inside a single
+OCCT query nor cancellable Python-container conversion is claimed. FreeCAD
+document APIs must still be called from the main thread.
 
 The OCCT signed-distance evaluator now retains the fixed boundary operand's
 distance-query maps/bounds between points. Additional native GoogleTests check
@@ -204,7 +245,7 @@ The following are not completed by these increments:
 - native complex-geometry property, shared-node JSON DAG format and graph editor
   (document-level source-link DAGs are now implemented);
 - field-aware semantic picking and broader container/App::Link integration tests;
-- asynchronous GUI scheduling, SIMD/GPU and cache budgets;
+- whole-workflow async scheduling, SIMD/GPU and global cache/snapshot budgets;
 - variable-resolution surface cells, transition meshing, rigorous approximation
   error control, broader topology and singularity tests;
 - general plane-box polygon clipping, trimming topology and validated distance

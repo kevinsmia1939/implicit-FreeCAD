@@ -37,6 +37,10 @@ result.ViewObject.SurfaceColor = (0.2, 0.7, 0.85)
 doc.recompute()
 for source in (box, gyroid, band):
     source.Visibility = False
+if os.environ.get("IMPLICIT_BACKGROUND_MESHING") == "1":
+    # Opt in after the initial model has been built. Subsequent edits extract
+    # in the background; source Part recompute still runs on the main thread.
+    result.ViewObject.BackgroundMeshing = True
 Gui.activeDocument().activeView().viewAxonometric()
 Gui.activeDocument().activeView().fitAll()
 Gui.Selection.addSelection(band)
@@ -53,6 +57,22 @@ if os.environ.get("IMPLICIT_DEMO_CHECK") == "1":
     box.Length = 12
     doc.recompute()
     assert result.CacheRevision > before
+    if result.ViewObject.Meshing:
+        from PySide6 import QtCore
+        loop = QtCore.QEventLoop()
+        poll = QtCore.QTimer()
+        poll.setInterval(5)
+        poll.timeout.connect(lambda: loop.quit() if not result.ViewObject.Meshing else None)
+        deadline = QtCore.QTimer()
+        deadline.setSingleShot(True)
+        deadline.timeout.connect(loop.quit)
+        poll.start()
+        deadline.start(60000)
+        loop.exec()
+        poll.stop()
+        deadline.stop()
+        assert not result.ViewObject.Meshing, "background demo timed out"
+    assert result.ViewObject.MeshStatus == "Ready", result.ViewObject.MeshStatus
     assert result.ViewObject.TriangleCount > 0
     assert band.Left == gyroid and result.Left == box and result.Right == band
     print("live Part implicit demo verified", flush=True)

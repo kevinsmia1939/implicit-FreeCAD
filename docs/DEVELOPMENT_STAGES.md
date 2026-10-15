@@ -11,7 +11,7 @@ different completion criteria.
 |---|---|---|
 | 1: architecture | Source investigation, three-architecture comparison, executable mesh-only OCCT probe | Native-face architecture remains a separate program |
 | 2: geometry engine | Independent C++ evaluator, derivatives, local projection, sampled/refined rays, domains and tolerances | Global closest-point/root completeness and singularity robustness are not proven |
-| 3: viewport | Editable addon and native feature, retained Coin buffers, placement, save/reload, quality controls | Native semantic picking and background scheduling |
+| 3: viewport | Editable addon and native feature, retained nodes, placement, persistence, quality controls, opt-in background extraction | Native semantic picking and whole-workflow responsiveness |
 | 4: OCCT proof of concept | Dual representation, core signed-distance evaluator, mixed fields and live Part inputs | General implicit B-Rep faces and ordinary OCCT Boolean dispatch |
 | 5: geometry operations | Classification/projection/rays, sampled plane/cylinder contours, domain-clipped display, capped band fields, mixed field intersection | General trimming topology, tangencies/coincidence/singular intersections, validated CAD solid results |
 | 6: gyroid solid | Mathematical `abs(F)<=t` and `F<=c0`, finite bounding fields, closed-mesh regressions and Part field intersection | Uniform physical wall thickness and manufacturing-quality B-Rep conversion |
@@ -26,8 +26,9 @@ different completion criteria.
 2. Sampling and interaction: true variable-resolution surface cells with shared
    transition vertices; measured approximation/error criteria; topology stress
    tests; semantic field picking; background GUI jobs with cancellation, stale-job
-   suppression and memory budgets. Atomic Python extraction cancellation is only
-   one part of this stage.
+   suppression and memory budgets. Opt-in background extraction with bounded
+   concurrency and stale suppression is implemented; whole-workflow scheduling,
+   global memory budgets and richer progress remain open.
 3. Geometry robustness: arbitrary plane/domain clipping, consistent boundary
    loops, singular and tangent intersection handling, and validated distance
    estimates before exposing millimetre wall-thickness controls.

@@ -10,8 +10,11 @@ if [[ ! -x "$implicit_gui_binary" ]]; then
 fi
 export QT_QPA_PLATFORM=xcb
 implicit_demo_script="$implicit_project_dir/examples/interactive_demo.py"
-if [[ "${1:-}" == "--live-part" ]]; then
-    implicit_demo_script="$implicit_project_dir/examples/live_part_demo.py"
-    shift
-fi
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --live-part) implicit_demo_script="$implicit_project_dir/examples/live_part_demo.py"; shift ;;
+        --background) export IMPLICIT_BACKGROUND_MESHING=1; shift ;;
+        *) break ;;
+    esac
+done
 exec "$implicit_gui_binary" --safe-mode "$implicit_demo_script" "$@"
