@@ -9,7 +9,7 @@ prototype and runs against the rebuilt OCCT 8.1 kernel.
 | 1: gyroid–plane intersections | Native bounded-rectangle sections with derivative-bound acceptance, explicit unresolved diagnostics and GUI preview | General domain polygons, tangent/singular intersection resolution rather than rejection |
 | 2: trimming and geometric-bound meshing | Restricted identity-placed Z-plane split with closed, resolved loops and shared tolerance-bearing seam edges | Open/domain-side boundaries, arbitrary/nested trims, surface meshing conforming to shared seams |
 | 3: native mixed Booleans | Split/predicate groundwork only; earlier sphere-only operations and FreeCAD field-space Booleans remain separate | Gyroid/B-Rep intersections, region classification, splitting, result/history and solid validation |
-| 4: wholly OCCT-8 FreeCAD | Strict source-build selection/preflight added; required OCCT modules configured except GLTF | Missing RapidJSON headers, remaining toolkit builds, FreeCAD API migration/build/runtime tests, native persistence/consumer dispatch |
+| 4: wholly OCCT-8 FreeCAD | Strict source-build selection/preflight added; required toolkit build underway, GLTF now configured | Toolkit build completion, passing preflight, FreeCAD API migration/build/runtime tests, native persistence/consumer dispatch |
 
 ## Native section contract
 
@@ -142,21 +142,34 @@ and built and forbids falling back to installed OCCT libraries. Default installe
 OCCT discovery is unchanged. Preflight is tested with valid/incomplete and
 invalid paths; this is not a completed FreeCAD API/runtime migration.
 
-On this host, ApplicationFramework, DataExchange and Visualization now configure
-using existing dependencies, including FreeType 2.14.3. **Only the original six
-OCCT libraries have been built.** The current preflight reports 27 required
-toolkits configured but unbuilt, and `TKDEGLTF` not configured because RapidJSON
-headers are absent. `rpm` and the local openSUSE repository query confirm that
-`rapidjson-devel` is not installed and is available from repo-oss. User action:
+On this host, ApplicationFramework, DataExchange and Visualization configure
+using existing dependencies, including FreeType 2.14.3. The original preflight
+reported 27 required toolkits configured but unbuilt and `TKDEGLTF` omitted
+because RapidJSON headers were absent. The user has now installed and confirmed
+`rapidjson-devel-1.1.0+git20211015.4d6cb081-2.3.x86_64`; the package and header
+were verified. Configuration with RapidJSON enabled succeeds.
+
+The required toolkit build has started (5,202 initial compile/link steps).
+**Completion is not yet verified.** Inspect `/tmp/implicit-occt-build.log` and
+running Ninja/compiler processes before starting another build in the same
+directory. If no build is running, resume using the commands below; Ninja
+retains completed work. Configuration/build commands, using two compile jobs
+and one link job:
 
 ```sh
-sudo zypper install rapidjson-devel
+cmake -S OCCT -B build-occt-implicit \
+  -DBUILD_MODULE_ApplicationFramework=ON \
+  -DBUILD_MODULE_DataExchange=ON -DBUILD_MODULE_Visualization=ON \
+  -DUSE_RAPIDJSON=ON \
+  -DCMAKE_JOB_POOLS=occt_link=1 -DCMAKE_JOB_POOL_LINK=occt_link
+cmake --build build-occt-implicit --parallel 2 --target \
+  TKFillet TKMesh TKShHealing TKXSBase TKBool TKBO TKTopAlgo TKGeomAlgo \
+  TKOffset TKPrim TKHLR TKFeat TKExpress TKDESTEP TKDEIGES TKDEGLTF TKDESTL \
+  TKBin TKBinL TKCAF TKXCAF TKLCAF TKVCAF TKCDF TKMeshVS TKService TKV3d TKRWMesh
 ```
 
 No package was installed automatically and no system libraries were replaced.
-After the user confirms installation, configure `USE_RAPIDJSON=ON` alongside the
-three modules, build the required toolkit targets with two compile jobs and one
-link job, then rerun:
+After the toolkit build completes, rerun:
 
 ```sh
 cmake -S tests/occt_native_faces/preflight \

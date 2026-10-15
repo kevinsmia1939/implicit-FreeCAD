@@ -36,15 +36,18 @@ For requested step 4, FreeCAD's `FREECAD_OCCT_BUILD_DIR` now supports strict
 source-build target imports and rejects missing/unbuilt toolkit dependencies,
 without installed-library fallback. ApplicationFramework/DataExchange/
 Visualization configure in the existing OCCT tree using installed dependencies.
-Only the original six libraries have actually been built. Preflight currently
-reports 27 configured-but-unbuilt toolkits and `TKDEGLTF` missing because
-`rapidjson-devel` is absent. The package is available in the local openSUSE
-repository; user installation/confirmation has been requested. No packages or
-system libraries were installed/replaced, and the working FreeCAD build stays
-on OCCT 7.9. This is migration preparation, not a completed OCCT-8 FreeCAD build.
+The original dependency preflight reported 27 configured-but-unbuilt toolkits
+and `TKDEGLTF` missing because RapidJSON was absent. The user has now installed
+and confirmed `rapidjson-devel`; its package/header were verified and OCCT
+reconfiguration with `USE_RAPIDJSON=ON` succeeds, including `TKDEGLTF`.
+The required toolkit build has started with two compile jobs and one link job
+(5,202 initial compile/link steps, log `/tmp/implicit-occt-build.log`). Completion
+and a passing preflight remain unverified. No packages or system libraries were
+installed/replaced by the agent, and the working FreeCAD build stays on OCCT
+7.9. This is migration preparation, not a completed OCCT-8 FreeCAD build.
 
-All **24 native GTest cases** and **24/24 combined CTest entries** pass (25.72
-seconds in the final run after rebuilding all six kernel libraries), including
+Before the expanded dependency build, all **24 native GTest cases** and
+**24/24 combined CTest entries** passed (25.72 seconds after rebuilding all six kernel libraries), including
 the strict source-build preflight and extended GUI/protocol tests. Only TKBRep,
 the isolated harness/worker and `ImplicitScripts` were built. See
 [contracts, stage status, try commands and migration gate](native-gyroid-sections.md).

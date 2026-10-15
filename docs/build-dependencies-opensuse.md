@@ -3,13 +3,14 @@
 ## OCCT 8 migration addition (2026-10-15)
 
 The existing OCCT 7 FreeCAD build still needs no new packages for the native
-field/section work. A wholly OCCT-8-linked build has a new dependency gate:
-`rapidjson-devel` is absent, so OCCT omits `TKDEGLTF`, which FreeCAD requires.
-The local openSUSE repository query confirms the header package is available.
-The user has been asked to install it with `sudo zypper install rapidjson-devel`
-and confirm. No package installation or system-library replacement was performed.
-Other requested OCCT modules configure using existing dependencies, including
-FreeType 2.14.3. Configuration is not a completed toolkit or FreeCAD build; see
+field/section work. The user installed and confirmed
+`rapidjson-devel-1.1.0+git20211015.4d6cb081-2.3.x86_64`; the package and
+`/usr/include/rapidjson/rapidjson.h` were verified. Reconfiguration with
+`USE_RAPIDJSON=ON` succeeds and includes `TKDEGLTF`, which FreeCAD requires.
+The required OCCT toolkit build has started with two compile jobs and one link
+job. No package installation or system-library replacement was performed by
+the agent. Other requested OCCT modules configure using existing dependencies,
+including FreeType 2.14.3. Configuration is not a completed toolkit or FreeCAD build; see
 [strict migration preflight and remaining gates](native-gyroid-sections.md#occt-8-migration-dependency-gate).
 
 ## Original working-build audit

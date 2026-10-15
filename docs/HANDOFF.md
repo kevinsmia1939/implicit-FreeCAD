@@ -198,10 +198,15 @@ licenses remain applicable to their respective code.
     FreeCAD now has strict source-build selection via `FREECAD_OCCT_BUILD_DIR`,
     with a tested migration preflight prohibiting system-library fallback.
     ApplicationFramework/DataExchange/Visualization now configure in the existing
-    OCCT build, but only six libraries are built. **Migration awaits user
-    installation of `rapidjson-devel`**, then `USE_RAPIDJSON=ON`, building
-    `TKDEGLTF` plus 27 other required toolkits, and a separate whole-FreeCAD
-    API/runtime migration.
+    OCCT build. The user subsequently installed and confirmed `rapidjson-devel`;
+    its header/package were verified and reconfiguration with `USE_RAPIDJSON=ON`
+    succeeds, including `TKDEGLTF`. The required toolkit build has started
+    (5,202 initial compile/link steps, two compile jobs and one link job).
+    **The build is not yet verified complete.** Inspect
+    `/tmp/implicit-occt-build.log` and running Ninja/compiler processes before
+    starting another build in the same directory. Repeat the documented build
+    command if it has stopped; Ninja resumes completed work. A successful strict
+    preflight and separate whole-FreeCAD API/runtime migration still follow.
     Do not retarget the working OCCT 7 FreeCAD tree. See `native-gyroid-sections.md`.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
@@ -386,9 +391,10 @@ native milestone is open/domain-side trim topology, arbitrary/nested trimming
 and shared topology-aware surface meshing, plus singular/tangent resolution,
 then generic splitting/classification/history and full native persistence.
 Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
-For the wholly OCCT-8 FreeCAD build, first wait for the requested RapidJSON
-header package, enable it in the existing OCCT build and build missing toolkit
-dependencies. The new strict preflight must pass before a separate migration
+For the wholly OCCT-8 FreeCAD build, RapidJSON is now installed and enabled;
+finish the required toolkit build in the existing OCCT directory (see
+`native-gyroid-sections.md` for commands and the build log). The new strict
+preflight must pass before a separate migration
 build; passing it alone does not establish API/runtime/native persistence support.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
