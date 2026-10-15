@@ -36,6 +36,14 @@ Supported nodes are:
 | `difference` | `left`, `right` | `max(left, -right)` |
 | `translate` | `field`, `offset` | evaluates `field(p-offset)` |
 | `offset` | `field`, `amount` | `field(p) - amount` |
+| `constant` | `value` | constant scalar control |
+| `linear` | `slope`, `intercept` | `dot(slope,p)+intercept` |
+| `variable_band` | `field`, `width` | `abs(field(p))-width(p)` |
+| `smooth_union` | `left`, `right`, `blend` | polynomial smooth minimum, positive blend |
+
+See [scalar controls](scalar-controls.md) for derivative/Lipschitz formulas,
+negative-width behavior and required dimensional contracts. These widths are
+not automatically physical wall thickness; unit checking is not yet enforced.
 
 The convention is negative-inside unless `InsideNegative` is disabled on the
 feature. A positive offset amount expands a negative-inside field. Hard Boolean

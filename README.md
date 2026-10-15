@@ -105,6 +105,8 @@ module currently provides:
 - native `Implicit::Field`, `Implicit::Shape`, and `Implicit::Feature` types;
 - sphere and gyroid primitives;
 - box signed-distance and field-band nodes for bounded gyroid regions;
+- constant/linear [scalar controls](docs/scalar-controls.md), spatially varying
+  level-set bands and smooth field unions;
 - union, intersection, difference, translation, and offset field nodes;
 - versioned JSON field-graph persistence in `.FCStd` documents;
 - Python evaluation, gradient, classification, graph validation, and graph

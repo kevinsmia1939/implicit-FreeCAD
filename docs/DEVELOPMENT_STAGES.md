@@ -23,6 +23,9 @@ different completion criteria.
    property; shared-node JSON/DAG persistence; unit contracts; graph/task UI;
    robust migration fixtures. Document links already provide a native dependency
    DAG, but do not replace every one of these contracts.
+   Constant/linear scalar controls, variable level-set bands and smooth unions
+   are now implemented with analytic gradients and conservative bounds. Widths
+   remain field-valued; automatic unit checking and physical thickness are open.
 2. Sampling and interaction: true variable-resolution surface cells with shared
    transition vertices; measured approximation/error criteria; topology stress
    tests; semantic field picking; background GUI jobs with cancellation, stale-job

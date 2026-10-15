@@ -50,3 +50,20 @@ and manufactured-solid validation remain separate acceptance gates.
 `controlled_smoke.py` checks refinement success, full-triangle sample values
 against the bound, limit failure, unverified empty meshes, gyroids, invalid
 settings and cancellation. Existing quality and GUI regressions remain enabled.
+
+## Scaling observation
+
+`benchmark/controlled_sampling.py` reports three-run medians for extraction,
+inspection and Python transfer at a requested field bound of 0.5, with grid
+resolutions 8 through 32. The captured baseline is
+[`controlled_sampling.csv`](../benchmark/controlled_sampling.csv).
+The radius-2 sphere met the bound at 16 cells/axis (5.182 ms median). Gyroids
+with 1, 3, 5 and 10 cells did not meet this conservative bound at the configured
+32-cell cap; medians were 82.866, 267.981, 432.779 and 719.920 ms. This is evidence
+of a refinement-limit shortfall, not an equal-accuracy speed comparison or proof
+that actual geometric errors exceed the bound target. Gyroid tolerances here
+are dimensionless; sphere and gyroid values are not physically comparable.
+
+The 668.04 MiB peak RSS is the entire process's lifetime high-water mark and
+carries between cases; it is not isolated mesh memory. This one-host baseline
+does not measure GUI uploads, hardware FPS, GPU speed or production accuracy.

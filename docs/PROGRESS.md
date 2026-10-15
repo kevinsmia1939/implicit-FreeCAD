@@ -4,11 +4,30 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `66cfd45cd5` on
+Implementation heads: FreeCAD `d891427f11` on
 `feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: native local charts and experimental B-spline patches
+## Current increment: scalar controls and refinement scaling
+
+Native graphs now support constant/linear scalar fields, spatially varying
+level-set bands and polynomial smooth unions. Analytical gradients include the
+width gradient and smooth blend weights; conservative Lipschitz bounds feed the
+existing pruning/refinement queries. Strict node validation, finite-difference
+gradient comparisons, sign behavior, sampled Lipschitz inequalities, controlled
+extraction and FCStd round-trips are covered by `scalar_smoke.py`.
+Units remain caller-managed and widths are not inherently physical thickness;
+see [scalar controls](scalar-controls.md).
+
+All **20 combined CTest tests passed** (21.87 seconds in the final run), including both native
+GUIs and the local B-spline/STEP tests. The Part regression additionally checks
+that controlled extraction rejects mixed fields without a finite Lipschitz
+bound. A three-run-median controlled-extraction sweep now records sphere and
+1/3/5/10-cell gyroid timings, bounds and explicit failures at the configured
+resolution cap. This is not an equal-accuracy, hardware FPS or mesh-memory
+benchmark; see [results/limits](controlled-extraction.md#scaling-observation).
+
+## Previous increment: native local charts and experimental B-spline patches
 
 Native `Implicit.sampleChart` projects a seed, builds a fixed-normal tangent
 chart and samples unique ray roots with normal-alignment/resource/cancellation

@@ -1,0 +1,6 @@
+case,field_units,tolerance,maximum_resolution,attempts,status,final_bound,triangles,median_ms,process_peak_mib
+sphere,length,0.5,32,2,field_bound_met,0.415710,3168,5.182,668.04
+gyroid_1,dimensionless,0.5,32,3,resolution_limit,0.701406,28080,82.866,668.04
+gyroid_3,dimensionless,0.5,32,3,resolution_limit,2.230038,84144,267.981,668.04
+gyroid_5,dimensionless,0.5,32,3,resolution_limit,4.080586,138576,432.779,668.04
+gyroid_10,dimensionless,0.5,32,3,resolution_limit,8.643266,248448,719.920,668.04

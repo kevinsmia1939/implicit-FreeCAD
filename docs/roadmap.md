@@ -17,6 +17,7 @@
 | Native graph GUI view provider | Implemented and fork-GUI-tested | C++ retained scene nodes, placement, restore and workbench commands |
 | Octree sampling | Implemented | Conservative empty-space pruning, common finest surface cells |
 | Native batches | Implemented | Scalar batch API and cached compiled graph |
+| Spatial controls and smooth unions | Implemented, tested | Constant/linear scalars, variable level-set bands, polynomial smooth min; no automatic dimensional checking |
 | Live document composition | Implemented and native command-line/GUI tested | Source links, rigid placements, signs, band/offset and direct Part dispatch |
 | Python extraction cancellation | Implemented and runtime-tested | Atomic one-shot token, GIL released during native extraction |
 | Background viewport extraction | Implemented, opt-in and GUI-tested | One worker, request coalescing, cancellation and checked main-thread uploads |
