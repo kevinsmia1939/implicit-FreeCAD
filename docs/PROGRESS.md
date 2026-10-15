@@ -5,10 +5,45 @@ including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
 Implementation heads: FreeCAD `d891427f11` on
-`feature/native-implicit`, OCCT `711d0d0275` on `feature/implicit-distance`.
+`feature/native-implicit`, OCCT `1205038a3e` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Current increment: scalar controls and refinement scaling
+## Current increment: OCCT-native implicit face foundation
+
+The user selected **0.1 mm geometric tolerance** and directed work on native
+OCCT implicit faces. The OCCT 8.1 fork now has immutable `Geom_ImplicitField`
+geometry (sphere/gyroid), field-backed `BRep_TImplicitFace`, builder creation,
+representation predicates/accessors and `BRep_ImplicitTool` placed-coordinate
+evaluation, gradient/normal, bounds/domain and sampled ray queries. It does not
+invent a UV parameterization or store arbitrary fields in `Geom_Surface`.
+
+Low-level Surface reads/writes reject native implicit faces. Tests verify that
+UV adaptors and ASCII/binary serializers explicitly reject unsupported field
+loss. Copy retains authoritative geometry/domain/location/tolerance and drops
+transient mesh data. Eleven isolated conformance cases pass, including analytic
+sphere root brackets at the 0.1 mm target, transformed coordinates, gyroids,
+critical/sampling failure cases and conventional-face regressions.
+
+TKernel/TKMath/TKG2d/TKG3d/TKGeomBase/TKBRep were built from OCCT 8.1 source with
+two compile jobs and a one-job link pool in the existing OCCT build tree. The
+test executable's dependencies were checked to load only OCCT 8.1 libraries.
+The FreeCAD build and earlier compatibility tests remain on installed OCCT 7.9.3;
+no system libraries or packages were changed. Native face tests run in a separate
+process and project, not by mixing those ABIs.
+
+This is a native representation/query foundation, **not full implicit B-Rep
+support**: generic BOP/meshing/validation, trim curves/wires, persistence/exchange
+and exposure in the current FreeCAD GUI remain open. A stored face tolerance or
+isolated root test is not a whole-model 0.1 mm certificate. See
+[native face contracts](occt-native-faces.md) and [accuracy policy](accuracy-policy.md).
+
+Verification: **21/21 combined CTest entries passed** (24.02 seconds), including
+the isolated executable's **11 native-face GTest cases** and both existing GUI
+regressions. Only the required six OCCT foundation/modeling-data libraries and
+this conformance harness were built; full OCCT BOP/exchange/regression coverage
+has not been run. Existing FreeCAD source and its OCCT 7.9 linkage are unchanged.
+
+## Previous increment: scalar controls and refinement scaling
 
 Native graphs now support constant/linear scalar fields, spatially varying
 level-set bands and polynomial smooth unions. Analytical gradients include the

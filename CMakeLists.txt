@@ -9,6 +9,7 @@ option(IMPLICIT_BUILD_OCCT_DISTANCE "Build OCCT fork signed-distance extension a
 set(IMPLICIT_NATIVE_FREECADCMD "" CACHE FILEPATH "FreeCADCmd built with the native Implicit module")
 set(IMPLICIT_NATIVE_FREECADGUI "" CACHE FILEPATH "FreeCAD GUI built with ImplicitGui")
 option(IMPLICIT_NATIVE_PART_TESTS "Test live Part inputs (requires built native Part bridge)" OFF)
+set(IMPLICIT_OCCT_NATIVE_FACE_TESTS "" CACHE FILEPATH "Isolated OCCT 8.1 native-face test executable")
 
 add_library(implicit_geometry
     src/ImplicitSurface.cpp
@@ -23,6 +24,13 @@ target_compile_options(implicit_geometry PRIVATE -Wall -Wextra -Wpedantic)
 
 if(IMPLICIT_BUILD_TESTS)
     enable_testing()
+    if(IMPLICIT_OCCT_NATIVE_FACE_TESTS)
+        if(NOT EXISTS "${IMPLICIT_OCCT_NATIVE_FACE_TESTS}")
+            message(FATAL_ERROR "Build isolated OCCT native-face tests first")
+        endif()
+        add_test(NAME implicit_occt_native_faces COMMAND "${IMPLICIT_OCCT_NATIVE_FACE_TESTS}")
+        set_tests_properties(implicit_occt_native_faces PROPERTIES TIMEOUT 120)
+    endif()
     if(IMPLICIT_NATIVE_FREECADGUI)
         if(NOT EXISTS "${IMPLICIT_NATIVE_FREECADGUI}")
             message(FATAL_ERROR "IMPLICIT_NATIVE_FREECADGUI does not exist")

@@ -139,7 +139,14 @@ cross-workbench dispatch may justify small changes to FreeCAD `App`, `Gui`, and
 
 ## OCCT changes if native implicit B-Rep is required
 
-The current OCCT representation is explicit. `BRep_TFace` stores a
+The user explicitly directed this work with a **0.1 mm geometric tolerance
+target**. The first native representation/query increment now exists in OCCT 8.1:
+`Geom_ImplicitField`, a `BRep_TImplicitFace` subtype, builder/tool dispatch and
+field-aware queries, with guarded rejection of UV access and lossy persistence.
+The following checklist remains the full integration requirement, not a claim
+that representation alone meets it. See [native faces](occt-native-faces.md).
+
+The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this
 repository demonstrates that a triangulation-only `TopoDS_Face` has no surface
 for `BRepAdaptor_Surface` to load.
@@ -167,8 +174,9 @@ A real OCCT-native design would require at least:
    cannot preserve the original arbitrary field semantics.
 
 That is a multi-subsystem OCCT program, not a small subclass. Carrying it as a
-private OCCT fork would impose a high maintenance cost, so it should begin only
-with an upstream design discussion and conformance tests.
+private OCCT fork imposes a high maintenance cost. The user has explicitly
+authorized a conformance-first native prototype; this does not imply upstream
+design approval or readiness of the full kernel integration.
 
 ## Recommended representation bridges
 

@@ -148,6 +148,14 @@ licenses remain applicable to their respective code.
     All 20 tests passed. Controlled-extraction scaling at 1/3/5/10 gyroid cells
     is recorded in `benchmark/controlled_sampling.csv`; these cases hit the
     configured resolution-32 cap rather than falsely reporting bound success.
+16. OCCT-native face foundation (OCCT `1205038a3e`): the user selected **0.1 mm geometric tolerance**
+    and explicitly directed native OCCT face work. `Geom_ImplicitField` (sphere,
+    gyroid), `BRep_TImplicitFace`, builder/tool representation dispatch and
+    field-aware placed-coordinate queries now exist in OCCT 8.1. UV Surface
+    reads/writes reject the subtype; ASCII/binary serialization rejects field
+    loss. Eleven isolated conformance tests pass, including 0.1 mm ray brackets.
+    This is storage/query support, not trimming/BOP/persistence/FreeCAD exposure.
+    See `occt-native-faces.md` and `accuracy-policy.md`.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -155,10 +163,13 @@ smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
 passed **10/10 tests** before the live increment. The latest run passes
-**20/20**, including scalar controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
+**21/21** with the isolated native-face executable registered, including scalar
+controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
-installed OCCT 7.9.3 through isolated staged headers; a full OCCT 8.1 rebuild
-has not been performed. The earlier addon GUI tests used installed FreeCAD.
+installed OCCT 7.9.3 through isolated staged headers. Separately, OCCT 8.1
+TKernel, TKMath, TKG2d, TKG3d, TKGeomBase and TKBRep are now fully built for native
+face conformance. The full modeling/exchange/test suite is not built or tested.
+The earlier addon GUI tests used installed FreeCAD.
 
 ## Tools and development environment
 
@@ -244,7 +255,10 @@ tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 20 tests. Installed `FreeCADCmd` cannot import this fork's native module.
+has 21 tests when the isolated OCCT-face executable is registered (20 otherwise).
+The native-face entry contains 11 GTest cases. See `occt-native-faces.md` for its
+separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
+Installed `FreeCADCmd` cannot import this fork's native module.
 Python scripts can print tracebacks while exiting successfully: CTest explicitly
 checks success markers and failure patterns for the native tests.
 
@@ -302,8 +316,10 @@ The user requested proceeding through the last stage. Do not mistake the latest
 local open-patch prototype for completion: shared chart boundaries/p-curves,
 validated atlas/solid construction and native OCCT implicit topology are still
 open, as are native property/DAG, integrated selection and variable-resolution
-cells. Manufacturing accuracy/minimum-feature targets have been requested from
-the user; none are specified yet. No production millimetre accuracy is claimed.
+cells. The user has now selected **0.1 mm geometric tolerance** and directed
+OCCT-native face development; minimum feature size remains unspecified. The
+native storage/query foundation is implemented, but no whole-model production
+accuracy, trimming, BOP or native persistence claim follows from it.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

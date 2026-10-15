@@ -159,6 +159,12 @@ standalone library.
 
 ## Current limitations
 
+The OCCT fork now includes an experimental [native implicit-face foundation](docs/occt-native-faces.md),
+tested separately against OCCT 8.1 at a [0.1 mm geometric tolerance target](docs/accuracy-policy.md).
+It is not yet exposed in the current OCCT-7.9-linked FreeCAD GUI and does not
+support generic implicit-face Booleans, trimming or persistence. Existing mixed
+FreeCAD operations still compose fields, not native OCCT implicit faces.
+
 - Surface extraction is a visualization approximation. The standalone/addon
   baseline duplicates triangle vertices; native extraction shares vertices.
   Computational-domain boundaries are not capped; explicit box fields can
