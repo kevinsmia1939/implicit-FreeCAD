@@ -10,13 +10,14 @@ field/section work. The user installed and confirmed
 The required OCCT toolkit build completed all 5,202 steps with exit code zero,
 and strict FreeCAD dependency preflight passes. Separate FreeCAD configuration
 in `build-freecad-occt8` also succeeds; command-line/Part/Implicit and bundled
-Pivy/Coin targets build and the separate migration suite passes 12/12, including
-an actual loaded-library audit. OCCT's install-only alias headers are taken from
-the selected source manifest; no OCCT 7 headers are used in that build. GUI
-targets are building with two compile jobs and one link job; GUI completion and
-runtime validation remain pending. No package installation or system-library replacement was performed by
+Pivy/Coin targets build and the separate migration suite passes, including
+actual loaded-library audits in both Cmd and GUI. OCCT's install-only alias
+headers are taken from the selected source manifest; no OCCT 7 headers are used
+in that build. The targeted GUI build and synchronous/background/worker GUI
+tests also pass. No package installation or system-library replacement was performed by
 the agent. Other requested OCCT modules configure using existing dependencies,
-including FreeType 2.14.3. Configuration is not a completed FreeCAD build; see
+including FreeType 2.14.3. This is targeted Part/Implicit validation, not the
+complete upstream FreeCAD/OCCT test suites or all workbenches; see
 [strict migration preflight and remaining gates](native-gyroid-sections.md#occt-8-migration-dependency-gate).
 
 ## Original working-build audit

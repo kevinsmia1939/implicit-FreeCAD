@@ -4,7 +4,7 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `189f6156d8` on
+Implementation heads: FreeCAD `c89d2217d8` on
 `feature/native-implicit`, OCCT `e5422e4ced` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
@@ -66,10 +66,23 @@ module paths, all 32 actual loaded OCCT libraries under the fork's 8.1 library
 directory, conventional Booleans and the kernel signed-distance bridge, followed
 by the eleven native smoke tests including live Part links and local patch/STEP
 round-trip. It rejects the working OCCT 7 binary as an intentional negative
-check. The affected OCCT 7 targets also rebuild successfully. GUI targets are
-now building with two compile jobs and one link job (log
-`/tmp/implicit-freecad-occt8-gui-build.log`); GUI runtime validation and native
-implicit-face consumer/persistence support remain open.
+check. The affected OCCT 7 targets also rebuild successfully. The GUI build
+subsequently completed with exit code zero (log
+`/tmp/implicit-freecad-occt8-gui-build.log`).
+
+The extended suite now passes **18/18** (42.59 seconds): the twelve command-line
+checks, an actual GUI loaded-library audit, synchronous/background/worker GUI
+smoke tests and the four-example/live-Part-background launcher demos. The GUI
+audit checks PartGui/ImplicitGui and bundled Pivy/its extension, Coin and all 32
+OCCT libraries against the intended build paths; a negative OCCT 7 GUI check
+rejects correctly. The existing OCCT 7 combined suite passes **24/24** again
+(25.61 seconds). Test preferences are isolated; rendering uses Xvfb/software
+OpenGL. No physical-GPU/FPS, all-workbench or manufacturing qualification is
+claimed. Native implicit-face consumer/persistence support remains open.
+
+`bash tools/launch_demo.sh --occt8` explicitly selects the tested OCCT 8 build;
+`--live-part --background` selects the live mixed-field workflow. The default
+launcher still uses the preserved OCCT 7 build.
 
 After rebuilding the affected OCCT 7 targets, the existing combined suite passes
 **24/24** (35.61 seconds). This includes the isolated 24-case OCCT 8 conformance

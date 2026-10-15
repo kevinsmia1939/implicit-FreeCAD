@@ -28,3 +28,62 @@ foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled 
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 endforeach()
+
+option(IMPLICIT_MIGRATION_GUI_TESTS "Test the built OCCT 8 GUI (requires DISPLAY or Xvfb)" OFF)
+set(IMPLICIT_OCCT_NATIVE_WORKER "" CACHE FILEPATH "Built native OCCT worker for GUI recipe tests")
+if(IMPLICIT_MIGRATION_GUI_TESTS)
+    if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD"
+       OR NOT EXISTS "${IMPLICIT_OCCT_NATIVE_WORKER}")
+        message(FATAL_ERROR "Build the migration GUI and pass IMPLICIT_OCCT_NATIVE_WORKER")
+    endif()
+    foreach(_gui IN ITEMS runtime sync async boundary)
+        if(_gui STREQUAL runtime)
+            set(_script occt8_gui_runtime_smoke.py)
+            set(_success "native implicit OCCT8 GUI runtime smoke test passed")
+        elseif(_gui STREQUAL sync)
+            set(_script gui_smoke.py)
+            set(_success "native implicit GUI smoke test passed")
+        elseif(_gui STREQUAL async)
+            set(_script async_gui_smoke.py)
+            set(_success "native implicit async GUI smoke test passed")
+        else()
+            set(_script native_boundary_gui_smoke.py)
+            set(_success "native OCCT boundary GUI smoke test passed")
+        endif()
+        add_test(NAME "implicit_occt8_gui_${_gui}"
+            COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+                --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/gui-${_gui}-user.cfg"
+                --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/gui-${_gui}-system.cfg"
+                "${_scripts}/${_script}")
+        set_tests_properties("implicit_occt8_gui_${_gui}" PROPERTIES
+            ENVIRONMENT "IMPLICIT_EXPECTED_FREECAD_BUILD=${IMPLICIT_MIGRATION_BUILD};IMPLICIT_EXPECTED_OCCT_LIBRARY_DIR=${IMPLICIT_OCCT_LIBRARY_DIR};IMPLICIT_TEST_PART_BRIDGE=1;IMPLICIT_OCCT_NATIVE_WORKER=${IMPLICIT_OCCT_NATIVE_WORKER}"
+            PASS_REGULAR_EXPRESSION "${_success}"
+            FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+            TIMEOUT 180)
+        if(_gui STREQUAL runtime)
+            set_tests_properties("implicit_occt8_gui_${_gui}" PROPERTIES
+                FIXTURES_REQUIRED occt8_runtime FIXTURES_SETUP occt8_gui_runtime)
+        else()
+            set_tests_properties("implicit_occt8_gui_${_gui}" PROPERTIES
+                FIXTURES_REQUIRED occt8_gui_runtime)
+        endif()
+    endforeach()
+    foreach(_demo IN ITEMS graph live)
+        set(_demo_flags "")
+        if(_demo STREQUAL live)
+            set(_demo_flags --live-part --background)
+            set(_success "live Part implicit demo verified")
+        else()
+            set(_success "interactive native demo verified")
+        endif()
+        add_test(NAME "implicit_occt8_demo_${_demo}"
+            COMMAND bash "${_root}/tools/launch_demo.sh" --occt8 ${_demo_flags}
+                --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/demo-${_demo}-user.cfg"
+                --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/demo-${_demo}-system.cfg")
+        set_tests_properties("implicit_occt8_demo_${_demo}" PROPERTIES
+            ENVIRONMENT "IMPLICIT_DEMO_CHECK=1;IMPLICIT_OCCT8_GUI=${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD"
+            PASS_REGULAR_EXPRESSION "${_success}"
+            FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+            FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    endforeach()
+endif()

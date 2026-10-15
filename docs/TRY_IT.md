@@ -11,6 +11,21 @@ Implicit** workbench and creates four examples. Safe mode gives the experiment
 temporary preferences and isolates installed addons. The ordinary system
 `FreeCAD` launcher does not contain the native module.
 
+The separate OCCT 8.1-linked GUI now passes the targeted migration tests. To
+try that build explicitly (the default launcher still uses the preserved OCCT 7
+build):
+
+```sh
+bash tools/launch_demo.sh --occt8
+# Live Part operands and background updates:
+bash tools/launch_demo.sh --occt8 --live-part --background
+```
+
+Both launcher modes are regression-tested under Xvfb with isolated test
+preferences. This is a minimal Part/Implicit development build, not an all-module
+FreeCAD build. Native implicit-face Part operations/persistence remain unfinished;
+choosing OCCT 8 does not turn field Boolean results into validated B-Rep solids.
+
 ## What to try
 
 **OCCT gyroid-plane section (experimental)** now previews native gyroid/plane
@@ -20,7 +35,7 @@ trimmed gyroid surface or Part shape. See [contracts and commands](native-gyroid
 
 New OCCT-core examples: the Native Implicit menu now also has experimental
 **OCCT sphere trim/common/fuse/cut** commands. These reconstruct restricted native
-sphere boundaries in an isolated OCCT 8 worker, while the GUI stays on OCCT 7.9.
+sphere boundaries in an isolated OCCT 8 worker, on either tested GUI build.
 Edit centres/radii, plane settings and `GeometricTolerance` (default 0.1 mm).
 They are not Part solids or general gyroid Booleans. See
 [build, try and limitations](native-sphere-operations.md#build-try-and-verify).

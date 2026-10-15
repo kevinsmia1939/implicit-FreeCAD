@@ -87,7 +87,11 @@ edge incidence/winding, pole handling and precision/resource rejection.
 
 ## FreeCAD GUI bridge: process isolation, not ABI mixing
 
-The current fork GUI/Part still uses installed OCCT 7.9.3. The new executable
+The preserved fork GUI/Part uses installed OCCT 7.9.3; a separate OCCT 8.1-linked
+GUI now also passes targeted migration tests (see
+[migration validation](native-gyroid-sections.md#occt-8-migration-dependency-gate)).
+Both retain this worker adapter; native in-process Part exposure is unfinished.
+The executable
 `implicit_occt_native_worker` links only the isolated rebuilt OCCT 8.1 libraries.
 It creates real native fields/patches and performs the restricted operations
 there, then emits a bounded-budget JSON response with display vertices, normals,

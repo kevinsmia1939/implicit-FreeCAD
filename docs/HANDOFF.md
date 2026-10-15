@@ -32,7 +32,7 @@ restricted analytic sphere trimming/Boolean boundaries now exist.
 | `docs/` | Architecture findings, capability roadmap, build notes, API and this handoff |
 | `build/` | Ignored standalone build; optionally registers native tests |
 | `build-freecad-implicit/` | Ignored native development build |
-| `build-freecad-occt8/` | OCCT 8 command-line/Part/Implicit validated; GUI build underway |
+| `build-freecad-occt8/` | OCCT 8 command-line/Part/Implicit/GUI and launcher demos validated |
 
 The public umbrella repo is `kevinsmia1939/implicit-FreeCAD`. The FreeCAD fork
 is `kevinsmia1939/FreeCAD`. The parent gitlink pins a commit, even though
@@ -178,7 +178,7 @@ licenses remain applicable to their respective code.
     An isolated OCCT 8 worker and in-tree FreeCAD `ImplicitNative.py` adapter
     expose editable experimental sphere commands through transient Coin buffers.
     FCStd stores recipe properties and reconstructs geometry on restore, not
-    native OCCT topology. The current GUI remains OCCT 7.9; no ABI mixing or
+    native OCCT topology. At that milestone the GUI remained OCCT 7.9; no ABI mixing or
     native handles in Part. Nineteen native conformance cases and all 23 combined
     CTest entries pass (26.47 seconds in the final run). See `native-sphere-operations.md` for
     exact supported cases, build/try commands, toolchain boundaries and next gates.
@@ -234,11 +234,24 @@ licenses remain applicable to their respective code.
     The fixture correctly rejects the OCCT 7 binary. The compiled alias-header
     probe also passes. The affected OCCT 7 targets rebuild successfully and
     the existing combined suite passes 24/24 afterward (35.61 seconds).
-    OCCT 8 GUI targets are now building (two compile jobs, one link job), log
-    `/tmp/implicit-freecad-occt8-gui-build.log`; completion and GUI runtime tests
-    remain unverified. Inspect that log and running Ninja processes before
-    resuming. Native implicit-face Part exposure/persistence and general BOP
-    remain separate, unfinished acceptance gates.
+    The subsequent GUI build completed successfully (two compile jobs, one link
+    job), log `/tmp/implicit-freecad-occt8-gui-build.log`. GUI validation follows.
+22. OCCT 8 GUI migration validated (FreeCAD `c89d2217d8`): GUI library-path
+    audit, synchronous/background/worker GUI tests and both launcher demos bring
+    the separate migration suite to **18/18 passing** (42.59 seconds).
+    PartGui/ImplicitGui, bundled Pivy/its extension and the actual Coin library
+    resolve inside the migration build; all 32 actual OCCT libraries resolve
+    inside the selected 8.1 build. The audit rejects the OCCT 7 GUI as a negative
+    check. Tests cover camera/parameter changes, retained display buffers, live
+    Part dependencies, invalidation/cancellation and FCStd restore. Preferences
+    are isolated and rendering uses Xvfb/software OpenGL; no physical-GPU/FPS or
+    all-workbench qualification is claimed. Optional unbuilt Measure commands
+    can emit `Std_Measure`/`Std_MassProperties` warnings in this minimal build.
+    The preserved OCCT 7 combined suite also passes **24/24** (25.61 seconds).
+    Try `bash tools/launch_demo.sh --occt8`; add `--live-part --background` for
+    the live mixed-field demo. The launcher defaults to the preserved OCCT 7
+    build unless `--occt8` is selected. Native implicit-face Part exposure,
+    general trimming/BOP and native topology persistence remain unfinished.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -253,7 +266,8 @@ installed OCCT 7.9.3 through isolated staged headers. Separately, the required
 OCCT 8.1 modeling/exchange/OCAF/visualization toolkit dependencies are built and
 the strict FreeCAD dependency preflight passes. The full upstream OCCT test suite
 is not built or tested. The separate OCCT 8 command-line/Part/Implicit runtime
-passes targeted migration tests; GUI build/runtime validation remains pending.
+passes targeted command-line/GUI migration tests. Native implicit-face consumer
+dispatch/persistence and broader workbench validation remain pending.
 The earlier addon GUI tests used installed FreeCAD.
 
 ## Tools and development environment
@@ -350,7 +364,8 @@ Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
 `IMPLICIT_OCCT_NATIVE_WORKER`; see `native-sphere-operations.md`. Rebuild only
 `ImplicitScripts` for this Python GUI adapter increment; FreeCAD's C++ linkage
-remains OCCT 7.9. The isolated worker/test harness links only OCCT 8.1.
+remains OCCT 7.9 in the preserved build; the separate OCCT 8 command-line/GUI
+migration is also tested. The isolated worker/test harness links only OCCT 8.1.
 `IMPLICIT_OCCT_NATIVE_BUILD` additionally registers the strict source-build
 migration preflight. It reports incomplete dependencies without changing system
 libraries; see `native-gyroid-sections.md` for the package/build gate.
@@ -426,10 +441,12 @@ and shared topology-aware surface meshing, plus singular/tangent resolution,
 then generic splitting/classification/history and full native persistence.
 Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
 For the wholly OCCT-8 FreeCAD build, required toolkits and command-line targets
-are built; strict preflight and all 12 targeted migration tests pass. Finish
-the separate `build-freecad-occt8` GUI targets and test their runtime (see
-`native-gyroid-sections.md` for commands/logs) before native exposure. Command-line
-validation alone does not establish GUI/native-face persistence/consumer support.
+and GUI targets are built; strict preflight and all 18 targeted migration checks
+pass. See `native-gyroid-sections.md` for commands/logs. The next ABI-enabled
+milestone is explicit in-process native implicit-face ownership/query/display
+and persistence/consumer guards, not arbitrary assignment to Part shapes or
+routing implicit faces through generic UV-dependent BOP/meshing. Open trim
+topology, conforming surface meshing and general mixed BOP remain separate work.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

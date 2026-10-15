@@ -9,7 +9,7 @@ prototype and runs against the rebuilt OCCT 8.1 kernel.
 | 1: gyroid–plane intersections | Native bounded-rectangle sections with derivative-bound acceptance, explicit unresolved diagnostics and GUI preview | General domain polygons, tangent/singular intersection resolution rather than rejection |
 | 2: trimming and geometric-bound meshing | Restricted identity-placed Z-plane split with closed, resolved loops and shared tolerance-bearing seam edges | Open/domain-side boundaries, arbitrary/nested trims, surface meshing conforming to shared seams |
 | 3: native mixed Booleans | Split/predicate groundwork only; earlier sphere-only operations and FreeCAD field-space Booleans remain separate | Gyroid/B-Rep intersections, region classification, splitting, result/history and solid validation |
-| 4: wholly OCCT-8 FreeCAD | Command-line/Part/Implicit built; 12/12 migration tests pass; GUI build underway | GUI build/runtime tests, native implicit-face persistence/consumer dispatch |
+| 4: wholly OCCT-8 FreeCAD | Targeted command-line/Part/Implicit/GUI build and runtime tests pass | Native implicit-face persistence/consumer dispatch and broader workbench validation |
 
 ## Native section contract
 
@@ -222,22 +222,45 @@ An optional compiled alias-header regression also passes. Enable it with
 The affected OCCT 7 targets rebuild and the existing suite passes 24/24 (35.61
 seconds); these are separate from the 12 migration checks.
 
-The **GUI build is now underway**, not yet validated. Inspect
-`/tmp/implicit-freecad-occt8-gui-build.log` and running Ninja/compiler processes
-before resuming; never run concurrent configuration/builds in the same directory:
+The **targeted GUI build and runtime tests now pass**. The build completed with
+exit code zero; its log is `/tmp/implicit-freecad-occt8-gui-build.log`.
+With GUI and launcher checks enabled the migration suite passes **18/18** (42.59
+seconds); the separate preserved OCCT 7 suite passes **24/24** (25.61 seconds).
+Incremental reproduction (never configure/build concurrently in one directory):
 
 ```sh
 cmake --build build-freecad-occt8 --parallel 2 --target \
   ImplicitGui PartGui FreeCADMain FreeCADGui_Resources Stylesheets_data
 ```
 
-After completion, audit the GUI's loaded libraries and run the existing
-synchronous/background/worker GUI smoke scripts under Xvfb using the migration
-GUI executable. Command-line success alone does not validate GUI consumers.
+Enable the separate GUI regression suite explicitly:
+
+```sh
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests \
+  -DIMPLICIT_MIGRATION_BUILD="$PWD/build-freecad-occt8" \
+  -DIMPLICIT_OCCT_LIBRARY_DIR="$PWD/build-occt-implicit/lin64/gcc/lib" \
+  -DIMPLICIT_MIGRATION_GUI_TESTS=ON \
+  -DIMPLICIT_OCCT_NATIVE_WORKER="$PWD/build-occt-implicit/native-face-tests/implicit_occt_native_worker"
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+The GUI runtime fixture loads PartGui/ImplicitGui and checks their module paths,
+bundled Pivy/its extension, the actual Coin library and all 32 actual OCCT
+libraries. A negative check against the OCCT 7 GUI correctly fails. Synchronous,
+background and worker-adapter smoke tests cover camera/parameter edits, retained
+buffers, live Part sources, invalidation and FCStd reconstruction. Launcher
+demos also run through `--occt8`, including live Part/background mode. Preferences
+are isolated in the test build; rendering uses Xvfb/software OpenGL, not a
+physical-desktop performance/GPU qualification.
+
+To try the tested GUI yourself: `bash tools/launch_demo.sh --occt8`.
+This remains a minimal Part/Implicit target build. Unbuilt optional Measure
+commands can produce `Std_Measure`/`Std_MassProperties` warnings; they do not
+invalidate these implicit workflow tests. No all-workbench claim follows.
 
 The separate directory preserves the working OCCT 7 binary while recompiling every
 OCCT-dependent consumer; do not retarget the existing working FreeCAD tree
 piecemeal or copy OCCT 8 general headers into its OCCT 7 compatibility include
-directory. GUI runtime audits, native implicit-face persistence and consumer
-dispatch tests still follow. A successful dependency preflight alone does not
+directory. Native implicit-face persistence/consumer dispatch and broader
+workbench tests still follow. Successful ABI migration does not
 authorize arbitrary native faces in Part or establish manufacturing readiness.

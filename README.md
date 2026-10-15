@@ -13,11 +13,13 @@ the standalone geometry engine, prototype addon, benchmarks, and project notes.
 on `feature/implicit-distance`, plus the experimental OCCT 8.1 native field-face
 storage/query and primitive persistence layer. Restricted sphere trimming and
 Boolean boundaries now have [experimental GUI examples](docs/native-sphere-operations.md)
-through a separate OCCT 8 worker. The GUI remains OCCT 7.9-linked; these are not
+through a separate OCCT 8 worker. Both the preserved OCCT 7.9 build and a separate
+OCCT 8.1-linked command-line/GUI build are tested; these worker examples are not
 general implicit Booleans or validated Part solids.
 [Native gyroid-plane sections](docs/native-gyroid-sections.md) now have geometric-
 bound curve previews and a restricted closed-loop split prototype. General
-gyroid surface trimming/Booleans and the wholly OCCT-8 FreeCAD build remain open.
+gyroid surface trimming/Booleans and native implicit-face Part/persistence
+integration remain open.
 
 **Continuing development? Start with [the handoff](docs/HANDOFF.md).** It records
 completed work, source locations, exact build/test commands, tools, known gaps,
@@ -55,6 +57,7 @@ for the core changes and remaining milestones.
 To try the existing development build interactively, run
 `bash tools/launch_demo.sh`. See [the hands-on guide](docs/TRY_IT.md) for editable
 examples, display settings, save/reload, and current limitations.
+Use `bash tools/launch_demo.sh --occt8` for the separately built OCCT 8.1 GUI.
 
 The standalone component has no dependency on OCCT or FreeCAD:
 
