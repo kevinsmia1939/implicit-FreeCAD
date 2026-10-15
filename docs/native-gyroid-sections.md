@@ -9,7 +9,7 @@ prototype and runs against the rebuilt OCCT 8.1 kernel.
 | 1: gyroid–plane intersections | Native bounded-rectangle sections with derivative-bound acceptance, explicit unresolved diagnostics and GUI preview | General domain polygons, tangent/singular intersection resolution rather than rejection |
 | 2: trimming and geometric-bound meshing | Restricted identity-placed Z-plane split with closed, resolved loops and shared tolerance-bearing seam edges | Open/domain-side boundaries, arbitrary/nested trims, surface meshing conforming to shared seams |
 | 3: native mixed Booleans | Split/predicate groundwork only; earlier sphere-only operations and FreeCAD field-space Booleans remain separate | Gyroid/B-Rep intersections, region classification, splitting, result/history and solid validation |
-| 4: wholly OCCT-8 FreeCAD | Strict source-build selection/preflight added; required toolkit build underway, GLTF now configured | Toolkit build completion, passing preflight, FreeCAD API migration/build/runtime tests, native persistence/consumer dispatch |
+| 4: wholly OCCT-8 FreeCAD | OCCT toolkits built, strict preflight passes; separate FreeCAD build underway | FreeCAD build completion/API/runtime/GUI tests, native persistence/consumer dispatch |
 
 ## Native section contract
 
@@ -149,12 +149,10 @@ because RapidJSON headers were absent. The user has now installed and confirmed
 `rapidjson-devel-1.1.0+git20211015.4d6cb081-2.3.x86_64`; the package and header
 were verified. Configuration with RapidJSON enabled succeeds.
 
-The required toolkit build has started (5,202 initial compile/link steps).
-**Completion is not yet verified.** Inspect `/tmp/implicit-occt-build.log` and
-running Ninja/compiler processes before starting another build in the same
-directory. If no build is running, resume using the commands below; Ninja
-retains completed work. Configuration/build commands, using two compile jobs
-and one link job:
+The required toolkit build completed all 5,202 steps with exit code zero
+(log `/tmp/implicit-occt-build.log`). Strict dependency preflight now passes,
+selecting only OCCT 8.1 source-build libraries. Reproduction commands, using two
+compile jobs and one link job:
 
 ```sh
 cmake -S OCCT -B build-occt-implicit \
@@ -178,9 +176,32 @@ cmake -S tests/occt_native_faces/preflight \
   -DFREECAD_OCCT_BUILD_DIR="$PWD/build-occt-implicit"
 ```
 
-Only after that passes should a **separate FreeCAD migration build** be
-configured with this flag and the documented minimal dependency/feature options.
-It is necessary to preserve the working OCCT 7 binary while recompiling every
+The **separate FreeCAD migration build** is now configured successfully in
+`build-freecad-occt8`, with the minimal options from
+[`build-dependencies-opensuse.md`](build-dependencies-opensuse.md#reproduce-the-native-configuration),
+but using `-B build-freecad-occt8` and adding
+`-DFREECAD_OCCT_BUILD_DIR="$PWD/build-occt-implicit"`.
+The Implicit bridge uses the extension already exported by `TKTopAlgo`; the
+installed-OCCT compatibility path still compiles/stages only the extension.
+No additional packages were needed. The command-line/Part/Implicit build is
+underway, not yet complete or runtime-validated. Inspect
+`/tmp/implicit-freecad-occt8-build.log` and running Ninja/compiler processes
+before resuming; do not launch concurrent builds/configuration in the same
+directory. Resume command (Ninja reuses completed work):
+
+```sh
+cmake --build build-freecad-occt8 --parallel 2 --target \
+  Implicit ImplicitScripts PartScripts FreeCADMainCmd
+```
+
+After completion, run the native smoke scripts using
+`build-freecad-occt8/bin/FreeCADCmd` (not the OCCT 7 binary or system FreeCAD),
+including `part_linked_smoke.py` and `patch_smoke.py`. Audit `ldd` for Part and
+Implicit and the libraries loaded by that process before building/testing
+`ImplicitGui`, `PartGui` and `FreeCADMain`. All OCCT consumers in that process
+must resolve to the fork's 8.1 libraries, not a mixture of 7.9 and 8.1.
+
+The separate directory preserves the working OCCT 7 binary while recompiling every
 OCCT-dependent consumer; do not retarget the existing working FreeCAD tree
 piecemeal or copy OCCT 8 general headers into its OCCT 7 compatibility include
 directory. API ports, `ldd`/runtime audits, native persistence and consumer

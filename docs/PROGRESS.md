@@ -4,7 +4,7 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `c94a5aae85` on
+Implementation heads: FreeCAD `a5257ddff3` on
 `feature/native-implicit`, OCCT `e5422e4ced` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
@@ -40,11 +40,27 @@ The original dependency preflight reported 27 configured-but-unbuilt toolkits
 and `TKDEGLTF` missing because RapidJSON was absent. The user has now installed
 and confirmed `rapidjson-devel`; its package/header were verified and OCCT
 reconfiguration with `USE_RAPIDJSON=ON` succeeds, including `TKDEGLTF`.
-The required toolkit build has started with two compile jobs and one link job
-(5,202 initial compile/link steps, log `/tmp/implicit-occt-build.log`). Completion
-and a passing preflight remain unverified. No packages or system libraries were
+The required toolkit build completed all 5,202 steps with exit code zero
+(log `/tmp/implicit-occt-build.log`), and strict dependency preflight now passes,
+selecting OCCT 8.1 source-build libraries only. No packages or system libraries were
 installed/replaced by the agent, and the working FreeCAD build stays on OCCT
 7.9. This is migration preparation, not a completed OCCT-8 FreeCAD build.
+
+A separate `build-freecad-occt8` FreeCAD configuration now succeeds using the
+documented minimal module settings and existing dependencies. The Implicit
+bridge uses the signed-distance class exported by the fork's `TKTopAlgo`, rather
+than compiling duplicate definitions into `Implicit.so`. The OCCT 7 configuration
+still stages/compiles only that extension; both configurations and generated
+Ninja graphs were checked. The command-line/Part/Implicit build is underway
+with two compile jobs and one link job (log
+`/tmp/implicit-freecad-occt8-build.log`). Build completion, API/runtime validation,
+GUI migration and native implicit-face consumer/persistence support remain open.
+
+After the OCCT dependency build and both FreeCAD configurations, the existing
+combined regression suite passes **24/24** (31.35 seconds), including the
+24-case isolated OCCT 8 conformance executable. The FreeCAD runtime tests still
+use the working OCCT 7 build; this does not validate the unfinished FreeCAD 8
+migration binary.
 
 Before the expanded dependency build, all **24 native GTest cases** and
 **24/24 combined CTest entries** passed (25.72 seconds after rebuilding all six kernel libraries), including

@@ -7,10 +7,13 @@ field/section work. The user installed and confirmed
 `rapidjson-devel-1.1.0+git20211015.4d6cb081-2.3.x86_64`; the package and
 `/usr/include/rapidjson/rapidjson.h` were verified. Reconfiguration with
 `USE_RAPIDJSON=ON` succeeds and includes `TKDEGLTF`, which FreeCAD requires.
-The required OCCT toolkit build has started with two compile jobs and one link
-job. No package installation or system-library replacement was performed by
+The required OCCT toolkit build completed all 5,202 steps with exit code zero,
+and strict FreeCAD dependency preflight passes. Separate FreeCAD configuration
+in `build-freecad-occt8` also succeeds; the command-line/Part/Implicit targets are
+now building with two compile jobs and one link job. Build/runtime completion
+is not yet verified. No package installation or system-library replacement was performed by
 the agent. Other requested OCCT modules configure using existing dependencies,
-including FreeType 2.14.3. Configuration is not a completed toolkit or FreeCAD build; see
+including FreeType 2.14.3. Configuration is not a completed FreeCAD build; see
 [strict migration preflight and remaining gates](native-gyroid-sections.md#occt-8-migration-dependency-gate).
 
 ## Original working-build audit

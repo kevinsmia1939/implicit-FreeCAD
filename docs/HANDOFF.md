@@ -32,6 +32,7 @@ restricted analytic sphere trimming/Boolean boundaries now exist.
 | `docs/` | Architecture findings, capability roadmap, build notes, API and this handoff |
 | `build/` | Ignored standalone build; optionally registers native tests |
 | `build-freecad-implicit/` | Ignored native development build |
+| `build-freecad-occt8/` | Separate OCCT 8 migration build; not yet runtime-validated |
 
 The public umbrella repo is `kevinsmia1939/implicit-FreeCAD`. The FreeCAD fork
 is `kevinsmia1939/FreeCAD`. The parent gitlink pins a commit, even though
@@ -200,14 +201,28 @@ licenses remain applicable to their respective code.
     ApplicationFramework/DataExchange/Visualization now configure in the existing
     OCCT build. The user subsequently installed and confirmed `rapidjson-devel`;
     its header/package were verified and reconfiguration with `USE_RAPIDJSON=ON`
-    succeeds, including `TKDEGLTF`. The required toolkit build has started
-    (5,202 initial compile/link steps, two compile jobs and one link job).
-    **The build is not yet verified complete.** Inspect
-    `/tmp/implicit-occt-build.log` and running Ninja/compiler processes before
-    starting another build in the same directory. Repeat the documented build
-    command if it has stopped; Ninja resumes completed work. A successful strict
-    preflight and separate whole-FreeCAD API/runtime migration still follow.
+    succeeds, including `TKDEGLTF`. The required toolkit build completed all
+    5,202 steps with exit code zero; the strict dependency preflight now passes,
+    selecting only the OCCT 8.1 source-build libraries.
     Do not retarget the working OCCT 7 FreeCAD tree. See `native-gyroid-sections.md`.
+20. Whole-FreeCAD OCCT 8 migration started (FreeCAD `a5257ddff3`): separate `build-freecad-occt8`
+    configuration succeeds using the working build's minimal module options,
+    two compile jobs and one link job. No additional packages were needed.
+    The Implicit module now uses the signed-distance implementation exported by
+    the fork's `TKTopAlgo` instead of compiling another copy into `Implicit.so`;
+    the OCCT 7 compatibility path still stages/compiles only the extension.
+    Both configurations succeed, and their generated Ninja graphs confirm this
+    distinction. `Implicit`, `ImplicitScripts`, `PartScripts` and
+    `FreeCADMainCmd` are building; completion and runtime compatibility are
+    **not yet verified**. Inspect `/tmp/implicit-freecad-occt8-build.log` and
+    running Ninja/compiler processes before resuming the documented command.
+    Do not configure/build concurrently within that same build directory.
+    After successful compilation, test the migration's own command-line binary,
+    audit OCCT runtime linkage, then build/test GUI targets. This does not expose
+    native implicit faces through Part or implement missing trimming/BOP support.
+    The existing combined suite passes 24/24 after the OCCT dependency build
+    and both configurations (31.35 seconds); its FreeCAD tests still use the
+    working OCCT 7 runtime, not the unfinished migration binary.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
@@ -219,8 +234,9 @@ passed **10/10 tests** before the live increment. The latest run passes
 controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers. Separately, OCCT 8.1
-TKernel, TKMath, TKG2d, TKG3d, TKGeomBase and TKBRep are now fully built for native
-face conformance. The full modeling/exchange/test suite is not built or tested.
+required modeling/exchange/OCAF/visualization toolkit dependencies are built and
+the strict FreeCAD dependency preflight passes. The full upstream OCCT test suite
+is not built or tested; a wholly OCCT-8-linked FreeCAD runtime remains unverified.
 The earlier addon GUI tests used installed FreeCAD.
 
 ## Tools and development environment
@@ -263,7 +279,8 @@ two jobs and linking to one. Do not start a full all-target build casually.
 
 Run these commands from the umbrella root. Clone with `--recurse-submodules`.
 The native configure flags are in `docs/build-dependencies-opensuse.md`; reuse
-the existing build on this machine rather than configuring another copy.
+the existing build for each ABI. The separately configured OCCT 8 migration tree
+must not replace or retarget the working OCCT 7 tree.
 
 ```sh
 # Standalone build, with native tests when the native command exists.
@@ -391,11 +408,11 @@ native milestone is open/domain-side trim topology, arbitrary/nested trimming
 and shared topology-aware surface meshing, plus singular/tangent resolution,
 then generic splitting/classification/history and full native persistence.
 Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
-For the wholly OCCT-8 FreeCAD build, RapidJSON is now installed and enabled;
-finish the required toolkit build in the existing OCCT directory (see
-`native-gyroid-sections.md` for commands and the build log). The new strict
-preflight must pass before a separate migration
-build; passing it alone does not establish API/runtime/native persistence support.
+For the wholly OCCT-8 FreeCAD build, the required OCCT toolkits are built and
+strict preflight passes. Finish the separate `build-freecad-occt8` targets (see
+`native-gyroid-sections.md` for commands and the build log), address API failures
+and test runtime linkage/behaviour before proceeding to GUI/native exposure.
+Configuration/preflight alone do not establish API/runtime/native persistence support.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,
