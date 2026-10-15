@@ -294,6 +294,39 @@ consumers, trim-topology persistence and broader workbench validation
 remain pending; restricted native in-process ownership/query/primitive I/O is tested.
 The earlier addon GUI tests used installed FreeCAD.
 
+## Milestone 24: restricted native mixed-Boolean boundaries
+
+Implementation heads: OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
+
+`TKTopAlgo/BRepClass3d_ImplicitBox` constructs native hybrid gyroid/Part-box
+boundary compounds for Common and explicit box-minus-field subtraction, with
+F<=0 inside. It validates/copies a conventional axis-aligned box, excludes
+box-edge roots using Lipschitz subdivision, traces all six planar faces, builds
+shared degree-1 B-spline seams with planar p-curves and retains conventional
+caps. Caps pass BRepCheck and every compound edge has two opposite uses; this
+does NOT validate a solid or enable generic UV-based BOP. At most one closed
+contour per face, away from box edges, is supported. Open, nested, ambiguous and
+unresolved cases reject; many low-isovalue gyroid cuts remain unsupported.
+The default 0.1 mm bound applies to seams only, not a full surface mesh/model.
+
+FreeCAD's OCCT-8-only binding owns the entire hybrid boundary in an opaque
+capsule, plus an independently retained implicit face. Conventional planar caps
+are exposed as Part face copies, not shared topology or implicit Part shapes.
+`ImplicitMixed.py` adds live gyroid/Part links, Common/BoxMinusField commands,
+a supported demo and FCStd recipe rebuild after explicit recompute. The GUI
+shows planar caps and orange seams ONLY; no conforming gyroid mesh is claimed.
+Failure clears native/display caches. Primitive fields must have identity global
+placement; nonidentity parent containers/App::Link dispatch are unsupported.
+See [native-mixed-box.md](native-mixed-box.md) for all support gates, API, demo,
+build commands and acceptance tests. No new packages/system changes were needed.
+
+The isolated native executable passes **27/27** GTest cases (three new mixed-box
+cases; CTest 0.57 seconds). Migration CTest passes **22/22** (47.96 seconds),
+including new CLI/GUI mixed-box checks. The preserved OCCT-7/root suite passes
+**25/25** (26.32 seconds). Logs are in PROGRESS.md. Do not run library builds
+concurrently with the actual loaded-library audit: a replaced Linux mapped inode
+appears as `(deleted)` and correctly fails that audit.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -382,7 +415,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry contains 24 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 27 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
@@ -471,7 +504,10 @@ now passes 20 migration checks; see `in-process-native-faces.md`. Next expose
 gyroid section/split snapshots through the same ownership boundary and extend
 topology-aware persistence/conforming meshing. Do not assign arbitrary fields
 to Part shapes or route implicit faces through generic UV-dependent BOP/meshing.
-Open trim topology and general mixed BOP remain separate work.
+Restricted native gyroid/box Common and BoxMinusField boundaries now exist;
+see `native-mixed-box.md`. The next gates are box-edge vertices/open-contour
+joining, multiple/nested loops, trim-conforming meshes and implicit-aware solid
+validation/classification/persistence. General mixed BOP remains separate work.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

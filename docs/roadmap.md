@@ -30,6 +30,7 @@
 | Closed gyroid visualization | Implemented for explicit band/box graphs | Paired-edge regression; no general solid/topology guarantee |
 | B-Rep-to-field | Snapshot and live bridge tested | OCCT core signed-distance extension; live Part source or JSON snapshot |
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
+| Native gyroid/Part-box boundary | Restricted Common/BoxMinusField implemented and tested | Shared closed seams and planar caps; caps/seams preview only, no open box-edge crossings or validated solid |
 | OCCT-native field-backed face storage/queries | Experimental, isolated OCCT 8.1 tests | No UV surface; explicit unsupported-operation guards; no OCCT 8 handles inside the OCCT 7.9 GUI |
 | OCCT-native single-face persistence | Experimental schema 1, isolated OCCT 8.1 tests | Sphere/gyroid, domain, tolerance, placements/orientation; no child topology, mesh, generic B-Rep/OCAF or FCStd support |
 | Native sphere-plane trimming | Restricted analytic prototype, tested | Plane predicate + exact circle wire; open patch, no general field trimming |
@@ -55,8 +56,11 @@ dispatch and open/domain-side trim topology. [Native gyroid sections and restric
 closed split seams](native-gyroid-sections.md) are now implemented; singular/tangent
 resolution and trim-conforming surface meshes remain open. Other gates are
 graph/topology persistence, general intersection topology, Boolean
-splitting/history and a wholly OCCT-8-linked
-FreeCAD build. These are not completed by attaching a field to a face. See the
+splitting/history. The wholly OCCT-8-linked FreeCAD build is now tested, and
+[restricted native gyroid/box boundaries](native-mixed-box.md) add closed-loop
+seams, planar caps and live Common/BoxMinusField recipes. General box-edge
+crossings, conforming meshing and validated solids remain open.
+These are not completed by attaching a field to a face. See the
 [accuracy policy](accuracy-policy.md); field residuals are not millimetre errors.
 
 Native ray queries and local stationary projection now query fields independently

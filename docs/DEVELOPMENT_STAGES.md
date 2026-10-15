@@ -19,6 +19,11 @@ different completion criteria.
 
 ## Remaining native-development gates
 
+The restricted [native mixed-box increment](native-mixed-box.md) implements
+Common/BoxMinusField boundary compounds with closed seams and planar caps plus
+live FreeCAD recipes. It does not close the general trimming, conforming meshing,
+implicit-solid validation or manufacturing acceptance gates below.
+
 1. Geometry property and graph system: a dedicated versioned complex-geometry
    property; shared-node JSON/DAG persistence; unit contracts; graph/task UI;
    robust migration fixtures. Document links already provide a native dependency

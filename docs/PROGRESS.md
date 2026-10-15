@@ -4,11 +4,41 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `dfd157cba3` on
-`feature/native-implicit`, OCCT `e5422e4ced` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `dfb000b373` on
+`feature/native-implicit`, OCCT `459f71a3a9` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: in-process native face ownership and guarded GUI backend
+## Latest increment: restricted native mixed gyroid/box boundaries
+
+OCCT `BRepClass3d_ImplicitBox` now accepts a real conventional axis-aligned box
+solid and a native gyroid face. Common uses F<=0 inside; BoxMinusField explicitly
+retains the positive region in the box. All six planar sections must resolve,
+with at most one closed contour per face and no edge crossings. New shared
+seams have matching planar p-curves; planar caps pass BRepCheck and every hybrid
+compound edge has exactly two opposite uses. Source topology is copied.
+The result is NOT a validated solid or generic BOP result. The 0.1 mm default
+bound covers seams, not an implicit surface mesh or whole manufacturing model.
+
+The native FreeCAD binding owns hybrid compounds opaquely, exposing independent
+native face snapshots and ordinary Part cap copies. `ImplicitMixed` adds linked
+operands, recompute, recipe save/restore, operation commands and a supported demo.
+Its GUI displays caps and seams only. Failure invalidates both geometry and
+display caches. No new dependencies/system-library changes were needed.
+
+Three new kernel cases cover shared topology/p-curves/caps, immutability,
+unsupported inputs, translated boxes and zero-seam cases. New CLI/GUI tests
+exercise live links, operand changes, snapshot lifetime, operation switching,
+restore and retained/cleared Coin buffers. See [contracts](native-mixed-box.md).
+Verification: **27/27** isolated kernel GTest cases pass (CTest 0.57 seconds),
+the full OCCT-8 migration suite passes **22/22** (47.96 seconds), and the preserved
+OCCT-7/root suite passes **25/25** (26.32 seconds). Logs:
+`/tmp/implicit-mixed-full-migration.log`, `/tmp/implicit-mixed-full-legacy.log`,
+`/tmp/implicit-mixed-occt-build.log`, `/tmp/implicit-mixed-freecad-build.log`.
+An earlier overlapping library rebuild correctly failed the runtime library
+audit on a `(deleted)` mapped inode; the non-overlapping rerun passed. These
+results are targeted regression checks, not all-workbench/GPU qualification.
+
+## Previous increment: in-process native face ownership and guarded GUI backend
 
 The OCCT-8-only `_ImplicitOCCT` C++ extension now owns genuine native face
 snapshots, exposed through an ABI/build-origin-checking `ImplicitOCCT` facade.

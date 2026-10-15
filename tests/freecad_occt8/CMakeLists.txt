@@ -20,7 +20,7 @@ set_tests_properties(implicit_occt8_runtime PROPERTIES
     PASS_REGULAR_EXPRESSION "native implicit OCCT8 runtime smoke test passed"
     FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
     FIXTURES_SETUP occt8_runtime TIMEOUT 120)
-foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled chart scalar part_linked patch)
+foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled chart scalar part_linked patch mixed_box)
     add_test(NAME "implicit_occt8_${_smoke}"
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/${_smoke}_smoke.py")
     set_tests_properties("implicit_occt8_${_smoke}" PROPERTIES
@@ -81,6 +81,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
             "${_scripts}/native_face_gui_smoke.py")
     set_tests_properties(implicit_occt8_gui_native_faces PROPERTIES
         PASS_REGULAR_EXPRESSION "native implicit in-process face GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_mixed_box
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/mixed-box-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/mixed-box-system.cfg"
+            "${_scripts}/mixed_box_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_mixed_box PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit mixed box GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)

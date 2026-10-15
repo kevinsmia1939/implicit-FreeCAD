@@ -4,6 +4,11 @@ An experimental **FreeCAD fork for implicit modelling**, working toward native
 field-based workflows, lattices, and mixed implicit/B-Rep operations. The
 long-term target is an nTop-class implicit modelling system.
 
+New: [native mixed gyroid/Part-box boundaries](docs/native-mixed-box.md), with
+restricted intersection/subtraction, shared closed seams, planar caps and live
+FreeCAD recipes. This experimental increment previews caps/seams only; general
+box-edge crossings, conforming surface meshes and validated solids remain open.
+
 This repository is the development umbrella: the actual FreeCAD fork is pinned
 in the `FreeCAD/` submodule on
 [`feature/native-implicit`](https://github.com/kevinsmia1939/FreeCAD/tree/feature/native-implicit).

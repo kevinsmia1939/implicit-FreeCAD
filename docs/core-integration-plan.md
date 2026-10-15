@@ -161,6 +161,11 @@ backend. This does not assign them to Part shapes. Generic native-face Part
 consumer/trim-topology persistence dispatch, broader workbench validation and
 general mixed BOP remain pending. See [in-process contracts](in-process-native-faces.md) and
 [gyroid sections and current four-step gates](native-gyroid-sections.md).
+The first restricted [native gyroid/box boundary pipeline](native-mixed-box.md)
+now connects actual conventional boxes to native implicit faces in TKTopAlgo,
+with shared closed seams, planar caps and live FreeCAD Common/BoxMinusField
+recipes. Open/box-edge crossings, multiple/nested contours, conforming gyroid
+meshing and whole-solid validation are not provided by this increment.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 
