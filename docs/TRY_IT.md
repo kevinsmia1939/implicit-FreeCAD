@@ -26,6 +26,12 @@ preferences. This is a minimal Part/Implicit development build, not an all-modul
 FreeCAD build. Native implicit-face Part operations/persistence remain unfinished;
 choosing OCCT 8 does not turn field Boolean results into validated B-Rep solids.
 
+In that build, **Native Implicit > OCCT in-process sphere (experimental)** creates
+a genuine native field-face backed object without a worker. Its `Backend` is
+`InProcess`; edit the existing sphere/plane/operation properties and recompute.
+The object owns opaque native face snapshots, not a Part shape. See
+[native handle/API and persistence contracts](in-process-native-faces.md).
+
 ## What to try
 
 **OCCT gyroid-plane section (experimental)** now previews native gyroid/plane

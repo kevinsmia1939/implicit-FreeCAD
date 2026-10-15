@@ -9,7 +9,7 @@ prototype and runs against the rebuilt OCCT 8.1 kernel.
 | 1: gyroid–plane intersections | Native bounded-rectangle sections with derivative-bound acceptance, explicit unresolved diagnostics and GUI preview | General domain polygons, tangent/singular intersection resolution rather than rejection |
 | 2: trimming and geometric-bound meshing | Restricted identity-placed Z-plane split with closed, resolved loops and shared tolerance-bearing seam edges | Open/domain-side boundaries, arbitrary/nested trims, surface meshing conforming to shared seams |
 | 3: native mixed Booleans | Split/predicate groundwork only; earlier sphere-only operations and FreeCAD field-space Booleans remain separate | Gyroid/B-Rep intersections, region classification, splitting, result/history and solid validation |
-| 4: wholly OCCT-8 FreeCAD | Targeted command-line/Part/Implicit/GUI build and runtime tests pass | Native implicit-face persistence/consumer dispatch and broader workbench validation |
+| 4: wholly OCCT-8 FreeCAD | ABI migration and restricted native in-process ownership/query/primitive I/O/GUI tests pass | General Part consumers, trimmed-topology persistence and broader workbench validation |
 
 ## Native section contract
 
@@ -224,8 +224,10 @@ seconds); these are separate from the 12 migration checks.
 
 The **targeted GUI build and runtime tests now pass**. The build completed with
 exit code zero; its log is `/tmp/implicit-freecad-occt8-gui-build.log`.
-With GUI and launcher checks enabled the migration suite passes **18/18** (42.59
-seconds); the separate preserved OCCT 7 suite passes **24/24** (25.61 seconds).
+At the ABI-only milestone the migration suite passed **18/18** (42.59 seconds)
+and the preserved OCCT 7 suite **24/24** (25.61 seconds). The subsequent
+[in-process native-face increment](in-process-native-faces.md) brings these to
+20/20 and 25/25, including native handle/serialization/GUI and legacy ABI guards.
 Incremental reproduction (never configure/build concurrently in one directory):
 
 ```sh
@@ -261,6 +263,6 @@ invalidate these implicit workflow tests. No all-workbench claim follows.
 The separate directory preserves the working OCCT 7 binary while recompiling every
 OCCT-dependent consumer; do not retarget the existing working FreeCAD tree
 piecemeal or copy OCCT 8 general headers into its OCCT 7 compatibility include
-directory. Native implicit-face persistence/consumer dispatch and broader
+directory. General Part consumer/trim-topology persistence dispatch and broader
 workbench tests still follow. Successful ABI migration does not
 authorize arbitrary native faces in Part or establish manufacturing readiness.

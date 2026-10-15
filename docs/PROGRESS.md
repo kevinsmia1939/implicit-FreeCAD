@@ -4,9 +4,34 @@ Updated 2026-10-15. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `c89d2217d8` on
+Implementation heads: FreeCAD `dfd157cba3` on
 `feature/native-implicit`, OCCT `e5422e4ced` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Latest increment: in-process native face ownership and guarded GUI backend
+
+The OCCT-8-only `_ImplicitOCCT` C++ extension now owns genuine native face
+snapshots, exposed through an ABI/build-origin-checking `ImplicitOCCT` facade.
+Sphere/gyroid construction, placed queries, translation, restricted sphere
+operations, bounded sphere/patch display meshes and explicit primitive I/O reuse
+the existing OCCT kernel implementation. Opaque immutable handles are not Part
+shapes and are not picklable. Trim/child-topology serialization rejects rather
+than silently dropping geometry. No new OCCT source changes were needed.
+
+The existing boundary GUI feature gains explicit `Backend=InProcess`, retaining
+native handles and transient meshes. The default Worker backend and old recipes
+remain supported. FCStd restores mathematical recipes/backend, not native
+topology or pointers. A native in-process sphere command is registered only in
+the supported build; failed operations clear both caches, with no worker fallback.
+The GUI test forbids worker subprocesses throughout creation, edits and restore.
+
+All **20/20** OCCT 8 migration tests pass (50.92 seconds), and **25/25** combined
+compatibility tests pass (31.38 seconds), including the new legacy import guard.
+Tests exercise immutable lifetime across document close, translation/reflection
+mesh frames and winding, ray brackets, primitive I/O and unsupported-operation
+guards. Calls are synchronous/GIL-held; general Part consumers, native trim-
+topology persistence, conforming gyroid meshing and mixed BOP remain unfinished.
+See [contracts and try/build commands](in-process-native-faces.md).
 
 ## Current increment: native gyroid sections, closed seams and migration preflight
 

@@ -155,8 +155,11 @@ status. Restricted closed-loop Z splits share approximate seam edges with exact
 field/plane predicates. Strict OCCT source-build selection is implemented in
 FreeCAD. The separate OCCT 8 command-line/Part/Implicit build now passes targeted
 runtime/linkage tests, including the separate GUI and bundled Coin/Pivy.
-Native implicit-face consumer/persistence dispatch, broader workbench validation
-and general mixed BOP remain pending. See
+An OCCT-8-only binding now owns immutable native face snapshots, exposes queries,
+restricted sphere operations and primitive I/O, with an explicit in-process GUI
+backend. This does not assign them to Part shapes. Generic native-face Part
+consumer/trim-topology persistence dispatch, broader workbench validation and
+general mixed BOP remain pending. See [in-process contracts](in-process-native-faces.md) and
 [gyroid sections and current four-step gates](native-gyroid-sections.md).
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).

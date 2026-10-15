@@ -63,15 +63,18 @@ different completion criteria.
    adapter exposes editable GUI examples via an isolated OCCT 8 worker on both
    tested FreeCAD ABI builds. This is not a validated solid or Part handle.
    The user's target is 0.1 mm geometric accuracy; general native trimming/BOP,
-   field graph/topology persistence, full-toolkit conformance and in-process
-   OCCT-8 FreeCAD exposure remain open. See `native-sphere-operations.md`.
+   field graph/topology persistence, full-toolkit conformance and general Part
+   consumers remain open. Restricted native in-process ownership,
+   queries, sphere operations, primitive serialization and opt-in GUI display
+   are now tested; see `in-process-native-faces.md` and `native-sphere-operations.md`.
    Native gyroid/plane-rectangle sections now have derivative-bound acceptance
    and explicit unresolved status. Restricted closed-loop Z splits share
    approximate seam edges; contour GUI previews are tested. Open/domain-side
    seams and conforming surface meshing remain open, as do general mixed BOP
    and whole-model validity. Strict OCCT build-tree selection/preflight, required
    toolkit builds and targeted FreeCAD OCCT 8 command-line/GUI migration checks
-   now pass. In-process native implicit-face exposure/persistence is still open. See
+   now pass. Restricted in-process native faces are exposed explicitly, not as
+   Part shapes; trimmed-topology persistence and general consumers remain open. See
    `native-gyroid-sections.md` for the four requested steps' actual status.
 6. Cross-workbench and scale: explicit consumer contracts for FEM/CAM/mesh,
    container/App::Link and cross-document behavior, systematic cache budgets,

@@ -83,6 +83,13 @@ if(IMPLICIT_BUILD_TESTS)
         set(_native_tests native_smoke mesh_smoke linked_smoke cancellation_smoke ray_smoke geometry_smoke controlled_smoke chart_smoke scalar_smoke)
         if(IMPLICIT_NATIVE_PART_TESTS)
             list(APPEND _native_tests part_linked_smoke patch_smoke)
+            add_test(NAME implicit_native_face_legacy_guard
+                COMMAND "${IMPLICIT_NATIVE_FREECADCMD}"
+                    "${CMAKE_CURRENT_SOURCE_DIR}/FreeCAD/src/Mod/Implicit/Tests/native_face_legacy_guard.py")
+            set_tests_properties(implicit_native_face_legacy_guard PROPERTIES
+                PASS_REGULAR_EXPRESSION "native implicit OCCT7 face ABI guard passed"
+                SKIP_REGULAR_EXPRESSION "legacy guard applies only to OCCT 7"
+                FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file" TIMEOUT 120)
         endif()
         foreach(native_test IN LISTS _native_tests)
             add_test(NAME implicit_${native_test}

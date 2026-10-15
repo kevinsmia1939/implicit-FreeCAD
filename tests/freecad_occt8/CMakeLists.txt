@@ -28,6 +28,12 @@ foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled 
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 endforeach()
+add_test(NAME implicit_occt8_native_faces
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/native_face_smoke.py")
+set_tests_properties(implicit_occt8_native_faces PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit OCCT face smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 
 option(IMPLICIT_MIGRATION_GUI_TESTS "Test the built OCCT 8 GUI (requires DISPLAY or Xvfb)" OFF)
 set(IMPLICIT_OCCT_NATIVE_WORKER "" CACHE FILEPATH "Built native OCCT worker for GUI recipe tests")
@@ -68,6 +74,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
                 FIXTURES_REQUIRED occt8_gui_runtime)
         endif()
     endforeach()
+    add_test(NAME implicit_occt8_gui_native_faces
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/native-face-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/native-face-system.cfg"
+            "${_scripts}/native_face_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_native_faces PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit in-process face GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)
         set(_demo_flags "")
         if(_demo STREQUAL live)

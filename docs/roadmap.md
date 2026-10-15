@@ -38,7 +38,8 @@
 | Native gyroid-plane section | Implemented for bounded rectangles, derivative-bound resolved cases | Geometric cell bound, shared roots and explicit unresolved statuses; tangent/singular cases reject |
 | Native gyroid Z-split seams | Restricted closed-loop prototype | Opposite authoritative plane predicates, shared approximate seam edges; no open-domain boundaries or conforming surface mesh |
 | Native gyroid section GUI | Experimental, worker/GUI/FCStd tested | Native contour previews only, not a trimmed-surface Part object |
-| Wholly OCCT-8 FreeCAD | Targeted command-line/Part/Implicit/GUI build and migration tests pass | GUI and command-line library paths audited; native implicit-face consumer/persistence dispatch and broader workbench validation outstanding |
+| Wholly OCCT-8 FreeCAD | Targeted command-line/Part/Implicit/GUI build and migration tests pass | Library paths audited; generic Part consumers, native trim-topology persistence and broader workbench validation outstanding |
+| In-process OCCT-native faces | Experimental OCCT 8 API and opt-in GUI backend; tested | Opaque immutable ownership, placed queries, restricted sphere operations, primitive I/O; no generic Part shape conversion or trimmed-topology persistence |
 | OCCT native-boundary GUI examples | Experimental in-tree Python adapter, GUI/FCStd tested | Process-isolated OCCT 8 worker -> OCCT 7 GUI; editable recipes, transient Coin data, no Part handles |
 | Local B-spline bridge | Experimental, tested | Native height charts; sampled field/normal validation; open face only |
 | STEP export | Local fitted open-face round-trip tested | Whole implicit solid export remains unsupported |

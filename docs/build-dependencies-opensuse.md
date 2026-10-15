@@ -20,6 +20,13 @@ including FreeType 2.14.3. This is targeted Part/Implicit validation, not the
 complete upstream FreeCAD/OCCT test suites or all workbenches; see
 [strict migration preflight and remaining gates](native-gyroid-sections.md#occt-8-migration-dependency-gate).
 
+The following in-process native-face increment also needs no new dependencies.
+In the explicit OCCT 8 configuration, building `Implicit` additionally builds
+the small `_ImplicitOCCT` extension. The OCCT 7 compatibility configuration does
+not build or load it; only its guarded Python facade is copied with scripts.
+See [native API/build/verification](in-process-native-faces.md) for current
+20-entry migration and 25-entry compatibility suites.
+
 ## Original working-build audit
 
 Initial audit and latest verification: 2026-10-14. The package checklist below

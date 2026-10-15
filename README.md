@@ -21,6 +21,11 @@ bound curve previews and a restricted closed-loop split prototype. General
 gyroid surface trimming/Booleans and native implicit-face Part/persistence
 integration remain open.
 
+[In-process native faces](docs/in-process-native-faces.md) are now available in
+the OCCT 8 build: immutable handles, placed queries, restricted sphere operations,
+bounded display meshing and explicit primitive serialization. An opt-in native
+GUI backend retains real OCCT face handles; they are not ordinary Part shapes.
+
 **Continuing development? Start with [the handoff](docs/HANDOFF.md).** It records
 completed work, source locations, exact build/test commands, tools, known gaps,
 and the next implementation milestones. [AGENTS.md](AGENTS.md) provides a short

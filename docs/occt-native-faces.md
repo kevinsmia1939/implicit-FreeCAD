@@ -146,7 +146,9 @@ this is not a whole-surface geometric accuracy or coverage certificate.
 
 The existing FreeCAD build and compatibility tests link installed OCCT 7.9.3.
 A separate OCCT 8.1-linked Cmd/GUI build now passes targeted migration tests;
-native implicit-face Part exposure/persistence remains unfinished. See
+restricted in-process ownership/queries/primitive I/O are now exposed through
+[an explicit native API](in-process-native-faces.md), not Part shapes. General
+Part consumers and trim-topology persistence remain unfinished. See
 [migration validation](native-gyroid-sections.md#occt-8-migration-dependency-gate).
 The native-face tests use **only rebuilt OCCT 8.1 headers/libraries** in the
 existing `build-occt-implicit` tree. Never stage the changed general OCCT 8 headers

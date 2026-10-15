@@ -252,22 +252,46 @@ licenses remain applicable to their respective code.
     the live mixed-field demo. The launcher defaults to the preserved OCCT 7
     build unless `--occt8` is selected. Native implicit-face Part exposure,
     general trimming/BOP and native topology persistence remain unfinished.
+23. Explicit in-process native faces (FreeCAD `dfd157cba3`): the OCCT-8-only
+    `_ImplicitOCCT` C++ module owns immutable native face snapshots. The public
+    `ImplicitOCCT` facade checks Part's ABI/build root and extension origin before
+    loading it. APIs expose sphere/gyroid construction, placed value/gradient/
+    normal/domain/ray queries, translation, restricted sphere trim/Boolean
+    boundaries, sphere/patch display meshes and explicit primitive schema-1 I/O.
+    Handles are not Part shapes, cannot be pickled or assigned to Part Shape,
+    and survive recompute/document close when retained. Trim/child-topology I/O
+    rejects instead of losing geometry. No new OCCT source or package changes.
+    `ImplicitNative` retains the default worker backend but adds explicit
+    `Backend=InProcess`, with native handles and transient Coin meshes. A new
+    OCCT-8-only workbench command creates an in-process sphere. FCStd stores
+    recipe properties/backend and reconstructs faces, not pointer/mesh/native
+    trim-topology payloads. Errors clear both caches; no silent worker fallback.
+    Legacy schema-1 recipes retain Worker by default. Calls remain synchronous
+    with the GIL held; this is not a native complex-geometry property or Part BOP.
+    All **20/20** migration tests pass (50.92 seconds), including a worker-disabled
+    GUI save/restore test and placement/reflection/lifetime/serialization guards.
+    The preserved compatibility suite passes **25/25** (31.38 seconds), including
+    a new public-import guard proving no OCCT 8 toolkit loads in the OCCT 7
+    process. See `in-process-native-faces.md` for API/build/try commands and the
+    next milestone: native gyroid sections/split ownership, topology persistence,
+    conforming meshing and general consumer dispatch—not arbitrary Part assignment.
 
 The native module and `FreeCADMainCmd` targets have been built successfully.
 The unified CTest run passed **6/6 tests** on 2026-10-14, including both native
 smoke tests; the mesh smoke test completed in approximately 0.44 seconds on this
 host. That runtime is a regression-test observation, not a rendering benchmark.
 That six-test result predates the current increments. The current combined run
-passed **10/10 tests** before the live increment. The latest run passes
-**24/24** with the isolated native-face executable, worker GUI/protocol tests and migration preflight registered, including scalar
+passed **10/10 tests** before the live increment. The latest compatibility run passes
+**25/25** with the isolated native-face executable, legacy ABI guard, worker GUI/protocol tests and migration preflight registered, including scalar
 controls, chart/patch/STEP checks and synchronous/background mixed fork GUIs on Xvfb; see results
 and benchmark observations in `PROGRESS.md`. OCCT is now modified. Its new extension is compiled against
 installed OCCT 7.9.3 through isolated staged headers. Separately, the required
 OCCT 8.1 modeling/exchange/OCAF/visualization toolkit dependencies are built and
 the strict FreeCAD dependency preflight passes. The full upstream OCCT test suite
 is not built or tested. The separate OCCT 8 command-line/Part/Implicit runtime
-passes targeted command-line/GUI migration tests. Native implicit-face consumer
-dispatch/persistence and broader workbench validation remain pending.
+passes targeted command-line/GUI migration tests. General native-face Part
+consumers, trim-topology persistence and broader workbench validation
+remain pending; restricted native in-process ownership/query/primitive I/O is tested.
 The earlier addon GUI tests used installed FreeCAD.
 
 ## Tools and development environment
@@ -350,13 +374,13 @@ FreeCAD -P "$PWD/addon" tests/freecad_gui_smoke.py
 
 Without a native build, omit `IMPLICIT_NATIVE_FREECADCMD` (or set it to an empty
 string to clear a cached setting). NativeCmd now registers nine native tests;
-the Part option adds two more. NativeGUI registers synchronous and async GUI
+the Part option adds two more plus the legacy native-face ABI guard. NativeGUI registers synchronous and async GUI
 tests (requires DISPLAY). The OCCT extension adds its C++ checks, optional GTest,
 and the native mixed snapshot test when NativeCmd is present. Other standalone,
 addon and OCCT-probe tests depend on detected/configured components; inspect
 `ctest --test-dir build -N` for the actual set. The complete host configuration
-has 24 tests with the isolated OCCT-face executable, worker tests and migration preflight registered
-(23 without migration preflight; 21 without worker/preflight tests; 20 without
+has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
+(24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
 The native-face entry contains 24 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
@@ -442,11 +466,12 @@ then generic splitting/classification/history and full native persistence.
 Do not route these faces through generic BRepMesh/BOP or OCCT 7 Part.
 For the wholly OCCT-8 FreeCAD build, required toolkits and command-line targets
 and GUI targets are built; strict preflight and all 18 targeted migration checks
-pass. See `native-gyroid-sections.md` for commands/logs. The next ABI-enabled
-milestone is explicit in-process native implicit-face ownership/query/display
-and persistence/consumer guards, not arbitrary assignment to Part shapes or
-routing implicit faces through generic UV-dependent BOP/meshing. Open trim
-topology, conforming surface meshing and general mixed BOP remain separate work.
+passed at the ABI milestone. The explicit native in-process API/GUI increment
+now passes 20 migration checks; see `in-process-native-faces.md`. Next expose
+gyroid section/split snapshots through the same ownership boundary and extend
+topology-aware persistence/conforming meshing. Do not assign arbitrary fields
+to Part shapes or route implicit faces through generic UV-dependent BOP/meshing.
+Open trim topology and general mixed BOP remain separate work.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 
 1. **Native feature display (implemented and GUI-tested):** `ImplicitGui` view-provider registration,

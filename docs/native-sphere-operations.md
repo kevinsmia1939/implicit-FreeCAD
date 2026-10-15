@@ -90,7 +90,10 @@ edge incidence/winding, pole handling and precision/resource rejection.
 The preserved fork GUI/Part uses installed OCCT 7.9.3; a separate OCCT 8.1-linked
 GUI now also passes targeted migration tests (see
 [migration validation](native-gyroid-sections.md#occt-8-migration-dependency-gate)).
-Both retain this worker adapter; native in-process Part exposure is unfinished.
+Both retain this worker adapter. A separate opt-in
+[in-process native-face backend](in-process-native-faces.md) now owns native
+handles in the OCCT 8 process, with the same restricted sphere algorithms;
+general Part exposure is unfinished.
 The executable
 `implicit_occt_native_worker` links only the isolated rebuilt OCCT 8.1 libraries.
 It creates real native fields/patches and performs the restricted operations
