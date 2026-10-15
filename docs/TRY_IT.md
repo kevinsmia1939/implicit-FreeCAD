@@ -3,6 +3,7 @@
 New: [restricted native gyroid/Part-box intersection and subtraction](native-mixed-box.md)
 in the OCCT 8 build. The **Native gyroid/box demo** command previews planar caps
 and seams, not a complete implicit surface mesh or a validated Part solid.
+The **Native zero-gyroid/box demo** also exercises open contours across box edges.
 
 On this development machine the fork is already built. From the project root:
 

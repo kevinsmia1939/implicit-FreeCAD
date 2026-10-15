@@ -30,7 +30,7 @@
 | Closed gyroid visualization | Implemented for explicit band/box graphs | Paired-edge regression; no general solid/topology guarantee |
 | B-Rep-to-field | Snapshot and live bridge tested | OCCT core signed-distance extension; live Part source or JSON snapshot |
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
-| Native gyroid/Part-box boundary | Restricted Common/BoxMinusField implemented and tested | Shared closed seams and planar caps; caps/seams preview only, no open box-edge crossings or validated solid |
+| Native gyroid/Part-box boundary | Common/BoxMinusField with regular box-edge crossings and multiple regions | Shared roots, closed implicit trim wires and planar caps; caps/seams preview only, no validated solid |
 | OCCT-native field-backed face storage/queries | Experimental, isolated OCCT 8.1 tests | No UV surface; explicit unsupported-operation guards; no OCCT 8 handles inside the OCCT 7.9 GUI |
 | OCCT-native single-face persistence | Experimental schema 1, isolated OCCT 8.1 tests | Sphere/gyroid, domain, tolerance, placements/orientation; no child topology, mesh, generic B-Rep/OCAF or FCStd support |
 | Native sphere-plane trimming | Restricted analytic prototype, tested | Plane predicate + exact circle wire; open patch, no general field trimming |
@@ -58,8 +58,10 @@ resolution and trim-conforming surface meshes remain open. Other gates are
 graph/topology persistence, general intersection topology, Boolean
 splitting/history. The wholly OCCT-8-linked FreeCAD build is now tested, and
 [restricted native gyroid/box boundaries](native-mixed-box.md) add closed-loop
-seams, planar caps and live Common/BoxMinusField recipes. General box-edge
-crossings, conforming meshing and validated solids remain open.
+seams, planar caps and live Common/BoxMinusField recipes. Regular box-edge
+crossings and multiple cap regions now work; conforming meshing and validated
+solids remain open. The [active Stage 4 goal](stage-4-acceptance.md) preserves the
+full integration acceptance scope.
 These are not completed by attaching a field to a face. See the
 [accuracy policy](accuracy-policy.md); field residuals are not millimetre errors.
 

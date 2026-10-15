@@ -1,14 +1,46 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-15. The user has authorized continuing the full roadmap,
+Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `dfb000b373` on
-`feature/native-implicit`, OCCT `459f71a3a9` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `1daddc4c3a` on
+`feature/native-implicit`, OCCT `ef20e3f9d7` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: restricted native mixed gyroid/box boundaries
+## Latest increment: open box contours and multiple retained regions
+
+Active objective: [through Stage 4, seamless FreeCAD integration](stage-4-acceptance.md).
+This increment advances Stage 2, not completion of that objective.
+
+The mixed native box constructor replaces closed-loop-only rejection with
+shared derivative-isolated edge roots, split box-edge intervals, directed face
+graphs and closed implicit boundary wires spanning adjacent planes. Planar loops
+are grouped into retained regions/holes, yielding separate caps where needed.
+Both Common and explicit BoxMinusField retain field authority and source
+immutability. Canonical endpoint adjustment is budgeted within the .1 mm seam
+target. Caps and edge incidence/orientation are validated; whole solids are not.
+
+Plane sections add Taylor empty-cell bounds and exact sinusoidal range/unique
+root tests on field-coordinate axes, retaining conservative oblique handling.
+Alternative bounded grids use the same acceptance criteria, not guessed empty
+cells. Singular/grid/corner ambiguity and exhausted budgets still reject.
+
+The new independent harmonic box-edge reference covers both operations. A
+multiple-loop case checks two holes versus separate retained disks. Additional
+tests cover isovalue changes, placed-field rejection and isolated-max tangency.
+FreeCAD adds crossing-count diagnostics and a standard iso-0 demo; CLI/GUI tests
+cover successful crossings and failed low-budget invalidation. Display remains
+caps/seams only; conforming gyroid meshes and validated solids are unfinished.
+
+Verified: **30/30** isolated kernel GTest cases (CTest 2.34 seconds), **22/22**
+OCCT-8 migration CTest entries (51.04 seconds), **25/25** preserved compatibility
+CTest entries (29.80 seconds). Logs: `/tmp/implicit-open-box-build.log`,
+`/tmp/implicit-open-box-freecad-build.log`, `/tmp/implicit-open-box-targeted.log`,
+`/tmp/implicit-open-box-full-migration.log`, `/tmp/implicit-open-box-full-legacy.log`.
+No additional dependencies or system libraries were installed/modified.
+
+## Previous increment: restricted native mixed gyroid/box boundaries
 
 OCCT `BRepClass3d_ImplicitBox` now accepts a real conventional axis-aligned box
 solid and a native gyroid face. Common uses F<=0 inside; BoxMinusField explicitly

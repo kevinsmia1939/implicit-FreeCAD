@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-15. This file is the entry point for a developer or coding
+Last updated: 2026-10-16. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -327,6 +327,53 @@ including new CLI/GUI mixed-box checks. The preserved OCCT-7/root suite passes
 concurrently with the actual loaded-library audit: a replaced Linux mapped inode
 appears as `(deleted)` and correctly fails that audit.
 
+## Milestone 25: shared box-edge roots and open-contour topology
+
+Source heads: OCCT `ef20e3f9d7`, FreeCAD `1daddc4c3a`.
+
+The active user goal is **proceed through Stage 4, seamless FreeCAD integration**,
+using the six-stage overview, not the original prototype phase numbering.
+`stage-4-acceptance.md` records the full scope. Keep that goal active: this
+increment advances Stage 2 but does not finish Stage 2, 3 or 4.
+
+`BRepClass3d_ImplicitBox` now validates the real conventional box geometry and
+constructs fresh topology without mutating the input. It isolates transverse
+roots on all twelve box edges once, creates canonical shared vertices, splits
+retained box-edge intervals and maps adjacent face endpoints to those roots.
+Every root must have exactly two face-contour uses. Directed boundary graphs
+join open seams across faces into closed implicit trim wires; planar signed
+loops/containment construct multiple cap regions and holes. Each cap passes
+conventional BRepCheck and every compound edge must have two opposite uses.
+The result remains a native boundary compound, NOT a validated solid.
+
+Face tracing gets 3/4 of the requested tolerance; endpoint replacement is
+limited to 1/8 and the combined seam bound must meet the target (default .1 mm).
+Canonical edge brackets are <= tolerance/256. Numerical precision reserves and
+ambiguity rejection apply; no distance-welding unrelated roots or geometry
+perturbation. Grid/corner zeros, tangencies and exhausted budgets still reject.
+The native plane-section algorithm adds Taylor empty-cell exclusion plus exact
+harmonic uniqueness/range checks for field-axis edges; arbitrary oblique edges
+retain the derivative-bound path. Bounded alternative uniform grids may return
+a non-power-of-two resolution without exceeding MaximumCells.
+
+FreeCAD exposes `box_edge_root_count` and a migrated/read-only
+`BoxEdgeRootCount` diagnostic. `ImplicitMixed.demo(open_contours=True)` and a new
+OCCT-8-only command create a standard iso-0 gyroid/box fixture. CLI/GUI tests now
+require iso-0 edge crossings to succeed; low-resolution exhaustion remains a
+failure/cache-clearing test. GUI output still previews caps/seams only.
+Two new analytic/reference and multiple-region tests, plus level/placement/
+degeneracy coverage, extend the isolated executable to 30 cases.
+All **30/30** pass (CTest 2.34 seconds). Full OCCT-8 migration tests pass
+**22/22** (51.04 seconds); preserved OCCT-7/root tests pass **25/25**
+(29.80 seconds). Log paths are in PROGRESS.md. No new packages/system changes.
+
+Next required work: trim-conforming surface meshing and native-solid
+classification/validation, curved B-Rep operands and broader/nested/singular
+topology coverage; then dedicated FreeCAD geometry property/topology persistence,
+semantic selection/snapping, editing/undo/redo and cross-workbench dispatch.
+See `native-mixed-box.md` for current limits and `stage-4-acceptance.md` for
+the full completion audit. Do not replace that objective with box-only success.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -415,7 +462,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 27 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 30 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
@@ -505,8 +552,9 @@ gyroid section/split snapshots through the same ownership boundary and extend
 topology-aware persistence/conforming meshing. Do not assign arbitrary fields
 to Part shapes or route implicit faces through generic UV-dependent BOP/meshing.
 Restricted native gyroid/box Common and BoxMinusField boundaries now exist;
-see `native-mixed-box.md`. The next gates are box-edge vertices/open-contour
-joining, multiple/nested loops, trim-conforming meshes and implicit-aware solid
+see `native-mixed-box.md`. Regular box-edge vertices/open-contour joining and
+multiple planar cap regions now work. Next gates are trim-conforming meshes,
+broader/nested/singular coverage, curved operands and implicit-aware solid
 validation/classification/persistence. General mixed BOP remains separate work.
 Parameterize tolerances explicitly and preserve the staged acceptance gates.
 

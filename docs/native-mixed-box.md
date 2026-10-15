@@ -1,6 +1,6 @@
 # Native mixed gyroid/box boundaries
 
-This is the first **restricted native mixed-Boolean vertical slice**, not
+This is a **native mixed-Boolean box boundary implementation**, not
 general mixed BOP or a manufacturing solid. It modifies OCCT's `TKTopAlgo` and
 FreeCAD's in-process Implicit module. The mathematical field remains authoritative.
 
@@ -11,13 +11,16 @@ FreeCAD's in-process Implicit module. The mathematical field remains authoritati
    explicitly retains the box where `F >= 0`; it is not field-minus-box.
 2. **Intersection:** trace all six actual conventional box faces using the
    existing derivative-bound gyroid section algorithm. Successful seam
-   polylines meet the requested **0.1 mm** default bound. Near-zero box edges,
-   unresolved cells, tangencies and exhausted resolution budgets reject.
+   polylines meet the requested **0.1 mm** default bound. Transverse box-edge
+   roots are isolated once and shared by adjacent face contours. Unresolved
+   cells, corner/grid degeneracies, tangencies and exhausted budgets reject.
 3. **Hybrid boundary:** retain an exact bounded native implicit face, conventional
    planar cap faces and shared degree-1 B-spline seam edges. Planar p-curves have
    the same knots/parameters as the 3D seam. Caps pass conventional BRepCheck;
    every compound edge must have exactly two oppositely oriented uses. This is
-   a necessary topology check, **not whole-solid validation**. A field face has
+   a necessary topology check, **not whole-solid validation**. Open contours
+   join into closed implicit trim wires across faces; planar regions can have
+   multiple holes or split into separate retained cap faces. A field face has
    no fake UV surface, and the output is a compound, never a TopoDS_Solid.
 4. **FreeCAD integration:** OCCT-8-only API/commands, live Part/gyroid links,
    recompute and FCStd recipe restoration. Immutable native snapshots retain the
@@ -37,11 +40,22 @@ FreeCAD's in-process Implicit module. The mathematical field remains authoritati
   `Function=Gyroid`, empty FieldGraph, `InsideNegative=True`, identity global
   placement. Nonidentity parent-container placements and App::Link dispatch
   are unsupported; Part's own box placement is supported.
-- At most **one closed contour per box face**. No nested contours, contours
-  crossing box edges or curves within two tolerances of a box edge. Lipschitz
-  subdivision must exclude F=0 from every box edge. All six face sections must
-  resolve before a result is published. These limits exclude many ordinary
-  low-isovalue gyroid cuts; the bundled high-isovalue fixture is deliberate.
+- Resolved open and closed contours are supported, including `IsoValue=0`
+  gyroids crossing box edges. Canonical roots use Lipschitz/derivative-bound
+  interval isolation, with root brackets <= tolerance/256. Each root must join
+  exactly two face contours, through shared vertex identity, not coordinate
+  welding. Near-corner ambiguity and tangential/critical edge cases reject.
+- All six sections must resolve. Three quarters of the requested tolerance
+  goes to face tracing; replacing face endpoints by canonical roots must move
+  them by <= tolerance/8, and the combined seam bound is checked before publish.
+  Polygon orientation and containment group outer loops and holes. Two-hole
+  and disconnected two-disk cap cases are tested; arbitrary nested-region
+  stress testing remains an acceptance gap. No general singularity resolution.
+- Section tracing adds a Taylor empty-cell exclusion and exact harmonic
+  edge-range/uniqueness tests on field-coordinate axes. A bounded set of
+  alternative grids can be tried after dyadic refinement; every accepted cell
+  still meets the same empty/regular-arc bounds. `resolution` can therefore be
+  non-dyadic, but never exceeds MaximumCells. No geometry perturbation is used.
 - The bounded implicit face may contain disconnected or empty zero-set regions.
   No component-count, nonempty-result or enclosed-solid claim follows from the
   returned face count or the edge-incidence checks.
@@ -67,12 +81,16 @@ result = ImplicitMixed.demo()
 result.Operation = "BoxMinusField"
 App.ActiveDocument.recompute()
 snapshot = result.Proxy.native_boundary()
+# Standard zero-isovalue gyroid with open contours across box edges:
+open_result = ImplicitMixed.demo(open_contours=True)
 ```
 
 The demo creates real linked operands: period 10, iso 1.45, field domain
 (-5,-5,-5)..(6,6,6), box (-0.31,-0.37,1.25)..(2.93,2.91,4).
 Edit `result.Field.IsoValue` to 1.46 or the box height to 2.6 and recompute.
 Select a supported primitive gyroid and Part box for either native mixed command.
+The **Native zero-gyroid/box demo (caps/seams only)** command creates the open
+fixture: box (-3.83,-4.07,-2.67)..(4.17,3.93,3.37), period 10, iso 0.
 The older **Linked field intersection/difference** commands remain the more
 general numerical field-space workflow; they are a different representation.
 
@@ -87,7 +105,8 @@ boundary = native.mixed_box(face, result.Box.Shape, "common", .1, 512)
 The result has an opaque `boundary_handle` owning the whole shared-topology
 compound, an independent immutable `implicit_face` handle, `planar_caps` (ordinary
 Part faces), traversal-index `cap_sources`, seam point arrays, `seam_count`,
-`seam_geometric_bound`, and `solid_validated=False`. Exported Part caps are copies;
+`seam_geometric_bound`, `box_edge_root_count`, and `solid_validated=False`.
+Exported Part caps are copies;
 their topology is not shared with the opaque compound. Do not sew them into a
 purported implicit Part solid. `value/normal/in_domain` on `implicit_face` query
 the original field and bounded surface domain, not a whole mixed-solid classifier.
@@ -127,15 +146,19 @@ rejection and invalid/unresolved operands. FreeCAD CLI/GUI tests cover links,
 parameter/box edits, snapshot lifetime, operation switching, retained Coin
 buffers, FCStd rebuild and failure clearing.
 
-Verified: 27/27 kernel cases, 22/22 OCCT-8 migration CTest entries (47.96 s),
+Historical closed-loop baseline: 27/27 kernel cases, 22/22 OCCT-8 migration CTest entries (47.96 s),
 25/25 preserved OCCT-7/root CTest entries (26.32 s). Core commits: OCCT
 `459f71a3a9`, FreeCAD `dfb000b373`.
 
 ## Remaining gates
 
-General box-edge intersection vertices and open-contour joining come next,
-followed by multiple/nested loops and region splitting, trim-conforming gyroid
-meshing, implicit-aware solid validation/classification and full topology/history
-persistence. Curved B-Rep operands and generic BOP dispatch follow those gates.
-The four goals are delivered only for the restricted cases above, not arbitrary
-B-Reps or all gyroid isovalues.
+Current open-contour checkpoint: OCCT `ef20e3f9d7`, FreeCAD `1daddc4c3a`;
+30/30 kernel cases, 22/22 migration tests (51.04 s), 25/25 compatibility tests
+(29.80 s). The independent harmonic reference covers both Boolean directions.
+
+Next: nested/degenerate topology stress tests, trim-conforming gyroid meshing,
+implicit-aware solid validation/classification and full topology/history
+persistence, plus curved B-Rep operands and general BOP dispatch. The active
+[through-Stage-4 goal](stage-4-acceptance.md) includes the later dedicated FreeCAD
+property, persistence, selection/snapping, editing and cross-workbench gates.
+This increment does not complete Stage 2, 3 or 4 merely by enabling box crossings.
