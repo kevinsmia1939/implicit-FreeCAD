@@ -91,3 +91,14 @@ content transfer, inline XML restore and static cross-document copy are tested;
 interactive clipboard and broader container/placement consumers remain open.
 Full suites pass 23/23 migration and 25/25 compatibility entries, including the
 unchanged 35 kernel cases. These do not establish Stage 2/3/4 completion.
+
+Next increment: native owned subelements and standard ComplexGeoData snapshot
+access expose boundary lines independent of document lifetime. Seam identity
+uses stored trim-wire edge order, not tracing/triangle order. The mixed GUI now
+maps actual Coin ray hits to CapN/SeamN and provides whole-node detail paths.
+Selection clears on snapshot replacement/failure. These are snapshot-local
+indices, not persistent LinkSub history mappings. Snapping, stable naming,
+implicit-surface picking, broader consumer/placement qualification and every
+unfinished Stage 2/3 gate remain required; the full goal is still active.
+Checkpoint: FreeCAD `1a514006be`, OCCT unchanged `aa6ced5047`; 23/23 migration
+and 25/25 compatibility entries pass, including unchanged 35 kernel cases.

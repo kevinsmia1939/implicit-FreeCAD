@@ -24,8 +24,12 @@ Generic geometry discovery works for new native owners. Bounds conservatively
 cover the finite box domain (not a nonempty/volume certificate). Stored boundary
 lines can be retrieved through the complex-geometry interface. Requests for
 whole surface faces/points fail explicitly: returning only caps or a partial
-surface would be misleading. Subelement counts exist, but semantic selection,
-snapping, stable naming/history and segment retrieval remain unfinished.
+surface would be misleading. Native subelements now expose one-based
+`NativeFace1`, `CapN` and `SeamN` segments. Segments own the immutable snapshot;
+boundary lines and a first boundary vertex are available to native consumers.
+Unknown indices and segments from another snapshot reject. NativeFace lines
+are trim boundaries, not a surface tessellation. Subelement face meshing still
+rejects. Snapping, stable naming/history and implicit-surface picking remain open.
 Nonidentity geometry transforms reject; instance/container/world-query handling
 is not yet qualified as seamless integration. New owners have the GeoFeature
 placement infrastructure, not a claim of completed placement consumer support.
@@ -97,6 +101,40 @@ emit expected embedded-file/source errors. The mixed GUI regression requires
 restored display buffers before recompute with rebuilding disabled.
 Content-transfer tests cover external archive and inline Base64 topology, null
 geometry and independent cross-document copies.
+
+## Snapshot subelements and GUI picking
+
+`Implicit.nativeGeometry(obj)` returns an owned `Data::ComplexGeoData` snapshot,
+sharing immutable native geometry, never a pointer into a document property's
+mutable storage. It supports the standard `getElementTypes`,
+`countSubElements` and `getLinesFromSubElement` interfaces. For example:
+
+```python
+import Implicit
+geometry = Implicit.nativeGeometry(obj)
+points, lines = geometry.getLinesFromSubElement("Seam", 1)
+```
+
+Cap indices follow stored face order; seam indices follow the unique edges of
+the native implicit trim-wire graph. Both the C++ interface and display preview
+use that order, including after topology I/O. Tracing section order is not used
+as an identity. Multi-face/open-contour tests compare every subelement's lines
+before/after I/O. Geometry snapshots remain queryable after source document close.
+
+The mixed view renders each cap and seam as its own Coin shape, preserving the
+aggregate coordinate buffers. Real Coin ray hits map to `CapN`/`SeamN`; detail
+paths target the whole cap/seam node, not a disposable triangle/line segment.
+FreeCAD selection registration, invalid-name rejection, restore and failed-
+recompute clearing are tested. These tests do not certify visual highlight
+pixels, generic consumer support or mathematically exact surface picking.
+
+Names are **snapshot-local indices**, not persistent history mappings across
+parameter edits or Boolean changes. Current GUI selections are discarded when
+the snapshot is replaced/cleared; persistent external LinkSub references are
+not yet history-managed and must not be treated as stable attachments. This is
+partial native selection integration, not completion of Stage 4's selection,
+snapping and naming gates. No implicit surface is selectable through a mesh
+that does not exist yet.
 
 Run the documented incremental Implicit/ImplicitScripts builds and the separate
 OCCT-8 migration harness. Stage 2 curved operands, Stage 3 conforming meshing/

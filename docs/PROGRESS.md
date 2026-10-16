@@ -4,11 +4,41 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `d2fec1801c` on
+Implementation heads: FreeCAD `1a514006be` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: native geometry property and FCStd topology
+## Latest increment: native snapshot subelements and cap/seam picking
+
+The native ComplexGeoData representation now returns owned one-based
+NativeFace/Cap/Seam segments, boundary lines and a first boundary vertex for
+native consumers. `Implicit.nativeGeometry(obj)` exposes an independently owned
+standard ComplexGeoData snapshot. Unsupported surface meshes and invalid
+segments reject; no arbitrary field is converted to Part Shape.
+
+Both the display preview and C++ seam indices now follow stored trim-wire edge
+order instead of transient tracing-section order. Open-contour/multi-face tests
+compare every subelement before/after native topology I/O. Mixed GUI caps/seams
+render as individual Coin shapes with semantic pick names and whole-node detail
+paths. Real ray hits on caps and seams, selection registration, restore and
+failure clearing are tested. Snapshot replacement clears GUI selections.
+
+Names remain snapshot-local indices, not stable external LinkSub attachments;
+history mapping, snapping, implicit-surface picking, visual highlight pixel
+qualification and all unfinished Stage 2/3/4 gates remain open. This is partial
+selection integration, not seamless FreeCAD completion. No OCCT source or system
+dependencies changed. See [contracts](native-geometry-property.md).
+
+Full OCCT-8 migration regression passes **23/23** (46.70 seconds), including
+expanded native-property and mixed GUI tests. Logs:
+`/tmp/implicit-subelement-build.log`, `/tmp/implicit-subelement-legacy-build.log`,
+`/tmp/implicit-subelement-cli.log`, `/tmp/implicit-subelement-gui.log`,
+`/tmp/implicit-subelement-migration.log`.
+The preserved compatibility suite passes **25/25** (27.41 seconds), including
+the unchanged **35** isolated kernel cases; log
+`/tmp/implicit-subelement-compatibility.log`. Both incremental builds succeed.
+
+## Previous increment: native geometry property and FCStd topology
 
 The OCCT-8 FreeCAD module now provides a native ComplexGeoData property and typed
 GeoFeaturePython owner for mixed boundaries. C++ geometry ownership, discovery,

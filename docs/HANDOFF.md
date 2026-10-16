@@ -494,6 +494,30 @@ The full through-Stage-4 goal remains active: curved operands, conforming surfac
 meshes, solid validation, semantic selection/snapping/history, richer editing,
 legacy/container/placement and cross-workbench consumer qualification remain open.
 
+## Milestone 29: native snapshot subelements and mixed-view picking
+
+Source heads: FreeCAD `1a514006be`, OCCT unchanged at `aa6ced5047`.
+
+Native ComplexGeoData now supplies owned one-based NativeFace/Cap/Seam segments,
+boundary-line extraction and a first boundary vertex for native consumers.
+Missing/foreign segments reject; surface meshing remains explicitly unsupported.
+`Implicit.nativeGeometry(obj)` returns an owned immutable geometry snapshot via
+the standard ComplexGeoData Python interface, usable after document close.
+Preview seam order now follows unique native trim-wire edges instead of tracing
+sections, matching C++ subelement order before/after topology I/O.
+
+Mixed-view caps/seams render as individual Coin shapes, with semantic pick names
+and whole-node detail paths rather than disposable triangle/segment indices.
+GUI tests exercise actual ray hits, selection registration, restore, invalid
+names and selection/node clearing on edits/failure. Snapshot names are indexed,
+not history-stable; GUI selections clear on replacement. Persistent external
+LinkSub history, snapping, implicit-surface picking and visual highlight pixel
+qualification remain open. See `native-geometry-property.md` for the contract.
+No OCCT source, dependencies or system libraries changed.
+Both incremental builds succeed. Full OCCT-8 migration passes **23/23**
+(46.70 seconds); preserved compatibility passes **25/25** (27.41 seconds),
+including unchanged **35** kernel cases. Logs are recorded in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
