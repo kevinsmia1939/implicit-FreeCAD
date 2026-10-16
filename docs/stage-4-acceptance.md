@@ -169,3 +169,17 @@ unfinished Stage 2/3/4 requirement remains in scope. See native-mesh-constraints
 Checkpoint: FreeCAD `8a4dd8ef32`, OCCT `f20e7c4b63`; 37 kernel cases,
 29/29 migration and 25/25 compatibility tests pass. No completion claim follows
 for the implicit-surface mesh or remaining native-solid/integration gates.
+
+Next increment: the native mesher now attaches a field-extracted interior to
+the exact shared trim samples with an oriented collar and projected shared-edge
+refinement. It checks triangle-wide one-sided distance to the untrimmed field,
+opposite paired edges and cyclic vertex links. The opt-in GUI uses the same
+cap/surface buffers and picks NativeFace1 semantically; restore, failure recovery
+and unchanged cache reuse have actual GUI tests. Three new kernel cases (40
+total) include wider multiple loops and scaled/translated operands. This is a
+trim-conforming candidate, NOT verified coverage, embeddedness, clipped-field
+Hausdorff error or native-solid validity. These Stage 3 gates and all other
+unfinished Stage 2/4 requirements remain active. See native-conforming-preview.md.
+Verification: 40 kernel cases, 30/30 migration tests and 25/25 compatibility
+tests pass. These do not prove coverage, embeddedness or native-solid validity.
+Checkpoint heads: FreeCAD `ef5c5f283e`, OCCT `3ca2e7235e`.

@@ -697,6 +697,55 @@ mesh, native solid or the overall goal. Next implement the implicit surface
 mesher using these canonical constraints, then validate the complete boundary.
 Curved B-Rep operands and all unfinished Stage 2/3/4 gates remain required.
 
+## Milestone 36: trim-conforming native surface candidate and opt-in GUI
+
+Source heads: FreeCAD `ef5c5f283e`, OCCT `3ca2e7235e`.
+
+`TKMesh/BRepMesh_ImplicitBoundary::Tessellate` now extracts a gyroid surface
+candidate, attaches an oriented collar to canonical trim wires, refines shared
+interior edges with bounded field projection and checks closed opposite edge
+incidences plus cyclic vertex links. Cap/wire nodes are never moved or welded.
+The preparation discretizer now preserves every knot AND bounds segment sample
+spacing by capDeflection/4, with a conservative preflight sample budget.
+
+Aspect-balanced dyadic grids have a longest-axis maximum of 256 and a hard
+2.2-million-sample limit. Loop matching/collar pairs, nodes, total triangles and
+eight projected-refinement rounds have explicit budgets. An initial uniform
+collar failed the wider two-loop fixture: balanced sampling alone did not solve
+it; shared projected refinement and finer fixed seam sampling now do. Retry
+diagnostics retain each failed resolution's reason. No generic UV mesher sees
+an implicit face, and source math/topology/caches remain untouched.
+
+`ImplicitOCCT.tessellate_mixed(obj.Geometry)` returns cap/implicit triangles
+sharing zero-based vertices. A triangle-wide interpolation/Hessian witness
+bounds distance to the UNTRIMMED field, NOT clipped-root distance, two-sided
+Hausdorff error or surface coverage. MeshClosed is combinatorial only;
+SurfaceCoverageVerified and SolidValidated remain false. No self-intersection
+or whole-solid certificate follows. See native-conforming-preview.md.
+
+The GUI View property ShowImplicitSurface enables the candidate explicitly.
+It uses those same constrained cap triangles, native NativeFace1 picking/detail
+paths, transient buffers and unchanged-snapshot/settings cache reuse. Numerical
+preview errors clear the surface/report a status but preserve valid math and
+ordinary caps; native-geometry failure clears all previews. FCStd saves settings
+and native topology, never mesh buffers. Generation remains synchronous, without
+cancellation; broader consumers/placements and solid validity remain required.
+
+Three additional kernel cases bring the executable to 40 passing GTests,
+including both operations, open/closed contours, multiple loops, physical
+scale/translation, independent sampled root witnesses, immutability and failures.
+CLI and actual GUI tests cover buffers/lifetime, native-face ray picking,
+cache reuse, edit/restore and failure/recovery. Current full verification logs
+are in PROGRESS.md: migration **30/30** (96.24 seconds), compatibility **25/25**
+(48.58 seconds); isolated kernel CTest **1/1** (40 GTests, 12.11 seconds).
+TKMesh, the isolated executable, the native binding and both script targets
+build successfully. No packages/system libraries changed.
+
+Next: coverage and clipped-boundary consistency, embeddedness/self-intersections
+and implicit-aware solid validation. Curved operands, history/snapping and
+remaining cross-workbench Stage 4 requirements are still in scope. The goal is
+not complete; this candidate is not a validated native solid.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -785,7 +834,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 35 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 40 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

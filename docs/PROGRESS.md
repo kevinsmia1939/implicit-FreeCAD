@@ -4,11 +4,55 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `8a4dd8ef32` on
-`feature/native-implicit`, OCCT `f20e7c4b63` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `ef5c5f283e` on
+`feature/native-implicit`, OCCT `3ca2e7235e` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: native shared cap/seam meshing constraints
+## Latest increment: native trim-conforming surface candidate and GUI preview
+
+The native TKMesh mesher now uses field-root extraction, native-wire/interior-
+loop correspondence, an oriented dynamic-programming collar and shared-edge
+projected refinement. Cap and surface triangles share canonical nodes; original
+trim samples remain fixed. A private cap discretizer retains every knot and
+adds samples no farther apart than capDeflection/4, with preflight limits.
+No arbitrary field is assigned to Part Shape or passed through UV meshing.
+
+The wider two-loop test exposed that grid resolution alone did not resolve
+collar error. Aspect-balanced grids plus conforming projected refinement now
+handle that case, both Boolean directions/open and closed contours, and physical
+scale/periodic translations. Kernel tests independently sample root witnesses
+and check source caches, exact seam identity, orientation, incidence and failures.
+All **40 GTests** pass (CTest **1/1**, 12.11 seconds).
+
+`ImplicitOCCT.tessellate_mixed` reports a closed candidate and a triangle-wide
+one-sided distance bound to the UNTRIMMED gyroid. This is not clipped-root or
+Hausdorff/coverage certification. Mesh closure checks include connected cyclic
+vertex links; embeddedness/self-intersections remain unverified. Public flags
+retain surface_coverage_verified=False and solid_validated=False.
+
+`ShowImplicitSurface` in the GUI View properties enables the explicit candidate
+with separate tolerance/grid settings and a read-only diagnostic. Caps then use
+the same constrained samples; actual ray picks/detail paths identify NativeFace1.
+Native snapshot/settings cache reuse avoids camera-driven regeneration. Preview
+failure removes stale buffers without deleting valid math; source failure clears
+all views. FCStd restores native topology/settings and regenerates transient
+buffers. Meshing is synchronous, without cancellation/background qualification.
+
+See [native conforming preview](native-conforming-preview.md) for API, accuracy
+derivation, resource limits, usage and remaining gates. This advances Stage 3
+and Stage 4 preview/selection, not native-solid validation or overall completion.
+Curved operands, coverage/clipping, embeddedness, history/snapping and broader
+consumer integration remain required. No dependencies/system libraries changed.
+Build/test logs: `/tmp/implicit-surface-build.log`,
+`/tmp/implicit-surface-test-build.log`, `/tmp/implicit-surface-tests.log`,
+`/tmp/implicit-surface-binding-build.log`, `/tmp/implicit-surface-migration-full.log`,
+`/tmp/implicit-surface-compatibility-full.log`.
+Both script targets and the OCCT-8 binding build successfully. Full migration
+passes **30/30** (96.24 seconds); compatibility passes **25/25** (48.58 seconds),
+including the isolated 40-case kernel suite. Earlier runs in this increment
+preceded the wider-fixture failure/fix; the results above are the final algorithm.
+
+## Previous increment: native shared cap/seam meshing constraints
 
 `TKMesh/BRepMesh_ImplicitBoundary` privately validates/copies native mixed-box
 topology and meshes conventional planar caps only. A private exact-polyline

@@ -8,9 +8,11 @@ Supported results now have a [transactional task editor](native-mixed-editor.md)
 for operation, seam tolerance and tracing-budget changes, with preview, cancel,
 undo/redo and save/reopen coverage. It does not turn the boundary into a solid.
 
-An explicit [native cap/seam constraint API](native-mesh-constraints.md) now
-prepares shared indexed nodes and cap triangles for future conforming surface
-meshing. It does not yet mesh the implicit face or change the GUI preview.
+An explicit [native cap/seam constraint API](native-mesh-constraints.md) prepares
+shared indexed nodes and cap triangles. An opt-in
+[trim-conforming surface candidate](native-conforming-preview.md) now joins the
+implicit surface mesh to those same samples; it does not validate coverage,
+self-intersections or native solids. Default preview remains caps/seams.
 
 ## Four goals and delivered scope
 

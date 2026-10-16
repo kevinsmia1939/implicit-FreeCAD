@@ -101,6 +101,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
         PASS_REGULAR_EXPRESSION "native implicit mixed editor GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_mixed_surface
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/mixed-surface-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/mixed-surface-system.cfg"
+            "${_scripts}/mixed_surface_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_mixed_surface PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit mixed surface GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)
         set(_demo_flags "")
         if(_demo STREQUAL live)

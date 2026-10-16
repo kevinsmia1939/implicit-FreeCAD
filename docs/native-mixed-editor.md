@@ -19,8 +19,10 @@ Gui.activeDocument().setEdit(result.Name)
 
 Use the wholly OCCT-8 build (`build-freecad-occt8/bin/FreeCAD`), not installed
 FreeCAD or the OCCT-7 compatibility build. The native workbench also offers the
-gyroid/box demo and selected-operand commands. This remains a caps/seams preview,
-not a complete implicit surface mesh, validated CAD solid or generic BOP tool.
+gyroid/box demo and selected-operand commands. The default is a caps/seams preview;
+the View properties can enable an experimental
+[trim-conforming surface candidate](native-conforming-preview.md), with separate
+tolerance/budget settings. Neither mode validates CAD solids or general BOP.
 
 ## Preview and transaction contract
 

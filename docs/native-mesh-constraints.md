@@ -1,8 +1,9 @@
 # Native mixed-boundary meshing constraints
 
-This is a Stage 3 prerequisite, **not a mesh of the implicit surface or a
-validated solid**. The mathematical field and native topology remain
-authoritative. The existing GUI still displays caps/seams only.
+The preparation API is a Stage 3 prerequisite, **not a mesh of the implicit
+surface or a validated solid**. The mathematical field and native topology
+remain authoritative. A newer explicit Tessellate API and opt-in GUI now consume
+these constraints; see [trim-conforming preview](native-conforming-preview.md).
 
 ## Kernel contract
 
@@ -13,7 +14,9 @@ planar caps**. It never sends an implicit face through OCCT's UV mesher.
 The implementation belongs to TKMesh: adding mesh dependencies to TKTopAlgo
 would introduce a toolkit dependency cycle.
 
-A private meshing context preserves every native degree-1 B-spline knot.
+A private meshing context preserves every native degree-1 B-spline knot and
+subdivides each segment to spacing at most capDeflection/4. A conservative
+preflight counts these additional samples as well as the original knots.
 The ordinary chordal discretizer can drop short knots using the seam edge's
 approximation tolerance; that tolerance must not erase connectivity constraints.
 No general OCCT mesher behavior or source edge tolerance is changed.
@@ -87,8 +90,8 @@ provenance, budgets and source cache preservation. The FreeCAD
 mapping, property/capsule equivalence, independent Part cap caches, failure
 atomicity and retained lifetime. These do not establish a complete surface mesh.
 
-Next: a native trim-conforming gyroid surface mesher must consume these exact
-wire constraints and cap node IDs, validate orientation/connectivity and reject
-unresolved coverage or error bounds. Only then can a whole-boundary mesh and
-implicit-aware solid validator be qualified. Curved operands, native history,
-snapping and broader consumers remain part of the active through-Stage-4 goal.
+The native candidate now consumes these exact wire constraints/cap node IDs and
+checks orientation, mesh closure and one-sided distance bounds. It still does
+not prove coverage, embeddedness or native-solid validity. Those remain the next
+qualification gates, along with curved operands, native history, snapping and
+broader consumers in the active through-Stage-4 goal.

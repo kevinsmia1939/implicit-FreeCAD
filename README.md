@@ -6,8 +6,9 @@ long-term target is an nTop-class implicit modelling system.
 
 New: [native mixed gyroid/Part-box boundaries](docs/native-mixed-box.md), with
 intersection/subtraction, shared box-edge roots and trim wires, planar caps and live
-FreeCAD recipes. This experimental increment previews caps/seams only; general
-curved B-Rep operands, conforming surface meshes and validated solids remain open.
+FreeCAD recipes. An opt-in [trim-conforming surface candidate](docs/native-conforming-preview.md)
+now joins the implicit mesh to shared cap/seam nodes. Surface coverage,
+self-intersections, general curved operands and validated native solids remain open.
 
 This repository is the development umbrella: the actual FreeCAD fork is pinned
 in the `FreeCAD/` submodule on
@@ -181,9 +182,11 @@ standalone library.
 
 The OCCT fork now includes an experimental [native implicit-face foundation](docs/occt-native-faces.md),
 tested separately against OCCT 8.1 at a [0.1 mm geometric tolerance target](docs/accuracy-policy.md).
-It is not yet exposed in the current OCCT-7.9-linked FreeCAD GUI and does not
-support generic implicit-face Booleans, trimming or persistence. Existing mixed
-FreeCAD operations still compose fields, not native OCCT implicit faces.
+The preserved OCCT-7.9 build uses field composition or an isolated worker, not
+in-process native implicit faces. The wholly OCCT-8 build has native ownership,
+restricted gyroid/box boundaries, topology persistence and the opt-in conforming
+preview. Generic implicit-face Booleans, curved operands and validated native
+solids remain unfinished; older mixed-field operations remain a separate path.
 
 - Surface extraction is a visualization approximation. The standalone/addon
   baseline duplicates triangle vertices; native extraction shares vertices.
