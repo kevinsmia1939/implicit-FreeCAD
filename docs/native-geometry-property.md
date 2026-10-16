@@ -225,6 +225,38 @@ selected cap and seam SubObjects contain native complex geometry. These checks
 do not qualify general App::Link/container workflows, visual highlight pixels,
 all workbenches or the unfinished Stage 2/3 solid/Boolean gates.
 
+## Whole-object and rigid App::Link extraction
+
+An empty native reference, `obj.getSubObject("")`, now returns owned C++
+`NativePlacedGeometry` through ComplexGeoData when the geometry property is
+nonempty. Unlike a selected-element result, it retains the NativeFace/Cap/Seam
+element types, counts and mapped names. Whole and per-element boundary lines,
+conservative domain bounds and first-vertex hooks follow the same once-applied
+rigid-placement convention. Null native geometry returns None, not a valid-
+looking empty body. Surface sampling and nonrigid extraction still reject.
+
+This fills the whole-object lookup needed by App::Link. CLI tests compare both
+LinkTransform modes against independently composed placements, all native
+subelement paths, transformed App::Part-to-link paths, a mapped single-cap link,
+same-document save/reopen and retained geometry after close. Scaled link
+extraction rejects; clearing the source leaves its mapped cap link unresolved.
+External-document whole/cap queries and reopening the instance document are
+tested with the source document already loaded, including source-map immutability
+when App::Link re-tags the returned map. This does not qualify automatic external
+dependency loading, missing/moved files, link arrays or all instance modes.
+
+The GUI regression casts a real Coin ray into a translated/rotated native link,
+requires a Cap1 hit and checks selected native geometry against an independent
+placement. Whole-object selections follow ordinary FreeCAD behavior: SubObjects
+is empty when no subelement names were selected; query the selected Object with
+getSubObject("") instead. No Part.Shape is synthesized for an instance.
+
+This is supported rigid extraction/picking on the documented paths, not general
+cross-workbench support, editable instance geometry, manufacturing solids or
+completed Stage 4 integration. Source fields and supported Boolean input gates
+remain unchanged; placing an output instance does not enable arbitrary placed
+field/curved-operand Booleans.
+
 Run the documented incremental Implicit/ImplicitScripts builds and the separate
 OCCT-8 migration harness. Stage 2 curved operands, Stage 3 conforming meshing/
 solid validation and Stage 4 selection/editors/consumer/placement coverage remain

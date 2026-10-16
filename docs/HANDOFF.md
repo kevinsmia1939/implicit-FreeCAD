@@ -575,6 +575,33 @@ Both incremental builds succeed; migration passes **25/25** (51.79 seconds),
 compatibility **25/25** (27.54 seconds), including unchanged **35** kernel cases.
 Additional direct CLI bounds/composition checks pass; logs are in PROGRESS.md.
 
+## Milestone 32: whole native geometry and rigid App::Link paths
+
+Source heads: FreeCAD `6f93521083`, OCCT unchanged at `aa6ced5047`.
+
+Empty native getSubObject references now return owned NativePlacedGeometry,
+retaining NativeFace/Cap/Seam counts/maps, pre-placed boundary lines and conservative
+domain bounds. Null properties remain None. Rigid validation/bounds helpers are
+shared with selected-element geometry; surface meshes/nonrigid transforms remain
+unsupported. This closes the previous missing whole-object extraction seam.
+
+New native_link_smoke checks both LinkTransform modes, every native subelement,
+App::Part-to-link paths, mapped cap links, same-document FCStd restoration,
+retained lifetime, scale rejection and source clearing. External-document queries
+and instance-file restoration are tested with the source already loaded; returned
+map re-tagging does not mutate source maps. GUI tests require a real cap ray hit
+on a translated/rotated native link, placed selected geometry, and whole-object
+extraction from a standard selection. Whole selections normally have empty
+SubObjects; use the selected Object.getSubObject("").
+
+This does not qualify automatic external dependency loading, missing/moved files,
+link arrays, all instance/container/workbench modes, editing or placed operands
+in the Boolean kernel. All unfinished Stage 2/3/4 gates remain active. No OCCT
+source, dependencies or system libraries changed. Contract: native-geometry-property.md.
+Both incremental builds succeed. Full migration passes **26/26** (52.25 seconds)
+and compatibility **25/25** (37.32 seconds), including unchanged **35** kernel
+cases. Logs and initial test-fixture corrections are recorded in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:

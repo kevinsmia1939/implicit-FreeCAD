@@ -124,3 +124,14 @@ qualify general consumers/App::Link/containers, integrated snapping/history or
 the unfinished Stage 2/3 surface/solid/Boolean gates. The full goal stays active.
 Checkpoint: FreeCAD `1f46ce6988`, OCCT unchanged `aa6ced5047`; 25/25 migration
 and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
+
+Next increment: empty native subobject references now extract owned whole
+ComplexGeoData. Rigid App::Link whole/subelement paths, both placement modes,
+mapped cap links, Part-to-link paths, save/reopen and GUI native cap ray picking
+have explicit regression coverage. External queries/instance-file restore are
+tested with the source already loaded; source maps remain unchanged. Arrays,
+automatic external dependency loading, missing files and all broader consumer/
+instance modes remain unqualified. No completion claim follows for Stage 2/3
+or remaining Stage 4 history/snapping/editing/workbench gates.
+Checkpoint: FreeCAD `6f93521083`, OCCT unchanged `aa6ced5047`; 26/26 migration
+and 25/25 compatibility entries pass, including unchanged 35 kernel cases.

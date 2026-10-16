@@ -4,11 +4,43 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `1f46ce6988` on
+Implementation heads: FreeCAD `6f93521083` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: owned native subobject extraction
+## Latest increment: whole native geometry and rigid App::Link extraction
+
+Empty typed-owner getSubObject references now return independently owned
+NativePlacedGeometry/ComplexGeoData, retaining NativeFace/Cap/Seam counts/maps,
+boundary lines and conservative full-domain bounds. Null properties return None;
+rigid placement validation and domain-bound transformation are shared with the
+selected-element path. Surface meshing/nonrigid queries still reject.
+
+New native_link_smoke covers both LinkTransform modes and all subelements,
+whole boundaries, Part-to-link paths, mapped cap links, same-document FCStd,
+retained snapshots, scaled extraction rejection and source clearing. External
+whole/cap queries, instance-file reopen with the source already loaded and source
+map immutability under core link re-tagging are tested. GUI tests require an
+actual native cap ray hit on a placed link and independently placed selected/
+whole geometry. Whole selections follow normal FreeCAD semantics: SubObjects is
+empty with no selected subelement names; use selected Object.getSubObject("").
+
+Automatic external dependency loading, missing/moved files, arrays, all instance/
+consumer modes and placed operands in kernel Booleans remain unqualified. This
+is not full Stage 4 completion; all unfinished Stage 2/3/4 requirements remain.
+No OCCT source, packages or system libraries changed. Both incremental builds
+succeed. Logs: `/tmp/implicit-link-build.log`, `/tmp/implicit-link-legacy-build.log`,
+`/tmp/implicit-link-cli-final.log`, `/tmp/implicit-link-targeted.log`,
+`/tmp/implicit-link-migration-final.log`, `/tmp/implicit-link-compatibility.log`.
+Two initial test assumptions were corrected: whole selections normally have
+empty SubObjects, and an external link requires a saved owner document before
+setting its target. No shared App::Link/selection behavior was changed.
+The preserved compatibility suite passes **25/25** (37.32 seconds), including
+unchanged **35** kernel cases.
+Final OCCT-8 migration passes **26/26** (52.25 seconds), including the corrected
+external-link fixture and strengthened GUI instance checks.
+
+## Previous increment: owned native subobject extraction
 
 Typed native getSubObject now returns C++ NativeElementGeometry through the
 standard ComplexGeoData Python interface. GUI SelectionEx.SubObjects exposes
