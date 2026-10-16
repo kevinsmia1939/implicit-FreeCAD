@@ -4,11 +4,47 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `e88c92efaa` on
+Implementation heads: FreeCAD `f35700d659` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: placed native mathematical-region queries
+## Latest increment: transactional native mixed task editor
+
+Supported mixed results now open a Qt task panel through standard edit mode or
+tree double-click. Operation, seam tolerance (mm) and tracing budget are staged
+until Apply/OK; field/box source links remain read-only. One owned transaction
+groups previews, OK commits and Cancel restores prior native geometry/properties.
+Failed previews clear geometry/display and stay open for correction or cancel.
+Successful publication is followed by normal dependency recompute; failed direct
+preview is pending recompute, not a claim that all C++ error bits are already set.
+
+New GUI regression covers real task dialogs and Qt Apply/Cancel/OK buttons,
+standard Edit/double-click, selection and region queries, mapped identity on
+cancel, immutable lifetime, commit/undo/redo, failed-budget clearing/recovery,
+reset-edit rollback, unrelated transaction guards, accepted FCStd reopen/re-edit
+and document close with an active preview. Initial transaction testing exposed
+that framework edit-mode closing can affect an unrelated transaction: normal
+task actions now refuse that situation, and only close their owned ID.
+
+This is the restricted recipe's three-setting editor, not graph/equation/source-
+link editing, history repair, complete consumer integration or any Stage 2/3
+surface/solid/Boolean completion. All remaining Stage 4 requirements stay active.
+No C++/OCCT source, new dependencies or system libraries changed; both
+ImplicitScripts targets rebuild successfully. See [editor contracts](native-mixed-editor.md).
+
+Full migration passes **28/28** (56.20 seconds), compatibility **25/25**
+(27.78 seconds), including unchanged **35** kernel cases. Additional targeted
+menu/button tests pass **3/3** (4.86 seconds). Logs:
+`/tmp/implicit-editor-scripts.log`, `/tmp/implicit-editor-legacy-scripts.log`,
+`/tmp/implicit-editor-targeted.log`, `/tmp/implicit-editor-buttons.log`,
+`/tmp/implicit-editor-migration.log`, `/tmp/implicit-editor-compatibility.log`.
+Final task-only regression additionally covers the open-contour fixture and
+the power-of-two 4..512 budget selector; results/log:
+`/tmp/implicit-editor-final.log`. Both script targets were refreshed afterward.
+Final **3/3** task-only checks pass (7.04 seconds), including multiple previews
+in one undo transaction and cancellation directly from a failed preview.
+
+## Previous increment: placed native mathematical-region queries
 
 `Implicit.classifyNative` accepts whole local/pre-placed native ComplexGeoData,
 not Part shapes or selected boundary elements. It reuses the native classifier

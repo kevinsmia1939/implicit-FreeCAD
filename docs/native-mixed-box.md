@@ -4,6 +4,10 @@ This is a **native mixed-Boolean box boundary implementation**, not
 general mixed BOP or a manufacturing solid. It modifies OCCT's `TKTopAlgo` and
 FreeCAD's in-process Implicit module. The mathematical field remains authoritative.
 
+Supported results now have a [transactional task editor](native-mixed-editor.md)
+for operation, seam tolerance and tracing-budget changes, with preview, cancel,
+undo/redo and save/reopen coverage. It does not turn the boundary into a solid.
+
 ## Four goals and delivered scope
 
 1. **Inside convention:** the primitive gyroid defines `F <= 0` as inside.

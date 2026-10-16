@@ -633,6 +633,38 @@ Both incremental builds succeed; full migration passes **27/27** (55.33 seconds)
 and compatibility **25/25** (28.21 seconds), including unchanged **35** kernel
 cases. Additional direct analytic/witness tests pass; logs are in PROGRESS.md.
 
+## Milestone 34: transactional native mixed-boundary task editor
+
+Source heads: FreeCAD `f35700d659`, OCCT unchanged at `aa6ced5047`.
+
+MixedBoundaryView now supports tree double-click/standard edit mode with a Qt
+task panel for operation, seam tolerance (mm) and tracing budget. Source links
+are read-only. Controls stage values; Apply previews in one owned transaction,
+OK applies/commits and Cancel restores prior properties/native geometry. Failed
+numerical previews clear geometry/display, show a handled error and stay open;
+corrected previews recover. Successful previews run normal recompute after
+publishing the snapshot. Failed previews remain pending recompute, not a claim
+that direct Python execution sets all C++ document error flags.
+
+Real GUI tests cover standard Edit/double-click, actual Apply/Cancel/OK buttons,
+selection and region queries, mapped identity on cancel, immutable lifetime,
+commit/undo/redo, failure/recovery, reset-edit rollback, unrelated transaction
+guards, accepted FCStd reopen/re-edit and document close with active preview.
+Transaction actions are scoped by ID; normal actions refuse a foreign active
+transaction. Forced foreign-transaction framework operations, concurrent edits,
+active-preview saves and individual input deletion remain unqualified.
+
+This is a three-setting editor for the restricted mixed recipe, not a graph/
+equation editor, source-link replacement or completion of geometry/history/
+snapping/consumer gates. All unfinished Stage 2/3/4 scope remains active.
+No OCCT/C++ source, packages or system libraries changed. Build only
+ImplicitScripts; see native-mixed-editor.md for usage and test contracts.
+Both script targets refresh successfully. Full migration passes **28/28**
+(56.20 seconds), compatibility **25/25** (27.78 seconds), including unchanged
+**35** kernel cases. Final task-only checks pass **3/3** (7.04 seconds), adding
+real buttons, open contours, multi-preview undo and failed-preview cancel.
+Logs are recorded in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:

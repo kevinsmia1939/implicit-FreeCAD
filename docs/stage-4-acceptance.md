@@ -145,3 +145,14 @@ elements. GUI instance queries are tested. This is not solid validation, native
 surface meshing, placed-input Booleans or completion of remaining Stage 2/3/4 gates.
 Checkpoint: FreeCAD `e88c92efaa`, OCCT unchanged `aa6ced5047`; 27/27 migration
 and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
+
+Next increment: the mixed recipe has a transactional Qt task editor for operation,
+seam tolerance and tracing budget. Real edit/button, preview/cancel, selection,
+commit/undo/redo, failed-preview clearing/recovery, accepted save/reopen/re-edit,
+foreign transaction guards and document-close cleanup are tested. This advances
+editing workflow only; graph/equation tools, broader editing/consumer/history/
+snapping support and every unfinished Stage 2/3 gate remain open. The full goal
+is not achieved by the restricted mixed editor.
+Checkpoint: FreeCAD `f35700d659`, OCCT unchanged `aa6ced5047`; 28/28 migration
+and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
+Final expanded task-only GUI/fixture checks pass 3/3.
