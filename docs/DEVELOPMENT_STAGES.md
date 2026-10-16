@@ -33,6 +33,10 @@ An explicit [mesh contact audit](native-mesh-contact-audit.md) now checks all ca
 implicit pairs with exact integer predicates on stored binary64 coordinates,
 including adjacent triangles. This is mesh-only evidence: coverage/clipping
 and implicit-aware native-solid validation remain required.
+The newer [clipped proximity check](native-clipped-coverage.md) partitions the
+whole box/faces and checks reverse clipped witnesses against the 0.1 mm target.
+This is two-sided numerical proximity, not preserved topology, minimum feature
+size/reach or native-solid validation.
 
 1. Geometry property and graph system: a dedicated versioned complex-geometry
    property; shared-node JSON/DAG persistence; unit contracts; graph/task UI;

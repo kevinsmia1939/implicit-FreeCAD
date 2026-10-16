@@ -26,15 +26,17 @@
 | Field-bound refinement | Implemented | Doubled global grids until triangle-wide Lipschitz field bound meets target or explicit limit; coverage unverified |
 | Plane intersection | Implemented | Marching-squares tracing with refined F=0 roots on a bounded plane patch |
 | Cylinder intersection | Implemented in standalone engine | Refined chart roots and periodic seam joining; tangencies unsupported |
-| Rectangular trimming topology | Planned | Domain clipping plus boundary-loop construction |
+| Rectangular trimming topology | Restricted native gyroid/box implemented; general fields pending | Shared roots, open/closed contour joining and planar cap regions |
 | Closed gyroid visualization | Implemented for explicit band/box graphs | Paired-edge regression; no general solid/topology guarantee |
 | B-Rep-to-field | Snapshot and live bridge tested | OCCT core signed-distance extension; live Part source or JSON snapshot |
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
-| Native gyroid/Part-box boundary | Common/BoxMinusField with regular box-edge crossings and multiple regions | Shared roots, closed implicit trim wires and planar caps; caps/seams preview only, no validated solid |
+| Native gyroid/Part-box boundary | Common/BoxMinusField with regular box-edge crossings and multiple regions | Shared roots/wires/caps; opt-in trim-conforming mesh candidate, not a validated solid |
+| Native mixed mesh contacts | Explicit exact binary64 triangle-contact audit | Includes adjacent pairs; limits unresolved; mesh-only evidence, not field/solid validation |
+| Native clipped-boundary proximity | Whole box/faces and reverse clipped witnesses at .1 mm | Two-sided numerical bounds with reserves; not preserved topology, directed intervals or native-solid validity |
 | Native mixed-region classification | Conservative physical-distance separation and cap/root witnesses | Inside/outside/near-boundary/unresolved; independent of preview meshes, not whole-solid validation |
 | Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified |
 | Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
-| Native mixed subelements/picking | Owned NativeFace/Cap/Seam segments; cap/seam Coin ray picking and semantic detail paths | Snapshot-local indices, round-trip order tested; no stable attachment history, snapping or implicit surface mesh picking |
+| Native mixed subelements/picking | Owned NativeFace/Cap/Seam segments; Coin picking including opt-in surface candidate | Semantic detail paths, snapshot-local indices; no surviving-element history or integrated snapping |
 | Native mixed mapped references | Standard element map from stored snapshot digest; typed-owner stale lookup rejection | Unchanged save/copy/undo and LinkSub invalidation/recovery tested; changed topology invalidates conservatively, no surviving-element history |
 | Native mixed subobject extraction | Owned ComplexGeoData from getSubObject and SelectionEx.SubObjects | Selected boundary lines/bounds, once-applied rigid placement and App::Part paths tested; no Part shape, surface sampling, general consumers or App::Link qualification |
 | Native whole/rigid link extraction | Owned whole ComplexGeoData; both LinkTransform modes, mapped caps, Part paths and GUI cap ray picking | Same-document restore and external queries with source loaded tested; no arrays, automatic external-file loading, general consumers or placed-operand BOP |
@@ -68,8 +70,11 @@ graph/topology persistence, general intersection topology, Boolean
 splitting/history. The wholly OCCT-8-linked FreeCAD build is now tested, and
 [restricted native gyroid/box boundaries](native-mixed-box.md) add closed-loop
 seams, planar caps and live Common/BoxMinusField recipes. Regular box-edge
-crossings and multiple cap regions now work; conforming meshing and validated
-solids remain open. The [active Stage 4 goal](stage-4-acceptance.md) preserves the
+crossings and multiple cap regions now work. A [conforming candidate](native-conforming-preview.md),
+[exact contact audit](native-mesh-contact-audit.md) and
+[clipped proximity check](native-clipped-coverage.md) now exist. Regularity/trim
+correspondence, topology/reach criteria and native-solid construction/validation
+remain open. The [active Stage 4 goal](stage-4-acceptance.md) preserves the
 full integration acceptance scope.
 The [native mixed geometry property](native-geometry-property.md) now owns and
 persists supported mixed topology in FCStd without numerical rebuilding of

@@ -4,11 +4,42 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `836b609498` on
-`feature/native-implicit`, OCCT `72b5a40c8d` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `d267f58f7a` on
+`feature/native-implicit`, OCCT `18ed5c0a52` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: exact transient triangle-contact audit
+## Latest increment: whole-domain clipped-boundary proximity
+
+Native CheckCoverage partitions the entire box/retained faces using field
+exclusion or explicit mesh-point distance plus radius. Reverse patches use
+clipped normal slabs, classifier brackets or retained cap-plane witnesses, not
+untrimmed-distance flags. A private triangle BVH accelerates upper-distance
+queries. Initial cap failures revealed a 3D-gradient witness search leaving the
+box; cap-plane gradients/in-plane directions now find actual retained points.
+
+`ImplicitOCCT.check_mixed_coverage` is explicit/synchronous and leaves source
+math/topology/caches, GUI buffers and stored seam-bound provenance unchanged.
+Depth/spatial/patch exhaustion is unresolved, never success. Global bounds apply
+ONLY when boundary_proximity_resolved is True; other bounds are partial diagnostics.
+These are engineering floating reserves, not directed intervals, preserved
+topology or native-solid validity. All unfinished Stage 2/3/4 gates remain active.
+See [clipped proximity contracts](native-clipped-coverage.md).
+
+Three new cases bring the kernel suite to 45: independent harmonic roots/raw
+cap samples and a separate brute-force distance reference, one missing component
+while retaining the other, missing whole surfaces, extra interior triangles,
+forged flags and limits. CLI covers both operations/open and closed contours,
+source immutability, restore, lifetime and invalid/limited calls.
+TKMesh, isolated tests, OCCT-8 binding and both script targets build. Final suites:
+**45 GTests**, CTest **1/1** (37.18 seconds), migration **32/32** (182.37 seconds),
+compatibility **25/25** (69.67 seconds). Targeted runtime/coverage **2/2** passed
+(23.49 seconds) before independent reference expansion. No dependencies changed.
+Logs: `/tmp/implicit-coverage-build.log`, `/tmp/implicit-coverage-test-build.log`,
+`/tmp/implicit-coverage-tests.log`, `/tmp/implicit-coverage-binding-build.log`,
+`/tmp/implicit-coverage-binding-tests.log`, `/tmp/implicit-coverage-migration-full.log`,
+`/tmp/implicit-coverage-compatibility-full.log`.
+
+## Previous increment: exact transient triangle-contact audit
 
 The native TKMesh audit now checks all cap/implicit pairs, including adjacent
 triangles, using exact stored-binary64 integer predicates and bounded AABB

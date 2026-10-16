@@ -178,6 +178,12 @@ Stored approximation bounds are not re-certified. A newer
 [native geometry property](native-geometry-property.md) now integrates that
 supported mixed representation with FCStd, ownership and transactions. Broader
 field-graph migration, semantic selection/consumers, OCAF and STEP remain open.
+Supported mixed boundaries now have an opt-in [conforming mesh candidate](native-conforming-preview.md),
+an [exact mesh contact audit](native-mesh-contact-audit.md) and
+[whole-domain clipped proximity checks](native-clipped-coverage.md). The latter
+use floating reserves, not directed intervals or preserved-topology proofs.
+Regularity/trim correspondence and native-solid construction/validation remain
+required; none of these numerical mesh checks promotes a compound to a solid.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

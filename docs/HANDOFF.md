@@ -780,6 +780,36 @@ passes the targeted exact-predicate case; only the new audit/test source is
 instrumented, not all OCCT. TKMesh, isolated tests, native binding and both script
 targets build successfully. No packages/system libraries changed.
 
+## Milestone 38: whole-domain clipped-boundary proximity
+
+Source heads: FreeCAD `d267f58f7a`, OCCT `18ed5c0a52`.
+
+`TKMesh/BRepMesh_ImplicitBoundary::CheckCoverage` now partitions the complete
+box/retained faces using field exclusion or mesh-point upper distance plus cell
+radius. Reverse triangle patches use correct-sign planar regions, fully clipped
+normal-line slabs, native-classifier brackets and actual retained cap witnesses.
+The first cap failures exposed a 3D-gradient search leaving the box; projected
+cap gradients/in-plane directions now provide actual clipped witnesses.
+
+`ImplicitOCCT.check_mixed_coverage(obj.Geometry)` privately generates/checks a
+candidate. Both global bounds are valid ONLY when boundary_proximity_resolved
+is True; failures contain partial diagnostics and a failed patch/cell. Numerical
+reserves, NOT directed intervals or topology equivalence. Source math/topology/
+caches, GUI buffers and stored seam-bound provenance remain unchanged.
+
+Three new kernel cases (45 total) cover both operations/open and closed contours,
+independent harmonic roots/raw cap samples, one missing disconnected component,
+missing whole surfaces, extra interior triangles, forged flags and limits. CLI
+restore/lifetime/immutability checks pass. Final regression: 45 kernel cases
+(37.18 seconds), migration 32/32 (182.37 seconds), compatibility 25/25 (69.67
+seconds). Existing targets/dependencies reused; no packages/system changes.
+See native-clipped-coverage.md and PROGRESS.md for API, budgets, proof scope/logs.
+
+Next: regularity/stratified trim correspondence, topology/feature-size/reach
+conditions and native-shell/solid construction/validation. Two point sets within
+.1 mm need not share topology. Curved operands and unfinished Stage 4 integration
+remain required; the overall goal stays active.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -869,7 +899,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 42 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 45 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

@@ -198,3 +198,13 @@ Verification: 42 kernel cases, 31/31 migration and 25/25 compatibility tests
 pass, plus a targeted GCC UBSan predicate run. None of these replace field
 coverage/clipping or native-solid validity evidence.
 Checkpoint heads: FreeCAD `836b609498`, OCCT `72b5a40c8d`.
+
+Next increment: whole-box/face partitions and reverse clipped witnesses now check
+two-sided numerical proximity to the mathematical boundary. Independent harmonic/
+cap references, missing-component and extraneous-triangle tests extend the kernel
+suite to 45 cases; 32/32 migration and 25/25 compatibility tests pass. This is
+not directed interval arithmetic, preserved topology or native-solid validity.
+Regularity/trim correspondence, topology/reach criteria, native-solid construction,
+curved operands and unfinished Stage 4 integration remain required. The full
+goal stays active; see native-clipped-coverage.md.
+Checkpoint heads: FreeCAD `d267f58f7a`, OCCT `18ed5c0a52`.

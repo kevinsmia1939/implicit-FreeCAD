@@ -114,6 +114,12 @@ consumer should infer validity from `mesh_closed`.
 
 ## Verification and next gates
 
+An additional [whole-domain clipped-boundary proximity check](native-clipped-coverage.md)
+now validates both directed distances to the mathematical mixed boundary, with
+spatial partitions and clipped witnesses. It is explicit, uses floating reserves,
+and does not establish topology equivalence or native-solid validity. The plain
+preview still does not run these checks or set a validation flag.
+
 A separate [exact triangle contact audit](native-mesh-contact-audit.md) is now
 available through `ImplicitOCCT.audit_mixed_mesh`. Clear reports prove absence
 of improper stored-coordinate contacts for that privately generated candidate,

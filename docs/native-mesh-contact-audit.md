@@ -127,3 +127,7 @@ Next: coverage of the authoritative zero set, clipped-boundary consistency and
 implicit-aware native-solid validation. These cannot be replaced by this mesh
 audit. Curved operands, history/snapping and broader FreeCAD consumers remain
 within the active through-Stage-4 goal.
+
+A newer [clipped-boundary proximity check](native-clipped-coverage.md) now
+partitions the full box/faces and checks reverse clipped witnesses. It addresses
+two-sided numerical proximity, not topology equivalence or native-solid validity.

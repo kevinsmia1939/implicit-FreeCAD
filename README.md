@@ -8,8 +8,9 @@ New: [native mixed gyroid/Part-box boundaries](docs/native-mixed-box.md), with
 intersection/subtraction, shared box-edge roots and trim wires, planar caps and live
 FreeCAD recipes. An opt-in [trim-conforming surface candidate](docs/native-conforming-preview.md)
 now joins the implicit mesh to shared cap/seam nodes, with a separate
-[exact mesh contact audit](docs/native-mesh-contact-audit.md). Surface coverage,
-general curved operands and validated native solids remain open.
+[exact mesh contact audit](docs/native-mesh-contact-audit.md) and
+[whole-domain clipped proximity checks](docs/native-clipped-coverage.md).
+Topology equivalence, general curved operands and validated native solids remain open.
 
 This repository is the development umbrella: the actual FreeCAD fork is pinned
 in the `FreeCAD/` submodule on
