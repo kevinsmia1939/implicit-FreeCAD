@@ -11,6 +11,7 @@ endif()
 include("${IMPLICIT_OCCT_NATIVE_BUILD}/OpenCASCADETargets.cmake")
 find_package(GTest REQUIRED)
 add_executable(implicit_occt_native_face_tests
+    ../../OCCT/src/ModelingAlgorithms/TKMesh/GTests/BRepMesh_ImplicitBoundary_Test.cxx
     ../../OCCT/src/ModelingAlgorithms/TKTopAlgo/GTests/BRepClass3d_ImplicitBox_Test.cxx
     ../../OCCT/src/ModelingData/TKBRep/GTests/BRep_ImplicitPlaneSection_Test.cxx
     ../../OCCT/src/ModelingData/TKBRep/GTests/BRep_ImplicitSphereOps_Test.cxx
@@ -18,7 +19,7 @@ add_executable(implicit_occt_native_face_tests
 target_compile_features(implicit_occt_native_face_tests PRIVATE cxx_std_17)
 target_include_directories(implicit_occt_native_face_tests SYSTEM PRIVATE
     "${IMPLICIT_OCCT_NATIVE_BUILD}/include/opencascade")
-target_link_libraries(implicit_occt_native_face_tests PRIVATE TKPrim GTest::gtest_main)
+target_link_libraries(implicit_occt_native_face_tests PRIVATE TKPrim TKMesh GTest::gtest_main)
 add_executable(implicit_occt_native_worker ../../tools/occt_native_worker.cpp)
 target_compile_features(implicit_occt_native_worker PRIVATE cxx_std_17)
 target_include_directories(implicit_occt_native_worker SYSTEM PRIVATE

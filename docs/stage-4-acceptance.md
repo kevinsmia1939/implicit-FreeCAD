@@ -156,3 +156,16 @@ is not achieved by the restricted mixed editor.
 Checkpoint: FreeCAD `f35700d659`, OCCT unchanged `aa6ced5047`; 28/28 migration
 and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
 Final expanded task-only GUI/fixture checks pass 3/3.
+
+Next increment: native TKMesh preparation meshes planar caps on a private
+snapshot, preserving every native seam knot and sharing canonical vertex/edge
+sample IDs. Effective implicit wires and cap triangles have opposite boundary
+incidences. The OCCT-8 FreeCAD API exposes those transient constraints, preserving
+source topology/caches and bound provenance. Two new kernel cases plus a native
+CLI test cover both operations, open/closed contours and failure/lifetime guards.
+This is preparation for trim-conforming implicit surface meshing, NOT that
+surface mesh or solid validation. GUI still shows caps/seams only; every
+unfinished Stage 2/3/4 requirement remains in scope. See native-mesh-constraints.md.
+Checkpoint: FreeCAD `8a4dd8ef32`, OCCT `f20e7c4b63`; 37 kernel cases,
+29/29 migration and 25/25 compatibility tests pass. No completion claim follows
+for the implicit-surface mesh or remaining native-solid/integration gates.

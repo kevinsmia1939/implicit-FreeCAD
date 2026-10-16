@@ -4,11 +4,46 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `f35700d659` on
-`feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `8a4dd8ef32` on
+`feature/native-implicit`, OCCT `f20e7c4b63` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: transactional native mixed task editor
+## Latest increment: native shared cap/seam meshing constraints
+
+`TKMesh/BRepMesh_ImplicitBoundary` privately validates/copies native mixed-box
+topology and meshes conventional planar caps only. A private exact-polyline
+discretizer preserves every seam knot: ordinary chordal tessellation initially
+discarded short knots and failed the new correspondence tests. Canonical node
+IDs use native shared vertices and ordered edge samples, never position welding.
+Every native wire segment has one opposite cap incidence; other cap edges are
+paired. Source flags, topology and triangulation caches stay untouched.
+
+The OCCT-8-only `ImplicitOCCT.prepare_mixed_mesh` exposes vertices, cap triangle/
+cap indices, seam indices and oriented closed wire indices. Results retain
+input seam-bound provenance; native_surface_meshed and solid_validated are
+explicitly False. No implicit face goes through generic UV meshing, no fake Part
+shape is assigned, and the GUI remains caps/seams only. See
+[native mesh constraints](native-mesh-constraints.md) for precise limits/API.
+
+Two kernel cases exercise both operations/open and closed contours, knot
+retention, orientation/incidence, restored provenance, budgets and source mesh
+cache preservation. Native CLI checks additionally cover deterministic buffers,
+property/capsule equivalence, cap-index mapping, independent Part cap caches,
+failure atomicity and retained lifetime after document close.
+
+Incremental TKMesh, native test executable, OCCT-8 `_ImplicitOCCT` and both
+ImplicitScripts targets build successfully using existing dependencies. Kernel
+CTest passes **1/1**, containing **37 GTests** (4.12 seconds). Targeted native
+runtime/preparation checks pass **2/2** (6.03 seconds). Full OCCT-8 migration
+passes **29/29** (64.67 seconds); compatibility passes **25/25** (28.69 seconds).
+Logs: `/tmp/implicit-mesh-constraints-build.log`,
+`/tmp/implicit-mesh-binding-build.log`, `/tmp/implicit-mesh-binding-tests.log`,
+`/tmp/implicit-mesh-migration-full.log`, `/tmp/implicit-mesh-compatibility-full.log`.
+No packages/system libraries changed. This is preparation for a trim-conforming
+implicit surface mesh, not its completion; all remaining Stage 2/3/4 requirements
+remain active, including curved operands and native solid validation.
+
+## Previous increment: transactional native mixed task editor
 
 Supported mixed results now open a Qt task panel through standard edit mode or
 tree double-click. Operation, seam tolerance (mm) and tracing budget are staged

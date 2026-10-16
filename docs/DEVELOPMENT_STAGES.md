@@ -23,6 +23,10 @@ The restricted [native mixed-box increment](native-mixed-box.md) implements
 Common/BoxMinusField boundary compounds with closed seams and planar caps plus
 live FreeCAD recipes. It does not close the general trimming, conforming meshing,
 implicit-solid validation or manufacturing acceptance gates below.
+Native [cap/seam meshing preparation](native-mesh-constraints.md) now shares
+canonical edge/vertex samples between conventional cap triangles and oriented
+implicit trim wires. It does not yet triangulate the implicit surface or close
+the conforming-mesh/solid gates.
 
 1. Geometry property and graph system: a dedicated versioned complex-geometry
    property; shared-node JSON/DAG persistence; unit contracts; graph/task UI;

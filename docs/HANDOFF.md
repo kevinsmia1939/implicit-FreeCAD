@@ -665,6 +665,38 @@ Both script targets refresh successfully. Full migration passes **28/28**
 real buttons, open contours, multi-preview undo and failed-preview cancel.
 Logs are recorded in PROGRESS.md.
 
+## Milestone 35: shared native cap/seam meshing constraints
+
+Source heads: FreeCAD `8a4dd8ef32`, OCCT `f20e7c4b63`.
+
+`TKMesh/BRepMesh_ImplicitBoundary::Prepare` now triangulates conventional planar
+caps on a validated private topology snapshot. Canonical nodes use shared
+vertices and edge-sample order, never position welding. A private exact-polyline
+discretizer retains every native knot; ordinary chordal tessellation initially
+dropped short knots and failed the new correspondence checks. Opposite cap/
+native wire incidences are checked before returning, and source caches/flags
+remain untouched. TKTopAlgo has no new TKMesh dependency.
+
+The OCCT-8-only FreeCAD API `ImplicitOCCT.prepare_mixed_mesh(obj.Geometry)`
+returns local vertices, outward indexed cap triangles, shared seam indices and
+oriented closed wire indices. It preserves seam-bound provenance and explicitly
+reports native_surface_meshed=False / solid_validated=False. No implicit face
+is passed to generic UV meshing. GUI output remains caps/seams only.
+See native-mesh-constraints.md for limits, errors and the exact API.
+
+Two new kernel tests bring the isolated executable to 37 cases. CLI regression
+covers both operations and open/closed contours, deterministic buffers,
+property/capsule equivalence, restored provenance, invalid budgets, source
+immutability and retained snapshots after document closure. Kernel CTest passes
+1/1 (37 GTests, 4.12 seconds), full migration 29/29 (64.67 seconds) and
+compatibility 25/25 (28.69 seconds). No dependencies or system libraries changed.
+Build commands and logs are recorded in PROGRESS.md and native-mesh-constraints.md.
+
+This is a Stage 3 preparation milestone, not completion of a conforming surface
+mesh, native solid or the overall goal. Next implement the implicit surface
+mesher using these canonical constraints, then validate the complete boundary.
+Curved B-Rep operands and all unfinished Stage 2/3/4 gates remain required.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:

@@ -8,6 +8,10 @@ Supported results now have a [transactional task editor](native-mixed-editor.md)
 for operation, seam tolerance and tracing-budget changes, with preview, cancel,
 undo/redo and save/reopen coverage. It does not turn the boundary into a solid.
 
+An explicit [native cap/seam constraint API](native-mesh-constraints.md) now
+prepares shared indexed nodes and cap triangles for future conforming surface
+meshing. It does not yet mesh the implicit face or change the GUI preview.
+
 ## Four goals and delivered scope
 
 1. **Inside convention:** the primitive gyroid defines `F <= 0` as inside.
