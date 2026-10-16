@@ -4,11 +4,51 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `ef5c5f283e` on
-`feature/native-implicit`, OCCT `3ca2e7235e` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `836b609498` on
+`feature/native-implicit`, OCCT `72b5a40c8d` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: native trim-conforming surface candidate and GUI preview
+## Latest increment: exact transient triangle-contact audit
+
+The native TKMesh audit now checks all cap/implicit pairs, including adjacent
+triangles, using exact stored-binary64 integer predicates and bounded AABB
+sweeping. Clear results require an exact separating witness confining contacts
+to shared node-ID simplices; no separating plane may ignore part of a shared
+edge. A negative coplanar-overlap test caught that initial adjacency bug.
+Integer arithmetic is local (32-bit words/64-bit carries, common dyadic scale),
+with explicit exponent and pair/broad-phase budgets. No dependencies changed.
+
+`ImplicitOCCT.audit_mixed_mesh` privately generates/audits a candidate, retaining
+source immutability. Reports distinguish clear, contact_or_unresolved and limit;
+limits never pass. Result metadata names generation settings, sizes, diagnostic
+triangle IDs and work counts; solid/coverage flags remain False. The API is
+separate from GUI buffers and does not persist or change a document validity
+flag. GUI previews do not automatically run the audit.
+
+Two new kernel cases bring the executable to **42 GTests**, covering valid
+adjacency, crossings beyond shared vertices, same-side shared-edge overlaps,
+duplicates, unrelated coincident nodes, near separation, exact coplanar oblique
+separation under binary scaling/winding changes, limits and invalid indices.
+The native iso-0 candidate passes 906,095 exact pair checks. CLI regression
+passes both Boolean directions/open and closed contours, limited-audit states,
+source immutability, retained lifetime and bad-handle/settings guards.
+
+This is mesh-only embeddedness evidence, not field coverage, clipped-field
+Hausdorff error or native-solid validity. All unfinished Stage 2/3/4 gates
+remain active; see [audit contracts](native-mesh-contact-audit.md).
+Logs: `/tmp/implicit-contact-build.log`, `/tmp/implicit-contact-test-build.log`,
+`/tmp/implicit-contact-tests.log`, `/tmp/implicit-contact-binding-build.log`,
+`/tmp/implicit-contact-binding-tests.log`, `/tmp/implicit-contact-migration-full.log`,
+`/tmp/implicit-contact-compatibility-full.log`.
+Final results: isolated CTest **1/1**, **42 GTests** (20.03 seconds), full
+OCCT-8 migration **31/31** (121.03 seconds), compatibility **25/25**
+(45.43 seconds). Both script targets, TKMesh, the native test executable and
+the OCCT-8 binding build successfully. GCC UBSan additionally passes the exact
+predicate case (including overlapping-box tiny-gap/crossing regressions), with
+only the new audit/test translation units instrumented, not all OCCT libraries.
+Sanitizer logs: `/tmp/implicit-contact-ubsan-build.log`, `/tmp/implicit-contact-ubsan.log`.
+
+## Previous increment: native trim-conforming surface candidate and GUI preview
 
 The native TKMesh mesher now uses field-root extraction, native-wire/interior-
 loop correspondence, an oriented dynamic-programming collar and shared-edge

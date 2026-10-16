@@ -183,3 +183,18 @@ unfinished Stage 2/4 requirements remain active. See native-conforming-preview.m
 Verification: 40 kernel cases, 30/30 migration tests and 25/25 compatibility
 tests pass. These do not prove coverage, embeddedness or native-solid validity.
 Checkpoint heads: FreeCAD `ef5c5f283e`, OCCT `3ca2e7235e`.
+
+Next increment: an explicit native transient-mesh contact audit now checks all
+cap/implicit triangle pairs, including pairs sharing node IDs. Exact integer
+separators operate on stored binary64 coordinates; allowed common simplices are
+not permission for overlaps elsewhere. Limits return unresolved, never clear.
+Both operations and closed/open contour fixtures pass the audit through the
+FreeCAD API; source geometry remains unchanged. Two new kernel cases (42 total)
+include adjacency/crossing, coplanar, scale, precision/resource and bad-input
+regressions. This advances mesh embeddedness evidence only. Surface coverage,
+clipped-field consistency, native-solid validation and all unfinished Stage 2/4
+requirements remain active; GUI previews do not automatically run the audit.
+Verification: 42 kernel cases, 31/31 migration and 25/25 compatibility tests
+pass, plus a targeted GCC UBSan predicate run. None of these replace field
+coverage/clipping or native-solid validity evidence.
+Checkpoint heads: FreeCAD `836b609498`, OCCT `72b5a40c8d`.

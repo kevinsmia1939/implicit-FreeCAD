@@ -29,6 +29,10 @@ implicit trim wires. The newer [trim-conforming candidate](native-conforming-pre
 triangulates the implicit surface and matches those seams, with one-sided field
 distance bounds and combinatorial closure. Coverage, embeddedness, native-solid
 validation and broader operands remain required before those gates can close.
+An explicit [mesh contact audit](native-mesh-contact-audit.md) now checks all cap/
+implicit pairs with exact integer predicates on stored binary64 coordinates,
+including adjacent triangles. This is mesh-only evidence: coverage/clipping
+and implicit-aware native-solid validation remain required.
 
 1. Geometry property and graph system: a dedicated versioned complex-geometry
    property; shared-node JSON/DAG persistence; unit contracts; graph/task UI;

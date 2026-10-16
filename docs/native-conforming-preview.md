@@ -114,6 +114,12 @@ consumer should infer validity from `mesh_closed`.
 
 ## Verification and next gates
 
+A separate [exact triangle contact audit](native-mesh-contact-audit.md) is now
+available through `ImplicitOCCT.audit_mixed_mesh`. Clear reports prove absence
+of improper stored-coordinate contacts for that privately generated candidate,
+not field coverage or native-solid validity. The preview does not automatically
+run this audit, and its existing unverified status remains intentional.
+
 Rebuild the existing TKMesh and native test targets, then the OCCT-8
 `_ImplicitOCCT` / `ImplicitScripts` targets. The preserved OCCT-7 tree only
 refreshes `ImplicitScripts`. Run:

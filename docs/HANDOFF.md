@@ -746,6 +746,40 @@ and implicit-aware solid validation. Curved operands, history/snapping and
 remaining cross-workbench Stage 4 requirements are still in scope. The goal is
 not complete; this candidate is not a validated native solid.
 
+## Milestone 37: exact transient triangle-contact audit
+
+Source heads: FreeCAD `836b609498`, OCCT `72b5a40c8d`.
+
+`TKMesh/BRepMesh_ImplicitBoundary::Audit` now audits all cap/implicit triangle
+pairs, including shared-vertex/edge pairs. Bounded AABB sweeping feeds exact
+separating-plane predicates on stored binary64 coordinates. A local signed
+integer implementation uses 32-bit words/64-bit carries and common dyadic
+scaling; no new dependencies or floating epsilon predicates. Common-node
+contacts are allowed only on the entire common simplex. A new same-side overlap
+test caught/fixed a first implementation that did not require the separating
+plane to contain the whole shared edge.
+
+The explicit OCCT-8 FreeCAD API `ImplicitOCCT.audit_mixed_mesh(obj.Geometry)`
+privately regenerates/audits a candidate. Reports distinguish clear,
+contact_or_unresolved and limit; all unfinished/limited scans have clearance
+False. Caps precede implicit triangle IDs. Arithmetic exponent/work budgets,
+source immutability and snapshot lifetime have regression tests. Both Boolean
+directions in closed-loop and box-edge-crossing fixtures pass; the iso-0 Common
+case examines 906,095 exact pairs. See native-mesh-contact-audit.md for bounds,
+API, proof scope and unresolved cases.
+
+This is exact mesh-only contact evidence, not implicit coverage, clipped-root
+consistency, native-solid validity or ordinary Part consumer support. The GUI
+does not automatically run/claim the audit, and authoritative geometry remains
+unchanged. Broader geometry, singular coverage and consumer/history/snapping
+gates remain active. Next: authoritative-field coverage/clipped-boundary
+validation, then native-solid construction/validation. Full verification logs
+are in PROGRESS.md: **42 GTests**, CTest **1/1** (20.03 seconds), migration
+**31/31** (121.03 seconds), compatibility **25/25** (45.43 seconds). GCC UBSan
+passes the targeted exact-predicate case; only the new audit/test source is
+instrumented, not all OCCT. TKMesh, isolated tests, native binding and both script
+targets build successfully. No packages/system libraries changed.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -770,6 +804,7 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | clang-format | Available; use the FreeCAD formatting configuration |
 | Xvfb | Available for isolated native GUI regression runs |
 | GoogleTest | 1.18.0 available; new OCCT tests also run through the compatibility build |
+| GCC UBSan | Targeted exact mesh-predicate checks with `-fsanitize=undefined`; not a full sanitized OCCT build |
 
 The initial audit found missing Xerces, Qt SVG/tools, and PySide/Shiboken
 development packages. The user installed requested packages and authorized
@@ -834,7 +869,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 40 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 42 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
