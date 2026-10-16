@@ -80,6 +80,10 @@ full integration acceptance scope.
 A [box-stratified regularity check](native-box-regularity.md) now supplies
 mesh-independent gradient/transversality evidence, without validating stored
 trim correspondence or closing the native-solid/topology gates.
+A [stored trim-graph correspondence check](native-trim-correspondence.md) now
+supplies unique edge/vertex matches, directed wire/cap grouping and continuous
+curve/p-curve bounds against fresh traces. Whole-surface topology/reach and
+native-solid construction/validation remain required.
 The [native mixed geometry property](native-geometry-property.md) now owns and
 persists supported mixed topology in FCStd without numerical rebuilding of
 unchanged inputs. This is not complete selection, placement or consumer support.

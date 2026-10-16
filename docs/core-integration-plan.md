@@ -187,6 +187,9 @@ required; none of these numerical mesh checks promotes a compound to a solid.
 A [mesh-independent box-stratified regularity check](native-box-regularity.md)
 now checks volume/face/edge/corner transversality. Stored trim correspondence,
 topology/reach and native-solid validation remain separate required gates.
+A [stored trim-graph checker](native-trim-correspondence.md) now compares the
+oriented graph and continuous curve/p-curve geometry to fresh canonical traces.
+It does not establish whole-surface isotopy/reach or native-solid validity.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

@@ -11,7 +11,9 @@ now joins the implicit mesh to shared cap/seam nodes, with a separate
 [exact mesh contact audit](docs/native-mesh-contact-audit.md) and
 [whole-domain clipped proximity checks](docs/native-clipped-coverage.md).
 Mesh-independent [field-box regularity checks](docs/native-box-regularity.md)
-now cover volume/face/edge/corner strata.
+now cover volume/face/edge/corner strata. A separate
+[stored trim-graph correspondence check](docs/native-trim-correspondence.md)
+compares shared topology and full seam/p-curve geometry with fresh reference traces.
 Topology equivalence, general curved operands and validated native solids remain open.
 
 This repository is the development umbrella: the actual FreeCAD fork is pinned

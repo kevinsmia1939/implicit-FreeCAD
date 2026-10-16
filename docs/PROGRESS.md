@@ -4,11 +4,46 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `094407d71f` on
-`feature/native-implicit`, OCCT `fd9a53d063` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `6a24569e8d` on
+`feature/native-implicit`, OCCT `ec71be2ccd` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: mesh-independent box-stratified field regularity
+## Latest increment: stored native trim-graph correspondence
+
+TKTopAlgo independently retraces the authoritative field/box after stratified
+regularity, then requires unique continuous PWL edge matches, induced shared
+vertex bijections, cap grouping and directed cyclic wire agreement. Strict
+degree-1 cap p-curve parameter checks and derivative-based positive seam tangent
+alignment supplement geometric matching. The existing Build canonical graph
+construction is shared, without a new toolkit dependency. No source geometry,
+caches or stored seam-bound provenance changes.
+
+`ImplicitOCCT.check_mixed_correspondence` exposes the explicit synchronous query
+in OCCT-8 FreeCAD. Tight reproduction tolerance and the combined fresh seam,
+3D curve and cap parameter budget are separate from whole-model accuracy.
+Four new cases bring the suite to **52 GTests**, covering both operations,
+open/closed/multiple regions, restore, reordered caps, curve resampling, cyclic
+wire starts, changed math with forged flags, p-curve mismatch and limits. Native
+CLI adds ownership/restore/provenance and handle/settings guards. See
+[correspondence contracts](native-trim-correspondence.md).
+
+This is graph correspondence, NOT full surface isotopy/reach or native-solid
+validity. The full Stage 4 goal remains active, including curved operands and
+every unfinished Stage 2/3/4 acceptance gate. No packages/system libraries changed.
+
+Build/test logs: `/tmp/implicit-correspondence-build.log`,
+`/tmp/implicit-correspondence-test-build.log`, `/tmp/implicit-correspondence-tests.log`,
+`/tmp/implicit-correspondence-binding-build.log`, `/tmp/implicit-correspondence-binding-tests.log`,
+`/tmp/implicit-correspondence-migration-all.log`, `/tmp/implicit-correspondence-compat-all.log`.
+Isolated kernel CTest passes **1/1**, **52 cases** (41.16 seconds); targeted
+runtime/correspondence CTest passes **2/2** (6.72 seconds).
+Full OCCT-8 migration passes **34/34** (169.72 seconds), including actual GUI
+and launcher workflows; preserved compatibility passes **25/25** (70.03 seconds).
+The initial CLI budget-one assertion incorrectly assumed every graph needed
+multiple comparisons; the one-edge closed cut legitimately needs just one.
+The test now distinguishes that successful bounded case from exhaustion.
+
+## Previous increment: mesh-independent box-stratified field regularity
 
 TKTopAlgo now adaptively checks projected gradients over the whole native
 gyroid box volume, all faces and edges, and excludes corner zeros. Scalar

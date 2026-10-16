@@ -219,3 +219,14 @@ correspondence, topology equivalence, reach or native-solid validity. These and
 all unfinished Stage 2/4 gates remain required; see native-box-regularity.md.
 Verification: 48 kernel cases, 33/33 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `094407d71f`, OCCT `fd9a53d063`.
+
+Next increment: stored native trim graphs now have independent fresh-reference
+correspondence checks, with unique continuous curve matches, induced shared
+vertex bijections, cap grouping, directed cyclic wire comparison and strict
+cap p-curve parameter bounds. Resampling/cyclic starts and shuffled caps pass;
+changed math with forged flags, parameter mismatches and limits reject. Four new
+kernel cases bring the suite to 52. This is graph correspondence, NOT entire
+surface isotopy/reach or native-solid validity. Those and all unfinished
+Stage 2/4 gates remain required; see native-trim-correspondence.md.
+Verification: 52 kernel cases, 34/34 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `6a24569e8d`, OCCT `ec71be2ccd`.

@@ -844,6 +844,37 @@ than infer correspondence from proximity. Topology/reach conditions and native
 shell/solid construction/validation remain required. Curved operands and all
 unfinished Stage 4 integration gates remain active; this is not solid validity.
 
+## Milestone 40: stored native trim-graph correspondence
+
+Source heads: FreeCAD `6a24569e8d`, OCCT `ec71be2ccd`.
+
+TKTopAlgo now provides `BRepClass3d_ImplicitBox::CheckCorrespondence` and the
+OCCT-8 FreeCAD API `ImplicitOCCT.check_mixed_correspondence`. A private validated
+copy is compared with a newly traced canonical graph from authoritative math,
+after stratified regularity. Unique continuous PWL curve matches induce shared
+vertex bijections; cap grouping and oriented cyclic wires must agree. Planar
+p-curves must match 3D edge parameters under tight bounds; derivative bounds
+exclude backward seam segments. Resampling, shuffled caps and cyclic wire starts
+are supported. No welding, geometry replacement or source-bound recertification.
+
+See native-trim-correspondence.md for scope, budgets and tolerance policy.
+Four new kernel cases bring the suite to 52. Native CLI tests cover both
+operations/open and closed contours, restore/lifetime/provenance and limits.
+Final regression: kernel **52/52** (CTest 41.16 seconds), OCCT-8 migration
+**34/34** (169.72 seconds), compatibility **25/25** (70.03 seconds). Existing
+build targets and dependencies reused; no packages/system libraries changed.
+The check explicitly keeps topology and solid validity False. Full surface
+isotopy/reach and native shell/solid validation/construction remain required;
+curved operands and unfinished Stage 4 requirements remain active.
+
+The next native-solid gate must relate the WHOLE field surface to a topology
+model, not just show two nearby point sets or equivalent trim graphs. Establish
+a bounded local-graph/homotopy construction with compatible cell-boundary
+incidences, or equivalent quantitative feature-size/reach conditions, before
+promoting any candidate to a validated native shell/solid. Existing regularity,
+contact, proximity and graph checks remain independent prerequisites, not a
+substitute for that missing relation.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -933,7 +964,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 48 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 52 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
