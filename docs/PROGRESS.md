@@ -4,11 +4,38 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `256ccafef0` on
-`feature/native-implicit`, OCCT `1ba27f551a` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `eacfd7c7e6` on
+`feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: conservative native mixed-region classification
+## Latest increment: explicit native shared-topology persistence
+
+Schema-1 `BRepClass3d_ImplicitBoxIO` persists native gyroid math and the shared
+cap/edge/wire graph, not a recipe, mesh substitute or fake UV face. Native faces
+are reconstructed with the stored shared wires; planar p-curves and edge/vertex
+identity survive. Bounded parsing and structural checks reject invalid records
+atomically. Mesh caches are omitted without mutating source caches. Loaded
+seam-bound metadata is not re-certified (`SeamBoundVerified=false`); all results
+remain nonvalidated boundary compounds.
+
+The OCCT-8 FreeCAD facade exposes `dumps_mixed`/`loads_mixed`, restoring immutable
+owned topology and independent cap copies with native region queries. Two new
+kernel cases cover both operations, open/closed topology, repeated I/O, shared
+seams/p-curves, failure atomicity, lock rejection and cache omission. CLI/GUI
+tests cover the public API, accuracy downgrade and lifetime after document close.
+FCStd still uses recipes: dedicated geometry-property/topology integration and
+the remaining Stage 2/3/4 gates are not completed by this codec.
+See [native-topology-io.md](native-topology-io.md).
+
+Verified: **35/35** kernel cases (CTest 3.17 seconds), **22/22** migration tests
+(46.09 seconds), **25/25** compatibility tests (28.08 seconds). Logs:
+`/tmp/implicit-topology-build.log`, `/tmp/implicit-topology-freecad-build.log`,
+`/tmp/implicit-topology-targeted.log`, `/tmp/implicit-topology-full-migration.log`,
+`/tmp/implicit-topology-full-legacy.log`. The first round-trip exposed nonempty
+identity-location chains; exact-identity canonicalization fixed it without
+tolerance-snapping geometry. No new packages/system-library changes.
+
+## Previous increment: conservative native mixed-region classification
 
 `BRepClass3d_ImplicitBox::Classify` queries the mathematical box/field intersection,
 independent of meshes and approximate cap polygons. Inside/outside require a

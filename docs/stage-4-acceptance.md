@@ -68,3 +68,13 @@ selection/editing/consumer requirements remain unfulfilled; the goal stays activ
 Checkpoint heads: OCCT `1ba27f551a`, FreeCAD `256ccafef0`; 33 kernel cases,
 22 migration entries and 25 compatibility entries pass. This evidence does not
 prove completion of any remaining Stage 2/3/4 gate.
+
+Next increment: explicit native schema-1 topology I/O now preserves the field,
+shared cap/seam edges/vertices, planar p-curves and trim wires without numerical
+recipe rebuilding. Loaded seam-bound metadata is explicitly unverified and
+solid validity stays false. This advances topology persistence/ownership only;
+dedicated FreeCAD geometry-property/FCStd migration integration, semantic
+selection/editing/consumers and all other unfinished Stage 2/3 gates remain.
+Verified heads: OCCT `aa6ced5047`, FreeCAD `eacfd7c7e6`; 35 kernel cases,
+22 migration entries and 25 compatibility entries pass. This is not evidence
+that the overall through-Stage-4 goal has been completed.

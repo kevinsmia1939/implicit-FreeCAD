@@ -172,6 +172,10 @@ An explicit [native mixed-region classifier](native-region-classification.md)
 now combines field and box constraints with physical distance bounds and
 boundary witnesses. It is separate from ordinary Part classification and does
 not validate or promote the native boundary compound to a solid.
+An [explicit native mixed-topology codec](native-topology-io.md) now preserves
+the supported primitive plus shared cap/edge/wire graph without retracing.
+Stored approximation bounds are not re-certified. This is not the dedicated
+FreeCAD geometry property, FCStd topology integration, OCAF or STEP support.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

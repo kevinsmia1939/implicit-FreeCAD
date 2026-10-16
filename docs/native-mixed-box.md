@@ -116,8 +116,11 @@ separately through `native.classify_mixed(boundary_handle, point, .1)` or
 
 Snapshots survive operand edits and document close. FCStd stores links/settings,
 not capsules, implicit B-Reps or generated meshes; after opening, recompute to
-rebuild caches. Generic BRepTools/BinTools/STEP serialization and `native.dumps`
-of the hybrid/trimmed result remain unsupported. Failures in execution clear
+rebuild caches. A separate [explicit shared-topology codec](native-topology-io.md)
+now supports `native.dumps_mixed`/`loads_mixed` without recipe rebuilding;
+restored seam bounds are marked unverified. Generic BRepTools/BinTools/STEP
+serialization and primitive-only `native.dumps` of trimmed faces still reject.
+Failures in execution clear
 native, cap and seam display caches; no worker or mesh-solid fallback is used.
 Calls are synchronous and hold the GIL. Saving a failed recipe does not make its
 unsupported geometry supported on restore.

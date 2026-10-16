@@ -409,6 +409,45 @@ All **33/33** kernel cases pass (CTest 2.40 seconds); full migration **22/22**
 (48.32 seconds) and preserved compatibility **25/25** (27.63 seconds) also pass.
 Log paths are in PROGRESS.md. No dependencies/system libraries were changed.
 
+## Milestone 27: explicit shared native topology persistence
+
+Source heads: OCCT `aa6ced5047`, FreeCAD `eacfd7c7e6`.
+
+`BRepClass3d_ImplicitBoxIO` schema 1 now persists the authoritative gyroid
+primitive and a shared conventional cap/edge/wire graph, reconstructing a real
+native implicit face with those same stored wires. No recipe retracing or fake
+UV surface is used. The generic BRepTools payload contains caps and a wire
+compound only, never an implicit face. Mesh/polygon caches are stripped from a
+deep copy; source caches remain intact. Runtime state flags are normalized.
+
+Read validates supported geometry, domain-bounded poles, closed wire connectivity,
+planar cap validity, shared seam p-curves/identity, opposite edge uses and root
+counts. Records are bounded to 16 MiB and 128 faces, with stricter primitive/
+curve limits. Unknown, malformed, truncated, trailing, oversized and locked-
+destination records reject; the destination is unchanged on failure. Primitive
+I/O's nonempty identity chains are normalized only for exactly identity matrices.
+Seam-bound metadata is stored provenance, NOT re-certified: newly traced results
+have `SeamBoundVerified=true`, restored records always false. Solid validity is
+still false. See `native-topology-io.md` for the complete contract and limitations.
+
+FreeCAD exposes `ImplicitOCCT.dumps_mixed(boundary_handle)` and `loads_mixed(record)`
+with owned immutable snapshots, cap copies, operation/inside convention, preview
+curves and accuracy flags. Restored snapshots support native region queries after
+document close. Primitive-only face serialization still rejects child topology.
+CLI/GUI tests exercise the explicit API without recipe rebuilding. Two new
+kernel cases cover both Boolean directions/open/closed graphs, shared identity/
+p-curves, query equivalence, repeated I/O, error atomicity, locks and mesh omission.
+
+This is only the explicit native codec: existing FCStd features still save and
+rebuild recipes. The dedicated FreeCAD geometry property and FCStd topology/
+migration integration remain required, as do curved operands, conforming meshes,
+validated solids, semantic selection/snapping and broader Stage 4 consumers.
+Do not mark Stage 4 complete from this checkpoint. No new dependencies/system
+libraries were installed or replaced.
+All **35/35** isolated kernel cases pass (CTest 3.17 seconds), **22/22** full
+migration tests pass (46.09 seconds), **25/25** compatibility tests pass
+(28.08 seconds). Log paths are in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -497,7 +536,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 33 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 35 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
