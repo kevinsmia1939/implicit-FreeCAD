@@ -875,6 +875,41 @@ promoting any candidate to a validated native shell/solid. Existing regularity,
 contact, proximity and graph checks remain independent prerequisites, not a
 substitute for that missing relation.
 
+## Milestone 41: whole-box numerical homotopy and topology reference
+
+Source heads: FreeCAD `9874d2e306`, OCCT `3f9aa48bcf`.
+
+TKTopAlgo now provides `BRepClass3d_ImplicitBox::CheckTopology`, exposed in OCCT-8
+FreeCAD as `check_box_topology` and `check_mixed_topology`. A shared Freudenthal
+nodal-linear field is compared to F through the whole convex homotopy. Cells
+must exclude homotopy zeros or prove positive gradient alignment; actual box
+faces/edges have their own projected checks. Internal grid boundaries instead
+share the increasing continuous field-gradient direction, avoiding artificial
+grid-transversality requirements. Engineering reserves, not directed intervals.
+
+The transient affine-root reference has shared identities, oriented triangles,
+component Euler characteristics and directed boundary loops; incidence and
+path/cycle vertex links check its manifold structure. It is NOT a .1 mm mesh,
+stored native graph or solid. Source topology/caches/provenance remain unchanged.
+Five new cases bring the kernel suite to 57, including a hidden component missed
+by every coarse grid sample, enclosed sphere topology, empty fields, critical
+strata, orientation, scaling, immutability and limits. CLI adds both operations,
+raw/mixed adapters, restore/lifetime/guards and independent buffer accounting;
+the larger fixture has Euler -1/three loops at resolutions 32 and 64.
+
+See native-box-topology.md for the analytical rationale, API and budgets. Next
+connect this whole-surface reference to stored native trims/caps and their
+geometric realization, with component grouping/orientation, then native shell/
+solid construction and validation. Equal loop counts/independent True flags do
+not establish that missing relation. Curved operands and all unfinished Stage
+2/4 requirements remain active. No packages/system libraries changed.
+
+Final verification: kernel **57/57** (CTest 43.77 seconds), OCCT-8 migration
+**35/35** (187.84 seconds), preserved compatibility **25/25** (74.48 seconds).
+Targeted runtime/topology CTest **2/2** (7.88 seconds). TKTopAlgo/TKMesh, the
+isolated test executable, native binding and both script targets built using
+existing dependencies. Build/test logs are recorded in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -964,7 +999,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 52 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 57 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

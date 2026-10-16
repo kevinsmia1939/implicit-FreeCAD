@@ -4,11 +4,52 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `6a24569e8d` on
-`feature/native-implicit`, OCCT `ec71be2ccd` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `9874d2e306` on
+`feature/native-implicit`, OCCT `3f9aa48bcf` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: stored native trim-graph correspondence
+## Latest increment: whole-box numerical field/linear homotopy
+
+TKTopAlgo now checks the entire mathematical box zero set against a shared
+Freudenthal nodal-linear reference. Adaptive simplex checks exclude homotopy
+zeros or prove positive field/linear gradient alignment throughout each cell.
+The continuous field-gradient direction increases all incident linear pieces
+at internal grid boundaries; actual exterior box-face/edge restrictions have
+separate projected checks. Initial artificial-grid transversality requirements
+were too strict at harmless internal tangencies and were replaced by this
+common-direction condition. Coarse grids and derivative/subdivision limits can
+still conservatively remain unresolved. Engineering reserves, not intervals.
+
+The explicit OCCT-8 APIs `check_box_topology` and `check_mixed_topology` return
+transient affine-root reference buffers, component Euler characteristics,
+boundary loops and incidence/link checks. No source state changes; no native
+topology/solid or geometric accuracy flags are promoted. The witness still
+needs correspondence to stored trims/caps before native-shell construction.
+Curved operands and all unfinished Stage 2/3/4 gates remain active. See
+[whole-box topology contracts](native-box-topology.md).
+
+Five new kernel cases bring the suite to **57**, including hidden between-node
+components, enclosed sphere/empty topology, critical strata, scaling, orientation,
+immutability, bad inputs and limits. CLI covers both operations/open and closed
+fixtures, raw/mixed equivalence, restore provenance/lifetime and independent
+Euler/edge/loop accounting. The larger fixture has Euler -1 and three boundary
+loops at resolutions 32 and 64. Its topology differs from the small disk fixture;
+the CLI was corrected to avoid incorrectly assuming both were disks.
+
+Existing build/dependency directories reused; the OCCT package manifest was
+explicitly reconfigured to pick up the new translation unit. No packages/system
+libraries changed. Logs: `/tmp/implicit-topology-config.log`,
+`/tmp/implicit-topology-build.log`, `/tmp/implicit-topology-test-build.log`,
+`/tmp/implicit-topology-targeted.log`, `/tmp/implicit-topology-tests.log`,
+`/tmp/implicit-topology-binding-build.log`, `/tmp/implicit-topology-binding-tests.log`,
+`/tmp/implicit-topology-migration-all.log`, `/tmp/implicit-topology-compat-all.log`.
+Kernel CTest **1/1**, **57 cases** (43.77 seconds); targeted runtime/topology
+CTest **2/2** (7.88 seconds) pass.
+Full OCCT-8 command-line/GUI migration **35/35** (187.84 seconds) and preserved
+compatibility **25/25** (74.48 seconds) pass. Both core branches are published;
+the umbrella pins the source heads above.
+
+## Previous increment: stored native trim-graph correspondence
 
 TKTopAlgo independently retraces the authoritative field/box after stratified
 regularity, then requires unique continuous PWL edge matches, induced shared

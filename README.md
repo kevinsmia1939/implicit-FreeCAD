@@ -14,7 +14,10 @@ Mesh-independent [field-box regularity checks](docs/native-box-regularity.md)
 now cover volume/face/edge/corner strata. A separate
 [stored trim-graph correspondence check](docs/native-trim-correspondence.md)
 compares shared topology and full seam/p-curve geometry with fresh reference traces.
-Topology equivalence, general curved operands and validated native solids remain open.
+A [whole-box topology witness](docs/native-box-topology.md) now checks a numerical
+field-to-nodal-linear homotopy and reports reference components/boundary loops.
+Stored-native topology equivalence, general curved operands and validated native
+solids remain open.
 
 This repository is the development umbrella: the actual FreeCAD fork is pinned
 in the `FreeCAD/` submodule on

@@ -34,6 +34,7 @@
 | Native mixed mesh contacts | Explicit exact binary64 triangle-contact audit | Includes adjacent pairs; limits unresolved; mesh-only evidence, not field/solid validation |
 | Native clipped-boundary proximity | Whole box/faces and reverse clipped witnesses at .1 mm | Two-sided numerical bounds with reserves; not preserved topology, directed intervals or native-solid validity |
 | Native field-box regularity | Whole volume/face/edge/corner strata, mesh-independent | Projected-gradient lower bounds and corner exclusions; not stored trim correspondence, reach or solid validity |
+| Whole-box topology witness | Numerical field-to-nodal-linear homotopy, reference components/Euler/loops | Not stored-trim/preview equivalence, a geometric accuracy bound or native-solid validity |
 | Native mixed-region classification | Conservative physical-distance separation and cap/root witnesses | Inside/outside/near-boundary/unresolved; independent of preview meshes, not whole-solid validation |
 | Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified |
 | Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
@@ -84,6 +85,10 @@ A [stored trim-graph correspondence check](native-trim-correspondence.md) now
 supplies unique edge/vertex matches, directed wire/cap grouping and continuous
 curve/p-curve bounds against fresh traces. Whole-surface topology/reach and
 native-solid construction/validation remain required.
+A [whole-box field/linear homotopy check](native-box-topology.md) now relates
+the mathematical zero set to a transient topology reference under numerical
+sufficient conditions. Connecting that reference to stored native trims/caps
+and constructing/validating native shells/solids remain required.
 The [native mixed geometry property](native-geometry-property.md) now owns and
 persists supported mixed topology in FCStd without numerical rebuilding of
 unchanged inputs. This is not complete selection, placement or consumer support.

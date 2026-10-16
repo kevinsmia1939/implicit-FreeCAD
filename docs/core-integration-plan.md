@@ -190,6 +190,11 @@ topology/reach and native-solid validation remain separate required gates.
 A [stored trim-graph checker](native-trim-correspondence.md) now compares the
 oriented graph and continuous curve/p-curve geometry to fresh canonical traces.
 It does not establish whole-surface isotopy/reach or native-solid validity.
+A [whole-box topology witness](native-box-topology.md) now checks sufficient
+numerical field-to-nodal-linear homotopy conditions, including true box-boundary
+strata and shared reference topology. It does not compare stored trims/caps or
+preview buffers to that reference or construct a native shell/solid. Those
+relations remain necessary; do not promote geometry by merely combining flags.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

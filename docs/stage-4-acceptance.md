@@ -230,3 +230,18 @@ surface isotopy/reach or native-solid validity. Those and all unfinished
 Stage 2/4 gates remain required; see native-trim-correspondence.md.
 Verification: 52 kernel cases, 34/34 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `6a24569e8d`, OCCT `ec71be2ccd`.
+
+Next increment: whole-box field-to-nodal-linear homotopy now checks shared
+increasing field-gradient directions across incident tetrahedral pieces, with
+separate true box-face/edge restrictions. The transient reference reports
+component Euler characteristics, boundary loops and manifold incidences/links.
+Hidden components missed by coarse nodal signs, critical strata and exhausted
+budgets remain unresolved. Five new kernel cases bring the suite to 57; native
+CLI adds both operation/contour fixtures, restored provenance, lifetime and
+resolution-32/64 topology agreement on the larger edge-crossing fixture.
+This is numerical sufficient-condition evidence, not directed intervals,
+stored-trim/cap or preview equivalence, accuracy qualification or native-solid
+validity. Those relations, shell construction and every unfinished Stage 2/4
+gate remain required. See native-box-topology.md; the full goal stays active.
+Verification: 57 kernel cases, 35/35 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `9874d2e306`, OCCT `3f9aa48bcf`.
