@@ -58,3 +58,13 @@ This is Stage 2 progress, not completion of the overall goal. Curved operands,
 conforming meshing, native-solid validation and Stage 4 integration are still open.
 Verified checkpoint heads: OCCT `ef20e3f9d7`, FreeCAD `1daddc4c3a`; 30 kernel
 cases, 22 migration CTest entries and 25 compatibility CTest entries pass.
+
+Next increment: native mathematical-region classification now uses physical
+distance lower bounds and cap/root witnesses, not raw field residuals or preview
+meshes. The FreeCAD mixed recipe exposes immutable-snapshot classification with
+explicit unresolved cases and failure invalidation. Whole-native-solid validity,
+conforming surface meshing, curved operands and the Stage 4 property/persistence/
+selection/editing/consumer requirements remain unfulfilled; the goal stays active.
+Checkpoint heads: OCCT `1ba27f551a`, FreeCAD `256ccafef0`; 33 kernel cases,
+22 migration entries and 25 compatibility entries pass. This evidence does not
+prove completion of any remaining Stage 2/3/4 gate.

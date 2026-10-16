@@ -374,6 +374,41 @@ semantic selection/snapping, editing/undo/redo and cross-workbench dispatch.
 See `native-mixed-box.md` for current limits and `stage-4-acceptance.md` for
 the full completion audit. Do not replace that objective with box-only success.
 
+## Milestone 26: conservative mixed-region classification
+
+Source heads: OCCT `1ba27f551a`, FreeCAD `256ccafef0`.
+
+The OCCT native box boundary now has an explicit mathematical-region classifier,
+`BRepClass3d_ImplicitBox::Classify`. Common is box AND F<=0; BoxMinusField is
+box AND F>=0. Physical input tolerance defaults to .1 mm, never compared directly
+with raw gyroid residuals. Global Lipschitz and local gradient/Hessian Taylor
+exclusions bound distance from the field boundary. Constraint bounds combine
+as a minimum inside the intersection and maximum over violated constraints
+outside. Inside/outside require separation greater than the tolerance.
+
+Near-boundary requires a retained cap point or clipped opposite-sign root
+bracket inside the tolerance ball, with bracket width <= tolerance/256.
+Uncertain midpoint signs retain the bracket; critical/no-witness cases return
+Unresolved, not guessed ON. Finite/trigonometric/coordinate precision guards
+apply. These remain floating-point/reserve bounds, not directed intervals.
+
+FreeCAD exposes `ImplicitOCCT.classify_mixed(boundary_handle, point, tolerance)`
+and `obj.Proxy.classify(point, tolerance)` on the last successful mixed recipe.
+Results include physical bounds/witnesses and `solid_validated=False`.
+Retained snapshots survive edits/close; failed execution has no queryable cache.
+No ordinary Part solid, whole-boundary validity, nearest point or topology
+persistence claim follows. GUI remains caps/seams only. See
+`native-region-classification.md` for contracts, examples and evidence.
+
+Three new kernel cases cover both operations, cap/root witnesses, stationary
+unresolved behavior, invalid inputs and a scaling regression keeping field
+values fixed while changing physical distance classification. CLI/GUI tests
+cover feature/API queries, restore, operation edits and snapshot/cache lifetime.
+This is progress toward the active Stage 4 goal, not completion of Stage 3 or 4.
+All **33/33** kernel cases pass (CTest 2.40 seconds); full migration **22/22**
+(48.32 seconds) and preserved compatibility **25/25** (27.63 seconds) also pass.
+Log paths are in PROGRESS.md. No dependencies/system libraries were changed.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -462,7 +497,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 30 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 33 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

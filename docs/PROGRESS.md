@@ -4,11 +4,34 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `1daddc4c3a` on
-`feature/native-implicit`, OCCT `ef20e3f9d7` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `256ccafef0` on
+`feature/native-implicit`, OCCT `1ba27f551a` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: open box contours and multiple retained regions
+## Latest increment: conservative native mixed-region classification
+
+`BRepClass3d_ImplicitBox::Classify` queries the mathematical box/field intersection,
+independent of meshes and approximate cap polygons. Inside/outside require a
+physical boundary-distance lower bound exceeding the requested tolerance;
+near-boundary requires a retained cap point or sign bracket wholly in the box
+and tolerance ball. Other cases return unresolved. Global Lipschitz and local
+Taylor exclusions keep dimensionless field residuals separate from length.
+The FreeCAD binding and mixed feature expose these immutable-snapshot queries;
+failed executions clear the query cache. `solid_validated` remains false.
+
+Three new kernel cases test Boolean direction, root/cap witnesses, stationary
+ambiguity, bad inputs and length scaling at identical field values. CLI/GUI
+tests cover restore/edit/lifetime/invalidation. This advances classification,
+not conforming meshing, topology validation or seamless Stage 4 integration.
+See [native-region-classification.md](native-region-classification.md).
+
+Verification: **33/33** isolated kernel cases (CTest 2.40 seconds), **22/22**
+OCCT-8 migration CTest entries (48.32 seconds), **25/25** preserved compatibility
+CTest entries (27.63 seconds). Logs: `/tmp/implicit-region-build.log`,
+`/tmp/implicit-region-freecad-build.log`, `/tmp/implicit-region-full-migration.log`,
+`/tmp/implicit-region-full-legacy.log`. No new packages/system-library changes.
+
+## Previous increment: open box contours and multiple retained regions
 
 Active objective: [through Stage 4, seamless FreeCAD integration](stage-4-acceptance.md).
 This increment advances Stage 2, not completion of that objective.

@@ -109,7 +109,10 @@ Part faces), traversal-index `cap_sources`, seam point arrays, `seam_count`,
 Exported Part caps are copies;
 their topology is not shared with the opaque compound. Do not sew them into a
 purported implicit Part solid. `value/normal/in_domain` on `implicit_face` query
-the original field and bounded surface domain, not a whole mixed-solid classifier.
+the original field and bounded surface domain, not the mixed region.
+[Native region classification](native-region-classification.md) is available
+separately through `native.classify_mixed(boundary_handle, point, .1)` or
+`result.Proxy.classify(point, .1)`. It does not establish whole-solid validity.
 
 Snapshots survive operand edits and document close. FCStd stores links/settings,
 not capsules, implicit B-Reps or generated meshes; after opening, recompute to

@@ -168,6 +168,10 @@ recipes. Regular box-edge crossings, shared vertices and multiple planar cap
 regions now work. Conforming gyroid meshing, broader/singular topology and
 whole-solid validation remain open. The full active through-Stage-4 objective
 is tracked in [stage-4-acceptance.md](stage-4-acceptance.md).
+An explicit [native mixed-region classifier](native-region-classification.md)
+now combines field and box constraints with physical distance bounds and
+boundary witnesses. It is separate from ordinary Part classification and does
+not validate or promote the native boundary compound to a solid.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 
