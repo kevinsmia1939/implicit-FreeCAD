@@ -167,8 +167,9 @@ references when the serialized boundary changes. Exact restoration can recover
 them, but surviving elements are not matched through topology changes. Explicit
 raw indices still address the current snapshot and are not stable attachments.
 Legacy App::FeaturePython owners do not gain typed-owner core reference validation.
-Subobject Python extraction intentionally returns None, not a Part shape;
-representation-aware geometry inspection uses `Implicit.nativeGeometry`.
+The original mapped-reference checkpoint returned None for Python subobject
+extraction; the owned geometry contract below supersedes that behavior for typed
+owners. It does not return a Part shape.
 Generic consumers, external-document links, container placement and persistent
 history across different geometry remain unqualified.
 
@@ -177,6 +178,52 @@ crossing fixture, unchanged FCStd restoration, recursive copy of a linked static
 snapshot, real LinkSub invalidation, saving/reopening unresolved references,
 undo/redo and exact recovery. The GUI regression checks current mapped paths
 and rejection after replacement. These do not establish manufacturing validity.
+
+## Owned native subobject geometry
+
+`obj.getSubObject(reference)` now returns an independently owned
+`Data::ComplexGeoData` wrapper backed by C++ `Implicit::NativeElementGeometry`.
+GUI `SelectionEx.SubObjects` exposes the same representation. The selected
+segment and complete authoritative native snapshot remain owned after source
+replacement or document close. It is not a Part.Shape or an editable property
+snapshot, and assignment to either property type rejects.
+
+The result contains one `Element1`. Its mapped name retains the original
+NativeFace/Cap/Seam identity; `getLines(accuracy)` and
+`getLinesFromSubElement("Element", 1)` return the selected topology's boundary
+polylines. Accuracy is not a surface-meshing request: these are stored degree-1
+curves. Bounds for caps/seams enclose their stored boundary geometry; native
+face bounds conservatively enclose the entire finite domain, not just the trim
+lines. Neither bounds nor lines prove nonempty volume or solid validity.
+
+```python
+element = obj.getSubObject("Seam1")
+points, lines = element.getLines(.1)
+original_identity = element.getElementName("Element1", 1)
+```
+
+Following FreeCAD's subobject convention, geometry is pre-placed by the
+accumulated incoming matrix and (when transform=True) the object's Placement.
+Its own geometry transform is identity, so consumers must not apply Placement a
+second time. `transform=False` omits the object's own placement; parent-path
+placement handling follows the core path traversal. Rigid orientation-preserving
+matrices are supported; scales, reflections, projective/nonfinite matrices reject.
+Nonfinite transformed points reject too. This is ordinary double-precision
+placement, not a newly certified world-space 0.1 mm error bound at extreme scales.
+
+Surface/point sampling, nonidentity geometry mutation and independent selected-
+geometry persistence remain unsupported and reject. Save the owning feature and
+its mapped link instead. The first-vertex C++ hook applies the same placement,
+but integrated snapping remains open. Conventional consumers still need explicit
+representation dispatch; they cannot feed this wrapper to UV-dependent Part BOP.
+
+`native_element_smoke.py` compares every selected subelement against independent
+rigid placements, tests raw/untransformed extraction and nested App::Part paths,
+checks bounds/ownership and rejects unsupported transforms, property assignments,
+sampling/mutation/persistence. The mixed GUI regression now verifies that both
+selected cap and seam SubObjects contain native complex geometry. These checks
+do not qualify general App::Link/container workflows, visual highlight pixels,
+all workbenches or the unfinished Stage 2/3 solid/Boolean gates.
 
 Run the documented incremental Implicit/ImplicitScripts builds and the separate
 OCCT-8 migration harness. Stage 2 curved operands, Stage 3 conforming meshing/

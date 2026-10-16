@@ -547,6 +547,34 @@ Both incremental builds succeed. Full migration passes **24/24** (49.60 seconds)
 and compatibility **25/25** (27.85 seconds), including unchanged **35** kernel
 cases. Logs and the expected negative-test warning are recorded in PROGRESS.md.
 
+## Milestone 31: owned native geometry through core subobject extraction
+
+Source heads: FreeCAD `1f46ce6988`, OCCT unchanged at `aa6ced5047`.
+
+Typed native owners now return C++ NativeElementGeometry wrapped by the standard
+ComplexGeoData Python interface from getSubObject. SelectionEx.SubObjects now
+contains selected native cap/seam geometry, not None/Part shapes. Each owned
+result exposes Element1 with the source mapped identity, boundary lines and
+bounds; authoritative native math/topology survives source replacement/close.
+Native face bounds use the full finite domain, not trim-line extrema.
+
+Subobject geometry is pre-placed once using the accumulated matrix and optional
+owner Placement; its reported geometry transform is identity. CLI tests cover
+all fixture subelements, independent rotated/translated expectations, raw
+transform=False queries and nested App::Part paths. Scales/reflections,
+projective/nonfinite transforms, nonidentity mutation, independent persistence,
+surface sampling and assignment to Part Shape/native property reject. The C++
+first-boundary-vertex hook follows the same transform; integrated snapping is
+still open. GUI tests inspect both cap/seam SelectionEx native SubObjects.
+
+This is a representation-aware extraction seam, NOT complete consumer/container/
+App::Link qualification, implicit surface meshing, validated solids or Boolean
+history. All unfinished Stage 2/3/4 gates remain active. No OCCT source, packages
+or system libraries changed. See native-geometry-property.md for usage/contracts.
+Both incremental builds succeed; migration passes **25/25** (51.79 seconds),
+compatibility **25/25** (27.54 seconds), including unchanged **35** kernel cases.
+Additional direct CLI bounds/composition checks pass; logs are in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:

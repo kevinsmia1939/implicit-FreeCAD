@@ -36,6 +36,7 @@
 | Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
 | Native mixed subelements/picking | Owned NativeFace/Cap/Seam segments; cap/seam Coin ray picking and semantic detail paths | Snapshot-local indices, round-trip order tested; no stable attachment history, snapping or implicit surface mesh picking |
 | Native mixed mapped references | Standard element map from stored snapshot digest; typed-owner stale lookup rejection | Unchanged save/copy/undo and LinkSub invalidation/recovery tested; changed topology invalidates conservatively, no surviving-element history |
+| Native mixed subobject extraction | Owned ComplexGeoData from getSubObject and SelectionEx.SubObjects | Selected boundary lines/bounds, once-applied rigid placement and App::Part paths tested; no Part shape, surface sampling, general consumers or App::Link qualification |
 | OCCT-native field-backed face storage/queries | Experimental, isolated OCCT 8.1 tests | No UV surface; explicit unsupported-operation guards; no OCCT 8 handles inside the OCCT 7.9 GUI |
 | OCCT-native single-face persistence | Experimental schema 1, isolated OCCT 8.1 tests | Sphere/gyroid, domain, tolerance, placements/orientation; no child topology, mesh, generic B-Rep/OCAF or FCStd support |
 | Native sphere-plane trimming | Restricted analytic prototype, tested | Plane predicate + exact circle wire; open patch, no general field trimming |

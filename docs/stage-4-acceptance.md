@@ -114,3 +114,13 @@ history/snapping, broader consumers/placements and every unfinished Stage 2/3
 gate remain required; the overall goal remains active.
 Checkpoint: FreeCAD `e036a6855a`, OCCT unchanged `aa6ced5047`; 24/24 migration
 and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
+
+Next increment: typed-owner getSubObject and GUI SelectionEx.SubObjects now
+return owned native selected-element ComplexGeoData. Boundary lines/bounds and
+pre-placed rigid queries are tested for every fixture subelement, transform=False
+and nested App::Part paths. Unsupported sampling, mutation, persistence,
+Part/native-property assignment and nonrigid transforms reject. This does not
+qualify general consumers/App::Link/containers, integrated snapping/history or
+the unfinished Stage 2/3 surface/solid/Boolean gates. The full goal stays active.
+Checkpoint: FreeCAD `1f46ce6988`, OCCT unchanged `aa6ced5047`; 25/25 migration
+and 25/25 compatibility entries pass, including unchanged 35 kernel cases.

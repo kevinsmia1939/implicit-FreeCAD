@@ -4,11 +4,39 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `e036a6855a` on
+Implementation heads: FreeCAD `1f46ce6988` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: mapped native references and explicit stale attachments
+## Latest increment: owned native subobject extraction
+
+Typed native getSubObject now returns C++ NativeElementGeometry through the
+standard ComplexGeoData Python interface. GUI SelectionEx.SubObjects exposes
+native selected caps/seams, not None or Part shapes. Each result owns its
+segment and authoritative snapshot, exposes Element1 with the original mapped
+identity, boundary lines and bounds, and remains usable after document close.
+Native face bounds use all transformed finite-domain corners, not trim extrema.
+
+Queries are pre-placed exactly once using the accumulated incoming matrix and
+optional owner Placement; the result's geometry transform is identity. Tests
+compare every native fixture subelement against independent rotated/translated
+expectations, transform=False, nested App::Part paths and incoming composition.
+Unsupported nonrigid/nonfinite/projective matrices, surface/point sampling,
+geometry mutation, independent persistence and Part/native-property assignments
+reject. The C++ first-boundary-vertex hook follows the same placement; integrated
+snapping and general App::Link/container/workbench qualification remain open.
+All unfinished Stage 2/3/4 requirements remain in scope; no solid or manufacturing
+accuracy claim follows. No OCCT source, system libraries or dependencies changed.
+
+Both incremental builds succeed. Full migration passes **25/25** (51.79 seconds).
+The final direct element test also verifies conservative domain bounds and
+incoming matrix composition. Logs: `/tmp/implicit-element-build-final.log`,
+`/tmp/implicit-element-legacy-build.log`, `/tmp/implicit-element-migration.log`,
+`/tmp/implicit-element-cli-final.log`, `/tmp/implicit-element-compatibility.log`.
+Preserved compatibility passes **25/25** (27.54 seconds), including unchanged
+**35** isolated kernel cases.
+
+## Previous increment: mapped native references and explicit stale attachments
 
 Native geometry now reconstructs standard FreeCAD element maps from a SHA-256
 digest of the stored mesh-free topology record plus native index/type. Typed
