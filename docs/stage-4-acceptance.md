@@ -135,3 +135,13 @@ instance modes remain unqualified. No completion claim follows for Stage 2/3
 or remaining Stage 4 history/snapping/editing/workbench gates.
 Checkpoint: FreeCAD `6f93521083`, OCCT unchanged `aa6ced5047`; 26/26 migration
 and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
+
+Next increment: classifyNative now queries the mathematical region through whole
+local/pre-placed ComplexGeoData. Separation/witness bounds account for rigid
+placement precision and near-rigid stretch; exhausted precision remains unresolved.
+Tests cover both operations, independent cap distances, cap/root witnesses,
+stationary cases, container/link snapshots, restore/lifetime and invalid selected
+elements. GUI instance queries are tested. This is not solid validation, native
+surface meshing, placed-input Booleans or completion of remaining Stage 2/3/4 gates.
+Checkpoint: FreeCAD `e88c92efaa`, OCCT unchanged `aa6ced5047`; 27/27 migration
+and 25/25 compatibility entries pass, including unchanged 35 kernel cases.

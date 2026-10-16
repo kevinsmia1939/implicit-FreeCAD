@@ -602,6 +602,37 @@ Both incremental builds succeed. Full migration passes **26/26** (52.25 seconds)
 and compatibility **25/25** (37.32 seconds), including unchanged **35** kernel
 cases. Logs and initial test-fixture corrections are recorded in PROGRESS.md.
 
+## Milestone 33: representation-aware placed native region queries
+
+Source heads: FreeCAD `e88c92efaa`, OCCT unchanged at `aa6ced5047`.
+
+`Implicit.classifyNative(wholeGeometry, point, tolerance=.1)` now dispatches to
+the existing native mathematical-region classifier through local/pre-placed
+ComplexGeoData, including supported container/link paths. Selected Element1
+geometry rejects as a non-region. `solid_validated` stays False.
+
+Placed queries include inverse/forward residual and coordinate/domain floating-
+point reserves, conservative near-rigid stretch bounds, lower-bound shrinking
+and transformed witness upper bounds. Local tolerance reserves 1024 placement
+errors for the /256 bracket policy; 2048 errors exhausting the requested budget
+return unresolved with placement_resolved=False. This is ordinary floating-point
+engineering/reserve arithmetic, NOT directed intervals or solid/model validation.
+
+Tests cover both Boolean regions, independent cap-distance/witness checks,
+gyroid root brackets/signs/domain, stationary unresolved points, snapshots,
+container/link poses, FCStd restore, lifetime, invalid/selected representations
+and extreme-coordinate precision refusal. GUI checks a placed whole-instance
+query. A first root test exposed the need to reserve endpoint-transform error
+inside the local bracket budget; the implementation now does so explicitly.
+Static snapshots are used for nested classification because grouping live mixed
+recipes may move inputs outside the kernel's identity-placement contract.
+General placed/curved operands, conforming surfaces/solids and remaining Stage 4
+history/snapping/editors/consumers remain required. No OCCT source, packages or
+system libraries changed. Details: native-geometry-property.md.
+Both incremental builds succeed; full migration passes **27/27** (55.33 seconds)
+and compatibility **25/25** (28.21 seconds), including unchanged **35** kernel
+cases. Additional direct analytic/witness tests pass; logs are in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:

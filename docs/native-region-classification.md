@@ -4,6 +4,14 @@ This advances the active through-Stage-4 goal's field-aware classification gate.
 It does **not** finish Stage 3 native-solid validation or conforming meshing,
 nor Stage 2 curved operands or Stage 4 FreeCAD property/persistence/selection.
 
+The newer [native geometry consumer](native-geometry-property.md) adds
+`Implicit.classifyNative` for whole local/pre-placed ComplexGeoData snapshots.
+It preserves the mathematical-region contract while shrinking separation bounds,
+expanding witness bounds and reserving placement precision. Selected boundary
+elements reject; large-coordinate precision failures remain unresolved. The
+local handle API below is unchanged. Native property/persistence and partial
+cap/seam selection now exist, but the full Stage 2/3/4 gates are not complete.
+
 `BRepClass3d_ImplicitBox::Classify` queries the authoritative mathematical region
 of an unchanged native gyroid/box boundary. It does not classify the display
 mesh, approximate cap polygons, or a purported ordinary Part solid. Common

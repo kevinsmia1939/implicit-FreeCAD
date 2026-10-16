@@ -257,6 +257,51 @@ completed Stage 4 integration. Source fields and supported Boolean input gates
 remain unchanged; placing an output instance does not enable arbitrary placed
 field/curved-operand Booleans.
 
+## Region classification in extracted geometry coordinates
+
+`Implicit.classifyNative(whole_geometry, point, distanceTolerance=.1)` queries
+the authoritative mathematical mixed region of local NativeGeometry or an owned
+NativePlacedGeometry snapshot. Input/output coordinates are those of the geometry:
+local for `Implicit.nativeGeometry(obj)`, pre-placed for `obj.getSubObject("")`
+or a supported container/link path. No viewport mesh or Part solid is involved.
+Selected Element1 wrappers reject: a cap/seam/face alone is not a volume region.
+
+```python
+import Implicit
+geometry = instance.getSubObject("")
+query = Implicit.classifyNative(geometry, (x, y, z), .1)
+```
+
+Inside/outside require a physical distance lower bound greater than the caller's
+tolerance. Near-boundary requires a transformed boundary witness whose distance
+upper bound is within tolerance and whose root bracket is at most tolerance/256.
+Other cases remain unresolved. `solid_validated` is always False; this API does
+not validate boundary topology, component coverage, solidness or manufacturability.
+The original ImplicitOCCT.classify_mixed handle API remains local and unchanged.
+
+Placed queries invert the pose, measure the forward residual and reserve
+`128*epsilon` times a coordinate/domain magnitude budget for inverse and witness
+mapping. A reserved Gershgorin bound on M^T M supplies minimum/maximum stretch
+instead of assuming even a numerically near-rigid matrix is exactly orthogonal.
+Lower bounds shrink; witness distance/width bounds expand. Local tolerance
+reserves 1024 placement errors so transformed root brackets still meet /256.
+If 2048 errors consume the requested tolerance, classification returns unresolved
+with `placement_resolved=False`. Otherwise placement_resolved can be True while
+the kernel/physical-margin result remains unresolved. The reported
+`placement_error_bound` is a floating-point engineering reserve, not directed
+interval arithmetic or a world-space accuracy certificate. Invalid inputs and
+the kernel's unsupported local precision ranges still raise explicit errors.
+
+The regression covers both operations, independent known cap-distance bounds,
+transformed cap/root witnesses, root signs/domain checks, stationary unresolved
+cases, snapshot/container/link paths, FCStd restore, lifetime, wrong/selected
+representations and large-coordinate precision refusal. The mixed GUI checks a
+placed whole-instance region query too. Only the supported native mixed boundary
+representation is covered. Placing/grouping live recipe operands can still
+violate the kernel's identity-placement gate; static owned snapshots are used
+for the multi-level classification test. General placed-operand Booleans remain
+required, not implicitly enabled by this consumer API.
+
 Run the documented incremental Implicit/ImplicitScripts builds and the separate
 OCCT-8 migration harness. Stage 2 curved operands, Stage 3 conforming meshing/
 solid validation and Stage 4 selection/editors/consumer/placement coverage remain

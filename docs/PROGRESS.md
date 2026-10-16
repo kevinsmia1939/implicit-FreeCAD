@@ -4,11 +4,38 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `6f93521083` on
+Implementation heads: FreeCAD `e88c92efaa` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: whole native geometry and rigid App::Link extraction
+## Latest increment: placed native mathematical-region queries
+
+`Implicit.classifyNative` accepts whole local/pre-placed native ComplexGeoData,
+not Part shapes or selected boundary elements. It reuses the native classifier
+with placement-aware separation/witness bounds, inverse/forward error reserves
+and near-rigid stretch bounds. Exhausted placement precision returns unresolved;
+solid_validated is always False. Container/link snapshot and GUI instance paths
+now have mathematical-region queries independent of preview meshes.
+
+The local budget reserves endpoint-transform errors for /256 witness brackets;
+the first placed gyroid-root check exposed the need for that reserve and now
+passes. Tests independently bound known cap distances and check transformed
+witness locations, root signs/domain, stationary unresolved cases, both operations,
+restore, retained snapshots, invalid/selected representations and extreme
+coordinates. Nested tests use static snapshots: grouping live mixed recipes can
+move their inputs outside the unchanged identity-placement kernel contract.
+This does not implement general placed-input Booleans, conforming surfaces,
+validated solids or the remaining Stage 4 integration gates.
+
+Both incremental builds succeed. Full OCCT-8 migration passes **27/27**
+(55.33 seconds), preserved compatibility **25/25** (28.21 seconds), including
+unchanged **35** kernel cases. Additional direct CLI analytic/witness checks pass.
+Logs: `/tmp/implicit-placed-query-build-final.log`,
+`/tmp/implicit-placed-query-legacy-build.log`, `/tmp/implicit-placed-query-cli-final.log`,
+`/tmp/implicit-placed-query-migration.log`, `/tmp/implicit-placed-query-compatibility.log`.
+No OCCT source, new dependencies or system libraries changed.
+
+## Previous increment: whole native geometry and rigid App::Link extraction
 
 Empty typed-owner getSubObject references now return independently owned
 NativePlacedGeometry/ComplexGeoData, retaining NativeFace/Cap/Seam counts/maps,
