@@ -78,3 +78,16 @@ selection/editing/consumers and all other unfinished Stage 2/3 gates remain.
 Verified heads: OCCT `aa6ced5047`, FreeCAD `eacfd7c7e6`; 35 kernel cases,
 22 migration entries and 25 compatibility entries pass. This is not evidence
 that the overall through-Stage-4 goal has been completed.
+
+Next increment: a C++ ComplexGeoData property and typed native GeoFeaturePython
+owner now persist mixed-boundary topology in FCStd, with immutable transactions,
+restore without numerical rebuilding, input-consistency checks and explicit
+corruption handling. Schema-1 recipes migrate in place with legacy limitations.
+This implements a supported mixed-representation property path, not migration of
+every field/sphere feature or completed semantic selection/consumer/placement
+integration. All unfinished Stage 2/3/4 requirements above remain in scope.
+FreeCAD checkpoint `d2fec1801c`; OCCT remains `aa6ced5047`. Property/object
+content transfer, inline XML restore and static cross-document copy are tested;
+interactive clipboard and broader container/placement consumers remain open.
+Full suites pass 23/23 migration and 25/25 compatibility entries, including the
+unchanged 35 kernel cases. These do not establish Stage 2/3/4 completion.

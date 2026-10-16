@@ -448,6 +448,52 @@ All **35/35** isolated kernel cases pass (CTest 3.17 seconds), **22/22** full
 migration tests pass (46.09 seconds), **25/25** compatibility tests pass
 (28.08 seconds). Log paths are in PROGRESS.md.
 
+## Milestone 28: native complex-geometry property and FCStd topology
+
+Source heads: FreeCAD `d2fec1801c`, OCCT unchanged at `aa6ced5047`.
+
+The OCCT-8 build now registers C++ `Implicit::NativeGeometry` (ComplexGeoData),
+`Implicit::PropertyNativeGeometry` (PropertyComplexGeoData), and a typed
+`Implicit::NativeFeaturePython` owner. Geometry is owned in C++, not a proxy-only
+capsule/string recipe or Part Shape. Property Copy/Paste support transactions;
+FCStd schema-1 `.nativegeo` payloads preserve native math/shared topology.
+New owners expose the standard GeoFeature geometry-discovery hook. Generic
+surface/point sampling, subelement retrieval and nonidentity geometry transforms
+reject explicitly; conservative bounds and stored topology lines are supported.
+
+Mixed schema 2 keeps live inputs and a geometric fingerprint. Unchanged restores
+refresh caps/seams from the property without numerical rebuilding; input edits
+publish a new immutable snapshot. Stored math/bounds/operation/tolerance must
+agree with unchanged inputs. Corrupt data does not silently trigger recipe
+fallback; explicit Proxy.rebuild(obj) repairs from valid linked inputs. Source
+errors that skip Python execution clear native-owner geometry via a C++ document
+recompute hook. Accuracy provenance remains explicit: restored bounds are not
+re-certified. `SeamBoundVerified` is visible as a read-only diagnostic.
+
+Schema-1 owners migrate in place, gain the property and rebuild once, preserving
+names/links; their original App::FeaturePython type retains legacy limitations
+for core geometry discovery/dependency hooks. This property is currently for
+native mixed gyroid/box results, not every implicit field/sphere/prototype.
+Force-XML serialization is tested through XML-only Content and inline restore.
+Property/object dump/restore and static cross-document object copy also retain
+native topology. Interactive GUI clipboard workflows remain unqualified.
+
+New `native_property_smoke.py` covers owner/property types and discovery, undo/
+redo, invalid assignment atomicity, FCStd topology with rebuilding forbidden,
+source edits, skipped-upstream-error invalidation, legacy migration, corrupt
+payloads and readable but inconsistent stored math. The GUI mixed test checks
+display restoration before recompute, with rebuilding forbidden. Expected
+negative-test file/source errors are intentional. See `native-geometry-property.md`.
+No OCCT source or system dependencies changed in this increment.
+
+Full regression: **23/23** OCCT-8 migration entries (46.55 seconds), **25/25**
+compatibility entries (27.66 seconds), including the unchanged **35** kernel
+cases. Additional transfer checks pass in the fork's OCCT-8 FreeCADCmd.
+
+The full through-Stage-4 goal remains active: curved operands, conforming surface
+meshes, solid validation, semantic selection/snapping/history, richer editing,
+legacy/container/placement and cross-workbench consumer qualification remain open.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -568,8 +614,9 @@ for the current combined run.
 - The native GUI provider and workbench cover basic display, live linked
   commands, a selected-field viewport probe and sampled quality inspection.
   Integrated semantic selection/snapping and whole-workflow async scheduling remain open.
-- The graph lives in `App::PropertyString`; there is no dedicated complex geometry
-  property, shared-node JSON DAG format, graph editor or SIMD/GPU backend. Scalar batch
+- The field graph lives in `App::PropertyString`; the dedicated complex geometry
+  property currently covers mixed gyroid/box boundaries only. A shared-node JSON
+  DAG format, graph editor and SIMD/GPU backend remain open. Scalar batch
   evaluation and compiled-graph caching are now implemented.
 - The native extractor has uniform and conservative octree-pruned sampling paths.
   Refining edge roots improves vertex residuals, not triangle-interior error or
@@ -605,7 +652,7 @@ for the current combined run.
 The user requested proceeding through the last stage. Do not mistake the latest
 local open-patch prototype for completion: shared chart boundaries/p-curves,
 validated atlas/solid construction and native OCCT implicit topology are still
-open, as are native property/DAG, integrated selection and variable-resolution
+open, as are broader property/DAG integration, semantic selection and variable-resolution
 cells. The user has now selected **0.1 mm geometric tolerance** and directed
 OCCT-native face development; minimum feature size remains unspecified. The
 native storage/query foundation is implemented, but no whole-model production

@@ -3,13 +3,13 @@
 Explicit schema-1 `BRepClass3d_ImplicitBoxIO` preserves the authoritative gyroid
 and the **shared cap/seam/wire topology** of supported mixed boundaries. This
 advances the active [through-Stage-4 goal](stage-4-acceptance.md); it does not
-complete the dedicated FreeCAD geometry property, FCStd topology integration,
-conforming meshing, solid validation or general curved B-Rep support.
+complete conforming meshing, solid validation or general curved B-Rep support.
 
 This is not a recipe rebuild, mesh conversion, fake UV surface or generic
-BRepTools/STEP/OCAF support for implicit faces. The existing FCStd feature still
-saves its recipe and rebuilds on recompute. Explicit native topology records
-are a separate API, ready for later geometry-property integration.
+BRepTools/STEP/OCAF support for implicit faces. The newer
+[native FreeCAD geometry property](native-geometry-property.md) uses this codec
+for supported mixed topology in FCStd. Unchanged inputs restore without
+numerical rebuilding; field graphs and sphere prototypes remain separate paths.
 
 ## Representation and limits
 

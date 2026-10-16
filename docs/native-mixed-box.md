@@ -114,9 +114,11 @@ the original field and bounded surface domain, not the mixed region.
 separately through `native.classify_mixed(boundary_handle, point, .1)` or
 `result.Proxy.classify(point, .1)`. It does not establish whole-solid validity.
 
-Snapshots survive operand edits and document close. FCStd stores links/settings,
-not capsules, implicit B-Reps or generated meshes; after opening, recompute to
-rebuild caches. A separate [explicit shared-topology codec](native-topology-io.md)
+Snapshots survive operand edits and document close. New mixed owners use a
+[native geometry property](native-geometry-property.md): FCStd stores links,
+settings and native shared topology, not capsules or generated meshes. Unchanged
+inputs restore without numerical rebuilding. Legacy recipe owners migrate in
+place with documented limitations. The [explicit shared-topology codec](native-topology-io.md)
 now supports `native.dumps_mixed`/`loads_mixed` without recipe rebuilding;
 restored seam bounds are marked unverified. Generic BRepTools/BinTools/STEP
 serialization and primitive-only `native.dumps` of trimmed faces still reject.
@@ -150,7 +152,7 @@ The new kernel tests cover both operations, shared opposite seam uses, planar
 p-curves/cap validity, bounded native queries, operand immutability, trim-I/O
 rejection and invalid/unresolved operands. FreeCAD CLI/GUI tests cover links,
 parameter/box edits, snapshot lifetime, operation switching, retained Coin
-buffers, FCStd rebuild and failure clearing.
+buffers, FCStd topology restoration without rebuilding and failure clearing.
 
 Historical closed-loop baseline: 27/27 kernel cases, 22/22 OCCT-8 migration CTest entries (47.96 s),
 25/25 preserved OCCT-7/root CTest entries (26.32 s). Core commits: OCCT
@@ -165,6 +167,7 @@ Current open-contour checkpoint: OCCT `ef20e3f9d7`, FreeCAD `1daddc4c3a`;
 Next: nested/degenerate topology stress tests, trim-conforming gyroid meshing,
 implicit-aware solid validation/classification and full topology/history
 persistence, plus curved B-Rep operands and general BOP dispatch. The active
-[through-Stage-4 goal](stage-4-acceptance.md) includes the later dedicated FreeCAD
-property, persistence, selection/snapping, editing and cross-workbench gates.
+[through-Stage-4 goal](stage-4-acceptance.md) includes broader property/persistence
+coverage, selection/snapping, editing and cross-workbench gates. The supported
+mixed property path is implemented, not all those integration requirements.
 This increment does not complete Stage 2, 3 or 4 merely by enabling box crossings.

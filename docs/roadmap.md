@@ -32,7 +32,8 @@
 | Mixed field Boolean | Implemented | Sign composition and numerical extraction; no B-Rep result |
 | Native gyroid/Part-box boundary | Common/BoxMinusField with regular box-edge crossings and multiple regions | Shared roots, closed implicit trim wires and planar caps; caps/seams preview only, no validated solid |
 | Native mixed-region classification | Conservative physical-distance separation and cap/root witnesses | Inside/outside/near-boundary/unresolved; independent of preview meshes, not whole-solid validation |
-| Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified, FCStd property integration pending |
+| Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified |
+| Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
 | OCCT-native field-backed face storage/queries | Experimental, isolated OCCT 8.1 tests | No UV surface; explicit unsupported-operation guards; no OCCT 8 handles inside the OCCT 7.9 GUI |
 | OCCT-native single-face persistence | Experimental schema 1, isolated OCCT 8.1 tests | Sphere/gyroid, domain, tolerance, placements/orientation; no child topology, mesh, generic B-Rep/OCAF or FCStd support |
 | Native sphere-plane trimming | Restricted analytic prototype, tested | Plane predicate + exact circle wire; open patch, no general field trimming |
@@ -64,6 +65,9 @@ seams, planar caps and live Common/BoxMinusField recipes. Regular box-edge
 crossings and multiple cap regions now work; conforming meshing and validated
 solids remain open. The [active Stage 4 goal](stage-4-acceptance.md) preserves the
 full integration acceptance scope.
+The [native mixed geometry property](native-geometry-property.md) now owns and
+persists supported mixed topology in FCStd without numerical rebuilding of
+unchanged inputs. This is not complete selection, placement or consumer support.
 These are not completed by attaching a field to a face. See the
 [accuracy policy](accuracy-policy.md); field residuals are not millimetre errors.
 

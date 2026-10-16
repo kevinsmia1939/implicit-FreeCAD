@@ -4,11 +4,38 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `eacfd7c7e6` on
+Implementation heads: FreeCAD `d2fec1801c` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: explicit native shared-topology persistence
+## Latest increment: native geometry property and FCStd topology
+
+The OCCT-8 FreeCAD module now provides a native ComplexGeoData property and typed
+GeoFeaturePython owner for mixed boundaries. C++ geometry ownership, discovery,
+transactions and versioned FCStd `.nativegeo` persistence replace proxy-only
+storage for new mixed features. Unchanged restoration does not numerically
+rebuild; edits revalidate live inputs and publish new snapshots. Unsupported
+surface consumers/transforms reject rather than returning partial geometry.
+
+Mixed schema-2 fingerprints ignore source cache flags, verify stored primitive
+consistency and preserve field authority. Corrupt payloads require explicit
+repair. A C++ native-owner hook clears outputs skipped after upstream errors.
+Schema-1 recipes migrate in place but retain legacy owner limitations. New CLI
+and strengthened GUI tests cover persistence without rebuilding, source changes,
+undo/redo, atomic rejection, corruption, mismatch, invalidation and migration.
+The rest of Stage 2/3/4 remains unfinished; see [property contracts](native-geometry-property.md).
+
+Verified full runs: **23/23** OCCT-8 migration entries (46.55 seconds), **25/25**
+compatibility entries (27.66 seconds), including unchanged **35/35** kernel cases.
+Logs: `/tmp/implicit-property-build.log`, `/tmp/implicit-property-legacy-build.log`,
+`/tmp/implicit-property-full-migration.log`, `/tmp/implicit-property-full-legacy.log`.
+Additional property/object content-transfer, XML-only inline restore, null
+geometry and static cross-document copy checks pass in the OCCT-8 fork Cmd
+(`/tmp/implicit-property-transfer.log`). Interactive GUI clipboard remains open.
+Full migration rerun including those transfer checks also passes **23/23**
+(46.08 seconds; `/tmp/implicit-property-transfer-migration.log`).
+
+## Previous increment: explicit native shared-topology persistence
 
 Schema-1 `BRepClass3d_ImplicitBoxIO` persists native gyroid math and the shared
 cap/edge/wire graph, not a recipe, mesh substitute or fake UV face. Native faces
@@ -23,8 +50,9 @@ owned topology and independent cap copies with native region queries. Two new
 kernel cases cover both operations, open/closed topology, repeated I/O, shared
 seams/p-curves, failure atomicity, lock rejection and cache omission. CLI/GUI
 tests cover the public API, accuracy downgrade and lifetime after document close.
-FCStd still uses recipes: dedicated geometry-property/topology integration and
-the remaining Stage 2/3/4 gates are not completed by this codec.
+At that checkpoint FCStd still used recipes; the latest increment above adds
+the dedicated mixed geometry-property path. The remaining Stage 2/3/4 gates
+are not completed by this codec.
 See [native-topology-io.md](native-topology-io.md).
 
 Verified: **35/35** kernel cases (CTest 3.17 seconds), **22/22** migration tests

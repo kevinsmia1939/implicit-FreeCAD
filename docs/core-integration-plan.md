@@ -96,7 +96,7 @@ uploads. It does not move document recompute, B-Rep validation or Coin uploads o
 the GUI thread. Global memory budgets and broader scheduling remain future work.
 
 This is the document-model and kernel seam, not completion of Stage F1. A
-dedicated complex-geometry property, shared-node/DAG representation, richer
+broader complex-geometry property migration, shared-node/DAG representation, richer
 field nodes, field-aware selection and variable-resolution surface extraction
 remain to be implemented. The uniform-grid native extractor remains the
 reference backend alongside octree-pruned sampling. Native geometry revisions
@@ -174,8 +174,10 @@ boundary witnesses. It is separate from ordinary Part classification and does
 not validate or promote the native boundary compound to a solid.
 An [explicit native mixed-topology codec](native-topology-io.md) now preserves
 the supported primitive plus shared cap/edge/wire graph without retracing.
-Stored approximation bounds are not re-certified. This is not the dedicated
-FreeCAD geometry property, FCStd topology integration, OCAF or STEP support.
+Stored approximation bounds are not re-certified. A newer
+[native geometry property](native-geometry-property.md) now integrates that
+supported mixed representation with FCStd, ownership and transactions. Broader
+field-graph migration, semantic selection/consumers, OCAF and STEP remain open.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 
