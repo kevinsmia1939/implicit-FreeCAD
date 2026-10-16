@@ -184,6 +184,9 @@ an [exact mesh contact audit](native-mesh-contact-audit.md) and
 use floating reserves, not directed intervals or preserved-topology proofs.
 Regularity/trim correspondence and native-solid construction/validation remain
 required; none of these numerical mesh checks promotes a compound to a solid.
+A [mesh-independent box-stratified regularity check](native-box-regularity.md)
+now checks volume/face/edge/corner transversality. Stored trim correspondence,
+topology/reach and native-solid validation remain separate required gates.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

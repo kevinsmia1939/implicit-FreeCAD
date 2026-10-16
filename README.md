@@ -10,6 +10,8 @@ FreeCAD recipes. An opt-in [trim-conforming surface candidate](docs/native-confo
 now joins the implicit mesh to shared cap/seam nodes, with a separate
 [exact mesh contact audit](docs/native-mesh-contact-audit.md) and
 [whole-domain clipped proximity checks](docs/native-clipped-coverage.md).
+Mesh-independent [field-box regularity checks](docs/native-box-regularity.md)
+now cover volume/face/edge/corner strata.
 Topology equivalence, general curved operands and validated native solids remain open.
 
 This repository is the development umbrella: the actual FreeCAD fork is pinned

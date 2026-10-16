@@ -108,6 +108,10 @@ stratified trim correspondence, native-shell/solid construction and implicit-awa
 topology/solid validation remain required. Broader curved operands and unfinished
 FreeCAD history/snapping/consumer gates remain in the active Stage 4 goal.
 
+A newer [box-stratified regularity check](native-box-regularity.md) now bounds
+projected gradients over possible-zero volume/face/edge cells and excludes corner
+zeros. It remains separate from stored trim correspondence and topology validity.
+
 Final checkpoint evidence: 45 kernel cases (37.18 seconds), 32/32 OCCT-8
 migration tests (182.37 seconds) and 25/25 compatibility tests (69.67 seconds).
 These are regression timings under concurrent test load, not performance claims.

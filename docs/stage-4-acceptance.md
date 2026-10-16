@@ -208,3 +208,14 @@ Regularity/trim correspondence, topology/reach criteria, native-solid constructi
 curved operands and unfinished Stage 4 integration remain required. The full
 goal stays active; see native-clipped-coverage.md.
 Checkpoint heads: FreeCAD `d267f58f7a`, OCCT `18ed5c0a52`.
+
+Next increment: mesh-independent stratified regularity now covers the complete
+box volume/faces/edges/corners with projected-gradient bounds and zero exclusion.
+Analytic volume, face, edge and corner negative cases, scaled/translated inputs,
+both operations and stored/native snapshot paths extend the kernel suite to 48.
+The explicit FreeCAD API preserves source state and rejects unsupported poses/
+representations. This is numerical field regularity only, NOT stored trim-wire
+correspondence, topology equivalence, reach or native-solid validity. These and
+all unfinished Stage 2/4 gates remain required; see native-box-regularity.md.
+Verification: 48 kernel cases, 33/33 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `094407d71f`, OCCT `fd9a53d063`.

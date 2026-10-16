@@ -4,11 +4,45 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `d267f58f7a` on
-`feature/native-implicit`, OCCT `18ed5c0a52` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `094407d71f` on
+`feature/native-implicit`, OCCT `fd9a53d063` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: whole-domain clipped-boundary proximity
+## Latest increment: mesh-independent box-stratified field regularity
+
+TKTopAlgo now adaptively checks projected gradients over the whole native
+gyroid box volume, all faces and edges, and excludes corner zeros. Scalar
+Lipschitz/Taylor empty-cell bounds and Hessian gradient-variation bounds use
+engineering reserves, not directed intervals. A full gradient alone cannot
+resolve face/edge tangencies; each stratum has its own completion/bounds.
+No mesh/tracing caches or stored verification flags are consulted or changed.
+
+`ImplicitOCCT.check_mixed_regularity` and `check_box_regularity` expose this in
+the OCCT-8 build. The latter checks a native face's BOX domain, not stored trim
+wires. Derivatives are field/model-length, not mm errors; partial bounds are
+global only for completed strata. Depth/work limits remain unresolved. Reports
+explicitly keep trim correspondence, topology and solid validity False.
+
+Three new cases bring the kernel suite to **48 GTests**, including independent
+analytic volume/face/edge/corner critical cases, both operations/open and closed
+contours, source immutability/restore, physical scaling and periodic translation.
+The negative face/edge cases have higher-dimensional regularity, so they test
+projection dispatch rather than merely a zero full gradient. CLI tests add
+raw/mixed equivalence, lifetime/restore and representation/placement guards.
+See [regularity contracts](native-box-regularity.md). Stored trim correspondence,
+topology/reach and native-solid validation remain required; the Stage 4 goal stays
+active. No dependencies/system libraries changed.
+
+Build/logs: `/tmp/implicit-regularity-build.log`,
+`/tmp/implicit-regularity-test-build.log`, `/tmp/implicit-regularity-tests.log`,
+`/tmp/implicit-regularity-binding-build.log`, `/tmp/implicit-regularity-binding-tests.log`,
+`/tmp/implicit-regularity-migration-full.log`, `/tmp/implicit-regularity-compatibility-full.log`.
+Isolated kernel CTest passes **1/1**, **48 cases** (36.31 seconds); targeted
+runtime/regularity CTest **2/2** (3.18 seconds). Full migration passes **33/33**
+(171.99 seconds), compatibility **25/25** (67.86 seconds). TKTopAlgo/TKMesh,
+isolated tests, the native binding and both script targets build successfully.
+
+## Previous increment: whole-domain clipped-boundary proximity
 
 Native CheckCoverage partitions the entire box/retained faces using field
 exclusion or explicit mesh-point distance plus radius. Reverse patches use

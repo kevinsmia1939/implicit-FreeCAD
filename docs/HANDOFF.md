@@ -810,6 +810,40 @@ conditions and native-shell/solid construction/validation. Two point sets within
 .1 mm need not share topology. Curved operands and unfinished Stage 4 integration
 remain required; the overall goal stays active.
 
+## Milestone 39: mesh-independent box-stratified field regularity
+
+Source heads: FreeCAD `094407d71f`, OCCT `fd9a53d063`.
+
+TKTopAlgo now provides `BRepClass3d_ImplicitBox::CheckRegularity` for an
+identity-placed native gyroid's whole box domain. Adaptive cells must exclude
+F=0 or bound the projected gradient away from zero. Volume, six faces, twelve
+edges and eight corners are checked independently; corner intervals must exclude
+zero. Derivative bounds are in field/model-length units, not distance errors.
+No TKMesh dependency, tracing, geometry mutation or mesh metadata is involved.
+
+OCCT-8 FreeCAD exposes `check_mixed_regularity(boundary_handle)` and
+`check_box_regularity(native_face_handle)`, with per-dimension completion,
+quantitative bounds/work and unresolved-cell diagnostics. Limits stay unresolved.
+Trim correspondence, topology and solid validation flags remain False. The raw
+face adapter checks the BOX DOMAIN and intentionally ignores stored trim wires.
+See native-box-regularity.md for formulas, units, precision and API limits.
+
+Three new cases bring the kernel suite to 48. Analytic critical examples
+separately fail volume, face, edge and corner strata, even where higher-dimensional
+gradients remain regular. Both Boolean directions/open and closed contours,
+restore/immutability, model-length scaling and periodic translations pass.
+Native CLI adds handle/placement guards, raw/mixed adapter equality, restore,
+limits and lifetime. Final regression: isolated kernel **48 cases**, CTest **1/1**
+(36.31 seconds), migration **33/33** (171.99 seconds), compatibility **25/25**
+(67.86 seconds). Build/test logs are in PROGRESS.md.
+No packages/system libraries changed; existing targets/dependencies are reused.
+
+Next: establish a bijection between stored trim-wire graphs and certified face
+contours/canonical box-edge root neighborhoods; reject ambiguous pairing rather
+than infer correspondence from proximity. Topology/reach conditions and native
+shell/solid construction/validation remain required. Curved operands and all
+unfinished Stage 4 integration gates remain active; this is not solid validity.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -899,7 +933,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 45 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 48 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

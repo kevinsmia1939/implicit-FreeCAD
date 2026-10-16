@@ -33,6 +33,7 @@
 | Native gyroid/Part-box boundary | Common/BoxMinusField with regular box-edge crossings and multiple regions | Shared roots/wires/caps; opt-in trim-conforming mesh candidate, not a validated solid |
 | Native mixed mesh contacts | Explicit exact binary64 triangle-contact audit | Includes adjacent pairs; limits unresolved; mesh-only evidence, not field/solid validation |
 | Native clipped-boundary proximity | Whole box/faces and reverse clipped witnesses at .1 mm | Two-sided numerical bounds with reserves; not preserved topology, directed intervals or native-solid validity |
+| Native field-box regularity | Whole volume/face/edge/corner strata, mesh-independent | Projected-gradient lower bounds and corner exclusions; not stored trim correspondence, reach or solid validity |
 | Native mixed-region classification | Conservative physical-distance separation and cap/root witnesses | Inside/outside/near-boundary/unresolved; independent of preview meshes, not whole-solid validation |
 | Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified |
 | Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
@@ -76,6 +77,9 @@ crossings and multiple cap regions now work. A [conforming candidate](native-con
 correspondence, topology/reach criteria and native-solid construction/validation
 remain open. The [active Stage 4 goal](stage-4-acceptance.md) preserves the
 full integration acceptance scope.
+A [box-stratified regularity check](native-box-regularity.md) now supplies
+mesh-independent gradient/transversality evidence, without validating stored
+trim correspondence or closing the native-solid/topology gates.
 The [native mixed geometry property](native-geometry-property.md) now owns and
 persists supported mixed topology in FCStd without numerical rebuilding of
 unchanged inputs. This is not complete selection, placement or consumer support.
