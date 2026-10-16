@@ -116,6 +116,8 @@ snapshot lifetime, explicit codec restore and unchanged seam provenance. The
 larger edge-crossing fixture has Euler characteristic -1 and three boundary
 loops at resolutions 32 and 64. No native CAD solid is produced.
 
+The newer [closed region reference](native-region-topology.md) now adds shared
+planar caps, closed boundary components and retained-volume grouping.
 Next connect this entire-surface witness to the **stored native trim/cap graph**
 and its geometric realization, including component grouping/orientation and
 shell construction. The existing graph checker compares to fresh planar traces,

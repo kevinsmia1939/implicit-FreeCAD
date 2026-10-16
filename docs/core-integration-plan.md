@@ -195,6 +195,11 @@ numerical field-to-nodal-linear homotopy conditions, including true box-boundary
 strata and shared reference topology. It does not compare stored trims/caps or
 preview buffers to that reference or construct a native shell/solid. Those
 relations remain necessary; do not promote geometry by merely combining flags.
+The newer [closed region reference](native-region-topology.md) adds shared
+affine-clipped box caps, closed component labels and retained-volume connectivity.
+It distinguishes cavity shells belonging to one material region from separate
+islands. These are transient reference buffers, not native CAD shells or solids;
+stored trim/cap correspondence and actual native construction remain required.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

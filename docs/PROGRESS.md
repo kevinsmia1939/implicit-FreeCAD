@@ -4,11 +4,55 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `9874d2e306` on
-`feature/native-implicit`, OCCT `3f9aa48bcf` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `7351987bdb` on
+`feature/native-implicit`, OCCT `9ee814feb0` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: whole-box numerical field/linear homotopy
+## Latest increment: closed region reference and material connectivity
+
+TKTopAlgo `CheckRegionTopology` adds retained affine-clipped box caps to the
+shared homotopy surface reference. Cap roots reuse originating grid-edge IDs;
+retained grid vertices are shared across faces. No coordinate welding, new
+field projection or authoritative geometry mutation. Closed edge/cyclic-link
+checks produce closed-component labels and Euler characteristics.
+
+Retained volume connectivity is computed from the common tetrahedral 1-skeleton:
+affine retained cells/faces are convex and contain retained grid vertices, so
+these vertex connections represent volume regions. Every boundary triangle and
+closed component must agree on its adjacent region; every region needs a shell.
+Cavity/outer shells attach to one region, while separate islands get distinct
+regions. Translated long-double component/region volumes are reference-only
+diagnostics, never field-volume accuracy or the grouping rule.
+
+OCCT-8 FreeCAD exposes `check_box_region_topology` and
+`check_mixed_region_topology`, with local combined buffers, original surface
+prefixes, side/component/region labels and unchanged source provenance. Calls
+are explicit/synchronous. No native-shell/solid construction, stored trim/cap
+correspondence or .1 mm mesh/volume accuracy is claimed. The full Stage 4 goal,
+curved operands and all unfinished integration/solid gates remain active. See
+[region-reference contracts](native-region-topology.md).
+
+Three kernel cases bring the suite to **60**, with both operations/open and
+closed trim fixtures, opposite shared edges, cap normals, Euler accounting,
+complementary reference volumes, cavity/island/full/empty topology, immutability
+and limits. The cavity reference passes the separate exact binary64 contact
+audit (test-only TKMesh use; no TKTopAlgo dependency cycle). CLI independently
+reconstructs buffer Euler/edge/volume checks, validates source surface prefixes,
+raw/mixed adapters, restore/lifetime/guards and two-cavity material grouping.
+
+Existing build/dependency directories reused, no packages/system changes.
+Logs: `/tmp/implicit-region-topology-build.log`,
+`/tmp/implicit-region-topology-test-build.log`, `/tmp/implicit-region-topology-targeted.log`,
+`/tmp/implicit-region-topology-tests.log`, `/tmp/implicit-region-topology-binding-build.log`,
+`/tmp/implicit-region-topology-binding-tests.log`, `/tmp/implicit-region-topology-migration-all.log`,
+`/tmp/implicit-region-topology-compat-all.log`. Kernel CTest **1/1**, **60 cases**
+(46.44 seconds) and targeted runtime/region CTest **2/2** (12.19 seconds) pass.
+Full OCCT-8 command-line/GUI migration **36/36** (219.92 seconds) and preserved
+compatibility **25/25** (85.85 seconds) pass. TKTopAlgo/TKMesh, isolated tests,
+the native binding and script targets were rebuilt against the current witness
+layout. Both core branches are published; the parent pins the heads above.
+
+## Previous increment: whole-box numerical field/linear homotopy
 
 TKTopAlgo now checks the entire mathematical box zero set against a shared
 Freudenthal nodal-linear reference. Adaptive simplex checks exclude homotopy

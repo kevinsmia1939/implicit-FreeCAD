@@ -245,3 +245,18 @@ validity. Those relations, shell construction and every unfinished Stage 2/4
 gate remain required. See native-box-topology.md; the full goal stays active.
 Verification: 57 kernel cases, 35/35 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `9874d2e306`, OCCT `3f9aa48bcf`.
+
+Next increment: the field/linear homotopy reference now has shared retained box
+caps, closed-component incidences/cyclic vertex links and tetrahedral material
+connectivity. Boundary shells are attached to retained volume regions rather
+than guessed from signed volume: cavity shells share the outer shell's region,
+while disconnected islands have separate regions. Three new kernel cases bring
+the suite to 60, including complementary reference volumes, full/empty regions,
+source immutability, limits and an exact contact audit on a cavity reference.
+Native CLI independently checks buffers/Euler/volumes, both operations/contour
+fixtures, restore/lifetime/guards and two-cavity grouping. These are mathematical
+region reference buffers, NOT native trim/cap correspondence, CAD shells/solids
+or accuracy-qualified field volumes. Native correspondence/construction and all
+unfinished Stage 2/3/4 requirements remain active; see native-region-topology.md.
+Verification: 60 kernel cases, 36/36 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `7351987bdb`, OCCT `9ee814feb0`.

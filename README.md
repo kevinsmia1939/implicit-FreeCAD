@@ -16,6 +16,8 @@ now cover volume/face/edge/corner strata. A separate
 compares shared topology and full seam/p-curve geometry with fresh reference traces.
 A [whole-box topology witness](docs/native-box-topology.md) now checks a numerical
 field-to-nodal-linear homotopy and reports reference components/boundary loops.
+A [closed region reference](docs/native-region-topology.md) adds shared planar
+caps and groups boundary shells by retained material connectivity.
 Stored-native topology equivalence, general curved operands and validated native
 solids remain open.
 

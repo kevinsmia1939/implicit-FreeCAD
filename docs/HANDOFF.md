@@ -910,6 +910,45 @@ Targeted runtime/topology CTest **2/2** (7.88 seconds). TKTopAlgo/TKMesh, the
 isolated test executable, native binding and both script targets built using
 existing dependencies. Build/test logs are recorded in PROGRESS.md.
 
+## Milestone 42: closed region reference and material connectivity
+
+Source heads: FreeCAD `7351987bdb`, OCCT `9ee814feb0`.
+
+TKTopAlgo `CheckRegionTopology` now completes the whole-box homotopy reference
+with retained planar caps on the same exterior Freudenthal triangles. Caps share
+existing affine-root IDs and retained grid vertices; source surface buffers are
+preserved as prefixes. Closed edge incidences/cyclic vertex links, Euler/component
+labels and cap orientation are checked without a TKMesh dependency.
+
+Retained vertex connectivity across the tetrahedral 1-skeleton groups connected
+VOLUME regions. Every boundary triangle/shell must attach consistently and every
+region must have a boundary. This distinguishes outer/cavity shells of one region
+from disconnected islands; signed volumes are diagnostics, not the grouping rule.
+Translated long-double volume sums describe the linear reference ONLY, not F's
+physical volume or .1 mm accuracy. No arbitrary mesh is promoted into CAD faces.
+
+OCCT-8 FreeCAD exposes `check_box_region_topology` and
+`check_mixed_region_topology`. Queries preserve source math/topology/caches and
+seam provenance; native-shell/solid, geometry-accuracy and stored correspondence
+flags stay False. Three new cases bring the kernel suite to 60, including both
+operations/open and closed native trim fixtures, complementary reference volumes,
+cavity versus multiple-island grouping, full/empty/critical/resource cases and
+source immutability. The cavity reference additionally passes the separate exact
+binary64 mesh contact audit. CLI independently checks buffers, Euler/volumes,
+adapter/prefix equality, restore/lifetime and two-cavity/one-region grouping.
+
+See native-region-topology.md for API, connectivity rationale and limits. Next
+establish actual stored native trim/cap attachment to this reference, not just
+equal counts or independent True flags, then construct/validate native shells
+and solids. Curved operands and unfinished Stage 2/3/4 gates remain required;
+the full goal stays active. Existing build/dependency directories are reused;
+no packages/system libraries changed. Rebuild _ImplicitOCCT after the changed
+transient C++ witness layout; this is not a persistence schema change.
+
+Final regression: kernel **60/60** (CTest 46.44 seconds), OCCT-8 migration
+**36/36** (219.92 seconds), compatibility **25/25** (85.85 seconds). Targeted
+runtime/region CTest **2/2** (12.19 seconds). Build/test logs are in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -999,7 +1038,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 57 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 60 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
