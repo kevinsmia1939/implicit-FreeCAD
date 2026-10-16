@@ -949,6 +949,53 @@ Final regression: kernel **60/60** (CTest 46.44 seconds), OCCT-8 migration
 **36/36** (219.92 seconds), compatibility **25/25** (85.85 seconds). Targeted
 runtime/region CTest **2/2** (12.19 seconds). Build/test logs are in PROGRESS.md.
 
+## Milestone 43: stored conventional cap-region attachment
+
+Source heads: FreeCAD `81cf92e7da`, OCCT `2e5bc37269`.
+
+TKTopAlgo `CheckCapAttachment` first requires fresh stored-graph correspondence
+and a resolved closed region reference. Reference cap triangles group by shared
+edges on each physical box side. A bijective mapping then needs actual common
+retained F/L points, conventional source-cap IN classification and clearance to
+all source cap polylines beyond fresh seam/curve/p-curve uncertainty. No nearest-
+cap pairing, coordinate welding, source replacement or trusted stored flags.
+
+OCCT-8 FreeCAD `check_mixed_cap_attachment` returns source-cap-order reference
+cap/shell/material labels, witnesses, clearance bounds and bounded work. Labels
+are transient, not topology history. Calls remain explicit/synchronous and
+preserve source geometry/caches/provenance. Missing witnesses, ambiguity and
+limits stay unresolved. Numerical engineering reserves, not directed intervals
+or a formal isotopy certificate. Trim-wire/native-topology/solid validity and
+native-shell-construction flags remain False.
+
+Two new cases bring the kernel suite to 62, covering both operations/open and
+closed contours, restored provenance, actual point classification/signs,
+multiple material regions, reordered caps, immutability and limits. Changed math
+with forged seam flags must stop at graph validation. CLI adds independent Part
+cap/edge distances, raw snapshot lifetime, restore and settings/handle guards.
+See native-cap-attachment.md for the exact policy and budgets.
+
+Next attach stored trim-wire/contour identities and the native implicit face to
+reference components, including distinct holes on one cap, then construct and
+validate native shells/solids. Cap-region mapping alone is insufficient. Curved
+operands and all unfinished Stage 2/3/4 gates remain active. Reused existing
+targets/dependencies; no packages/system libraries changed. The OCCT manifest
+was explicitly reconfigured for the new translation unit. No persistence schema
+change or authoritative field/mesh substitution.
+
+Suggested next implementation: construct the opposite-operation canonical cap
+graph privately from the SAME field/domain and apply cap attachment to it too.
+Identify a seam arc by its physical side, retained/complement cap-region pair
+and ordered canonical box-edge-root anchors; closed face contours need the
+region pair because one retained cap can contain multiple holes. Compare full
+directed native/reference wire cycles and reject any nonunique pairing. This is
+a proposed next step, not implemented evidence. Do not infer implicit-face
+component attachment or native-solid validity merely from these cap labels.
+
+Final verification: kernel **62/62** (CTest 56.93 seconds), OCCT-8 migration
+**37/37** (219.58 seconds), preserved compatibility **25/25** (98.39 seconds).
+Targeted runtime/cap CTest **2/2** (12.75 seconds). Build/test logs are in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -1038,7 +1085,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 60 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 62 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

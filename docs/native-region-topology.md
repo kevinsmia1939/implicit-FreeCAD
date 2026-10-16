@@ -113,7 +113,9 @@ exercise both operations, larger open contours, restored seam provenance,
 snapshot lifetime and representation/placement guards. A two-cavity example
 requires three boundary components but one retained region.
 
-Next connect the stored native trim/cap realization to this region reference,
+The newer [cap attachment check](native-cap-attachment.md) now maps stored cap
+regions using common retained points beyond fresh seam uncertainty.
+Next connect the complete stored native trim/cap realization to this region reference,
 including contour identities and component attachment, then construct and
 validate native shells/solids. Equal counts or independently successful graph
 and homotopy checks are insufficient to establish that missing correspondence.

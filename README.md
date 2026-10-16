@@ -18,6 +18,8 @@ A [whole-box topology witness](docs/native-box-topology.md) now checks a numeric
 field-to-nodal-linear homotopy and reports reference components/boundary loops.
 A [closed region reference](docs/native-region-topology.md) adds shared planar
 caps and groups boundary shells by retained material connectivity.
+[Stored cap attachment](docs/native-cap-attachment.md) now maps conventional cap
+regions to that reference using common retained points beyond seam uncertainty.
 Stored-native topology equivalence, general curved operands and validated native
 solids remain open.
 

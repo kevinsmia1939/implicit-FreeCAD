@@ -4,11 +4,47 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `7351987bdb` on
-`feature/native-implicit`, OCCT `9ee814feb0` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `81cf92e7da` on
+`feature/native-implicit`, OCCT `2e5bc37269` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: closed region reference and material connectivity
+## Latest increment: stored conventional cap-region attachment
+
+TKTopAlgo `CheckCapAttachment` now maps source cap regions to closed reference
+cap/shell/material labels. Independent stored-graph and homotopy-reference checks
+must resolve first. Actual common F/L retained points classify IN source caps
+and must clear every stored cap polyline beyond the fresh seam, continuous curve,
+p-curve and matching uncertainty. A shared-edge/side reference grouping and
+bijective assignment avoid nearest-cap matching or merely comparing counts.
+Deep-triangle graph ordering is only a search heuristic, never acceptance evidence.
+
+OCCT-8 FreeCAD exposes `check_mixed_cap_attachment`, with source-order transient
+labels, witness points, clearance bounds and work diagnostics. Source math,
+topology/caches and seam provenance stay unchanged. Budgets/ambiguity/missing
+witnesses remain unresolved. Engineering reserves, not directed intervals or
+formal whole-native isotopy. Trim-wire/implicit-face attachment, actual native
+shell/solid construction, curved operands and all unfinished Stage 2/3/4 gates
+remain required. See [cap attachment contracts](native-cap-attachment.md).
+
+Two new cases bring the kernel suite to **62**, covering both Boolean directions,
+open/closed contours, restore provenance/immutability, actual IN/F-sign witnesses,
+multiple regions and cap reordering, limits and inputs. Forged math/bounds stop
+at the graph prerequisite. CLI independently checks Part cap/edge distances,
+restore/record equality, owned lifetime and settings/handle guards.
+
+Reused existing targets/dependencies; explicitly reconfigured the OCCT manifest
+for the new source file. No packages/system changes or persistence schema change.
+Logs: `/tmp/implicit-cap-attachment-config.log`, `/tmp/implicit-cap-attachment-build.log`,
+`/tmp/implicit-cap-attachment-test-build.log`, `/tmp/implicit-cap-attachment-targeted.log`,
+`/tmp/implicit-cap-attachment-tests.log`, `/tmp/implicit-cap-attachment-binding-build.log`,
+`/tmp/implicit-cap-attachment-binding-tests.log`, `/tmp/implicit-cap-attachment-migration-all.log`,
+`/tmp/implicit-cap-attachment-compat-all.log`. Kernel CTest **1/1**, **62 cases**
+(56.93 seconds) and targeted runtime/cap CTest **2/2** (12.75 seconds) pass.
+Full OCCT-8 command-line/GUI migration **37/37** (219.58 seconds) and preserved
+compatibility **25/25** (98.39 seconds) pass. Both core branches are published;
+the parent pins the source heads above.
+
+## Previous increment: closed region reference and material connectivity
 
 TKTopAlgo `CheckRegionTopology` adds retained affine-clipped box caps to the
 shared homotopy surface reference. Cap roots reuse originating grid-edge IDs;

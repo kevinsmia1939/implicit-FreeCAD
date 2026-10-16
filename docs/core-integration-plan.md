@@ -200,6 +200,10 @@ affine-clipped box caps, closed component labels and retained-volume connectivit
 It distinguishes cavity shells belonging to one material region from separate
 islands. These are transient reference buffers, not native CAD shells or solids;
 stored trim/cap correspondence and actual native construction remain required.
+A newer [cap-region attachment check](native-cap-attachment.md) now maps stored
+conventional cap regions to reference cap/shell/material components using strict
+common F/L points outside fresh seam uncertainty. Complete native trim-wire and
+implicit-face attachment, then actual shell/solid construction, remain required.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

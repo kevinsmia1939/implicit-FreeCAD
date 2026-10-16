@@ -260,3 +260,17 @@ or accuracy-qualified field volumes. Native correspondence/construction and all
 unfinished Stage 2/3/4 requirements remain active; see native-region-topology.md.
 Verification: 60 kernel cases, 36/36 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `7351987bdb`, OCCT `9ee814feb0`.
+
+Next increment: stored conventional cap regions now attach bijectively to closed
+reference cap/shell/material components using strict common retained F/L points,
+actual cap classification and clearance beyond fresh seam uncertainty. This
+requires the independent graph and region-reference prerequisites, not equal
+counts or source verification flags. Two new cases bring the kernel suite to
+62, with both operations/contour fixtures, restore/immutability, multiple regions,
+cap reordering and limits; forged math/bounds fail before attachment. Native CLI
+also independently checks Part cap/edge distances and snapshot lifetime.
+Complete trim-wire/implicit-face attachment and native shell/solid construction
+remain required, as do curved operands and all unfinished Stage 2/3/4 gates.
+See native-cap-attachment.md; no full-goal completion follows from cap mapping.
+Verification: 62 kernel cases, 37/37 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `81cf92e7da`, OCCT `2e5bc37269`.
