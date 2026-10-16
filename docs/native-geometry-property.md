@@ -128,13 +128,55 @@ FreeCAD selection registration, invalid-name rejection, restore and failed-
 recompute clearing are tested. These tests do not certify visual highlight
 pixels, generic consumer support or mathematically exact surface picking.
 
-Names are **snapshot-local indices**, not persistent history mappings across
+Plain names remain **snapshot-local indices**, not history mappings across
 parameter edits or Boolean changes. Current GUI selections are discarded when
-the snapshot is replaced/cleared; persistent external LinkSub references are
-not yet history-managed and must not be treated as stable attachments. This is
-partial native selection integration, not completion of Stage 4's selection,
-snapping and naming gates. No implicit surface is selectable through a mesh
-that does not exist yet.
+the snapshot is replaced/cleared. The mapped-reference contract below now
+protects new typed owners against silent external LinkSub index retargeting.
+This is partial native selection integration, not completion of Stage 4's
+selection, snapping and history gates. No implicit surface is selectable through
+a mesh that does not exist yet.
+
+## Mapped references and explicit stale attachments
+
+Each native geometry snapshot now reconstructs a standard FreeCAD element map.
+Mapped names combine `ImplicitV1_`, a SHA-256 digest of the mesh-free native
+topology record, and the subelement index/type. The digest includes the stored
+field, operation, cap/seam topology and approximation policy. It is a conservative
+snapshot identity, not a geometric equivalence proof, accuracy certificate or
+security boundary. Different encodings may deliberately invalidate references.
+Map reconstruction uses existing dependencies and no separate FCStd schema.
+
+```python
+geometry = Implicit.nativeGeometry(obj)
+identity = geometry.getElementName("Cap1", 1)
+reference = ";" + identity + ".Cap1"   # standard mapped name + old-name suffix
+assert obj.getSubObject(reference, retType=1) == obj
+```
+
+Standard PropertyLinkSub/LinkSubList machinery can record this map for new
+`Implicit::NativeFeaturePython` owners. Identical stored topology preserves the
+map across FCStd/content restoration, copying and undo/redo. A changed/cleared
+snapshot leaves old mapped references unresolved, even when the trailing Cap1
+index would still fit. It never silently falls back to that index. Native owner
+subobject lookup validates the map and rejects unknown/out-of-range names;
+the GUI also rejects stale mapped detail paths. A missing-reference warning from
+FreeCAD's link machinery is intentional in the negative regression.
+
+This is **invalidation, not history tracking**: even a local edit invalidates all
+references when the serialized boundary changes. Exact restoration can recover
+them, but surviving elements are not matched through topology changes. Explicit
+raw indices still address the current snapshot and are not stable attachments.
+Legacy App::FeaturePython owners do not gain typed-owner core reference validation.
+Subobject Python extraction intentionally returns None, not a Part shape;
+representation-aware geometry inspection uses `Implicit.nativeGeometry`.
+Generic consumers, external-document links, container placement and persistent
+history across different geometry remain unqualified.
+
+`native_reference_smoke.py` checks every mapped subelement on the multi-face
+crossing fixture, unchanged FCStd restoration, recursive copy of a linked static
+snapshot, real LinkSub invalidation, saving/reopening unresolved references,
+undo/redo and exact recovery. The GUI regression checks current mapped paths
+and rejection after replacement. These do not establish manufacturing validity.
 
 Run the documented incremental Implicit/ImplicitScripts builds and the separate
 OCCT-8 migration harness. Stage 2 curved operands, Stage 3 conforming meshing/

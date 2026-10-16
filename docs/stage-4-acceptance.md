@@ -102,3 +102,15 @@ implicit-surface picking, broader consumer/placement qualification and every
 unfinished Stage 2/3 gate remain required; the full goal is still active.
 Checkpoint: FreeCAD `1a514006be`, OCCT unchanged `aa6ced5047`; 23/23 migration
 and 25/25 compatibility entries pass, including unchanged 35 kernel cases.
+
+Next increment: a standard FreeCAD element map derives mapped native names from
+the stored mesh-free topology digest. Typed-owner lookups and mixed GUI detail
+paths reject stale mapped references instead of retargeting their old indices.
+Real LinkSub tests cover unchanged save/copy, changed/cleared geometry, saved
+unresolved links, undo/redo and exact recovery. This is conservative snapshot
+invalidation, NOT tracking of surviving elements across Boolean/parameter edits.
+Plain indices and legacy owners retain their documented limits. Semantic
+history/snapping, broader consumers/placements and every unfinished Stage 2/3
+gate remain required; the overall goal remains active.
+Checkpoint: FreeCAD `e036a6855a`, OCCT unchanged `aa6ced5047`; 24/24 migration
+and 25/25 compatibility entries pass, including unchanged 35 kernel cases.

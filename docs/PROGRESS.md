@@ -4,11 +4,45 @@ Updated 2026-10-16. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `1a514006be` on
+Implementation heads: FreeCAD `e036a6855a` on
 `feature/native-implicit`, OCCT `aa6ced5047` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: native snapshot subelements and cap/seam picking
+## Latest increment: mapped native references and explicit stale attachments
+
+Native geometry now reconstructs standard FreeCAD element maps from a SHA-256
+digest of the stored mesh-free topology record plus native index/type. Typed
+owners validate native subobject lookups; current mixed GUI mapped paths resolve,
+while stale paths reject instead of falling back to their trailing CapN index.
+No separate map payload or OCCT/property schema change is needed.
+
+New native-reference tests cover all mapped subelements on the multi-face
+crossing fixture, unchanged FCStd restoration, recursive copy of a static linked
+snapshot, real LinkSub/LinkSubList invalidation, saving/reopening unresolved
+references, undo/redo, cleared geometry and exact topology recovery. Negative
+cases intentionally emit missing-element warnings. Native Python subobject
+extraction remains None, not a Part shape; nativeGeometry provides explicit
+representation-aware inspection.
+
+This is conservative whole-snapshot invalidation, NOT surviving-element Boolean
+history. Even local changes can invalidate all mapped references. Plain indices,
+legacy owners, external-document/container/placement references and broader
+consumers remain limited. Snapping, conforming meshes, validated solids, curved
+operands and every other unfinished Stage 2/3/4 gate remain in scope. No OCCT
+source, dependencies or system libraries changed.
+
+Both native incremental builds succeed; the initial full migration run passes
+**24/24** (49.96 seconds), compatibility **25/25** (27.85 seconds), including
+unchanged **35** kernel cases. Logs: `/tmp/implicit-reference-build.log`,
+`/tmp/implicit-reference-legacy-build.log`, `/tmp/implicit-reference-targeted.log`,
+`/tmp/implicit-reference-cli.log`, `/tmp/implicit-reference-migration.log`,
+`/tmp/implicit-reference-compatibility.log`. The test harness initially reopened
+the already-open file rather than an independent document; using a distinct
+copied fixture fixed that test-lifetime issue, without changing CAD behavior.
+Final migration rerun including LinkSubList and null-output checks passes
+**24/24** (49.60 seconds; `/tmp/implicit-reference-migration-final.log`).
+
+## Previous increment: native snapshot subelements and cap/seam picking
 
 The native ComplexGeoData representation now returns owned one-based
 NativeFace/Cap/Seam segments, boundary lines and a first boundary vertex for

@@ -518,6 +518,35 @@ Both incremental builds succeed. Full OCCT-8 migration passes **23/23**
 (46.70 seconds); preserved compatibility passes **25/25** (27.41 seconds),
 including unchanged **35** kernel cases. Logs are recorded in PROGRESS.md.
 
+## Milestone 30: mapped native snapshot references and stale-link rejection
+
+Source heads: FreeCAD `e036a6855a`, OCCT unchanged at `aa6ced5047`.
+
+Native geometry now reconstructs a standard FreeCAD element map from a SHA-256
+digest of its mesh-free topology record plus native subelement index/type.
+Unchanged payloads preserve names through FCStd/content transfer, copy and
+undo/redo. Changed/cleared geometry invalidates old mapped references instead
+of falling back to a still-valid CapN/SeamN index. Exact topology restoration
+can recover them. Typed native owners validate core subobject lookups; the mixed
+view resolves current mapped paths and rejects stale ones.
+
+New native_reference_smoke covers all multi-face fixture subelements, recursive
+copy of a real LinkSub target, FCStd restoration, changed/cleared geometry,
+saved unresolved links, undo/redo and exact recovery. Expected missing-element
+warnings are intentional. Native Python subobject extraction remains None,
+never an implicit Part shape; nativeGeometry is the explicit inspection seam.
+
+This is conservative whole-snapshot invalidation, NOT surviving-element Boolean
+history or geometric equivalence matching. Plain indices are still snapshot-
+local. Legacy owners, broader consumers, external-document/container/placement
+references, snapping and all unfinished Stage 2/3/4 gates remain open.
+The native OCCT codec/property schema is unchanged; maps reconstruct from stored
+geometry rather than introducing another authoritative payload. No OCCT source,
+dependencies or system libraries changed. See native-geometry-property.md.
+Both incremental builds succeed. Full migration passes **24/24** (49.60 seconds)
+and compatibility **25/25** (27.85 seconds), including unchanged **35** kernel
+cases. Logs and the expected negative-test warning are recorded in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
