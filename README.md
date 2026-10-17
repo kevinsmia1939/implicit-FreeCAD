@@ -22,6 +22,9 @@ caps and groups boundary shells by retained material connectivity.
 regions to that reference using common retained points beyond seam uncertainty.
 [Dual-cap trim attachment](docs/native-trim-attachment.md) now identifies contour
 arcs and matches complete directed native/reference trim wires.
+[Genuine native shells](docs/native-shells.md) now use exact field-backed faces,
+checked component splitting and native manifold topology checks. They are not
+yet geometrically validated solids or ordinary Part shapes.
 Stored-native topology equivalence, general curved operands and validated native
 solids remain open.
 

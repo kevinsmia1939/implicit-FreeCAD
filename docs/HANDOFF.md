@@ -1037,6 +1037,57 @@ Final verification: kernel **65/65** (CTest 52.37 seconds), OCCT-8 migration
 runtime/trim CTest **2/2** (13.05 seconds). Logs and resumed-build revalidation
 are recorded in PROGRESS.md.
 
+## Milestone 45: whole field faces and genuine native shell construction
+
+Source heads: FreeCAD `ee951e3c78`, OCCT `adeac78d8c`.
+
+TKTopAlgo `BuildNativeShells` now generates actual TopoDS_Shell objects from
+private conventional caps and exact BRep_TImplicitFace geometry. Whole-face
+attachment includes enclosed components; empty field faces are omitted. Multiple
+components split only at coordinate-reserved proposal gaps whose planes are
+checked zero-free for F and L throughout the homotopy. Component domains retain
+the exact field equation and assigned original shared wires, not reference
+triangle geometry. Missing/general non-axis-separable restrictions stay unresolved.
+
+Actual native shells must have two opposite edge uses between distinct faces,
+connected cyclic vertex-germ links, connected face graphs and Euler agreement
+using planar-cap topology plus the checked field-component Euler values. Shells
+are grouped with material-region IDs; cavities and disconnected islands differ.
+Only newly built private shell flags change. Source geometry/caches/flags stay
+unchanged. TopologyValidated is scoped to these engineering-reserve native checks;
+whole-boundary geometric/solid validation and generic UV-based checks remain open.
+
+OCCT-8 FreeCAD exposes build_mixed_shells, inspect_mixed_shells and
+classify_mixed_shells. Successful owned handles and field-face snapshots survive
+document close; source-region classification uses local coordinates and retains
+solid_validated=False. Results are not Part shapes and are not assigned to the
+existing native geometry property. No native-shell FCStd codec/schema change yet.
+
+Three new kernel cases bring the suite to 68, including both operations and
+closed/open fixtures, exact equations/no triangulation-backed fake faces,
+source immutability, two-component splitting/limits, enclosed cavity shells and
+full/empty regions. CLI adds owned lifetime, restore provenance, classifications,
+domains and safe rejection. The Part.Shape(native_handle) test exposed conversion
+outside PyInit's exception boundary; moving that single line into the existing
+try/catch fixes normal TypeError translation. Both ABI builds now test invalid
+objects/sequences and valid/default construction in part_linked_smoke.py.
+
+The Part file retains upstream CRLF (-text). Check its diff with
+`git -c core.whitespace=cr-at-eol diff --check`; no whitespace/content rewrite was
+made. Reuse the existing Part target in BOTH builds for that guard fix, plus the
+OCCT TKMesh dependency target, native binding and script targets. No packages/
+system libraries changed. See native-shells.md for the exact proof scope/limits.
+
+Next establish whole-boundary geometric validation, then construct/group actual
+native solids with explicit validity policies. General component selectors,
+curved operands, shell/solid property persistence and cross-workbench/selection/
+history integration remain required. The full Stage 4 goal stays active.
+
+Final verification: kernel **68/68** (CTest 86.35 seconds), OCCT-8 migration
+**39/39** (194.48 seconds), compatibility **25/25** (93.32 seconds). Targeted
+runtime/shell CTest **2/2** (15.69 seconds). Logs are in PROGRESS.md, including
+both ABI Part builds and the initial constructor-test failures/fixes.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -1126,7 +1177,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 65 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 68 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

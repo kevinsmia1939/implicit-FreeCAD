@@ -102,10 +102,12 @@ prerequisite; resampling plus cyclic native wire starts also pass this checker.
 CLI tests add handle/lifetime/restore guards, actual source-record equality,
 complete array bijections and the multi-hole/two-component fixture.
 
-Next attach the entire native implicit face to reference components, including
-empty/enclosed components and a correct component-restriction/splitting policy
-when needed. Then group actual native faces into shells/material solids and
-validate them with representation-aware rules. Do not fabricate native faces
-from these reference triangles or treat wire counts as face-interior evidence.
+The newer [native shell builder](native-shells.md) now attaches whole field faces,
+uses checked zero-free planes for supported disconnected components, and assembles
+actual native shells with topology checks.
+Remaining work includes general component restriction policies when axis
+separation fails, whole-boundary geometric validation and actual native solids.
+Do not fabricate native faces from reference triangles or treat wire counts as
+face-interior evidence.
 Curved operands and all unfinished [Stage 4 gates](stage-4-acceptance.md) remain
 required; the full goal is not complete.

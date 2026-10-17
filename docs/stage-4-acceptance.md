@@ -291,3 +291,23 @@ remain necessary, along with curved operands and every unfinished Stage 2/3/4
 gate. See native-trim-attachment.md; the full goal remains active.
 Verification: 65 kernel cases, 38/38 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `88253649f0`, OCCT `ee9f07f4a2`.
+
+Next increment: whole exact field faces now attach to the field/linear reference.
+Disconnected components split only across checked F/L-zero-free axis planes;
+their native wire geometry must fit the resulting domains. Empty field faces
+are omitted. Actual native shells group copied caps and exact field faces by
+reference boundary/material identity; native opposite edge uses, vertex-germ
+cycles, connected face graphs and field-aware Euler characteristics are checked.
+Three new kernel cases bring the suite to 68, covering both operations/open and
+closed fixtures, separate components/limits, enclosed cavities and full/empty
+regions. Native CLI exercises owned handles/faces, local region classification,
+restore/lifetime, genuine split domains and rejection guards. A Part constructor
+conversion moved inside its exception boundary after the unsupported-capsule
+test exposed an escaped C++ TypeError; both ABI builds test ordinary invalid
+inputs and valid/default construction.
+These are actual native shells with topology checks, NOT geometrically validated
+solids or generic Part shapes. Geometric/solid validation, general restrictions
+for non-axis-separable components, curved operands, shell/solid property
+persistence and all unfinished Stage 4 requirements remain active. See native-shells.md.
+Verification: 68 kernel cases, 39/39 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `ee951e3c78`, OCCT `adeac78d8c`.

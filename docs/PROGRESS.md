@@ -4,11 +4,61 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `88253649f0` on
-`feature/native-implicit`, OCCT `ee9f07f4a2` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `ee951e3c78` on
+`feature/native-implicit`, OCCT `adeac78d8c` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: dual-cap full trim-wire attachment
+## Latest increment: whole-face attachment and genuine native shells
+
+TKTopAlgo `BuildNativeShells` now attaches the entire field zero set, including
+enclosed/empty components, and builds actual native shells. Reference bounds and
+native wire poles only propose component separators: each accepted axis plane
+must be F-zero-free and have L's same strict sign throughout the homotopy. Exact
+field equations with checked component box domains become new BRep_TImplicitFace
+faces, preserving assigned shared native wires. Empty field faces are omitted.
+No reference triangle becomes a CAD face; non-axis-separable cases stay unresolved.
+
+Native shell validation checks opposite paired edge incidences, connected cyclic
+vertex-germ links (including closed-edge multiplicities), connected face graphs
+and V-E+sum(face Euler) against the whole-field reference. Conventional caps use
+planar topology; exact field components use the homotopy Euler evidence. Shells
+attach to retained material regions, distinguishing cavity shells from islands.
+Source math/topology/caches/flags stay unchanged; only new private shell flags
+change. Engineering topology checks, NOT geometric/solid validity or generic UV.
+
+OCCT-8 FreeCAD adds build_mixed_shells / inspect_mixed_shells /
+classify_mixed_shells, with owned shell and field-face handles, local authoritative
+region queries and explicit not-Part/not-solid-valid contracts. No new FCStd
+shell codec or property migration. See [native shell contracts](native-shells.md).
+
+Three new cases bring the suite to **68**, covering both operations/open and
+closed fixtures, exact field data/no fake triangulated faces, source immutability,
+component splitting/limits, enclosed cavities and full/empty regions. CLI adds
+lifetime/restore/classification/domain/handle guards. Its negative Part constructor
+test found getPyShapes outside the Python exception boundary; moving that single
+line inside fixes the escaping C++ TypeError. Preserved upstream CRLF, with a
+CR-aware diff check. Both Part ABI targets were rebuilt; part_linked_smoke now
+checks ordinary invalid objects/sequences plus valid/default constructors.
+
+The initial CLI also incorrectly called the string kernel_version as a function;
+that test typo is fixed. Kernel CTest **1/1**, **68 cases** (86.35 seconds) and
+targeted runtime/shell CTest **2/2** (15.69 seconds) pass. Existing targets and
+dependencies reused; no package/system-library changes.
+Logs: `/tmp/implicit-native-shell-config.log`, `/tmp/implicit-native-shell-build.log`,
+`/tmp/implicit-native-shell-test-build.log`, `/tmp/implicit-native-shell-targeted.log`,
+`/tmp/implicit-native-shell-tests.log`, `/tmp/implicit-native-shell-binding-build.log`,
+`/tmp/implicit-native-shell-part-guard-build.log`, `/tmp/implicit-native-shell-part-guard-compat-build.log`,
+`/tmp/implicit-native-shell-binding-tests.log`, `/tmp/implicit-native-shell-migration-all.log`,
+`/tmp/implicit-native-shell-compat-all.log`. Whole-boundary geometric validation,
+native solids, general component restrictions, curved operands and unfinished
+Stage 4 gates remain required; the full goal stays active.
+
+Final full regression: OCCT-8 command-line/GUI migration **39/39** (194.48 seconds),
+preserved compatibility **25/25** (93.32 seconds). Both core branches are published;
+the parent pins the source heads above. Relevant Part targets built successfully
+for OCCT 8 and preserved OCCT 7; no system-library/ABI mixing was introduced.
+
+## Previous increment: dual-cap full trim-wire attachment
 
 TKTopAlgo `CheckTrimAttachment` privately constructs/attaches the complementary
 cap graph from the same field/domain. Shared grid-edge root provenance identifies

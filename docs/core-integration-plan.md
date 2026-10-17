@@ -209,6 +209,12 @@ identities and full directed wire cycles using both retained/complement cap
 regions and ordered box-root anchors. It reports the reference surface component
 each wire borders, not a whole native-face assignment or native solid. Component
 restriction/splitting where needed and native shell/solid construction remain open.
+The [native shell builder](native-shells.md) now covers whole-face attachment,
+checked zero-free axis component splitting and actual shell assembly, with native
+edge incidence, cyclic vertex links, connectedness and field-aware Euler checks.
+Owned FreeCAD handles retain math/topology after document close and classify
+their authoritative regions. General component restrictions and whole-boundary
+geometric/solid validation remain required; no generic Part-solid claim follows.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 
