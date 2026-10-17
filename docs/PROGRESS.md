@@ -1,14 +1,57 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-16. The user has authorized continuing the full roadmap,
+Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `81cf92e7da` on
-`feature/native-implicit`, OCCT `2e5bc37269` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `88253649f0` on
+`feature/native-implicit`, OCCT `ee9f07f4a2` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: stored conventional cap-region attachment
+## Latest increment: dual-cap full trim-wire attachment
+
+TKTopAlgo `CheckTrimAttachment` privately constructs/attaches the complementary
+cap graph from the same field/domain. Shared grid-edge root provenance identifies
+reference zero-surface boundary segments. Physical side, retained/complement cap
+pair and ordered box-root anchors identify open arcs; closed contours use the
+dual region pair and signed winding direction. Continuous PWL matching links
+native seams to complementary traces, including reversed parameters/resampling.
+Complete signed native/reference wire cycles must agree bijectively, up to
+cyclic start and wire ordering. Ambiguous pairings and exhausted limits reject.
+
+The explicit synchronous OCCT-8 API `check_mixed_trim_attachment` reports arc,
+wire and bordering reference surface-component identities. These are transient
+diagnostics, not Boolean history or whole implicit-face attachment. Source
+math/topology/caches and restored seam provenance stay unchanged; native-shell/
+solid/whole-face validity flags remain False. No formal interval certificate,
+generic UV-based BOP or completed Stage 4 claim follows. See
+[trim attachment contracts](native-trim-attachment.md).
+
+Three new cases bring the kernel suite to **65**, covering both operations,
+closed and three-wire open fixtures, two holes on one cap, distinct surface
+components, restore/immutability and limits. Existing resampling/cyclic-start
+regressions now check this query too; forged math fails the cap prerequisite.
+Native CLI checks complete mappings, both contour/operation cases, source-record
+equality, restore/lifetime/guards and the two-component multi-hole fixture.
+
+The worktree/build artifacts from October 16 were revalidated after resuming on
+October 18; prior /tmp logs were absent and no build/test processes were live.
+Existing binaries were newer than changed sources; the relevant native build
+reported no work, and tests were rerun. No packages/system libraries changed.
+Current logs: `/tmp/implicit-trim-attachment-binding-build.log`,
+`/tmp/implicit-trim-attachment-binding-tests.log`, `/tmp/implicit-trim-attachment-tests.log`,
+`/tmp/implicit-trim-attachment-migration-all.log`, `/tmp/implicit-trim-attachment-compat-all.log`.
+Kernel CTest **1/1**, **65 cases** (52.37 seconds) and targeted runtime/trim
+CTest **2/2** (13.05 seconds) pass. Whole-face component restriction/attachment,
+native shell/solid construction, curved operands and unfinished Stage 4 gates
+remain required; the full goal stays active.
+
+Final full regression: OCCT-8 command-line/GUI migration **38/38** (178.21 seconds),
+preserved compatibility **25/25** (80.61 seconds), including the current 65-case
+isolated executable. Both core branches are published; the parent pins the
+source heads above.
+
+## Previous increment: stored conventional cap-region attachment
 
 TKTopAlgo `CheckCapAttachment` now maps source cap regions to closed reference
 cap/shell/material labels. Independent stored-graph and homotopy-reference checks

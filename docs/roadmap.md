@@ -37,6 +37,7 @@
 | Whole-box topology witness | Numerical field-to-nodal-linear homotopy, reference components/Euler/loops | Not stored-trim/preview equivalence, a geometric accuracy bound or native-solid validity |
 | Closed region reference | Shared cap/root topology, closed-shell incidences and material-region grouping | Not native trim/cap correspondence, native CAD shells/solids or field-volume accuracy |
 | Stored cap-region attachment | Bijective common-retained-point matching beyond fresh seam uncertainty | Not complete trim-wire/implicit-face attachment or native-shell/solid validity |
+| Dual-cap trim-wire attachment | Retained/complement cap pairs, ordered roots and complete directed wire cycles | Not whole implicit-face component attachment or native-shell/solid validity |
 | Native mixed-region classification | Conservative physical-distance separation and cap/root witnesses | Inside/outside/near-boundary/unresolved; independent of preview meshes, not whole-solid validation |
 | Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified |
 | Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
@@ -98,6 +99,10 @@ before native-shell/solid construction; equal component counts are insufficient.
 [Stored cap regions now attach](native-cap-attachment.md) by strict common F/L
 points, conventional classification and clearance beyond freshly traced boundary
 uncertainty. Trim-wire/implicit-face component attachment remains required.
+The [dual-cap trim checker](native-trim-attachment.md) now identifies contour arcs
+and compares complete directed native/reference wire cycles. Whole implicit-face
+attachment/component restriction and actual native shell/solid construction
+remain required; trim-boundary mapping is not face-interior validity.
 The [native mixed geometry property](native-geometry-property.md) now owns and
 persists supported mixed topology in FCStd without numerical rebuilding of
 unchanged inputs. This is not complete selection, placement or consumer support.

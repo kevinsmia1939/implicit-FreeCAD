@@ -86,7 +86,9 @@ the failed graph prerequisite. Native CLI covers both contour/operation fixtures
 independent Part cap/edge distances, source-record equality, restore provenance,
 retained lifetime and handle/settings guards.
 
-Next identify stored trim-wire/contour attachment and implicit-face component
+The newer [dual-cap trim attachment](native-trim-attachment.md) now identifies
+contour arcs and matches complete directed trim-wire cycles.
+Next complete implicit-face component
 grouping against this same reference, then construct and validate native shells
 and solids. Cap-region bijection alone must not be used to promote a native
 compound. Curved operands and all unfinished [Stage 4 gates](stage-4-acceptance.md)

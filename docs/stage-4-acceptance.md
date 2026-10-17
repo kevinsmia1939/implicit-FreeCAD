@@ -274,3 +274,20 @@ remain required, as do curved operands and all unfinished Stage 2/3/4 gates.
 See native-cap-attachment.md; no full-goal completion follows from cap mapping.
 Verification: 62 kernel cases, 37/37 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `81cf92e7da`, OCCT `2e5bc37269`.
+
+Next increment: private complementary cap construction and dual cap attachment
+now identify contour arcs by physical side, retained/complement cap-region pair
+and ordered box-root anchors. Every native/reference arc must match bijectively,
+and complete signed cyclic wire sequences must agree. Closed contours use winding
+area for direction, not arbitrary vertex anchors. Three new cases bring the
+kernel suite to 65, including both operations, three-wire open fixtures, multiple
+holes on one cap, separate surface components, restored provenance and limits.
+Resampled curves/cyclic wire starts pass; forged math fails the prerequisite.
+Native CLI verifies both operation/contour fixtures, complete mappings, record
+immutability, restore/lifetime and two-hole/two-component queries.
+This attaches trim boundaries, NOT the whole native implicit face or CAD shells/
+solids. Empty/enclosed components and a component-restriction/splitting policy
+remain necessary, along with curved operands and every unfinished Stage 2/3/4
+gate. See native-trim-attachment.md; the full goal remains active.
+Verification: 65 kernel cases, 38/38 migration and 25/25 compatibility tests pass.
+Checkpoint heads: FreeCAD `88253649f0`, OCCT `ee9f07f4a2`.

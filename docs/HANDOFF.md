@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-16. This file is the entry point for a developer or coding
+Last updated: 2026-10-18. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -996,6 +996,47 @@ Final verification: kernel **62/62** (CTest 56.93 seconds), OCCT-8 migration
 **37/37** (219.58 seconds), preserved compatibility **25/25** (98.39 seconds).
 Targeted runtime/cap CTest **2/2** (12.75 seconds). Build/test logs are in PROGRESS.md.
 
+## Milestone 44: dual-cap contour identities and full trim-wire attachment
+
+Source heads: FreeCAD `88253649f0`, OCCT `ee9f07f4a2`.
+
+TKTopAlgo `CheckTrimAttachment` privately constructs the complementary canonical
+boundary from the same field/domain and attaches both cap sets. Their shared
+linear-reference roots match by originating grid-edge IDs. Retained/complement
+cap-region pairs plus ordered physical box-edge roots identify contour arcs;
+closed contours use their dual region pair and signed planar winding. Native
+seams match complementary traces by continuous PWL correspondence, then complete
+directed cyclic native/reference wires must match bijectively. No nearest-point
+pairing, root welding, persistent-label claims or source mutation.
+
+OCCT-8 FreeCAD exposes `check_mixed_trim_attachment`. Seam labels follow unique
+native edge traversal; wire mappings follow direct native wire order. Reference
+triangle connectivity reports which surface component each wire borders, but
+does not attach or split the entire native face. Whole-face/native-topology/
+shell/solid validity flags stay False. See native-trim-attachment.md for budgets,
+precision policies and exact scope.
+
+Three new kernel cases bring the suite to 65: both operations, three-wire open
+fixtures, two holes on one retained cap, separate surface components, restore,
+source immutability and limits. Resampling/cyclic starts pass this checker too;
+forged math stops at graph/cap validation. CLI adds both contour/operation cases,
+actual source-record equality, complete array bijections, restore/lifetime/guards
+and a two-hole/two-component fixture. Existing build/dependency directories are
+reused; no package/system-library or persistence-schema changes. Rebuild the
+native binding after the enlarged transient CapAttachment result layout.
+
+Next attach the whole native implicit face to reference components, including
+empty/enclosed components and proper restriction/splitting when multiple
+components occur. Then construct actual native shells/material solids and apply
+representation-aware validation. Do not create native faces from reference
+triangles or infer face-interior validity from matched wires. Curved operands
+and every unfinished Stage 2/3/4 requirement remain active.
+
+Final verification: kernel **65/65** (CTest 52.37 seconds), OCCT-8 migration
+**38/38** (178.21 seconds), compatibility **25/25** (80.61 seconds). Targeted
+runtime/trim CTest **2/2** (13.05 seconds). Logs and resumed-build revalidation
+are recorded in PROGRESS.md.
+
 ## Tools and development environment
 
 Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
@@ -1085,7 +1126,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 62 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 65 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

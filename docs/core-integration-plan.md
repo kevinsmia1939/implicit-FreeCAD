@@ -204,6 +204,11 @@ A newer [cap-region attachment check](native-cap-attachment.md) now maps stored
 conventional cap regions to reference cap/shell/material components using strict
 common F/L points outside fresh seam uncertainty. Complete native trim-wire and
 implicit-face attachment, then actual shell/solid construction, remain required.
+The [dual-cap trim attachment](native-trim-attachment.md) now compares contour
+identities and full directed wire cycles using both retained/complement cap
+regions and ordered box-root anchors. It reports the reference surface component
+each wire borders, not a whole native-face assignment or native solid. Component
+restriction/splitting where needed and native shell/solid construction remain open.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 

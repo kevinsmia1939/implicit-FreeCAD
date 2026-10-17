@@ -20,6 +20,8 @@ A [closed region reference](docs/native-region-topology.md) adds shared planar
 caps and groups boundary shells by retained material connectivity.
 [Stored cap attachment](docs/native-cap-attachment.md) now maps conventional cap
 regions to that reference using common retained points beyond seam uncertainty.
+[Dual-cap trim attachment](docs/native-trim-attachment.md) now identifies contour
+arcs and matches complete directed native/reference trim wires.
 Stored-native topology equivalence, general curved operands and validated native
 solids remain open.
 

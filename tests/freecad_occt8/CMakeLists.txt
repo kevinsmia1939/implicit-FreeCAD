@@ -20,7 +20,7 @@ set_tests_properties(implicit_occt8_runtime PROPERTIES
     PASS_REGULAR_EXPRESSION "native implicit OCCT8 runtime smoke test passed"
     FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
     FIXTURES_SETUP occt8_runtime TIMEOUT 120)
-foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled chart scalar part_linked patch mixed_box mixed_mesh mixed_audit mixed_coverage mixed_regularity mixed_correspondence mixed_topology mixed_region_topology mixed_cap_attachment native_property native_reference native_element native_link placed_classification)
+foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled chart scalar part_linked patch mixed_box mixed_mesh mixed_audit mixed_coverage mixed_regularity mixed_correspondence mixed_topology mixed_region_topology mixed_cap_attachment mixed_trim_attachment native_property native_reference native_element native_link placed_classification)
     add_test(NAME "implicit_occt8_${_smoke}"
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/${_smoke}_smoke.py")
     set_tests_properties("implicit_occt8_${_smoke}" PROPERTIES
