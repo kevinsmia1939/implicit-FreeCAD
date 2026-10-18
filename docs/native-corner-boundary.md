@@ -58,8 +58,8 @@ now distinguish retained corner witnesses from excluded closed-set contacts.
 These guards prevent false solid qualification. The default Add
 Gyroid workbench command is unchanged and still creates a field display.
 
-Next: corner-aware
-whole-domain homotopy/reference and actual trim/cap/component attachment; then
+The [whole-domain corner surface reference](native-corner-topology.md) now
+resolves. Next: closed material reference/grouping and actual trim/cap/component attachment; then
 validated native solids and default-workbench exposure. Curved operands and all
 remaining Stage 2–4 requirements remain required, including snapping, history,
 richer editing and representation-aware consumer dispatch.

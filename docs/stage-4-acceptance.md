@@ -47,7 +47,7 @@ Latest default-gyroid increment constructs actual corner-aware native trim
 graphs for both operations, including shared canonical corner vertices and
 separate excluded closed-set contacts. The field/domain are unchanged and
 the seam target remains 0.1 mm. This is not whole-default solid qualification:
-corner-aware whole-domain reference
+corner-aware closed-region reference
 and actual attachment/validation are still required before switching the
 default GUI primitive. Unsupported legacy consumers reject explicitly.
 See [corner boundary contracts](native-corner-boundary.md). The full goal
@@ -60,6 +60,10 @@ The [corner-aware physical classifier](native-corner-classification.md) now
 supports regularized material, exact retained-corner witnesses and excluded-
 contact distance bounds, including placed/restored native owners. This is
 mathematical-region evidence, not stored native-solid/topology qualification.
+The [whole-box corner homotopy/reference](native-corner-topology.md) now resolves
+the default zero set's 2-D component plus separate isolated contacts. Closed
+material capping/grouping, actual native attachment and solid qualification still
+remain; neither reference incidence nor equal component counts closes that gap.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

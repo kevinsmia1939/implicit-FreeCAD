@@ -22,6 +22,37 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 56: whole-box corner homotopy and surface reference
+
+Explicit regularized CheckTopology now handles fixed exact corner zeros on an
+odd grid <= requested resolution. Existing whole-volume/face/edge homotopy checks
+remain required; every corner-incident linear tetrahedron must additionally
+match all inward coordinate signs of the fresh F germ. Canonical `(i,i)` grid
+identities share surface corners; uniform isolated contacts stay separate and
+never create fake surface triangles/vertices. Other sampled zeros remain
+unresolved. No field/domain/phase perturbation or saved proof flags.
+
+The default cube resolves with eight fixed corners, six shared surface-corner
+nodes and two point contacts. Its 2-D reference has Euler -3, one component and
+one boundary loop at actual resolution 31 (requested 32). This is not closed-
+region/material connectivity, stored native attachment, a .1 mm surface mesh or
+solid validity. See [derivation/API/contracts](native-corner-topology.md).
+
+Raw check_box_topology takes an optional final policy string; mixed queries
+automatically honor source policy and reject overrides. Corner-aware closed-
+region queries explicitly reject. Primitive/mixed restore and source provenance
+are tested. Next implement shared-ID closed caps and strict-volume grouping,
+then stored trim/cap/whole-face attachment and default native solid/GUI exposure.
+All other Stage 2–4 requirements remain active, including curved operands.
+
+IMPORTANT: TopologyWitness/nested transient ABI layout changed. Rebuilt TKMesh
+dependencies, native tests/worker and FreeCAD Implicit/ImplicitGui/_ImplicitOCCT
+using existing builds/dependencies. Restart the fork; no system changes or
+OCCT-8/7 mixing. Final checks: **88 kernel cases** (85.27 s), **51/51 migration**
+(276.67 s), remaining **24/24 compatibility** (38.13 s; kernel separately passed),
+targeted native CLI/runtime **2/2** (5.40 s). Checkpoint: OCCT `f5d703459e`,
+FreeCAD `fd5a3fe902`. Commands/logs are in PROGRESS.md; full goal remains active.
+
 ## Milestone 55: regularized corner-aware physical classification
 
 Classify now accepts regularized boundary/property/schema-2 snapshots. Existing
@@ -1528,7 +1559,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 81 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 88 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

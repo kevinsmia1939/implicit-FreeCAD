@@ -4,11 +4,61 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `922d50405d` on
-`feature/native-implicit`, OCCT `c9c0bb7915` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `fd5a3fe902` on
+`feature/native-implicit`, OCCT `f5d703459e` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: regularized corner-aware physical classification
+## Latest increment: whole-box corner homotopy and surface reference
+
+Explicit regularized CheckTopology now covers exact box-corner nodes using an
+odd grid <= the requested resolution, unchanged field/domain/phase, and all the
+existing whole-volume/face/edge homotopy checks. Each corner-incident linear
+tetrahedron must also preserve every inward coordinate derivative sign of the
+fresh F germ. Canonical `(i,i)` grid IDs share surface corners; uniform isolated
+contacts stay separate from nodes/triangles. Unknown/other zero nodes, precision
+and resource exhaustion remain unresolved. Legacy strict behavior is unchanged.
+See [proof scope and API](native-corner-topology.md).
+
+The default cube resolves at actual resolution 31: eight fixed corners, six
+shared surface-corner nodes, two point contacts, 13,779 surface nodes, one
+component/Euler -3/one boundary loop in both orientations. Independent native
+CLI accounting checks public edge orientation/incidence, loops, Euler, contact
+separation, restored ownership, policy mismatch and source provenance. This is
+NOT closed material connectivity, stored native trim/cap attachment, a .1 mm
+surface mesh or solid validity. Corner-aware closed-region APIs explicitly reject;
+all native mesh/correspondence/solid guards remain. Next add same-ID closed caps
+and strict-volume grouping, then actual attachment and default solids/GUI. All
+other Stage 2–4 requirements remain active, including curved operands/history.
+
+TopologyWitness/nested transient layout changed. Rebuilt existing TKMesh
+dependencies, native tests/worker and FreeCAD Implicit/ImplicitGui/_ImplicitOCCT
+with two compile jobs and one FreeCAD link job. No packages/system changes or
+OCCT-8/7 mixing. Restart the fork, not just Python. Two focused kernel cases pass
+(597 ms), native CLI/runtime **2/2** (5.40 s), complete kernel **88 cases**
+(85.27 s). Full migration passes **51/51** (276.67 s), remaining compatibility
+**24/24** (38.13 s; kernel entry separately passed). Builds/tests passed without
+native failures or weakened downstream guards. A combined documentation patch
+failed context verification and was reapplied atomically.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-topology-occt-build-final.log`,
+`/tmp/implicit-corner-topology-tests-build-final.log`,
+`/tmp/implicit-corner-topology-freecad-build.log`,
+`/tmp/implicit-corner-topology-target-final.log`,
+`/tmp/implicit-corner-topology-kernel-final.log`,
+`/tmp/implicit-corner-topology-compat-final.log`,
+`/tmp/implicit-corner-topology-migration-final.log`.
+
+## Previous increment: regularized corner-aware physical classification
 
 The mathematical-region classifier now accepts the regularized corner policy.
 Existing strict-sign cap points and in-box opposite-sign brackets already give

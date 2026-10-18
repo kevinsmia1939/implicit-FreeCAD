@@ -253,9 +253,11 @@ regularized-corner policy. A [schema-2 codec](native-corner-persistence.md) now
 retains the policy/contacts and graph through the native FreeCAD property and
 FCStd without rebuilding. [Corner-aware physical queries](native-corner-classification.md)
 now distinguish retained corners from excluded isolated contacts without changing
-the field. The whole-domain reference/actual attachment pipeline still needs
-that policy before native-solid
-qualification and default-workbench integration. Legacy consumers reject it.
+the field. The [whole-box corner homotopy/surface reference](native-corner-topology.md)
+now resolves the default 2-D zero set plus separate contacts. Closed-region
+material grouping and actual native attachment still need that policy before
+native-solid qualification and default-workbench integration. Legacy consumers
+retain explicit guards.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this
