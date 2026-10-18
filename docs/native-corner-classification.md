@@ -66,8 +66,8 @@ schema-2 restore and source immutability. Native CLI tests additionally cover
 typed properties, placed containers/links, FCStd restore and retained lifetime.
 
 The [whole-box corner homotopy/surface reference](native-corner-topology.md) now
-resolves the default surface and contacts. Next: closed-region material grouping
-and actual trim/cap/component attachment, then qualified default native solids
+resolves the default surface and contacts. The [closed material reference](native-corner-region.md)
+now supplies caps and strict-volume grouping. Next: actual trim/cap/component attachment, then qualified default native solids
 and GUI exposure. Mesh Prepare,
 clipped coverage, correspondence/cap geometry, shell/solid factories still guard
 this policy. General curved operands, snapping/history, richer editing and

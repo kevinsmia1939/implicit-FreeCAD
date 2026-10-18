@@ -22,6 +22,34 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 57: closed corner material reference and strict volume grouping
+
+Explicit regularized CheckRegionTopology now caps the checked surface on its
+actual odd grid using the SAME `(i,i)` corners and edge-root IDs. Isolated zero
+contacts never create cap area; a retained uniform corner is cap-only, while the
+excluded uniform corner is absent. Volume DSU uses strictly retained vertices
+only. Zero corners inherit one unique incident strict-volume label and cannot
+join regions through a point. Existing closed manifold/orientation/Euler checks
+remain required. See [contracts and API](native-corner-region.md).
+
+Default Common/Cut each resolve to one component, Euler -2, one material region;
+reference volumes are 500 each and complementary sum 1000. These are numerical
+AFFINE-reference diagnostics, not authoritative F volume or .1 mm geometry
+certification. Source/restored bounds and native validity remain unchanged.
+Raw region queries take final explicit policy; mixed queries honor source policy.
+No persistence schema/layout change. Native attachment/mesh/solid guards remain.
+
+Next map stored native cap regions/trim cycles/whole implicit components to this
+reference, then geometric validation/default native solids/GUI. Do not promote
+based on closed mesh incidence or equal component counts. All other Stage 2–4
+requirements stay active, including general/curved operands and history/snapping.
+Existing TKMesh/test-worker/FreeCAD module targets reused with two compile jobs
+and one FreeCAD link job; no packages/system changes. Final verification:
+**90 kernel cases** (92.72 s), **52/52 migration** (296.01 s), remaining **24/24
+compatibility** (29.86 s; kernel separately passed), targeted CLI/runtime **3/3**
+(12.16 s). Checkpoint: OCCT `5a3b910c86`, FreeCAD `a6cbb419b3`.
+Commands/logs are in PROGRESS.md; the full goal remains active.
+
 ## Milestone 56: whole-box corner homotopy and surface reference
 
 Explicit regularized CheckTopology now handles fixed exact corner zeros on an
@@ -1559,7 +1587,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 88 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 90 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

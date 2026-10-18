@@ -67,7 +67,8 @@ while changed material invalidates them conservatively. This is not tracking
 surviving elements through Boolean/parameter edits or completed topology history.
 
 The [corner-aware surface reference](native-corner-topology.md) now resolves.
-Next implement closed-region grouping and actual native attachment checks.
+The [closed corner material reference](native-corner-region.md) now adds caps and
+volume grouping. Next implement actual native attachment checks.
 Only then qualify default native
 solids and expose the complete workflow. All curved-operand, snapping/history,
 editing and consumer requirements of Stages 2–4 remain active. Existing build

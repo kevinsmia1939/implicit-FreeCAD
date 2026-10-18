@@ -254,8 +254,9 @@ retains the policy/contacts and graph through the native FreeCAD property and
 FCStd without rebuilding. [Corner-aware physical queries](native-corner-classification.md)
 now distinguish retained corners from excluded isolated contacts without changing
 the field. The [whole-box corner homotopy/surface reference](native-corner-topology.md)
-now resolves the default 2-D zero set plus separate contacts. Closed-region
-material grouping and actual native attachment still need that policy before
+now resolves the default 2-D zero set plus separate contacts. The newer
+[closed corner reference](native-corner-region.md) adds shared caps and strict
+volume grouping without joining isolated contacts. Actual native attachment still needs that policy before
 native-solid qualification and default-workbench integration. Legacy consumers
 retain explicit guards.
 

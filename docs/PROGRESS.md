@@ -4,11 +4,65 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `fd5a3fe902` on
-`feature/native-implicit`, OCCT `f5d703459e` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `a6cbb419b3` on
+`feature/native-implicit`, OCCT `5a3b910c86` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: whole-box corner homotopy and surface reference
+## Latest increment: closed corner material reference and strict-volume grouping
+
+Explicit regularized CheckRegionTopology now caps the checked surface on its
+actual odd grid, sharing canonical surface corner/root IDs without welding.
+Zero contacts alone create no cap area. The retained uniform corner is cap-only;
+the excluded uniform corner is absent. Volume connectivity joins STRICT retained
+grid vertices only. Each zero corner inherits one unique incident strict-volume
+region; it never joins regions through a contact. Existing closed incidence,
+cyclic vertex links, orientations, Euler and shell/material checks remain required.
+See [proof scope/API](native-corner-region.md).
+
+Default Common/Cut each have one closed reference component, Euler -2, one
+material region and affine-reference volume 500; their sum is the cube's 1000.
+These are numerical L-reference volume diagnostics, NOT F volume/error bounds.
+A separate two-island case stays in two material regions. The field/domain/
+isovalue/phase are unchanged. Native CLI independently reconstructs closed edges,
+Euler, signed volume, prefix sharing and contact roles from the public arrays;
+raw/mixed/restored property ownership and downstream guards are tested.
+
+No native CAD shell/solid, stored cap/trim/whole-face attachment, .1 mm surface
+certificate or default GUI switch follows. Those guards remain, and source/
+restored seam bounds are not recertified. Next connect actual stored topology
+to this reference, then native geometry/solid validation and default GUI exposure.
+All other unfinished Stage 2–4 scope remains, including general/curved operands,
+history/snapping and broader consumers.
+
+Existing TKMesh/native test-worker/FreeCAD module targets reused with two compile
+jobs and one FreeCAD link job; no packages/system changes, persistence schema or
+transient result-layout change. A dense nodal cache bounds memory without a tree
+entry for every sample. Focused kernel cases pass **2/2** (2.151 s), native runtime/
+surface/region CLI **3/3** (12.16 s), complete kernel **90 cases** (92.72 s).
+Full migration passes **52/52** (296.01 s), remaining compatibility **24/24**
+(29.86 s; kernel entry separately passed). No native build/test failures or
+weakened downstream guards. Source/rebuilt snapshot checks and the explicit
+attachment/solid refusals passed in the full suite.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-region-occt-build-final.log`,
+`/tmp/implicit-corner-region-tests-build.log`,
+`/tmp/implicit-corner-region-freecad-build.log`,
+`/tmp/implicit-corner-region-target-final.log`,
+`/tmp/implicit-corner-region-kernel-final.log`,
+`/tmp/implicit-corner-region-compat-final.log`,
+`/tmp/implicit-corner-region-migration-final.log`.
+
+## Previous increment: whole-box corner homotopy and surface reference
 
 Explicit regularized CheckTopology now covers exact box-corner nodes using an
 odd grid <= the requested resolution, unchanged field/domain/phase, and all the

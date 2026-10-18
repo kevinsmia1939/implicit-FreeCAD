@@ -67,9 +67,10 @@ The check is over the face's computational box, not stored wire membership.
 
 Primitive/restored exact identity datums work; nonidentity placement rejects.
 Queries preserve source topology, source meshes and original/restored seam-bound
-provenance. No new persistence schema or saved proof flags. The corner-aware
-closed-region API explicitly rejects until implemented; ordinary strict-region
-queries remain unchanged. Existing native correspondence/mesh/shell/solid guards
+provenance. No new persistence schema or saved proof flags. The newer
+[closed-region reference](native-corner-region.md) now adds shared caps and
+strict material connectivity; ordinary strict-region queries remain unchanged.
+Existing native correspondence/mesh/shell/solid guards
 are not removed merely because this reference resolves.
 
 ## Verification and next work
@@ -81,10 +82,10 @@ depth/work, unknown near-zero identities and placement/settings refusal.
 oriented edges, boundary loops and Euler values, and checks raw/mixed/restored
 ownership, policy mismatch and guarded downstream consumers.
 
-Next add corner-aware closed-region capping on the SAME root/corner identities
-and strict-volume connectivity (zero contacts must not join volume regions).
-Then relate stored native caps/trims and whole implicit components to that
-reference before constructing/validating default native solids and GUI exposure.
+Shared-ID capping and strict-volume connectivity now exist in the
+[closed material reference](native-corner-region.md). Next relate stored native
+caps/trims and whole implicit components to that reference before constructing/
+validating default native solids and GUI exposure.
 Curved operands, snapping/history, richer editing and all remaining Stage 2–4
 acceptance requirements remain active.
 
