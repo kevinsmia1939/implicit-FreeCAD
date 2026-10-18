@@ -4,6 +4,10 @@ The OCCT-8 native module independently compares a stored mixed gyroid/box
 boundary graph with a fresh derivative-bound reference trace. This is a
 graph-level prerequisite for native-solid validation, not surface isotopy,
 feature-size/reach certification or a valid CAD solid.
+The [corner-aware extension](native-corner-attachment.md) now also accepts
+explicit regularized boundaries using a fixed-corner homotopy precondition.
+The strict zero-excluding policy remains unchanged; complete native-to-affine
+trim-cycle/whole-face attachment is still a separate gate.
 
 ```python
 import ImplicitOCCT

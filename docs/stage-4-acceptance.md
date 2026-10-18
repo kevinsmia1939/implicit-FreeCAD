@@ -67,6 +67,11 @@ The [closed corner material reference](native-corner-region.md) now adds shared
 caps, strict-volume connectivity and correct isolated-contact separation. Default
 Common/Cut references each have Euler -2 and one material region. Actual stored
 native correspondence/attachment and geometric/solid qualification still remain.
+The [corner-aware graph/cap checker](native-corner-attachment.md) now matches the
+stored graph to fresh traces and attaches native cap regions to the reference
+with strict common retained witnesses and clearance. Complete trim-cycle and
+whole implicit-component attachment remain separate required gates; this is not
+native shell/solid or Stage 4 completion.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

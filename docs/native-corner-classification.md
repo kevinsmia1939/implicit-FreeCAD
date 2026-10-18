@@ -67,8 +67,9 @@ typed properties, placed containers/links, FCStd restore and retained lifetime.
 
 The [whole-box corner homotopy/surface reference](native-corner-topology.md) now
 resolves the default surface and contacts. The [closed material reference](native-corner-region.md)
-now supplies caps and strict-volume grouping. Next: actual trim/cap/component attachment, then qualified default native solids
-and GUI exposure. Mesh Prepare,
-clipped coverage, correspondence/cap geometry, shell/solid factories still guard
+now supplies caps and strict-volume grouping. The [graph/cap checker](native-corner-attachment.md)
+now attaches cap regions. Next: complete trim-cycle and whole-component attachment,
+then qualified default native solids and GUI exposure. Mesh Prepare,
+clipped coverage, trim-cycle/cap geometry and shell/solid factories still guard
 this policy. General curved operands, snapping/history, richer editing and
 cross-workbench dispatch remain part of the unfinished Stage 2–4 requirements.

@@ -4,11 +4,65 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `a6cbb419b3` on
-`feature/native-implicit`, OCCT `5a3b910c86` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `159ff40dff` on
+`feature/native-implicit`, OCCT `3559021067` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: closed corner material reference and strict-volume grouping
+## Latest increment: stored corner graph and cap-region attachment
+
+Regularized CheckCorrespondence now uses the complete fixed-corner whole-box
+homotopy/surface gate, then all existing curve/vertex/wire/cap/p-curve and seam
+tangent checks against fresh native traces with the same material policy. Strict
+paths remain unchanged. The API's regularity_policy distinguishes strict_strata
+from fixed_corner_homotopy; the separate regularity API still excludes corner
+zeros. Default Common/Cut match 30 native edges, 19 vertices, 12 caps and one wire.
+
+CheckCapAttachment now uses the corner-aware closed reference's actual grid and
+the same exact corner nodal values in its planar interpolation. Strict common
+F/L retained points, native-cap IN classification and clearance beyond fresh
+seam/curve/p-curve/matching budgets attach 12 cap regions bijectively to the one
+reference component/material region. Independent CLI Part edge distances check
+the witnesses and bounds. Cap permutations, restored provenance/ownership,
+comparison/work/clearance limits and source immutability are tested.
+See [contracts and next work](native-corner-attachment.md).
+
+This is NOT native-to-affine-reference trim-cycle or whole implicit-component
+attachment. CheckTrimAttachment has an explicit early corner-policy guard until
+canonical corner anchors replace its edge-only model. Mesh/coverage/cap geometry/
+shell/solid guards remain. Source geometry and saved-bound flags are not changed;
+no native solid/default GUI or .1 mm whole-model claim. Next attach complete
+directed cycles and whole components, then geometry/solid/default GUI gates.
+All unfinished Stage 2–4 scope, including curved operands/history/snapping,
+remains active.
+
+Existing core/test-worker/FreeCAD module targets rebuilt with two compile jobs,
+one FreeCAD link job. No packages/system changes, persistence schema or transient
+layout changes. Two focused kernel cases pass (10.651 s), native runtime/region/
+attachment CLI **3/3** (24.45 s), complete kernel **92 cases** (104.19 s).
+Full migration passes **53/53** (311.09 s), remaining compatibility **24/24**
+(29.89 s; kernel entry separately passed). No native build/test failures or
+weakened downstream guards. The initial combined CLI/CMake patch had a context
+mismatch and was reapplied atomically before testing.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-attachment-occt-build.log`,
+`/tmp/implicit-corner-attachment-tests-build-final.log`,
+`/tmp/implicit-corner-attachment-freecad-build.log`,
+`/tmp/implicit-corner-attachment-target-final.log`,
+`/tmp/implicit-corner-attachment-kernel-final.log`,
+`/tmp/implicit-corner-attachment-compat-final.log`,
+`/tmp/implicit-corner-attachment-migration-final.log`.
+
+## Previous increment: closed corner material reference and strict-volume grouping
 
 Explicit regularized CheckRegionTopology now caps the checked surface on its
 actual odd grid, sharing canonical surface corner/root IDs without welding.

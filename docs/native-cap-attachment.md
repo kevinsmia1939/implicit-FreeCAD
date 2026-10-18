@@ -5,6 +5,8 @@
 conventional cap regions to the [closed region reference](native-region-topology.md).
 This is a numerical cap-region attachment policy, not whole native trim-wire
 correspondence or native shell/solid validation.
+The [corner-aware path](native-corner-attachment.md) now supports regularized
+boundaries with exact nodal corner values and the reference's actual odd grid.
 
 The query first requires independent [stored graph correspondence](native-trim-correspondence.md)
 and a resolved whole-box homotopy/closed region reference. Source topology is

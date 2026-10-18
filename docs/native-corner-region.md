@@ -76,9 +76,10 @@ immutability, work limits and independent material islands. Native CLI checks
 independently reconstruct edges, Euler and signed volumes from the public arrays;
 they cover raw/mixed/restored property ownership and guarded downstream builders.
 
-Next relate STORED native cap regions, complete trim cycles and whole implicit
-components to this reference. Then apply representation-aware geometric checks
+The [stored graph/cap checker](native-corner-attachment.md) now relates native
+cap regions to this reference. Next attach complete trim cycles and whole implicit
+components. Then apply representation-aware geometric checks
 and construct/validate default native solids before changing the default GUI.
-Native mesh/correspondence/cap-geometry/shell/solid guards remain in force.
+Native trim-cycle/mesh/cap-geometry/shell/solid guards remain in force.
 Curved operands, snapping/history, richer editing and all other unfinished
 Stage 2–4 acceptance gates stay active.

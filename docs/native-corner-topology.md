@@ -70,7 +70,7 @@ Queries preserve source topology, source meshes and original/restored seam-bound
 provenance. No new persistence schema or saved proof flags. The newer
 [closed-region reference](native-corner-region.md) now adds shared caps and
 strict material connectivity; ordinary strict-region queries remain unchanged.
-Existing native correspondence/mesh/shell/solid guards
+Existing native trim-cycle/mesh/shell/solid guards
 are not removed merely because this reference resolves.
 
 ## Verification and next work

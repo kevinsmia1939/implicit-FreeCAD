@@ -256,7 +256,9 @@ now distinguish retained corners from excluded isolated contacts without changin
 the field. The [whole-box corner homotopy/surface reference](native-corner-topology.md)
 now resolves the default 2-D zero set plus separate contacts. The newer
 [closed corner reference](native-corner-region.md) adds shared caps and strict
-volume grouping without joining isolated contacts. Actual native attachment still needs that policy before
+volume grouping without joining isolated contacts. [Stored graph/cap attachment](native-corner-attachment.md)
+now accepts that policy with fresh correspondence and clearance witnesses.
+Complete trim-cycle and whole-face attachment still need the policy before
 native-solid qualification and default-workbench integration. Legacy consumers
 retain explicit guards.
 
