@@ -4,11 +4,12 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
-| Corner-aware stored graph/cap attachment | Default native graph and all cap regions match fresh math/reference | Fixed-corner homotopy precondition, curve/p-curve bounds and strict common witnesses; complete trim-cycle/whole-face/native-solid/default-GUI gates remain |
+| Corner-aware directed trim cycles | Default native wires attach to the dual-cap/material reference | Canonical corner vs edge-root anchors, full oriented cycle bijections and component labels; actual whole-face/native-solid/default-GUI gates still required |
+| Corner-aware stored graph/cap attachment | Default native graph and all cap regions match fresh math/reference | Fixed-corner homotopy precondition, curve/p-curve bounds and strict common witnesses; full cycles handled separately, whole-face/native-solid/default-GUI gates remain |
 | Closed corner material reference | Default cube caps/grouping resolve for both operations | Shared surface/cap corners, strict-volume connectivity and contact separation; not stored native attachment, solid validity or .1 mm geometry certification |
 | Whole-box corner homotopy/reference | Default cube resolves under explicit corner policy | Shared exact corner IDs and separate point contacts; 2-D reference only, closed caps/grouping handled separately; native attachment/solid/default-GUI gates remain |
 | Regularized corner region queries | Native physical-distance classification and placed/restored owner tests | Checked retained corners witness boundaries; Taylor bounds exclude isolated contacts; insufficient separation remains unresolved, no solid/topology qualification |
-| Corner-aware topology persistence | Native schema 2 and existing FreeCAD property/FCStd path | Policy/contact identities and shared graph retained; bounds unverified on restore, mesh/trim-cycle/solid consumers still guarded |
+| Corner-aware topology persistence | Native schema 2 and existing FreeCAD property/FCStd path | Policy/contact identities and shared graph retained; bounds unverified on restore, mesh/whole-face/solid consumers still guarded |
 | Default gyroid native trim graph | Explicit corner-regularized native boundary for both operations | Shared edges/corners, checked caps, persistence and excluded-contact metadata; native attachment/solid/default-GUI integration still required |
 | Lattice-node plane sections | Default cube's six faces resolve with explicit exact-node mode | Shared grid-node identity, bounded curves and separate isolated contacts; native trim graph handled separately, no solid qualification from tracing alone |
 | Default gyroid corner model | Checked local lattice identities and inward derivative cones | Closed versus regularized local material is explicit; default whole trimming/reference/shell integration still required |

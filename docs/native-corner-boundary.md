@@ -52,7 +52,7 @@ and actual graph incidence, without tracing or re-certifying seam bounds.
 Native geometry property assignment, FCStd, content transfer and transactions
 retain that representation. See [persistence contracts](native-corner-persistence.md).
 
-Existing mesh/trim-cycle/shell/solid factories have explicit policy guards,
+Existing mesh/whole-face/shell/solid factories have explicit policy guards,
 independent of I/O support. [Physical-distance queries](native-corner-classification.md)
 now distinguish retained corner witnesses from excluded closed-set contacts.
 These guards prevent false solid qualification. The default Add
@@ -61,7 +61,8 @@ Gyroid workbench command is unchanged and still creates a field display.
 The [whole-domain corner surface reference](native-corner-topology.md) now
 resolves, and the [closed material reference](native-corner-region.md) now caps
 and groups its volumes. [Stored graph/cap attachment](native-corner-attachment.md)
-now resolves too. Next: complete trim-cycle/whole-component attachment; then
+now resolves too, as do [complete trim cycles](native-corner-trim.md).
+Next: actual whole-face membership and attachment; then
 validated native solids and default-workbench exposure. Curved operands and all
 remaining Stage 2–4 requirements remain required, including snapping, history,
 richer editing and representation-aware consumer dispatch.

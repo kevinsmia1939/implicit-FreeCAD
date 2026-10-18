@@ -56,10 +56,10 @@ regularity_policy. `check_mixed_cap_attachment` reports corner_policy and the
 resolved reference_resolution (zero if no completed reference is published).
 Restored snapshots/properties retain ownership after document close.
 
-Corner-aware `CheckTrimAttachment` now has an explicit early policy guard. Its
-old anchor model cannot distinguish a shared box corner from incident edge-root
-anchors. Mesh preparation/coverage, cap-geometry validation and native shell/
-solid construction remain guarded too. Matching graph/cap checks cannot enable
+The [corner-aware trim-cycle extension](native-corner-trim.md) now distinguishes
+shared box corners from incident edge-root anchors and matches full directed
+cycles. Mesh preparation/coverage, cap-geometry validation and native shell/
+solid construction remain guarded. Matching graph/cap/cycle checks cannot enable
 those consumers implicitly. All native validity/construction flags remain false.
 
 ## Verification and next work
@@ -70,8 +70,8 @@ work/comparison/clearance limits and source immutability. The CLI independently
 checks conventional Part edge distances, policy labels, source/restored property
 lifetime and downstream refusals. Legacy strict paths retain their tests.
 
-Next give the trim-cycle checker explicit canonical CORNER identities as well
-as ordered interior box-edge roots, then attach complete cycles and whole
-implicit components to the reference. After that come geometric/native-solid
+Corner-aware directed cycles now attach to the reference. Next establish actual
+native whole-face membership/restriction, including isolated-contact exclusion,
+and whole-face attachment. After that come geometric/native-solid
 validation and default GUI exposure. Curved operands, surviving-element history,
 snapping, richer editing and all unfinished Stage 2–4 requirements remain active.

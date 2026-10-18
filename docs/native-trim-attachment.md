@@ -5,6 +5,9 @@ OCCT-8 FreeCAD API as `ImplicitOCCT.check_mixed_trim_attachment(handle)`. It map
 stored contour arcs and complete directed trim wires to the common field/linear
 reference, including multiple holes on a single retained cap. It does not attach
 the whole native implicit face or construct/validate native CAD shells or solids.
+The [corner-aware extension](native-corner-trim.md) now adds canonical shared
+corner anchors, complementary corner-policy preservation and fixed-node reference
+provenance. Whole-face/contact membership and native-solid validity remain separate.
 
 ```python
 report = ImplicitOCCT.check_mixed_trim_attachment(handle, 32, 16, 4000000, 2000000)

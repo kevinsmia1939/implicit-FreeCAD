@@ -77,9 +77,10 @@ independently reconstruct edges, Euler and signed volumes from the public arrays
 they cover raw/mixed/restored property ownership and guarded downstream builders.
 
 The [stored graph/cap checker](native-corner-attachment.md) now relates native
-cap regions to this reference. Next attach complete trim cycles and whole implicit
-components. Then apply representation-aware geometric checks
+cap regions to this reference. [Complete trim cycles](native-corner-trim.md)
+now attach too. Next establish actual whole implicit-face membership/attachment.
+Then apply representation-aware geometric checks
 and construct/validate default native solids before changing the default GUI.
-Native trim-cycle/mesh/cap-geometry/shell/solid guards remain in force.
+Native whole-face/mesh/cap-geometry/shell/solid guards remain in force.
 Curved operands, snapping/history, richer editing and all other unfinished
 Stage 2–4 acceptance gates stay active.

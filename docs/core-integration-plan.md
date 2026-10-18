@@ -258,7 +258,8 @@ now resolves the default 2-D zero set plus separate contacts. The newer
 [closed corner reference](native-corner-region.md) adds shared caps and strict
 volume grouping without joining isolated contacts. [Stored graph/cap attachment](native-corner-attachment.md)
 now accepts that policy with fresh correspondence and clearance witnesses.
-Complete trim-cycle and whole-face attachment still need the policy before
+[Complete corner-aware trim cycles](native-corner-trim.md) now attach to the reference.
+Actual whole-face membership/restriction and attachment still need the policy before
 native-solid qualification and default-workbench integration. Legacy consumers
 retain explicit guards.
 

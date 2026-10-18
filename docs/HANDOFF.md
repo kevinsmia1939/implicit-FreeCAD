@@ -22,6 +22,33 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 59: complete corner-aware directed trim cycles
+
+CheckTrimAttachment now gives exact split corners canonical IDs distinct from
+the ordered interior box-edge roots. Each is one shared anchor, not three roots.
+Complement construction preserves source corner policy; dual references must
+share their actual grid/root provenance. Existing dual-cap region pairs,
+continuous curve matches and complete directed cyclic bijections remain required.
+Default Common/Cut attach 18 seams/one loop/one reference surface component
+(Euler -3), assigned to reference closed component 0/material region 0.
+See [contracts/API/next gates](native-corner-trim.md).
+
+Native API exposes policy, actual reference resolution and reference component
+Euler/shell/material labels. Genuine wire-start rotation, restore, source
+immutability, budget refusal and owned property lifetime have positive tests.
+No source proof flags recertified, schema/layout change or default GUI switch.
+Whole implicit-face attachment/native shell/solid/topology flags remain false.
+Next implement actual 2-D native face restriction/membership with isolated
+contact exclusion, not merely a filtered display mesh; then native geometry/
+shell/solid gates and default GUI. All other Stage 2–4 requirements stay active.
+
+Existing targets/dependencies reused; no packages/system changes. Both monolithic
+kernel CTest harnesses now allow 180 seconds because the expanded 94-case suite
+takes 126.76 s; all numerical/accuracy budgets are unchanged. Full verification:
+94/94 kernel cases, 54/54 FreeCAD migration/GUI checks (409.86 s), and 24/24
+remaining compatibility checks (37.89 s). Logs follow in PROGRESS.md.
+Restart the rebuilt fork; full goal remains active.
+
 ## Milestone 58: corner-aware stored graph and native cap-region attachment
 
 CheckCorrespondence now uses the complete fixed-corner whole-box homotopy gate
@@ -1621,7 +1648,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 92 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 94 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

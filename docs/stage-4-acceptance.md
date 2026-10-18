@@ -69,9 +69,13 @@ Common/Cut references each have Euler -2 and one material region. Actual stored
 native correspondence/attachment and geometric/solid qualification still remain.
 The [corner-aware graph/cap checker](native-corner-attachment.md) now matches the
 stored graph to fresh traces and attaches native cap regions to the reference
-with strict common retained witnesses and clearance. Complete trim-cycle and
-whole implicit-component attachment remain separate required gates; this is not
+with strict common retained witnesses and clearance. Whole implicit-component
+attachment remains a separate required gate; this is not
 native shell/solid or Stage 4 completion.
+The [corner-aware trim-cycle checker](native-corner-trim.md) now matches complete
+directed cycles with canonical shared corner anchors. Actual native 2-D face
+restriction/membership, isolated-contact exclusion and whole-face validation
+remain necessary before native-solid/default-GUI qualification.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

@@ -4,11 +4,64 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `159ff40dff` on
-`feature/native-implicit`, OCCT `3559021067` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `8de96c25bd` on
+`feature/native-implicit`, OCCT `0c55d8cf86` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: stored corner graph and cap-region attachment
+## Latest increment: complete corner-aware directed trim cycles
+
+CheckTrimAttachment now uses canonical exact split-corner anchors distinct from
+the ordered interior box-edge roots (edge IDs 0..11, corner IDs 12..19). It never
+counts one corner as three incident edge roots or welds near-corner points.
+Complement construction preserves the source policy; dual references must use
+the same actual grid/root provenance. All existing dual-cap pair, continuous
+curve and complete oriented cyclic bijections remain required.
+
+Default Common/Cut attach 18 seams to one reference loop/surface component,
+Euler -3, reference closed component 0/material region 0. API exposes policy,
+actual reference resolution and reference surface component Euler/shell/region
+labels. These are reference assignments, NOT actual whole-face membership,
+native shell/solid construction, topology/accuracy certification or a GUI switch.
+Source/restored proof flags are unchanged. See [contracts](native-corner-trim.md).
+
+Kernel tests cover both operations, all mappings, actual stored-wire starting-
+edge rotation, mixed topology restore, work/parameter refusal and source
+immutability. Native CLI independently checks native seam-vertex connectivity
+and the six shared physical corners, then restored property lifetime and remaining
+shell/solid guards. Whole-face membership/restriction must exclude isolated
+relative-box contacts before native construction; mesh-only omission is insufficient.
+All unfinished Stage 2–4 requirements, including curved operands/history/snapping,
+remain active.
+
+Existing core/test-worker/FreeCAD targets reused; no packages/system changes,
+schema or transient result-layout changes. Both monolithic kernel CTest harnesses
+now allow 180 s instead of 120 s: expanded 94-case audits take **126.76 s**.
+Numerical work, matching, geometry and accuracy budgets were NOT changed.
+Focused kernel tests pass **2/2** (11.056 s), native runtime/trim CLI **2/2**
+(19.56 s). Full kernel passes **94/94** (126.76 s), FreeCAD command-line/GUI
+migration **54/54** (409.86 s), and remaining compatibility **24/24** (37.89 s).
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S . -B build
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-trim-occt-build.log`,
+`/tmp/implicit-corner-trim-tests-build-final.log`,
+`/tmp/implicit-corner-trim-freecad-build.log`,
+`/tmp/implicit-corner-trim-root-configure.log`,
+`/tmp/implicit-corner-trim-target-final.log`,
+`/tmp/implicit-corner-trim-kernel-final.log`,
+`/tmp/implicit-corner-trim-compat-final.log`,
+`/tmp/implicit-corner-trim-migration-final.log`.
+
+## Previous increment: stored corner graph and cap-region attachment
 
 Regularized CheckCorrespondence now uses the complete fixed-corner whole-box
 homotopy/surface gate, then all existing curve/vertex/wire/cap/p-curve and seam

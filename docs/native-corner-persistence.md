@@ -47,7 +47,7 @@ Owned snapshots and subobjects retain native topology after document close.
 
 This is a low-level persisted boundary owner, not default-workbench exposure or
 a qualified native solid. The workbench's default Add Gyroid remains unchanged.
-Native mesh preparation, complete trim-cycle/whole-face
+Native mesh preparation, whole-face
 attachment and solid-codec source promotion have explicit
 guards until their algorithms support the policy. I/O acceptance cannot enable
 those consumers implicitly.
