@@ -7,6 +7,9 @@ long-term target is an nTop-class implicit modelling system.
 For editable primitive modelling, use the new [Implicit Modelling workbench](docs/implicit-modelling-workbench.md):
 one toolbar icon creates a native 10 × 10 × 10 mm gyroid with editable dimensions,
 period and level-set value in the tree's property editor.
+The OCCT-8 workbench's experimental native-boundary menu now demonstrates
+[topology-backed edge/vertex selection](docs/native-edge-vertex-selection.md),
+distinct from the simple default field preview.
 
 New: [native mixed gyroid/Part-box boundaries](docs/native-mixed-box.md), with
 intersection/subtraction, shared box-edge roots and trim wires, planar caps and live

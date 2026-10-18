@@ -13,6 +13,10 @@ The [restricted native solid factory](native-solids.md) now gates actual solids
 on whole-field topology, cap/edge/vertex coverage and stored tolerance checks.
 It is numerical implicit-aware validation, not general Part compatibility or
 completion of solid persistence, GUI selection/snapping and other Stage 4 gates.
+The restricted mixed GUI now exposes [all native edges and vertices](native-edge-vertex-selection.md),
+including point extraction, rigid subobjects and seam aliases. This is not
+integrated snapping, edit-stable naming or completion of the default gyroid's
+trimmed-solid workflow.
 
 ## Original prototype phases
 

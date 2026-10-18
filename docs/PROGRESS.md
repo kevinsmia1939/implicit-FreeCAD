@@ -4,11 +4,57 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `94175dd569` on
+Implementation heads: FreeCAD `9a154a3f91` on
 `feature/native-implicit`, OCCT `b032b19ae2` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: restricted native solids and focused primitive workbench
+## Latest increment: native edge/vertex discovery and GUI selection
+
+The mixed ComplexGeoData property now exposes actual Edge/Vertex subelements,
+canonical edge-endpoint indexing, mapped reference invalidation and independently
+owned point/curve results. No point welding or promotion of mesh/polyline points
+to topological vertices occurs. Selected vertices extract one stored point with
+empty normals/lines and point bounds, with supported rigid poses applied once.
+The C++ inspection API exposes native edge/vertex coordinates, endpoint IDs and
+seam aliases. Public recipe metadata containers are copied defensively.
+
+The mixed view draws conventional box edges and actual vertex markers, shares
+seam/edge nodes, retains legacy seam picking and adds persistent edge/vertex
+visibility switches without remeshing. The focused workbench adds a supported
+native-boundary selection demo in an experimental menu; the original default
+10 mm field gyroid is not silently replaced by an unrelated fixture or solid.
+See [native edge/vertex contracts](native-edge-vertex-selection.md).
+The mixed surface now shades with oriented analytical field-gradient normals
+instead of per-triangle flat normals, leaving cap normals/creases independent.
+Mesh coordinates and all geometric/solid validity flags remain unchanged.
+
+Tests caught round-trip differences in BRep vertex text (15 significant digits).
+They now check exact endpoint/edge identities plus machine-scale coordinate
+reserves instead of snapping actual vertices to curve poles or claiming bitwise
+precision. This is separate from the 0.1 mm whole-solid validation policy.
+Targeted CLI/property/reference/element/link/topology **6/6** (21.96 seconds),
+camera/pixel/instance/visibility/editor/surface GUI **5/5** (96.23 seconds).
+Logs: `/tmp/implicit-native-topology-cli-final.log`,
+`/tmp/implicit-native-topology-gui-retry.log`. Final OCCT-8 suite **41/41**
+(295.33 seconds), including independent analytical normals for both operations
+and the new camera/pixel/workbench/cache tests. Compatibility **25/25**
+(132.52 seconds), including unchanged **73 kernel cases**. Logs:
+`/tmp/implicit-native-topology-normal-migration-full.log`,
+`/tmp/implicit-native-topology-compat-full.log`.
+Viewport captures `/tmp/implicit-native-topology-preview.png` (before) and
+`/tmp/implicit-native-topology-preview-smooth.png` (after) were visually inspected;
+the final capture process completed after explicitly closing its temporary doc.
+Build log: `/tmp/implicit-native-topology-index-build.log` plus the normal-only
+increment `/tmp/implicit-native-topology-normal-build.log`. Two initial compiler
+errors (incomplete TopoDS_Edge type and mixed derived-shape ternary) were fixed
+before final verification; do not mistake the earlier failed build logs for the
+final result. Runtime tests were not run while libraries were being rebuilt.
+The remaining solid property/codec, default primitive trimming, snapping/history,
+curved operands and broader representation-aware consumer gates keep the full
+through-Stage-4 goal active. No OCCT, package or system-library changes this increment.
+FreeCAD checkpoint: `9a154a3f91`; OCCT remains `b032b19ae2`.
+
+## Previous increment: restricted native solids and focused primitive workbench
 
 GUI follow-up (2026-10-18, FreeCAD `93a2bb06ac`): **Implicit Modelling** workbench with a
 packaged SVG Add Gyroid icon and compiled `Implicit::Feature` creation. Default

@@ -223,6 +223,10 @@ checks in both directions, 3D edge/vertex deviations and stored tolerance gates
 before creating actual material-region solids. This is numerical implicit-aware
 validation; generic UV BOP/Part compatibility, solid property/codec integration,
 broader component restrictions and the remaining Stage 2–4 gates are not closed.
+The supported mixed property also exposes [native edges and vertices](native-edge-vertex-selection.md)
+through standard subelement discovery, owned point extraction and camera/pixel
+picking. Its mapped names remain conservative snapshot identities, not Boolean
+history. Solid persistence, snapping and broader consumers are still separate gates.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this

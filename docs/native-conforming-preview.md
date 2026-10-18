@@ -29,6 +29,12 @@ are shared without distance welding. The surface is picked/highlighted as
 `NativeFace1`, not a disposable triangle index. Existing cap/seam selection
 remains available. Placement is applied by the feature's existing view path.
 
+The preview now uses analytical field-gradient normals with per-vertex indexed
+binding, replacing flat triangle lighting. Cap normals remain independent, so
+cap/field creases stay crisp. This is display shading only, not a change to mesh
+positions, tolerances, silhouette accuracy or any validation flag. Native boundary
+edges/vertices are also selectable; see [selection contracts](native-edge-vertex-selection.md).
+
 Settings/snapshot changes regenerate synchronously; ordinary camera changes
 and repeated unchanged view updates reuse the cache. Failure clears the surface
 and reports an explicit preview error, leaving valid authoritative topology and
@@ -52,6 +58,9 @@ The output extends `prepare_mixed_mesh`:
 - `vertices`, `cap_triangles`, `seams`, `wires`: canonical local coordinates
   and zero-based indices, as documented in native-mesh-constraints.md.
 - `implicit_triangles`: oriented triples indexing those SAME vertices.
+- `implicit_normals`: aligned with `vertices`; oriented unit field normals at
+  nodes referenced by implicit triangles, zero at unused cap-only nodes. These
+  display normals are separate from cap normals and authoritative geometry.
 - `native_surface_meshed=True`: a candidate exists, not a coverage certificate.
 - `mesh_closed=True`: opposite paired edge uses and connected cyclic vertex links.
 - `field_distance_bound`: triangle-wide, one-sided distance to the **untrimmed**

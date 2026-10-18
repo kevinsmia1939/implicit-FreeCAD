@@ -331,3 +331,23 @@ completion of Stages 2–4. The full resumed goal stays active.
 Verified checkpoint: OCCT `b032b19ae2`, FreeCAD `94175dd569` (workbench commit
 `93a2bb06ac`); **73 kernel cases**, **40/40 migration**, **25/25 compatibility**
 passed. These tests qualify the documented restricted increment, not the full goal.
+
+Next increment: the mixed native property now exposes all Edge/Vertex subelements
+from shared OCCT topology, without welding coordinates or promoting polyline
+poles to vertices. Stored edge order and forward endpoint identity define vertex
+indices. The renderer shares seam/edge alias nodes, draws conventional boundary
+edges/actual point markers, and supplies exact stored-point extraction with
+once-applied rigid placements. Camera/pixel picks, native selection SubObjects,
+instance vertices, mapped links, restoration/visibility/failure clearing and
+cache reuse are covered. Standard BRep vertex text rounding is tested against
+machine-scale reserves with exact endpoint identity, not disguised by snapping.
+The focused workbench adds an explicit native-boundary demo, separate from the
+default simple field gyroid. This advances semantic topology selection only;
+integrated snapping/history, solid property persistence, curved operands and
+every other unfinished Stage 2–4 gate still prevent completion of the full goal.
+The mixed surface also uses analytical field-gradient normals for smooth shading,
+with cap normals/creases separate and no geometry/validation-policy change.
+Final verification: 41/41 OCCT-8 migration and 25/25 compatibility tests passed,
+including the unchanged 73 kernel cases. These establish the documented mixed
+selection/display increment, not completion of the overall goal.
+Checkpoint: FreeCAD `9a154a3f91`, OCCT unchanged `b032b19ae2`.

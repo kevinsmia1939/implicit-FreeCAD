@@ -25,11 +25,12 @@ cover the finite box domain (not a nonempty/volume certificate). Stored boundary
 lines can be retrieved through the complex-geometry interface. Requests for
 whole surface faces/points fail explicitly: returning only caps or a partial
 surface would be misleading. Native subelements now expose one-based
-`NativeFace1`, `CapN` and `SeamN` segments. Segments own the immutable snapshot;
+`NativeFace1`, `CapN`, `SeamN`, `EdgeN` and `VertexN` segments. Segments own the immutable snapshot;
 boundary lines and a first boundary vertex are available to native consumers.
 Unknown indices and segments from another snapshot reject. NativeFace lines
 are trim boundaries, not a surface tessellation. Subelement face meshing still
-rejects. Snapping, stable naming/history and implicit-surface picking remain open.
+rejects. The optional surface preview supports NativeFace1 picking; integrated
+snapping and edit-stable history remain open. See [edge/vertex selection](native-edge-vertex-selection.md).
 Nonidentity geometry transforms reject; instance/container/world-query handling
 is not yet qualified as seamless integration. New owners have the GeoFeature
 placement infrastructure, not a claim of completed placement consumer support.
@@ -121,8 +122,9 @@ use that order, including after topology I/O. Tracing section order is not used
 as an identity. Multi-face/open-contour tests compare every subelement's lines
 before/after I/O. Geometry snapshots remain queryable after source document close.
 
-The mixed view renders each cap and seam as its own Coin shape, preserving the
-aggregate coordinate buffers. Real Coin ray hits map to `CapN`/`SeamN`; detail
+The mixed view renders caps, edges and vertices as individual Coin shapes,
+preserving aggregate buffers and sharing seam/edge alias nodes. Real Coin ray
+hits map to caps, seams, other edges and vertices; detail
 paths target the whole cap/seam node, not a disposable triangle/line segment.
 FreeCAD selection registration, invalid-name rejection, restore and failed-
 recompute clearing are tested. These tests do not certify visual highlight
@@ -133,8 +135,8 @@ parameter edits or Boolean changes. Current GUI selections are discarded when
 the snapshot is replaced/cleared. The mapped-reference contract below now
 protects new typed owners against silent external LinkSub index retargeting.
 This is partial native selection integration, not completion of Stage 4's
-selection, snapping and history gates. No implicit surface is selectable through
-a mesh that does not exist yet.
+selection, snapping and history gates. NativeFace1 picking requires the optional
+transient surface preview.
 
 ## Mapped references and explicit stale attachments
 
@@ -189,7 +191,7 @@ replacement or document close. It is not a Part.Shape or an editable property
 snapshot, and assignment to either property type rejects.
 
 The result contains one `Element1`. Its mapped name retains the original
-NativeFace/Cap/Seam identity; `getLines(accuracy)` and
+NativeFace/Cap/Seam/Edge/Vertex identity; `getLines(accuracy)` and
 `getLinesFromSubElement("Element", 1)` return the selected topology's boundary
 polylines. Accuracy is not a surface-meshing request: these are stored degree-1
 curves. Bounds for caps/seams enclose their stored boundary geometry; native
@@ -211,10 +213,11 @@ matrices are supported; scales, reflections, projective/nonfinite matrices rejec
 Nonfinite transformed points reject too. This is ordinary double-precision
 placement, not a newly certified world-space 0.1 mm error bound at extreme scales.
 
-Surface/point sampling, nonidentity geometry mutation and independent selected-
+Surface/edge point sampling, nonidentity geometry mutation and independent selected-
 geometry persistence remain unsupported and reject. Save the owning feature and
 its mapped link instead. The first-vertex C++ hook applies the same placement,
-but integrated snapping remains open. Conventional consumers still need explicit
+and selected vertices now support `getPoints` extraction with empty normals and
+zero-size bounds. Integrated snapping remains open. Conventional consumers still need explicit
 representation dispatch; they cannot feed this wrapper to UV-dependent Part BOP.
 
 `native_element_smoke.py` compares every selected subelement against independent
@@ -229,7 +232,7 @@ all workbenches or the unfinished Stage 2/3 solid/Boolean gates.
 
 An empty native reference, `obj.getSubObject("")`, now returns owned C++
 `NativePlacedGeometry` through ComplexGeoData when the geometry property is
-nonempty. Unlike a selected-element result, it retains the NativeFace/Cap/Seam
+nonempty. Unlike a selected-element result, it retains the NativeFace/Cap/Seam/Edge/Vertex
 element types, counts and mapped names. Whole and per-element boundary lines,
 conservative domain bounds and first-vertex hooks follow the same once-applied
 rigid-placement convention. Null native geometry returns None, not a valid-

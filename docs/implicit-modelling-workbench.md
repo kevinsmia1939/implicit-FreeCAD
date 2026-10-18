@@ -5,6 +5,11 @@ from the workbench selector. Click the turquoise **Add gyroid (10 mm cube)**
 icon. A document is created if needed, and a selected **Gyroid** object appears
 in the tree. The older **Native Implicit** experimental workbench remains.
 
+On the OCCT 8 build, **Native boundaries (experimental)** also provides a
+[native edge/vertex selection demo](native-edge-vertex-selection.md) with the
+surface preview enabled, plus the supported selected-operand mixed commands.
+The demo is separate from the default primitive below.
+
 Select Gyroid in the tree and use the Data property editor:
 
 - **Gyroid dimensions:** Length, Width, Height, initially 10 mm each.

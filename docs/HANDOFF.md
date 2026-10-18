@@ -22,6 +22,52 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 47: native edge/vertex selection and smooth field shading
+
+The supported mixed geometry now exposes all EdgeN and actual VertexN elements
+through ComplexGeoData, immutable mapped references and owned selected wrappers.
+Edges follow the stored compound; vertices follow canonical forward endpoints
+of those edges by OCCT identity, never coordinate welding or display poles.
+Selected vertices provide one stored point, empty normals/lines and point bounds,
+including once-applied rigid container/App::Link placement and retained lifetime.
+The explicit OCCT-8 inspection API derives edge points, vertex points, endpoint
+pairs and seam-to-edge aliases from the same graph.
+
+The mixed renderer draws conventional boundary edges and actual point markers,
+shares seam/edge alias nodes and preserves legacy Seam picks. ShowBoundaryEdges
+and ShowVertices are persistent display-only switches. Clear/failure paths remove
+their buffers and mapped highlights. The focused modelling workbench now offers
+an explicit native-boundary selection demo (with surface preview), plus supported
+selected-operand mixed commands, under its experimental native-boundaries menu.
+The default 10 mm gyroid command is intentionally unchanged and is not yet the
+trimmed/solid workflow. See [edge/vertex contracts](native-edge-vertex-selection.md).
+The optional mixed-surface preview now uses analytical field-gradient vertex
+normals rather than flat triangle lighting, retaining separate cap normals and
+native edge creases. Geometry and all accuracy/solid-validation flags are unchanged.
+
+Important precision finding: conventional BRep vertex text uses 15 significant
+digits. Tiny vertex-coordinate round-trip differences are bounded by machine-scale
+test reserves, not hidden by snapping to curve poles. Endpoint identities and
+curve data remain checked separately. No bitwise vertex-persistence claim or
+automatic solid validation follows; restored solid builds freshly check geometry.
+
+Targeted CLI/property/reference/element/link/topology tests passed 6/6; targeted
+camera/pixel/instance/visibility/editor/surface GUI tests passed 5/5. Full OCCT-8
+suite passed 41/41 (295.33 seconds), including independent analytic-normal
+checks and the updated GUI bindings/cache tests. Compatibility passed 25/25
+(132.52 seconds); OCCT is unchanged and retains 73 kernel cases. A rendered
+viewport capture was visually inspected before/after shading changes.
+Logs are in PROGRESS.md. No OCCT/system-library/dependency edits were needed.
+FreeCAD checkpoint: `9a154a3f91`; OCCT remains `b032b19ae2`.
+Only existing minimal native targets were built with two compile/one link jobs;
+do not rebuild libraries while runtime tests/audits are active.
+
+Next: integrate real solid geometry with persistent properties/FCStd, extend the
+primitive-to-native trim workflow including its current degeneracy restrictions,
+then qualify snapping/history and representation-aware consumers. Curved operands,
+general component restrictions and all unfinished Stage 2–4 gates stay in scope;
+this milestone does not complete the full goal.
+
 ## Milestone 46: restricted native solids and focused primitive workbench
 
 OCCT `b032b19ae2` adds `BuildNativeSolids`, gated by whole-field/native shell
