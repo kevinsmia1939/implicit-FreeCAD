@@ -91,8 +91,10 @@ round-trip or document close. Existing `classify_mixed` remains separate.
 
 ## Remaining integration
 
-Next extend plane-rectangle tracing and box-edge roots to consume exact corner
-identities, sharing the original corner vertex rather than inventing one root
+The subsequent [lattice-node plane tracer](lattice-plane-sections.md) now consumes
+exact identities for rectangle sections, keeping isolated contacts separate.
+Next extend box-edge roots and native trim cycles, sharing the original corner
+vertex rather than inventing one root
 per edge or coordinate-welding. Cap/implicit cycles must use the local material
 policy consistently. Project each checked derivative cone onto the two free
 directions of a box face: opposite signs imply an entering contour, while equal

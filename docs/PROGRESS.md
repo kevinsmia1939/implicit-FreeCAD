@@ -4,11 +4,76 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `b79fbbe49d` on
-`feature/native-implicit`, OCCT `27ba200574` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `000e83bba2` on
+`feature/native-implicit`, OCCT `6e3876f47d` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: exact corner identities and local material models
+## Latest increment: exact lattice-node plane sections with isolated contacts
+
+`BRep_ImplicitPlaneSection::Settings.AllowExactLatticeNodes` explicitly enables
+analytic quarter-period nodes without changing the field. Shared grid-node
+identity prevents duplicate corner roots; whole-edge monotonicity qualifies
+endpoint roots, and signed derivative cones distinguish a curve entering a cell
+from an isolated quadrant contact. Isolated rectangle-corner zeros survive in
+Result.PointContacts instead of zero-length fake curves. Interior exact nodes
+must still join with valid graph degree. Unknown near-zeros and tangent/zero
+edges remain unresolved. Odd bounded fallback grids avoid repeated nonrecognized
+eighth-period samples with identical bounds and no geometry/domain perturbation.
+
+New mode requires effective identity field placement and coordinate-plane frames.
+TwoSum verifies the affine map itself rather than treating a rounded sum that
+lands on a lattice coordinate as exact. Legacy mode, constructors and worker
+protocol remain unchanged/default false; no consumer silently drops contacts.
+Point-only sections can be resolved even when Curves is empty, but are not empty
+geometry. Three curves/two contacts per default cube face and shared interior
+nodes have independent analytic coverage and graph tests. Reversed coordinate
+frames, pure contacts and unknown/rounded-affine/placement/budget refusals are
+covered. This is section computation, not shared cross-face B-Rep topology.
+
+OCCT-8 FreeCAD exposes `trace_gyroid_plane`, with keyword settings and an actual
+bool opt-in. Numeric point/curve data outlives documents and primitive round-trip;
+topology/solid validation flags remain false. Six-face endpoint/contact counts
+agree with the local corner model. The first CLI test incorrectly placed its
+interior-crossing rectangle partly outside the `[0,10]^3` source domain and was
+correctly refused. That fixture now tests the real interior lattice point
+`(5,5,0)` instead; the domain guard was not relaxed. Final CLI/runtime passed
+2/2 (1.11 seconds). Initial new kernel tests passed 2/2 in 408 ms, the complete
+interior/contact tests passed in 410 ms, and final reversed-frame coverage
+passed 2/2 in 465 ms. Logs:
+`/tmp/implicit-lattice-trace-targeted.log`, `/tmp/implicit-lattice-trace-targeted-final.log`,
+`/tmp/implicit-lattice-trace-orientation.log`, `/tmp/implicit-lattice-trace-cli.log`,
+`/tmp/implicit-lattice-trace-cli-final.log`.
+
+Settings/Result transient layout changed: TKMesh dependencies, native-face tests
+AND worker, and FreeCAD Implicit/ImplicitGui/_ImplicitOCCT consumers were rebuilt.
+Use a fresh fork process after rebuilding, not Python-only hot reload. No new
+persistence schema/saved proof flags/GUI command or default primitive change.
+Existing build targets and dependencies were reused, two compile/one link jobs;
+no packages/system libraries were changed. Commands are in
+[section contracts](lattice-plane-sections.md). Build/configure logs:
+`/tmp/implicit-lattice-trace-occt-build.log`, `/tmp/implicit-lattice-trace-occt-final-build.log`,
+`/tmp/implicit-lattice-trace-tests-build.log`, `/tmp/implicit-lattice-trace-tests-final-build.log`,
+`/tmp/implicit-lattice-trace-test-orientation-build.log`,
+`/tmp/implicit-lattice-trace-freecad-build.log`, `/tmp/implicit-lattice-trace-compat-scripts-build.log`,
+`/tmp/implicit-lattice-trace-harness-configure.log`.
+
+Final full regression passed **25/25 compatibility** (105.34 seconds), including
+**81 kernel cases** (78.51 seconds), then **47/47 OCCT-8 migration** (262.15
+seconds). Full logs: `/tmp/implicit-lattice-trace-compat-final.log`,
+`/tmp/implicit-lattice-trace-migration-final.log`. The compatibility facade was
+refreshed before testing; the native worker was rebuilt for the changed result
+layout. No library builds overlapped runtime/library audits.
+Source checkpoints: OCCT `6e3876f47d`, FreeCAD `000e83bba2`, published before
+the umbrella gitlinks. Existing persistence schemas and default GUI commands
+remain unchanged.
+
+Next construct canonical cross-face box-edge/corner roots and actual cap/implicit
+cycles, then extend corner-aware homotopy/reference/attachment and material/
+persistence policies. Resolving sections does not enable the default native
+solid. Curved/general operands, snapping/history, richer editing and broader
+consumers remain required; the full through-Stage-4 goal stays active.
+
+## Previous increment: exact corner identities and local material models
 
 OCCT adds `Geom_ImplicitGyroid::LatticeJet`: normalized binary-rational
 quarter-period recognition uses an exact FMA residual and leaves outputs unchanged

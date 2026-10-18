@@ -421,3 +421,18 @@ Verification: 79 kernel cases, 46/46 OCCT-8 migration and 25/25 compatibility
 tests passed; the refreshed OCCT-7 facade guard also passed 1/1. These establish
 the documented local model only, not support for default whole-box trimming.
 Checkpoint: OCCT `27ba200574`, FreeCAD `b79fbbe49d`.
+
+Next increment: explicit lattice-node plane tracing now resolves all six default
+cube-face rectangles with three open curves/two isolated contacts per face.
+Exact grid identity, whole-edge endpoint monotonicity and signed cell cones
+handle corner/interior zeros without welding. Rounded affine identities and
+unknown zeros remain unresolved. Isolated point contacts are preserved rather
+than silently treated as curves or omitted. Identity/coordinate-plane limits
+are explicit; existing builders/worker retain strict mode. The FreeCAD API is a
+transient mathematical section query, not native trim subelements or a solid.
+Independent analytic coverage, graph/point cases, six-face incidence, refusal,
+ownership and restore tests pass. Final regression: 81 kernel cases, 25/25
+compatibility and 47/47 OCCT-8 migration. Shared cross-face native vertices,
+box roots/cap cycles, corner-aware reference/attachment/material persistence and
+all unfinished Stage 2–4 requirements remain necessary. The full goal stays active.
+Checkpoint: OCCT `6e3876f47d`, FreeCAD `000e83bba2`.

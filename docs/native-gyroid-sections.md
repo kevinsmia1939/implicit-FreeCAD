@@ -4,6 +4,11 @@ This implements the next native OCCT increment, not completion of all four
 requested stages. It is independent of the older standalone marching-squares
 prototype and runs against the rebuilt OCCT 8.1 kernel.
 
+A newer [explicit lattice-node mode](lattice-plane-sections.md) resolves default
+cube-face rectangles with separate isolated contacts and an in-process FreeCAD
+API. The older worker/GUI section and restricted split paths below retain strict
+mode and do not silently consume those mixed-dimensional results.
+
 | Requested stage | Current result | Remaining acceptance gate |
 |---|---|---|
 | 1: gyroid–plane intersections | Native bounded-rectangle sections with derivative-bound acceptance, explicit unresolved diagnostics and GUI preview | General domain polygons, tangent/singular intersection resolution rather than rejection |

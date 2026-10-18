@@ -44,8 +44,10 @@ now supplies FCStd topology and native subelements. The
 recompute and actual component-aware rendering/picking under the workbench's
 experimental Native solids menu; the default Add Gyroid command is unchanged.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
-now have checked kernel queries; whole default-gyroid trimming still needs to
-consume them and is not enabled by that local result.
+now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
+resolves all six default cube faces, retaining isolated point contacts separately.
+Whole default-gyroid native trimming/solids still need shared cross-face topology
+and the remaining validation gates; they are not enabled by section success.
 General curved operands, broader native-solid qualification and the remaining
 Stage 4 integration gates remain open.
 

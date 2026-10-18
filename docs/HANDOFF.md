@@ -22,6 +22,47 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 52: lattice-node plane tracing and isolated contacts
+
+The native plane-rectangle tracer now has explicit AllowExactLatticeNodes mode.
+Exact quarter-period nodes share grid identity across cell edges; endpoint roots
+need whole-edge monotonicity, and signed derivative cones distinguish entering
+arcs from isolated cell-quadrant contacts. Graph checks preserve isolated
+rectangle-corner points separately in Result.PointContacts; no zero-length curves
+or coordinate welding. The six default cube faces each resolve to three open
+curves and two isolated contacts, with two exact corner curve ends. Interior
+grid-zero sharing and reversed coordinate frames also have positive tests.
+
+Mode requires identity field placement and coordinate-plane frames. TwoSum
+rejects a rounded affine map merely landing on a lattice point; unknown near-
+zeros, tangencies, precision/budget exhaustion remain unresolved. Bounded odd
+alternative grids avoid repeated eighth-period samples without changing geometry.
+Legacy tracing, B-Rep constructors and worker protocol keep strict mode false.
+Consumers of the new mode MUST handle contacts even if curves are empty.
+
+OCCT-8 FreeCAD exposes trace_gyroid_plane with keyword settings and explicit
+bool policy. Results are owned transient curve/contact data, not native trim
+B-Reps, subelements or validated solids. No GUI command/default primitive or
+persistence schema changed. See [section contracts](lattice-plane-sections.md).
+
+IMPORTANT: Settings/Result transient layout changed. TKMesh dependencies,
+native-face tests/worker and the FreeCAD Implicit/ImplicitGui/_ImplicitOCCT
+consumers were rebuilt with existing targets. Restart the fork after rebuilding;
+Python refresh alone is unsafe. No OCCT-8 headers enter the OCCT-7 build.
+
+Next integrate canonical box-edge/corner root identity and cap/implicit cycles,
+then corner-aware homotopy/reference/native attachment and explicit material/
+persistence policies. Whole default native trimming/solids remain unsupported;
+do not bypass independent gates or perturb the field. Curved/general operands,
+snapping/history, richer editing and broader consumers remain required. The full
+through-Stage-4 goal stays active. Verification is in PROGRESS.md.
+Final verification: **81 kernel cases**, **25/25 compatibility** (105.34 seconds),
+**47/47 OCCT-8 migration** (262.15 seconds); new CLI/runtime **2/2**, targeted new
+kernel cases **2/2**. The initial out-of-domain CLI fixture and its correction,
+ABI rebuilds, exact commands and logs are recorded in PROGRESS.md.
+Checkpoint: OCCT `6e3876f47d`, FreeCAD `000e83bba2`. The new query is available
+only in the wholly OCCT-8 fork; installed/OCCT-7 FreeCAD cannot load it.
+
 ## Milestone 51: exact lattice identities and checked local corner material
 
 OCCT adds Geom_ImplicitGyroid::LatticeJet, using normalized exact quarter-period
@@ -1407,7 +1448,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 79 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 81 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

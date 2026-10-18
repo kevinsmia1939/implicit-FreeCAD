@@ -243,6 +243,10 @@ lattice identities and explicit closed/regularized material neighborhoods for
 the unchanged default gyroid. Whole trimming, shared root/cap cycles and the
 homotopy/native attachment pipeline must still consume that model before the
 default primitive can become a qualified native solid.
+The [lattice-node plane tracer](lattice-plane-sections.md) now resolves all six
+default faces while explicitly retaining isolated contacts. Canonical cross-face
+box roots, cap/implicit cycles, corner-aware reference/attachment and persistence
+policies remain required; section success is not native-solid qualification.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this
