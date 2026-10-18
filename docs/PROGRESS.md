@@ -4,11 +4,63 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `a54c95ff6d` on
-`feature/native-implicit`, OCCT `91b3bdb2f6` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `922d50405d` on
+`feature/native-implicit`, OCCT `c9c0bb7915` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: schema-2 corner topology and FCStd ownership
+## Latest increment: regularized corner-aware physical classification
+
+The mathematical-region classifier now accepts the regularized corner policy.
+Existing strict-sign cap points and in-box opposite-sign brackets already give
+genuine regularized boundary witnesses. Fresh local corner identities add exact
+retained/split-corner witnesses. Uniform excluded corners never witness a
+boundary: an independent gradient/Hessian Taylor bound excludes a clipped ball
+about the exact anchor, yielding physical separation even outside the box.
+Insufficient bounds stay unresolved, not guessed near-boundary. No raw residual
+is treated as distance, and no stored seam bound is re-certified.
+See [derivation/contracts](native-corner-classification.md).
+
+Native classify_mixed now reports corner_policy. The existing whole ComplexGeoData
+query path applies rigid/container/App::Link precision reserves without changes
+to its result layout. New CLI tests cover real property/FCStd restore, placed
+links, lifetime and source provenance. Source field/domain are unchanged; no new
+persistence schema, default workbench switch or transient ABI layout change.
+Mesh/coverage/correspondence/cap-geometry/shell/solid guards remain. Next extend
+corner-aware whole-domain reference and actual attachment, then qualified default
+solids/GUI; all other unfinished Stage 2–4 requirements remain active.
+
+Existing TKMesh/native tests-worker/FreeCAD module and script targets rebuilt
+with two compile jobs, one FreeCAD link job; compatibility scripts refreshed.
+No packages/system libraries changed. Targeted kernel cases pass **3/3** (3.626 s),
+targeted native runtime/corner APIs **4/4** (7.25 s), complete kernel **86 cases**
+(87.94 s). Full migration passes **50/50** (275.98 s), remaining compatibility
+**24/24** (27.74 s; kernel entry separately passed). The interrupted goal turn's
+specific running test session was revalidated and resumed, not restarted; it
+finished with exit zero. No native build/test failures or weakened validation
+gates. An initial combined documentation patch failed context verification and
+was reapplied atomically. The source checkpoint is published above.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake --build build-freecad-implicit --target ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-classification-occt-build-final.log`,
+`/tmp/implicit-corner-classification-tests-build.log`,
+`/tmp/implicit-corner-classification-freecad-build.log`,
+`/tmp/implicit-corner-classification-compat-scripts.log`,
+`/tmp/implicit-corner-classification-target.log`,
+`/tmp/implicit-corner-classification-kernel-final.log`,
+`/tmp/implicit-corner-classification-compat-final.log`,
+`/tmp/implicit-corner-classification-migration-final.log`.
+
+## Previous increment: schema-2 corner topology and FCStd ownership
 
 The native codec now persists explicit regularized corner policy/contact metadata
 with the shared graph. Ordinary strict boundaries retain schema-1 output. Local

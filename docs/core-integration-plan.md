@@ -251,8 +251,10 @@ The [corner-aware boundary constructor](native-corner-boundary.md) now joins
 those sections into shared native edges/vertices/caps under an explicit
 regularized-corner policy. A [schema-2 codec](native-corner-persistence.md) now
 retains the policy/contacts and graph through the native FreeCAD property and
-FCStd without rebuilding. Classification and the whole-domain
-reference/actual attachment pipeline still need that policy before native-solid
+FCStd without rebuilding. [Corner-aware physical queries](native-corner-classification.md)
+now distinguish retained corners from excluded isolated contacts without changing
+the field. The whole-domain reference/actual attachment pipeline still needs
+that policy before native-solid
 qualification and default-workbench integration. Legacy consumers reject it.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a

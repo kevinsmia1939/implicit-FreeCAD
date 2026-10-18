@@ -17,6 +17,10 @@ of an unchanged native gyroid/box boundary. It does not classify the display
 mesh, approximate cap polygons, or a purported ordinary Part solid. Common
 uses `box AND F<=0`; BoxMinusField uses `box AND F>=0`, determined by the owned
 implicit face's orientation. The box and field remain immutable snapshots.
+Explicit [regularized corner policy](native-corner-classification.md) instead
+uses closure of the box's strict-sign three-dimensional material. Fresh corner
+identities distinguish retained boundary corners from excluded closed-set
+contacts; Taylor exclusion supplies physical lower bounds around the latter.
 
 ## Contract
 
@@ -27,7 +31,7 @@ dimensionless; they are never compared directly with that length tolerance.
 |---|---|
 | `inside` | The point is in both mathematical constraints, with a conservative boundary-distance lower bound greater than the requested tolerance |
 | `outside` | A violated constraint gives a conservative region/boundary-distance lower bound greater than the tolerance |
-| `near_boundary` | A retained point on a box cap, or a sign bracket entirely within the box, proves a boundary point exists within the tolerance ball |
+| `near_boundary` | A retained strict-sign cap point, a checked retained corner, or a sign bracket entirely within the box proves a boundary point exists within the tolerance ball |
 | `unresolved` | Neither separation nor a boundary witness was established; no guessed ON result |
 
 Field distance lower bounds use global Lipschitz exclusion and a local Taylor
@@ -65,6 +69,7 @@ query = native.classify_mixed(snapshot["boundary_handle"], (-.33, 0, 2), .1)
 
 The returned dictionary contains `state`, `distance_lower_bound`,
 `distance_tolerance`, `has_boundary_witness`, and `solid_validated=False`.
+The native handle API also reports `corner_policy` explicitly.
 If a witness exists it adds `witness_first`, `witness_last`,
 `witness_distance_upper_bound`, and `witness_bracket_width`. Cap witnesses repeat
 one point. Root witnesses give a segment containing a zero, not a guessed exact

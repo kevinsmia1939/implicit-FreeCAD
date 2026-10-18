@@ -4,6 +4,7 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Regularized corner region queries | Native physical-distance classification and placed/restored owner tests | Checked retained corners witness boundaries; Taylor bounds exclude isolated contacts; insufficient separation remains unresolved, no solid/topology qualification |
 | Corner-aware topology persistence | Native schema 2 and existing FreeCAD property/FCStd path | Policy/contact identities and shared graph retained; bounds unverified on restore, mesh/reference/solid consumers still guarded |
 | Default gyroid native trim graph | Explicit corner-regularized native boundary for both operations | Shared edges/corners, checked caps and excluded-contact metadata; persistence/reference/solid/default-GUI integration still required |
 | Lattice-node plane sections | Default cube's six faces resolve with explicit exact-node mode | Shared grid-node identity, bounded curves and separate isolated contacts; no shared cross-face native trim topology/solids yet |

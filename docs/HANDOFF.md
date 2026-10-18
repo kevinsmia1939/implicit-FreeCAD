@@ -22,6 +22,33 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 55: regularized corner-aware physical classification
+
+Classify now accepts regularized boundary/property/schema-2 snapshots. Existing
+strict-sign cap points and in-box sign brackets remain genuine witnesses.
+Fresh exact corner germs add retained/split corner boundary witnesses. Excluded
+closed-set contacts NEVER witness the regularized boundary: a gradient/Hessian
+Taylor bound excludes a clipped ball about each, giving physical distance lower
+bounds even outside the box. Insufficient bounds remain unresolved. Field/box
+math and seam-bound provenance stay unchanged; no solid/topology validation.
+See [derivation and contracts](native-corner-classification.md).
+
+Native classify_mixed reports corner_policy; whole ComplexGeoData queries reuse
+the existing rigid/container/link placement reserves. Kernel cases cover both
+operations/all corners, scaling/periodic translation, roots, restore and source
+immutability. CLI tests add real property/FCStd/placed-link ownership. No default
+workbench or mesh changes. Whole-domain corner-aware reference/actual attachment
+is next, followed by qualified default solids/GUI. Mesh/coverage/correspondence/
+cap-geometry/shell/solid guards remain; all other Stage 2–4 gates stay active.
+
+Existing TKMesh/test-worker/native FreeCAD module/script targets reused with two
+compile jobs; no new packages, system changes or transient ABI layout changes.
+Final verification: **86 kernel cases** (87.94 s), **50/50 migration** (275.98 s),
+remaining **24/24 compatibility** (27.74 s; kernel separately passed), targeted
+runtime/corner APIs **4/4** (7.25 s). Checkpoint: OCCT `c9c0bb7915`, FreeCAD
+`922d50405d`. Exact commands/logs and resumed-test evidence are in PROGRESS.md.
+Restart the rebuilt fork; the full goal remains active.
+
 ## Milestone 54: corner-policy topology persistence and document ownership
 
 Schema 2 of BRepClass3d_ImplicitBoxIO retains the regularized material policy,

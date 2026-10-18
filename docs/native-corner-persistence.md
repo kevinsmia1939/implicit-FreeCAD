@@ -47,10 +47,12 @@ Owned snapshots and subobjects retain native topology after document close.
 
 This is a low-level persisted boundary owner, not default-workbench exposure or
 a qualified native solid. The workbench's default Add Gyroid remains unchanged.
-Physical-distance classification, native mesh preparation, whole-domain trim
+Native mesh preparation, whole-domain trim
 correspondence, shell attachment and solid-codec source promotion have explicit
 guards until their algorithms support the policy. I/O acceptance cannot enable
 those consumers implicitly.
+The newer [corner-aware classifier](native-corner-classification.md) now supplies
+physical region queries without upgrading the boundary to a solid.
 
 ## Verification and next gates
 
@@ -64,8 +66,8 @@ Mapped references survive unchanged FCStd topology; undo restores old identities
 while changed material invalidates them conservatively. This is not tracking
 surviving elements through Boolean/parameter edits or completed topology history.
 
-Next implement corner-aware material/distance classification and whole-domain
-homotopy/reference/actual attachment checks. Only then qualify default native
+Next implement corner-aware whole-domain homotopy/reference/actual attachment
+checks. Only then qualify default native
 solids and expose the complete workflow. All curved-operand, snapping/history,
 editing and consumer requirements of Stages 2–4 remain active. Existing build
 directories/dependencies are reused; no new packages or system-library changes.

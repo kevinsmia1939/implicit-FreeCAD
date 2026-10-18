@@ -53,12 +53,12 @@ Native geometry property assignment, FCStd, content transfer and transactions
 retain that representation. See [persistence contracts](native-corner-persistence.md).
 
 Existing mesh/reference/shell/solid factories now have explicit policy guards,
-independent of I/O support. The physical-distance classifier also rejects this
-policy: its closed-set corner witnesses would not describe the regularized
-boundary correctly. These guards prevent false qualification. The default Add
+independent of I/O support. [Physical-distance queries](native-corner-classification.md)
+now distinguish retained corner witnesses from excluded closed-set contacts.
+These guards prevent false solid qualification. The default Add
 Gyroid workbench command is unchanged and still creates a field display.
 
-Next: policy-aware region classification; corner-aware
+Next: corner-aware
 whole-domain homotopy/reference and actual trim/cap/component attachment; then
 validated native solids and default-workbench exposure. Curved operands and all
 remaining Stage 2–4 requirements remain required, including snapping, history,
