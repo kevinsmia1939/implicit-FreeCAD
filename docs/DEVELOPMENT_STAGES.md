@@ -17,6 +17,10 @@ The restricted mixed GUI now exposes [all native edges and vertices](native-edge
 including point extraction, rigid subobjects and seam aliases. This is not
 integrated snapping, edit-stable naming or completion of the default gyroid's
 trimmed-solid workflow.
+The [explicit native solid codec](native-solid-topology-io.md) preserves actual
+component/wire/shell/material topology without numerical rebuilding, with restored
+validation flags false. It is a prerequisite, not completion of the dedicated
+solid property/owner and FCStd workflow.
 
 ## Original prototype phases
 

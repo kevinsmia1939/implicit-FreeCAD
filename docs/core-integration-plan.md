@@ -227,6 +227,10 @@ The supported mixed property also exposes [native edges and vertices](native-edg
 through standard subelement discovery, owned point extraction and camera/pixel
 picking. Its mapped names remain conservative snapshot identities, not Boolean
 history. Solid persistence, snapping and broader consumers are still separate gates.
+Actual restricted solid topology now has an [explicit native codec](native-solid-topology-io.md)
+that preserves component domains, wire assignments and shell/material relations
+without retracing. Restored numerical validity remains false. Dedicated solid
+geometry properties/owners and FCStd integration are the next required stage.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this

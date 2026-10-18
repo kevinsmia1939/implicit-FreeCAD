@@ -36,6 +36,9 @@ An explicit [restricted native-solid factory](docs/native-solids.md) now adds
 whole-cap/edge/vertex tolerance checks before constructing actual material-region
 solids. Its numerical implicit-aware validation does not qualify generic Part
 consumers, curved operands or the unfinished solid-persistence/GUI workflow.
+An [explicit native solid topology codec](docs/native-solid-topology-io.md) now
+preserves those actual result solids without recipe rebuilding; restored results
+remain unverified. Dedicated solid-property/FCStd integration remains next.
 General curved operands, broader native-solid qualification and the remaining
 Stage 4 integration gates remain open.
 

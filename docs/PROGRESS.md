@@ -4,11 +4,56 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `9a154a3f91` on
-`feature/native-implicit`, OCCT `b032b19ae2` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `61f412c1fe` on
+`feature/native-implicit`, OCCT `0e6377579d` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: native edge/vertex discovery and GUI selection
+## Latest increment: actual native solid topology persistence
+
+`BRepClass3d_ImplicitSolidIO` schema 1 preserves the actual restricted result's
+component domains, local source-wire assignments, face/shell/material grouping
+and requested tolerance, reusing its shared source cap/edge/wire graph. Loading
+constructs saved topology, not a numerical Boolean/meshing/separator recipe.
+Structural parent/child, incidence/connectedness, provenance/domain and work/input
+checks reject unsupported/corrupt structures. Restored solids are constructed
+but unverified; numerical/attachment/accuracy flags and shell/solid Closed flags
+are false. Saved Euler numbers are provenance, not accepted proof.
+
+Exports preserve original caches/flags and strip meshes from the copied payload;
+noncanonical freed children reject before touching source state. The cut-face
+orientation regression caught a builder-composition error: local stored wires
+must be added before assigning the reversed parent orientation. Topology hash
+lookup avoids quadratic wire matching. Reads are complete/atomic and bounded;
+source conventional-BRep parsing is not claimed to be allocator/DoS hardened.
+
+FreeCAD adds immutable `dumps_mixed_solids`, `loads_mixed_solids` and explicit
+`source_mixed_solids` APIs. Tests cover owned lifetime, original versus loaded
+validity, source classification, explicit new checking/building, corruption and
+safe rejection by existing boundary properties and Part. This codec does NOT
+yet provide the dedicated solid ComplexGeoData/property/owner or FCStd workflow;
+these remain the immediate next integration requirement. The full through-Stage-4
+goal is active, including all unfinished Stage 2/3/4 gates.
+
+Three new kernel cases (six mixed operation/component fixtures plus empty/full,
+locale, corruption, stream/destination and cache/flag checks) bring the suite to
+76. First full run passed 76 kernel cases (79.44 seconds), migration 42/42
+(207.24 seconds), compatibility 25/25 (106.60 seconds). Targeted new FreeCAD
+I/O/runtime tests passed 2/2 (10.24 seconds). Final ownership-guard verification:
+**76 kernel cases** (79.10 seconds), **42/42 migration** (207.57 seconds),
+**25/25 compatibility** (105.78 seconds). Final logs:
+`/tmp/implicit-solid-codec-kernel-final.log`, `/tmp/implicit-solid-codec-migration-final.log`,
+`/tmp/implicit-solid-codec-compat-final.log`. First-run logs: `/tmp/implicit-solid-codec-kernel-full.log`,
+`/tmp/implicit-solid-codec-migration-full.log`, `/tmp/implicit-solid-codec-compat-full.log`,
+`/tmp/implicit-solid-codec-cli.log`. See [codec policy](native-solid-topology-io.md).
+No packages/system libraries changed; separate OCCT 8 and preserved OCCT 7 builds
+remain isolated. Existing minimal targets and two compile/one link policy reused.
+Source checkpoints: OCCT `0e6377579d`, FreeCAD `61f412c1fe`. Build logs:
+`/tmp/implicit-solid-codec-config.log`, `/tmp/implicit-solid-codec-ownership-build.log`,
+`/tmp/implicit-solid-codec-freecad-build.log`. GDB exported-function breakpoints
+and exception catches diagnosed the reversed-parent wire-composition failure;
+the OCCT Release build does not provide source-line debug symbols.
+
+## Previous increment: native edge/vertex discovery and GUI selection
 
 The mixed ComplexGeoData property now exposes actual Edge/Vertex subelements,
 canonical edge-endpoint indexing, mapped reference invalidation and independently

@@ -94,8 +94,10 @@ not per-solid membership, and is independent of display triangles. Its
 `solid_validated` flag records the owned snapshot's scoped validation policy.
 
 Snapshots/faces survive document close. The source topology, caches and bound
-provenance are unchanged. FCStd still persists the original mixed boundary;
-this increment adds **no solid property/codec**. A fresh solid build rechecks
+provenance are unchanged. An [explicit solid topology codec](native-solid-topology-io.md)
+now preserves actual result topology without retracing, but clears restored
+validation flags. FCStd still persists the original mixed boundary; a dedicated
+solid geometry property/owner remains required. A fresh solid build rechecks
 restored boundary data; it never trusts a saved seam-verification flag.
 
 ## Verification and remaining work

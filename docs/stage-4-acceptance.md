@@ -351,3 +351,16 @@ Final verification: 41/41 OCCT-8 migration and 25/25 compatibility tests passed,
 including the unchanged 73 kernel cases. These establish the documented mixed
 selection/display increment, not completion of the overall goal.
 Checkpoint: FreeCAD `9a154a3f91`, OCCT unchanged `b032b19ae2`.
+
+Next increment: explicit solid topology schema 1 now restores actual component
+field faces, source-wire assignments, shared caps/edges/vertices and shell/material
+relationships without numerical rebuilding. Restored qualification flags and
+shell/solid Closed flags stay false; structural graph checks do not replace the
+independent field/topology/geometry pipeline. Both operations, multiple solids,
+cavity shells, ownership, corruption, locale and source cache/flag preservation
+are covered. FreeCAD exposes owned codec/source APIs; its existing boundary
+property and Part correctly reject these solid snapshots. Dedicated solid
+geometry properties/owners, FCStd integration and all remaining Stage 2–4 gates
+remain required. The full goal is not achieved by this codec prerequisite.
+Verified checkpoint: OCCT `0e6377579d`, FreeCAD `61f412c1fe`; 76 kernel cases,
+42/42 OCCT-8 migration and 25/25 compatibility tests passed.

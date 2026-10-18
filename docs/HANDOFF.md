@@ -22,6 +22,44 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 48: actual native solid topology codec
+
+`BRepClass3d_ImplicitSolidIO` now preserves actual restricted solid result topology
+without numerical rebuilding. Its bounded schema-1 record reuses the original
+shared cap/edge/wire source graph and stores exact component domains, explicit
+wire assignments, face-to-shell and shell-to-material relationships. Structural
+checks include canonical provenance/relationships, distinct opposite edge uses
+and connected shell face graphs; they are NOT whole-field numerical validity.
+
+Loading reconstructs genuine native solids, including separate islands/cavity
+shells, but clears validity/attachment/accuracy flags and shell/solid Closed flags.
+Source seam bounds remain unverified. Saved proof flags, display meshes and
+transient solver state are never trusted. Export preserves source caches/flags;
+manually freed child topology rejects before the source codec can freeze it.
+The cut-face loader must add LOCAL source wires while the parent is forward,
+then set the parent orientation: reversing first makes BRep_Builder compose the
+wire orientation again. The both-operation tests caught and protect this case.
+
+OCCT-8 FreeCAD exposes `dumps_mixed_solids`, `loads_mixed_solids` and the explicit
+`source_mixed_solids` getter. Loaded handles/faces survive document closure;
+the source getter returns the original boundary, not result solids. Explicit
+rebuild from that source creates a new qualified result, not certification of
+the old loaded topology. Existing boundary properties/Part APIs reject solid
+handles. See [solid codec contracts](native-solid-topology-io.md).
+
+This is a required persistence prerequisite, NOT a dedicated solid property,
+FCStd solid owner or completed GUI integration. Next implement actual result
+topology in a representation-aware ComplexGeoData/property/owner; do not present
+the original SOURCE boundary as if it were that result or use a PropertyString
+recipe as the final geometry property. Preserve component/face/wire/shell identity
+and explicit unverified restore/recheck policy, transactions, placements and safe
+consumer dispatch. Full Stage 2 curved operands/general restrictions and Stage 4
+snapping/history/GUI requirements remain active. Verification is in PROGRESS.md.
+Checkpoint: OCCT `0e6377579d`, FreeCAD `61f412c1fe`. Final suites passed
+**76 kernel cases**, **42/42 migration**, **25/25 compatibility**. No dependencies
+were installed and no system libraries changed. Build/test/debug commands and
+logs are recorded in PROGRESS.md and the codec guide.
+
 ## Milestone 47: native edge/vertex selection and smooth field shading
 
 The supported mixed geometry now exposes all EdgeN and actual VertexN elements
@@ -1199,6 +1237,7 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | JSON | FreeCAD's bundled nlohmann JSON |
 | Git / GitHub CLI (`gh`) | Commits, branches, submodules, GitHub repo creation/push/settings |
 | ripgrep (`rg`), shell, `apply_patch` | Source inspection and edits during assisted development |
+| GDB | Exported-function/exception debugging; OCCT Release lacks source-line symbols |
 | CTest | Standalone and native regression orchestration |
 | clang-format | Available; use the FreeCAD formatting configuration |
 | Xvfb | Available for isolated native GUI regression runs |
@@ -1268,7 +1307,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 73 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 76 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
