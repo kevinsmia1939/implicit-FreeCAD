@@ -4,11 +4,74 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `0ed6b921ce` on
-`feature/native-implicit`, OCCT `8ed9300174` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `a54c95ff6d` on
+`feature/native-implicit`, OCCT `91b3bdb2f6` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: corner-aware native default boundary graph
+## Latest increment: schema-2 corner topology and FCStd ownership
+
+The native codec now persists explicit regularized corner policy/contact metadata
+with the shared graph. Ordinary strict boundaries retain schema-1 output. Local
+corner math, actual retained/excluded corner vertices, split-corner seam ends
+and exact cap planes are checked without tracing or upgrading saved seam bounds.
+Malformed metadata/records reject atomically. Native property assignment, real
+FCStd restore, content transfer, subobjects and undo/redo now retain that graph.
+Mapped names are record-digest identities; material changes invalidate stale
+references, not silently retarget them. No Boolean-history completion claim.
+
+Native mesh Prepare/CheckCoverage, CheckCorrespondence, CheckCapGeometry,
+BuildNativeShells and solid codec source validation have explicit corner-policy
+guards now that I/O no longer blocks that policy. Distance classification still rejects. No default workbench
+switch or valid-solid claim. Next implement corner-aware classification and
+whole-domain reference/actual attachment, then qualified default solids/GUI;
+all other unfinished Stage 2–4 requirements remain active.
+See [contracts](native-corner-persistence.md).
+
+Builds reused existing TKMesh, native tests/worker, native FreeCAD module and
+script targets, plus compatibility scripts; no new packages, system-library
+changes or transient layout changes. Three focused kernel cases pass (3.854 s),
+the initial native corner/property CLI/runtime passes **3/3** (5.15 s), complete
+kernel passes **84 cases** (87.63 s), and remaining compatibility **24/24**
+(27.85 s). The first full migration passes **49/49** (286.45 s), and the final
+reference-target rerun passes **2/2** (2.74 s). Review then added explicit guards
+for direct CheckCapGeometry/CheckCoverage calls (previously blocked by the codec)
+and direct negative kernel tests. Final rebuilt guard regression passes:
+**84 kernel cases** (87.42 s), **49/49 migration** (289.13 s), remaining
+**24/24 compatibility** (29.22 s; kernel entry separately passed) and targeted
+corner CLI/runtime **3/3** (5.18 s). No native test/build failures occurred;
+the initial combined documentation patch failed context verification and was
+reapplied without partial file changes. No numerical gates were relaxed.
+
+Commands use the existing directories:
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake --build build-freecad-implicit --target ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+ctest --test-dir build-freecad-occt8/migration-tests -R '^implicit_occt8_corner_persistence$' --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-io-occt-build-final.log`,
+`/tmp/implicit-corner-io-tests-build.log`,
+`/tmp/implicit-corner-io-freecad-build.log`,
+`/tmp/implicit-corner-io-compat-scripts.log`,
+`/tmp/implicit-corner-io-kernel-final.log`,
+`/tmp/implicit-corner-io-compat-final.log`,
+`/tmp/implicit-corner-io-migration-final.log`,
+`/tmp/implicit-corner-io-target-final.log`.
+The final direct-validation guards additionally use
+`/tmp/implicit-corner-io-occt-guards-build.log`,
+`/tmp/implicit-corner-io-tests-guards-build.log`,
+`/tmp/implicit-corner-io-kernel-guards-final.log`,
+`/tmp/implicit-corner-io-migration-guards-final.log` and
+`/tmp/implicit-corner-io-compat-guards-final.log`.
+
+## Previous increment: corner-aware native default boundary graph
 
 The explicit regularized corner policy now builds the unchanged default gyroid/
 cube boundary for both operations, with shared real topology (30 edges/19

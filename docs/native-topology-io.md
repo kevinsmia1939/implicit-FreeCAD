@@ -1,6 +1,6 @@
 # Native mixed-box topology persistence
 
-Explicit schema-1 `BRepClass3d_ImplicitBoxIO` preserves the authoritative gyroid
+Explicit schema-1/2 `BRepClass3d_ImplicitBoxIO` preserves the authoritative gyroid
 and the **shared cap/seam/wire topology** of supported mixed boundaries. This
 advances the active [through-Stage-4 goal](stage-4-acceptance.md); it does not
 complete conforming meshing, solid validation or general curved B-Rep support.
@@ -14,10 +14,10 @@ numerical rebuilding; field graphs and sphere prototypes remain separate paths.
 ## Representation and limits
 
 The newer explicit [corner-regularized boundary](native-corner-boundary.md)
-is NOT supported by schema 1. Writing it rejects before output, including
-property assignment and consumers that privately copy through this codec.
-An explicit policy-aware schema and corner checks are required before saving
-that graph; silently omitting isolated-contact/material metadata is forbidden.
+uses [schema 2](native-corner-persistence.md), retaining the material policy and
+checked contact identities. Ordinary strict boundaries keep schema-1 output.
+Saving a boundary does not qualify mesh/reference/solid consumers: those retain
+explicit corner-policy guards until their algorithms support it.
 
 One record combines:
 

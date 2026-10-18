@@ -249,7 +249,9 @@ box roots, cap/implicit cycles, corner-aware reference/attachment and persistenc
 policies remain required; section success is not native-solid qualification.
 The [corner-aware boundary constructor](native-corner-boundary.md) now joins
 those sections into shared native edges/vertices/caps under an explicit
-regularized-corner policy. Persistence/classification and the whole-domain
+regularized-corner policy. A [schema-2 codec](native-corner-persistence.md) now
+retains the policy/contacts and graph through the native FreeCAD property and
+FCStd without rebuilding. Classification and the whole-domain
 reference/actual attachment pipeline still need that policy before native-solid
 qualification and default-workbench integration. Legacy consumers reject it.
 

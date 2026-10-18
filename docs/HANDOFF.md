@@ -22,6 +22,31 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 54: corner-policy topology persistence and document ownership
+
+Schema 2 of BRepClass3d_ImplicitBoxIO retains the regularized material policy,
+corner counts and excluded contacts alongside the actual shared graph. Strict
+boundaries still write unchanged schema 1. Local corner germs and actual native
+corner vertices/seam-end incidences are checked on write/read, not retraced;
+restored seam bounds remain unverified. Metadata corruption is atomic.
+The existing native geometry property now supports real FCStd, content transfer,
+subobjects and undo/redo for that graph. No default workbench change or solid
+qualification. See [contracts](native-corner-persistence.md).
+
+IMPORTANT: removing the former codec rejection must not open unsupported
+consumers. Native mesh Prepare/CheckCoverage, CheckCorrespondence, CheckCapGeometry,
+BuildNativeShells and solid codec source validation explicitly guard the policy.
+Old physical-distance classification still rejects. Whole-domain corner-aware reference/actual
+attachment and region classification remain next, then validated default solids
+and GUI exposure. Curved operands and all unfinished Stage 2–4 gates remain.
+
+Existing TKMesh/native-test-worker/FreeCAD module and script targets reused; no
+new dependencies or ABI-layout changes. Restart the rebuilt fork. Final checks:
+**84 kernel cases** (87.42 s), **49/49 migration** (289.13 s), remaining **24/24
+compatibility** (29.22 s; kernel separately passed), targeted CLI/runtime **3/3**
+(5.18 s). Checkpoint: OCCT `91b3bdb2f6`, FreeCAD `a54c95ff6d`.
+Exact commands/logs are in PROGRESS.md; full goal remains active.
+
 ## Milestone 53: default-corner native boundary graph
 
 Explicit `CornerPolicy::Regularized` / `mixed_box(..., corner_policy="regularized")`

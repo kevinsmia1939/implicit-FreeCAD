@@ -43,17 +43,22 @@ The facade reports `corner_policy`, `exact_corner_count`, `corner_contour_ends`,
 `planar_corner_contacts` and `excluded_corner_contacts`, alongside actual
 edge/vertex IDs, conventional cap copies and owned native handles.
 
-## Deliberately unfinished consumers
+## Persistence and deliberately unfinished consumers
 
-Schema-1 mixed topology I/O cannot encode the new material policy and therefore
-rejects it before writing anything. Native geometry property assignment, existing
-mesh/reference/shell/solid factories using that codec also reject. The previous
-physical-distance classifier explicitly rejects this policy: its closed-set
-corner witnesses would not describe the regularized boundary correctly.
-These guards prevent silent contact loss or false qualification. The default
-Add Gyroid workbench command is unchanged and still creates a field display.
+Schema-2 mixed topology I/O now encodes the new material policy, corner counts
+and excluded contacts alongside the shared graph. Ordinary strict boundaries
+continue writing unchanged schema-1 records. A load checks local corner math
+and actual graph incidence, without tracing or re-certifying seam bounds.
+Native geometry property assignment, FCStd, content transfer and transactions
+retain that representation. See [persistence contracts](native-corner-persistence.md).
 
-Next: policy-aware persistence and region classification; corner-aware
+Existing mesh/reference/shell/solid factories now have explicit policy guards,
+independent of I/O support. The physical-distance classifier also rejects this
+policy: its closed-set corner witnesses would not describe the regularized
+boundary correctly. These guards prevent false qualification. The default Add
+Gyroid workbench command is unchanged and still creates a field display.
+
+Next: policy-aware region classification; corner-aware
 whole-domain homotopy/reference and actual trim/cap/component attachment; then
 validated native solids and default-workbench exposure. Curved operands and all
 remaining Stage 2–4 requirements remain required, including snapping, history,

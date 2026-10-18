@@ -47,11 +47,15 @@ Latest default-gyroid increment constructs actual corner-aware native trim
 graphs for both operations, including shared canonical corner vertices and
 separate excluded closed-set contacts. The field/domain are unchanged and
 the seam target remains 0.1 mm. This is not whole-default solid qualification:
-policy-aware persistence/classification, corner-aware whole-domain reference
+corner-aware classification, whole-domain reference
 and actual attachment/validation are still required before switching the
 default GUI primitive. Unsupported legacy consumers reject explicitly.
 See [corner boundary contracts](native-corner-boundary.md). The full goal
 and curved-operand/snapping/history/consumer requirements remain active.
+Schema-2 [corner persistence](native-corner-persistence.md) now retains policy,
+contacts and actual native topology in FCStd/content transfer/undo/redo without
+rebuilding. This advances document ownership only; it does not remove the
+explicit mesh/reference/solid and distance-classification guards above.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;
