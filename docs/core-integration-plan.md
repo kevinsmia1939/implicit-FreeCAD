@@ -247,6 +247,11 @@ The [lattice-node plane tracer](lattice-plane-sections.md) now resolves all six
 default faces while explicitly retaining isolated contacts. Canonical cross-face
 box roots, cap/implicit cycles, corner-aware reference/attachment and persistence
 policies remain required; section success is not native-solid qualification.
+The [corner-aware boundary constructor](native-corner-boundary.md) now joins
+those sections into shared native edges/vertices/caps under an explicit
+regularized-corner policy. Persistence/classification and the whole-domain
+reference/actual attachment pipeline still need that policy before native-solid
+qualification and default-workbench integration. Legacy consumers reject it.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this

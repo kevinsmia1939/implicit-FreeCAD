@@ -13,6 +13,12 @@ numerical rebuilding; field graphs and sphere prototypes remain separate paths.
 
 ## Representation and limits
 
+The newer explicit [corner-regularized boundary](native-corner-boundary.md)
+is NOT supported by schema 1. Writing it rejects before output, including
+property assignment and consumers that privately copy through this codec.
+An explicit policy-aware schema and corner checks are required before saving
+that graph; silently omitting isolated-contact/material metadata is forbidden.
+
 One record combines:
 
 - The existing explicit primitive record: gyroid parameters, finite box domain,

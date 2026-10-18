@@ -4,6 +4,7 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Default gyroid native trim graph | Explicit corner-regularized native boundary for both operations | Shared edges/corners, checked caps and excluded-contact metadata; persistence/reference/solid/default-GUI integration still required |
 | Lattice-node plane sections | Default cube's six faces resolve with explicit exact-node mode | Shared grid-node identity, bounded curves and separate isolated contacts; no shared cross-face native trim topology/solids yet |
 | Default gyroid corner model | Checked local lattice identities and inward derivative cones | Closed versus regularized local material is explicit; default whole trimming/reference/shell integration still required |
 | Native solid property/FCStd owner | Implemented in OCCT-8 native module | Actual solid/component topology, typed property, immutable transactions and unverified restore |

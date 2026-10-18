@@ -4,11 +4,60 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `000e83bba2` on
-`feature/native-implicit`, OCCT `6e3876f47d` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `0ed6b921ce` on
+`feature/native-implicit`, OCCT `8ed9300174` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: exact lattice-node plane sections with isolated contacts
+## Latest increment: corner-aware native default boundary graph
+
+The explicit regularized corner policy now builds the unchanged default gyroid/
+cube boundary for both operations, with shared real topology (30 edges/19
+vertices), 18 seams, 12 interior box-edge roots and separate excluded isolated
+corner contacts. Canonical corner IDs join adjacent contours; no field/domain
+perturbation, root welding, mesh-backed fake surfaces or solid promotion.
+See [full contracts](native-corner-boundary.md).
+
+FreeCAD `mixed_box(..., corner_policy="regularized")` and inspect results retain
+the policy/contact metadata and owned graph. Legacy default stays strict reject.
+Source codec writing, property assignment and dependent reference/mesh/shell/
+solid consumers reject the unsupported policy; old distance classification also
+rejects. Default Add Gyroid stays a field display. Corner-aware persistence,
+classification, whole-domain reference/actual attachment and qualified solids
+remain next; all remaining Stage 2–4 requirements stay active.
+
+Builds reused existing targets/dependencies: OCCT TKMesh (transitive core), native
+tests/worker, FreeCAD Implicit/ImplicitGui/_ImplicitOCCT/ImplicitScripts and
+compatibility ImplicitScripts. Boundary ABI changed; restart the fork. No package,
+system-library or security-policy modifications. New tests pass **2/2** (2.823 s),
+native CLI/runtime **2/2** (2.26 s), complete kernel **83 cases** (81.99 s).
+Full verification: **48/48 OCCT-8 migration** (268.45 s); compatibility
+**24/24 excluding the separately passed kernel entry** (27.15 s), covering all
+25 registered compatibility entries across the two runs. GUI surface/live-solid
+and demo workflows all pass. New kernel and native CLI tests passed first try;
+no existing accuracy/validity gates were weakened to obtain these results.
+
+Commands/logs:
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake --build build-freecad-implicit --target ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+Logs: `/tmp/implicit-corner-boundary-occt-build.log`,
+`/tmp/implicit-corner-boundary-tests-build-final.log`,
+`/tmp/implicit-corner-boundary-freecad-build.log`,
+`/tmp/implicit-corner-boundary-compat-scripts.log`,
+`/tmp/implicit-corner-boundary-kernel-final.log`,
+`/tmp/implicit-corner-boundary-compat-final.log`,
+`/tmp/implicit-corner-boundary-migration-final.log`.
+
+## Previous increment: exact lattice-node plane sections with isolated contacts
 
 `BRep_ImplicitPlaneSection::Settings.AllowExactLatticeNodes` explicitly enables
 analytic quarter-period nodes without changing the field. Shared grid-node

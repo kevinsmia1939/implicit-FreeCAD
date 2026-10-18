@@ -22,6 +22,34 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 53: default-corner native boundary graph
+
+Explicit `CornerPolicy::Regularized` / `mixed_box(..., corner_policy="regularized")`
+now connects the unchanged default cube's face sections into actual shared
+native topology: 18 seams, 12 retained box intervals, 12 interior edge roots,
+19 vertices. Six split corners each join two contours by canonical identity;
+the isolated closed-set contact stays separate metadata. Conventional caps pass
+BRepCheck and every native edge has two opposite uses. Exact field faces have
+no fake UV surface; no mesh becomes native geometry. Both operations pass.
+Exact restored identity datums, scaling and periodic translation are tested.
+
+Legacy default remains reject. Schema-1 topology writing rejects regularized
+policy atomically, protecting property assignment and dependent mesh/reference/
+shell/solid factories. Old physical-distance classification explicitly rejects
+too. No default workbench or solid-validity claim changed. Next extend policy-
+aware persistence/classification and corner-aware whole-domain reference/actual
+attachment before validated solids and default GUI exposure. Curved operands
+and all unfinished Stage 2–4 requirements stay active. See
+[contracts and tests](native-corner-boundary.md).
+
+Boundary transient ABI changed: rebuilt TKMesh dependencies, native tests/worker,
+FreeCAD Implicit/ImplicitGui/_ImplicitOCCT, and refreshed compatibility scripts.
+Restart the fork; no packages/system libraries changed. Final verification:
+**83 kernel cases** (81.99 s), **48/48 OCCT-8 migration** (268.45 s), remaining
+**24/24 compatibility entries** (27.15 s; kernel entry run separately).
+Checkpoint: OCCT `8ed9300174`, FreeCAD `0ed6b921ce`. Commands/logs are in
+PROGRESS.md; full goal remains active.
+
 ## Milestone 52: lattice-node plane tracing and isolated contacts
 
 The native plane-rectangle tracer now has explicit AllowExactLatticeNodes mode.

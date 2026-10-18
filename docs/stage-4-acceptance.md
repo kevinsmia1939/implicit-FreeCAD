@@ -43,6 +43,16 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+Latest default-gyroid increment constructs actual corner-aware native trim
+graphs for both operations, including shared canonical corner vertices and
+separate excluded closed-set contacts. The field/domain are unchanged and
+the seam target remains 0.1 mm. This is not whole-default solid qualification:
+policy-aware persistence/classification, corner-aware whole-domain reference
+and actual attachment/validation are still required before switching the
+default GUI primitive. Unsupported legacy consumers reject explicitly.
+See [corner boundary contracts](native-corner-boundary.md). The full goal
+and curved-operand/snapping/history/consumer requirements remain active.
+
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;
 27 kernel cases, 22 OCCT-8 migration tests and 25 compatibility tests passed.
