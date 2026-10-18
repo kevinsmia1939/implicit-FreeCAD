@@ -98,7 +98,8 @@ provenance are unchanged. An [explicit solid topology codec](native-solid-topolo
 now preserves actual result topology without retracing, but clears restored
 validation flags. The subsequent [dedicated solid property/owner](native-solid-property.md)
 now persists actual solid topology in FCStd, separate from the original mixed
-boundary property; its live modelling/GUI integration remains required. A fresh solid build rechecks
+boundary property. A [live solid workflow](live-native-solids.md) now connects
+source-driven recompute and actual component-aware rendering/picking. A fresh solid build rechecks
 restored boundary data; it never trusts a saved seam-verification flag.
 
 ## Verification and remaining work
@@ -112,6 +113,6 @@ and unsupported Part/handle rejection. See PROGRESS.md for executed results.
 
 This advances Stage 3, not completion of Stages 2–4. General curved B-Rep
 operands, non-axis-separable field restrictions, history/snapping/consumer
-contracts and the integrated CAD-style GUI workflow
-remain required. The default workbench gyroid is still the simpler native field
+contracts and broader CAD-style GUI qualification remain required.
+The default workbench gyroid is still the simpler native field
 feature; this factory is not silently run by Add Gyroid or the surface preview.

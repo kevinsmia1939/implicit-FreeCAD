@@ -22,6 +22,46 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 50: live native-solid workflow and component-aware viewport
+
+`ImplicitSolid.py` connects the actual solid property to a live native-boundary
+Source, numerical settings/budgets, explicit rebuild and a native solid renderer.
+Unchanged inputs reuse actual geometry; embedded-source/tolerance consistency
+is checked. FCStd restore refreshes without numerical building and remains
+unverified; corruption requires explicit repair. Core skipped-source-error
+invalidation clears proxy diagnostics and all viewport geometry too.
+
+Source uses PropertyLinkGlobal so grouping the output does NOT auto-adopt/move
+upstream Boolean operands (the initial local-scope link exposed this failure).
+FollowSourcePlacement maps source-global into output-container coordinates;
+independent output poses are explicit. Output rigid links retain native ownership.
+The workbench adds experimental live-solid demo and selected-boundary build
+commands. Default Add Gyroid remains a simple field, not a trimmed solid.
+
+Rendering uses actual result solid/shell/face relations and per-component field
+nodes; Edge/Vertex buffers come from actual ComplexGeoData. The small native API
+increment aliases SeamN to actual result EdgeN by OCCT identity. Source candidate
+triangles must lie in exactly one saved component domain; missing/ambiguous
+assignments refuse the preview, not replace the result by the source graph.
+Smooth analytical field normals stay separate from cap normals; display caches
+are transient and compacted by existing vertex indices, never welded.
+See [live native solid contracts](live-native-solids.md) for use/tests and limits.
+
+Next continue default-gyroid native trimming/degeneracies, general/curved operands,
+snapping/history, richer editing and representation-aware consumer dispatch.
+Default iso-0/domain-corner zeros need an explicit topology/regularization policy;
+do not silently change the field phase/isovalue/domain to evade that gate.
+All unfinished Stage 2–4 requirements stay active; do not claim full Stage 4
+from this restricted source/renderer integration. Verification is in PROGRESS.md.
+Final full regression: **45/45 OCCT-8 migration** (263.22 seconds),
+**25/25 compatibility** (105.80 seconds), including **76 kernel cases**.
+Only the existing `_ImplicitOCCT`/script targets were rebuilt; no OCCT,
+dependency, system-library or security-policy changes. Initial failures/fixes,
+viewport captures and exact logs are in PROGRESS.md.
+Checkpoint: FreeCAD `8bdaff16bd`, OCCT unchanged `0e6377579d`. Final focused
+GUI/runtime rerun passed 3/3 (29.97 seconds), including the initial demo capture
+before placement/link stress. Use the fork OCCT-8 GUI, not installed FreeCAD.
+
 ## Milestone 49: actual native solid property and FCStd owner
 
 The OCCT-8 native module now registers `PropertyNativeSolidGeometry` and

@@ -4,11 +4,93 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `46bb773deb` on
+Implementation heads: FreeCAD `8bdaff16bd` on
 `feature/native-implicit`, OCCT `0e6377579d` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: actual native solid property and FCStd owner
+## Latest increment: live native-solid feature and component-aware GUI
+
+`ImplicitSolid.py` adds a source-linked NativeSolidFeaturePython controller and
+actual-result renderer. The typed solid property stays authoritative; saved
+source/settings fingerprints only select unchanged reuse versus a new checked
+build. Embedded source/tolerance consistency is checked; restore refreshes
+without numerical building and leaves qualification false. Explicit rebuild
+creates a new qualified snapshot, never upgrades a retained loaded result.
+Source errors, work exhaustion and corrupt/inconsistent records clear geometry,
+diagnostics and view buffers; corruption requires explicit repair.
+
+Source has Global link scope, avoiding App::Part's automatic dependency adoption.
+The initial Local source link moved upstream field/box operands into the output
+container and correctly failed the older identity-input contract. Global scope
+preserves the independent source coordinate frame. FollowSourcePlacement maps
+source-global to output-container local; independent output positioning is
+explicit. Live operation edits, undo/redo, source consistency, restore, corruption,
+explicit repair, budgets, independent/followed/container placement and skipped
+C++ upstream-error invalidation pass the new CLI test.
+
+The view uses actual Solid/Shell/Face hierarchy and per-component NativeFaceN
+nodes, separately shaded caps, actual EdgeN/VertexN ComplexGeoData and native
+Seam-to-Edge identity aliases. It never uses the source's aggregate face as the
+actual result. Every candidate field triangle must fit one saved component
+domain; ambiguity/missing components/crossings reject the preview. Face buffers
+compact existing node indices without coordinate welding. Camera/visibility
+changes reuse caches; numerical preview failure retains authoritative geometry.
+Workbench commands create a live solid from a selected boundary or a supported
+demo. The default Add Gyroid icon is unchanged.
+
+Only existing script targets and `_ImplicitOCCT` were rebuilt, with two compile/
+one link jobs. No OCCT/dependency/system-library changes. Logs:
+`/tmp/implicit-live-solid-scripts-build.log`, `/tmp/implicit-live-solid-binding-build.log`.
+Initial CLI/runtime passed 2/2 (17.80 seconds); initial GUI/runtime tests passed
+3/3 (25.68 seconds). After actual seam alias/compacted-buffer additions,
+targeted CLI/GUI/runtime passed 4/4 (44.14 seconds). Logs:
+`/tmp/implicit-live-solid-cli.log`, `/tmp/implicit-live-solid-gui.log`,
+`/tmp/implicit-live-solid-targeted.log`. Expanded viewport-link coverage and final
+regression outcomes follow below. See [live native-solid contracts](live-native-solids.md).
+
+Expanded rotated-link checks exposed stale instance selection after source
+replacement: clearing only the target object left its App::Link selection alive.
+The renderer now clears this target and its linked instances, preserving
+unrelated objects. The failing assertion then opened a modal dirty-document
+save prompt during test cleanup; the original expanded run timed out at 180
+seconds. New GUI assertion failures immediately exit with failure instead of
+opening that prompt. Corrected expanded GUI/runtime tests passed 3/3 (27.37
+seconds), log `/tmp/implicit-live-solid-link-gui.log`; the initial failure is
+`/tmp/implicit-live-solid-expanded.log`. A read-only GDB attach attempt was
+denied by host ptrace policy (`/tmp/implicit-live-solid-gui-hang-gdb.log`);
+no system security settings were changed. Subsequent tests also check unrelated
+selection preservation, active transaction ownership, native seam aliases,
+full/empty result display and missing/ambiguous component-display refusal.
+
+Viewport captures `/tmp/implicit-live-solid-demo.png` and
+`/tmp/implicit-live-solid-components.png` were visually inspected. The second
+fixture's field components are internal from that camera, so real per-component
+ray hits and domain/alias checks, not its exterior screenshot alone, establish
+their selection coverage. This is software-OpenGL verification, not a GPU/FPS
+benchmark. Final script refresh logs:
+`/tmp/implicit-live-solid-scripts-final-build.log`,
+`/tmp/implicit-live-solid-compat-scripts-build.log`.
+
+Final full regression passed **45/45 OCCT-8 migration** (263.22 seconds) and
+**25/25 compatibility** (105.80 seconds), including unchanged **76 kernel cases**
+(79.10 seconds). The new live CLI test passed in 18.11 seconds; expanded GUI
+coverage, including unrelated selection preservation and full/empty result
+display, passed in 27.94 seconds. Logs:
+`/tmp/implicit-live-solid-migration-final.log`,
+`/tmp/implicit-live-solid-compat-final.log`. Libraries were never rebuilt while
+runtime/library audits were active. The final primary screenshot is captured
+before the deliberate camera/placement/link stress tests, with a GUI update
+before fitting the initial scene; a focused GUI rerun records that capture.
+That final focused GUI/runtime rerun passed **3/3** (29.97 seconds), with the
+live GUI case at 27.88 seconds; log
+`/tmp/implicit-live-solid-gui-final-capture.log`. Source checkpoint: FreeCAD
+`8bdaff16bd`, OCCT unchanged `0e6377579d`.
+
+This is restricted source/renderer integration, not Stage 4 completion. Default
+gyroid trim degeneracies, curved/general operands/restrictions, snapping/history,
+richer editors and broader representation-aware consumers remain required.
+
+## Previous increment: actual native solid property and FCStd owner
 
 The OCCT-8 C++ module adds `PropertyNativeSolidGeometry` and
 `NativeSolidFeaturePython`. The geometry is the actual native result, with

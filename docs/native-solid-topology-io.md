@@ -103,7 +103,8 @@ executed counts and commands.
 
 The subsequent dedicated representation-aware solid geometry property/owner now
 provides FCStd transactions/restoration and actual solid subelement dispatch.
-Live modelling/GUI integration is still required. Remaining
+The [live solid workflow](live-native-solids.md) now adds restricted source-driven
+recompute and actual component rendering/picking. Remaining
 Stage 2–4 curved operands, general component restrictions, snapping/history and
 cross-workbench contracts stay in scope; this codec does not complete them.
 

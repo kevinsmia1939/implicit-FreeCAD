@@ -35,10 +35,14 @@ construction alone does not establish geometric/solid validity or Part compatibi
 An explicit [restricted native-solid factory](docs/native-solids.md) now adds
 whole-cap/edge/vertex tolerance checks before constructing actual material-region
 solids. Its numerical implicit-aware validation does not qualify generic Part
-consumers, curved operands or the unfinished solid-persistence/GUI workflow.
+consumers or curved operands.
 An [explicit native solid topology codec](docs/native-solid-topology-io.md) now
 preserves those actual result solids without recipe rebuilding; restored results
-remain unverified. Dedicated solid-property/FCStd integration remains next.
+remain unverified. A [dedicated solid property](docs/native-solid-property.md)
+now supplies FCStd topology and native subelements. The
+[live native-solid workflow](docs/live-native-solids.md) adds source-driven
+recompute and actual component-aware rendering/picking under the workbench's
+experimental Native solids menu; the default Add Gyroid command is unchanged.
 General curved operands, broader native-solid qualification and the remaining
 Stage 4 integration gates remain open.
 

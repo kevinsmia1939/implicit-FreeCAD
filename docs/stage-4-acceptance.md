@@ -382,3 +382,27 @@ Verified checkpoint: FreeCAD `46bb773deb`, OCCT unchanged `0e6377579d`;
 43/43 OCCT-8 migration and 25/25 compatibility tests passed, including 76 kernel
 cases. Existing GUI regressions protect the shared owner refactor; solid-specific
 GUI rendering/picking is not implemented or claimed by those tests.
+
+Next increment: a live NativeSolidFeaturePython controller now links a native
+boundary through a global-scope source property, reuses unchanged actual topology,
+checks source/tolerance consistency and builds new qualified results on edits.
+Unchanged FCStd restore/recompute does not numerically rebuild or recertify saved
+topology. Corruption requires explicit repair; source failures/budgets clear the
+property, diagnostics and view. Followed/independent output placement respects
+container coordinates without moving upstream operands.
+
+The new renderer uses actual result solid/shell/face relations, individually
+pickable field components, actual ComplexGeoData edges/vertices and native seam
+aliases. Display triangles must fit exactly one saved component domain; preview
+failure is separate from authoritative solid qualification. Workbench commands
+expose a supported demo and selected-boundary construction. Default Add Gyroid
+remains a simple field. Camera/visibility caches, real ray/pixel picks, rotated
+output links, two components, full/empty results and saved unverified views are
+covered by separate live-workflow tests. These do not establish general source
+instances, snapping/history, default trim degeneracies, curved/general operands,
+richer editing or broader consumers. All unfinished Stage 2–4 gates remain active.
+Final full regression passed 45/45 OCCT-8 migration and 25/25 compatibility
+tests, including unchanged 76 kernel cases. This qualifies the documented
+restricted live-solid increment, not completion of Stage 4.
+Checkpoint: FreeCAD `8bdaff16bd`, OCCT unchanged `0e6377579d`. Final focused
+GUI/runtime rerun also passed 3/3 after the primary viewport-capture adjustment.

@@ -20,11 +20,11 @@ print(geometry.getElementTypes())
 selected = solid.getSubObject("Solid1")
 ```
 
-This low-level snapshot owner does not yet supply a live Python modelling proxy,
-task editor or solid-specific viewport renderer. The ordinary Add Gyroid command
-is unchanged. Connecting live inputs and rendering the actual result's separate
-component faces is the next integration step; do not reuse the source's single
-field face as though it were the solid result.
+The subsequent [live solid workflow](live-native-solids.md) now supplies a Python
+modelling proxy and solid-specific component-aware viewport renderer on top of
+this low-level owner. Its richer task editor remains unfinished. The ordinary
+Add Gyroid command is unchanged. Do not reuse the source's single field face as
+though it were the actual solid result.
 
 ## Representation and subelements
 
@@ -77,7 +77,8 @@ results, transactions, mismatched representations, content/cross-document copy,
 restore without rebuilding, corruption, retained lifetime, bounds and rigid
 object/container/link placement. They do not qualify solid GUI picking, live
 source recompute, snapping, Boolean history or arbitrary conventional operands.
-Those and all unfinished Stage 2–4 gates remain required.
+The subsequent live-workflow tests qualify their own documented scope; snapping,
+Boolean history and all other unfinished Stage 2–4 gates remain required.
 
 Run the focused test against the existing OCCT-8 build:
 

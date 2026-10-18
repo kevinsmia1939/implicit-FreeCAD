@@ -234,8 +234,10 @@ without retracing. Restored numerical validity remains false. Dedicated solid
 geometry properties/owners and FCStd integration are now implemented by the
 [native solid property](native-solid-property.md). This low-level owner exposes
 actual result solids/shells/faces, preserves unverified restore and rejects
-source/result confusion. Live source recompute and component-aware solid GUI
-integration remain the next required step, not completed by the property alone.
+source/result confusion. The subsequent [live solid workflow](live-native-solids.md)
+now adds source-driven recompute and actual component-aware rendering/picking.
+This remains a restricted feature, not generic Part compatibility or completion
+of the broader Stage 2–4 integration requirements.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this

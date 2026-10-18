@@ -4,7 +4,8 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
-| Native solid property/FCStd owner | Implemented in OCCT-8 native module | Actual solid/component topology, typed property, immutable transactions and unverified restore; live solid GUI workflow still required |
+| Native solid property/FCStd owner | Implemented in OCCT-8 native module | Actual solid/component topology, typed property, immutable transactions and unverified restore |
+| Live native-solid workflow | Restricted source-driven feature and component-aware GUI | Actual semantic solid/shell/face/edge/vertex selection, global source link and independent/followed output placement; broader operands/snapping/history/consumers still required |
 | F and analytical gyroid gradient | Implemented | Double precision |
 | Numerical-gradient fallback | Implemented | Centered finite difference |
 | Normal | Implemented | Normalized gradient; undefined at critical points |

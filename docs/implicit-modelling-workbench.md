@@ -10,6 +10,12 @@ On the OCCT 8 build, **Native boundaries (experimental)** also provides a
 surface preview enabled, plus the supported selected-operand mixed commands.
 The demo is separate from the default primitive below.
 
+**Native solids (experimental)** now provides a
+[live native-solid demo and selected-boundary build command](live-native-solids.md).
+These use actual solid/component topology, source-driven recompute and semantic
+selection; they do not change the default Add Gyroid behavior or qualify generic
+Part operations.
+
 Select Gyroid in the tree and use the Data property editor:
 
 - **Gyroid dimensions:** Length, Width, Height, initially 10 mm each.
@@ -26,7 +32,7 @@ undo/redo uses the normal document setting.
 This is a bounded implicit **surface**, not a wall-thickness gyroid or a validated
 closed Part solid. The authoritative object is `Implicit::Feature` from the
 fork's C++ field module. It is not the old addon, nor is a mesh assigned to Shape.
-This command does not run mixed-box tracing or the pending native-solid factory.
+This command does not run mixed-box tracing or the separate native-solid factory.
 
 ## User workbench directory
 
