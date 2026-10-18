@@ -5,6 +5,15 @@ is complete. `PROGRESS.md` records tested increments; `HANDOFF.md` records how t
 continue. The original prototype phases and the native-kernel roadmap have
 different completion criteria.
 
+The focused [Implicit Modelling workbench](implicit-modelling-workbench.md) now
+provides one-click native gyroid creation with editable dimensions and field
+parameters. This is a primitive GUI usability increment, not completion of the
+remaining mixed-solid, snapping, history or cross-workbench integration gates.
+The [restricted native solid factory](native-solids.md) now gates actual solids
+on whole-field topology, cap/edge/vertex coverage and stored tolerance checks.
+It is numerical implicit-aware validation, not general Part compatibility or
+completion of solid persistence, GUI selection/snapping and other Stage 4 gates.
+
 ## Original prototype phases
 
 | Phase | Delivered | Remaining acceptance gap |

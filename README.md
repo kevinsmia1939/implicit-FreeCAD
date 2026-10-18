@@ -4,6 +4,10 @@ An experimental **FreeCAD fork for implicit modelling**, working toward native
 field-based workflows, lattices, and mixed implicit/B-Rep operations. The
 long-term target is an nTop-class implicit modelling system.
 
+For editable primitive modelling, use the new [Implicit Modelling workbench](docs/implicit-modelling-workbench.md):
+one toolbar icon creates a native 10 × 10 × 10 mm gyroid with editable dimensions,
+period and level-set value in the tree's property editor.
+
 New: [native mixed gyroid/Part-box boundaries](docs/native-mixed-box.md), with
 intersection/subtraction, shared box-edge roots and trim wires, planar caps and live
 FreeCAD recipes. An opt-in [trim-conforming surface candidate](docs/native-conforming-preview.md)
@@ -23,10 +27,14 @@ regions to that reference using common retained points beyond seam uncertainty.
 [Dual-cap trim attachment](docs/native-trim-attachment.md) now identifies contour
 arcs and matches complete directed native/reference trim wires.
 [Genuine native shells](docs/native-shells.md) now use exact field-backed faces,
-checked component splitting and native manifold topology checks. They are not
-yet geometrically validated solids or ordinary Part shapes.
-Stored-native topology equivalence, general curved operands and validated native
-solids remain open.
+checked component splitting and native manifold topology checks. Shell
+construction alone does not establish geometric/solid validity or Part compatibility.
+An explicit [restricted native-solid factory](docs/native-solids.md) now adds
+whole-cap/edge/vertex tolerance checks before constructing actual material-region
+solids. Its numerical implicit-aware validation does not qualify generic Part
+consumers, curved operands or the unfinished solid-persistence/GUI workflow.
+General curved operands, broader native-solid qualification and the remaining
+Stage 4 integration gates remain open.
 
 This repository is the development umbrella: the actual FreeCAD fork is pinned
 in the `FreeCAD/` submodule on

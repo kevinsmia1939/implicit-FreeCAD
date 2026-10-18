@@ -311,3 +311,23 @@ for non-axis-separable components, curved operands, shell/solid property
 persistence and all unfinished Stage 4 requirements remain active. See native-shells.md.
 Verification: 68 kernel cases, 39/39 migration and 25/25 compatibility tests pass.
 Checkpoint heads: FreeCAD `ee951e3c78`, OCCT `adeac78d8c`.
+
+Next increment: the restricted native solid factory now adds actual cap coverage
+in both directions and bounds 3D edge/vertex deviations, alongside whole-field
+attachment/native topology and maximum stored tolerance checks. Only then are
+actual solids constructed by material region. A private spatial segment tree
+preserves both distance and parity queries while keeping the open-contour case
+within the unchanged work budget. Five new kernel cases bring the suite to 73;
+the full isolated kernel suite passes. FreeCAD exposes owned build/inspect/
+classify solid snapshots, not Part shapes; CLI lifetime/restoration/negative
+tests pass. Whole-boundary validation is explicitly numerical implicit-aware
+tolerance validation, NOT formal intervals or generic UV BRepCheck/BOP.
+The focused Implicit Modelling workbench also creates editable native 10 mm cube
+gyroids with saved dimensional expressions and actual GUI regression coverage.
+That simple field command is not yet the trimmed/solid CAD workflow. Curved
+operands, general component restriction, solid-property persistence, semantic
+vertex picking/snapping/history and remaining consumer/GUI gates still prevent
+completion of Stages 2–4. The full resumed goal stays active.
+Verified checkpoint: OCCT `b032b19ae2`, FreeCAD `94175dd569` (workbench commit
+`93a2bb06ac`); **73 kernel cases**, **40/40 migration**, **25/25 compatibility**
+passed. These tests qualify the documented restricted increment, not the full goal.

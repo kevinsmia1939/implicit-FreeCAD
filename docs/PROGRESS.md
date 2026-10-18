@@ -4,11 +4,56 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `ee951e3c78` on
-`feature/native-implicit`, OCCT `adeac78d8c` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `94175dd569` on
+`feature/native-implicit`, OCCT `b032b19ae2` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: whole-face attachment and genuine native shells
+## Latest increment: restricted native solids and focused primitive workbench
+
+GUI follow-up (2026-10-18, FreeCAD `93a2bb06ac`): **Implicit Modelling** workbench with a
+packaged SVG Add Gyroid icon and compiled `Implicit::Feature` creation. Default
+domain is [0,10] mm on each axis; Length/Width/Height are editable unit-aware
+properties driving DomainMax through saved expressions. Period/IsoValue remain
+native editable properties. New workbench and existing experimental workbench
+coexist. Lightweight entry point deployed at the user's requested FreeCAD
+v27-1 Mod path; ordinary FreeCAD without the compiled core remains unsupported.
+Targeted OCCT-8 CTest passed **3/3** (12.70 seconds), covering runtime audits and
+the expanded GUI smoke test: icon loading, no-document creation, selection,
+dimension/equation edits, undo/redo, FCStd reopening and repeated creation.
+Log: `/tmp/implicit-workbench-gui-test.log`. No full-suite rerun is claimed.
+The user subsequently resumed the full Stage 4 goal. The previously exhausted
+segment budget is now resolved by the spatial index described below.
+See [workbench usage](implicit-modelling-workbench.md).
+
+Native-solid follow-up (2026-10-18): `BuildNativeSolids` now gates genuine
+material-region solids on fresh whole-field/shell topology, actual cap geometry
+coverage in both directions, 3D edge/vertex deviations and maximum stored
+tolerances. A private segment BVH preserves both distance and parity checks,
+resolving the open-contour budget failure without increasing the work limit or
+weakening the validation. Unsupported/uncertain/limited cases never publish a
+solid handle. This is restricted numerical implicit-aware 0.1 mm validation,
+NOT formal intervals, generic UV BRepCheck/BOP or ordinary Part compatibility.
+FreeCAD adds owned `build_mixed_solids`, `inspect_mixed_solids` and
+`classify_mixed_solids` APIs. Original geometry/caches/provenance remain unchanged;
+restored records are freshly checked. No solid property/FCStd codec or default
+GUI solid creation is claimed. See [native-solid policy](native-solids.md).
+Five kernel cases cover both operations/open and closed contours, whole-cap
+missing/extra negatives, full/empty regions, islands/cavities, coordinate scaling/
+periodic translations and work/tolerance failures. Full kernel suite:
+**73/73** (86.01 seconds). Targeted native CLI + runtime: **2/2** (12.95 seconds).
+Full OCCT-8 migration suite: **40/40** (260.53 seconds); compatibility suite:
+**25/25** (134.06 seconds). These ran concurrently for part of their duration;
+timings are regression observations, not benchmarks. Logs:
+`/tmp/implicit-native-solid-kernel-full.log`, `/tmp/implicit-native-solid-cli.log`,
+`/tmp/implicit-native-solid-migration-full.log`,
+`/tmp/implicit-native-solid-compat-full.log`. Both source branches are clean at
+OCCT `b032b19ae2` and FreeCAD `94175dd569`; only the umbrella gitlink/docs update
+follows those source commits. No packages or system libraries changed.
+Remaining Stage 2–4 gates, including curved operands, general component
+restrictions, solid persistence, semantic vertex picking/snapping/history and
+representation-aware GUI/consumer contracts, keep the resumed goal active.
+
+## Previous increment: whole-face attachment and genuine native shells
 
 TKTopAlgo `BuildNativeShells` now attaches the entire field zero set, including
 enclosed/empty components, and builds actual native shells. Reference bounds and

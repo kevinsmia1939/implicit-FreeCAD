@@ -218,6 +218,12 @@ geometric/solid validation remain required; no generic Part-solid claim follows.
 The following checklist remains the full integration requirement, not a claim
 that representation alone meets it. See [native faces](occt-native-faces.md).
 
+A [restricted native solid factory](native-solids.md) now adds whole-cap geometry
+checks in both directions, 3D edge/vertex deviations and stored tolerance gates
+before creating actual material-region solids. This is numerical implicit-aware
+validation; generic UV BOP/Part compatibility, solid property/codec integration,
+broader component restrictions and the remaining Stage 2–4 gates are not closed.
+
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this
 repository demonstrates that a triangulation-only `TopoDS_Face` has no surface

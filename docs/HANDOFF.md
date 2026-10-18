@@ -10,6 +10,51 @@ that all goals in the original brief are complete.
 [`DEVELOPMENT_STAGES.md`](DEVELOPMENT_STAGES.md) maps the original phases to
 delivered prototypes and explicit remaining production/kernel acceptance gates.
 
+Latest GUI increment: [Implicit Modelling workbench](implicit-modelling-workbench.md)
+adds an icon-driven editable 10 mm cube gyroid using compiled `Implicit::Feature`.
+Saved expressions connect Length/Width/Height to DomainMax. The legacy workbench
+is retained. A user-directory entry point is deployed under the requested
+`~/.local/share/FreeCAD/v27-1/Mod/ImplicitModelling`; it requires the fork runtime.
+The user has now resumed the full through-Stage-4 goal. The separate OCCT
+solid-geometry work now uses a private segment spatial index; the previously
+budget-exhausted targeted case passes without weakening the geometry checks.
+See [restricted native solids](native-solids.md) for the new actual-solid
+construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
+Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 46: restricted native solids and focused primitive workbench
+
+OCCT `b032b19ae2` adds `BuildNativeSolids`, gated by whole-field/native shell
+topology, independently checked actual cap coverage in both directions, complete
+piecewise-linear 3D curve/vertex deviations and bounded stored tolerances.
+Inherited fresh trim correspondence bounds the seam separately; exact field
+definitions and checked component domains remain authoritative. A private
+segment spatial tree preserves nearest-distance and parity queries, resolving
+the earlier segment-limit failure without increasing budgets. Failures never
+publish solids. Separate islands/cavity shells are grouped by material region.
+This is restricted numerical implicit-aware validation, not formal intervals,
+generic UV BRepCheck/BOP or ordinary Part compatibility.
+
+FreeCAD `94175dd569` exposes owned build/inspect/classify solid snapshots and
+owned field faces. Source geometry/provenance and document-close lifetimes are
+tested; restored boundaries are freshly checked, not trusted from saved flags.
+There is no solid-property FCStd codec yet. Earlier FreeCAD `93a2bb06ac` adds
+the focused Implicit Modelling workbench and saved dimension expressions for a
+10 mm cube native field gyroid, with create/edit/undo/redo/reopen GUI coverage.
+This command still creates the basic field feature, not a validated solid or
+the finished crisp face/edge/vertex CAD workflow. The legacy workbench remains.
+
+Full verification: **73 kernel cases** (86.01 seconds), **40/40 OCCT-8 migration**
+(260.53 seconds), **25/25 compatibility** (134.06 seconds). Targeted native-solid
+CLI/runtime **2/2** (12.95 seconds). Logs are in PROGRESS.md. GUI tests require
+Xvfb; only existing minimal targets/dependencies were used, with no system changes.
+
+Next: expose native boundary vertices/edges coherently in the modelling GUI,
+integrate representation-aware solid properties/persistence and safe consumer
+dispatch, while retaining the full Stage 2 curved-operand/general-restriction
+and Stage 4 snapping/history/placement/editing requirements. The full goal remains
+active; do not replace its completion criteria with this restricted checkpoint.
+
 ## Goal and repository layout
 
 Build a FreeCAD fork with native implicit modelling, ultimately competitive
@@ -1177,7 +1222,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 68 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 73 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option
