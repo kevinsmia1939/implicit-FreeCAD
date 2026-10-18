@@ -22,6 +22,34 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 49: actual native solid property and FCStd owner
+
+The OCCT-8 native module now registers `PropertyNativeSolidGeometry` and
+`NativeSolidFeaturePython`, with actual result Solid/Shell/Face/component/edge/
+vertex ComplexGeoData, distinct snapshot maps and a `.nativesolid` FCStd payload.
+The source boundary remains explicit query provenance, never substitute result
+topology. Boundary and solid owners share subobject/placement/error invalidation
+through NativeFeatureBase, with separate typed Geometry properties and no Shape.
+
+Runtime transactions retain immutable qualified snapshots. File/content restore
+uses the actual solid codec without rebuilding and remains numerically unverified.
+Tests cover component/cavity/empty/full results, representation mismatch, atomic
+content transfer, undo/redo, copy, corrupt FCStd, lifetime, component-domain bounds,
+rigid App::Link/containers and upstream-error clearing. Whole classification is
+explicitly the source-region union; selected SolidN classification rejects.
+See [solid property contracts](native-solid-property.md).
+
+This is a low-level document snapshot owner, not completed solid GUI integration.
+Next implement live source/settings recompute and actual component-aware solid
+rendering/picking in the workbench, then continue primitive trimming/degeneracy,
+snapping/history, consumer dispatch and all unfinished Stage 2–4 requirements.
+The default 10 mm gyroid remains the basic field feature. Verification follows
+in PROGRESS.md; the full through-Stage-4 goal remains active.
+Checkpoint: FreeCAD `46bb773deb`, OCCT unchanged `0e6377579d`. Final clean
+OCCT-8 migration passed **43/43** (216.50 seconds); compatibility passed **25/25**
+(116.84 seconds), including **76 kernel cases**. Logs, expected corruption/input
+diagnostics and initial test-only failures/fixes are recorded in PROGRESS.md.
+
 ## Milestone 48: actual native solid topology codec
 
 `BRepClass3d_ImplicitSolidIO` now preserves actual restricted solid result topology

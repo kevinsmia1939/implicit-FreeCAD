@@ -221,16 +221,21 @@ that representation alone meets it. See [native faces](occt-native-faces.md).
 A [restricted native solid factory](native-solids.md) now adds whole-cap geometry
 checks in both directions, 3D edge/vertex deviations and stored tolerance gates
 before creating actual material-region solids. This is numerical implicit-aware
-validation; generic UV BOP/Part compatibility, solid property/codec integration,
-broader component restrictions and the remaining Stage 2–4 gates are not closed.
+validation; generic UV BOP/Part compatibility, broader component restrictions
+and the remaining Stage 2–4 gates are not closed.
 The supported mixed property also exposes [native edges and vertices](native-edge-vertex-selection.md)
 through standard subelement discovery, owned point extraction and camera/pixel
 picking. Its mapped names remain conservative snapshot identities, not Boolean
-history. Solid persistence, snapping and broader consumers are still separate gates.
+history. Solid persistence has its own representation-aware path below; snapping
+and broader consumers are still separate gates.
 Actual restricted solid topology now has an [explicit native codec](native-solid-topology-io.md)
 that preserves component domains, wire assignments and shell/material relations
 without retracing. Restored numerical validity remains false. Dedicated solid
-geometry properties/owners and FCStd integration are the next required stage.
+geometry properties/owners and FCStd integration are now implemented by the
+[native solid property](native-solid-property.md). This low-level owner exposes
+actual result solids/shells/faces, preserves unverified restore and rejects
+source/result confusion. Live source recompute and component-aware solid GUI
+integration remain the next required step, not completed by the property alone.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this

@@ -364,3 +364,21 @@ geometry properties/owners, FCStd integration and all remaining Stage 2–4 gate
 remain required. The full goal is not achieved by this codec prerequisite.
 Verified checkpoint: OCCT `0e6377579d`, FreeCAD `61f412c1fe`; 76 kernel cases,
 42/42 OCCT-8 migration and 25/25 compatibility tests passed.
+
+Next increment: a dedicated C++ solid ComplexGeoData property and native document
+owner now expose actual Solid/Shell/Face/component/edge/vertex topology with a
+distinct mapped-name namespace and FCStd payload. Restore does not numerically
+rebuild or trust saved qualification flags. Runtime transactions retain owned
+snapshots; source-error invalidation preserves the solid representation type.
+Tests cover separate components/cavities/full/empty, mismatched property types,
+content/copy/FCStd corruption, mapped references and rigid container/link paths.
+Whole-region classification explicitly covers the source material union;
+selected SolidN classification refuses rather than silently using that union.
+This closes a restricted solid document-property gate, not the end-to-end solid
+GUI/live-dependency workflow. Curved operands, general restrictions, default
+gyroid degeneracies, snapping/history and broader consumers remain required.
+The full through-Stage-4 goal stays active. See native-solid-property.md.
+Verified checkpoint: FreeCAD `46bb773deb`, OCCT unchanged `0e6377579d`;
+43/43 OCCT-8 migration and 25/25 compatibility tests passed, including 76 kernel
+cases. Existing GUI regressions protect the shared owner refactor; solid-specific
+GUI rendering/picking is not implemented or claimed by those tests.

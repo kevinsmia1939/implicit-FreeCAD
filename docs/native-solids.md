@@ -96,8 +96,9 @@ not per-solid membership, and is independent of display triangles. Its
 Snapshots/faces survive document close. The source topology, caches and bound
 provenance are unchanged. An [explicit solid topology codec](native-solid-topology-io.md)
 now preserves actual result topology without retracing, but clears restored
-validation flags. FCStd still persists the original mixed boundary; a dedicated
-solid geometry property/owner remains required. A fresh solid build rechecks
+validation flags. The subsequent [dedicated solid property/owner](native-solid-property.md)
+now persists actual solid topology in FCStd, separate from the original mixed
+boundary property; its live modelling/GUI integration remains required. A fresh solid build rechecks
 restored boundary data; it never trusts a saved seam-verification flag.
 
 ## Verification and remaining work
@@ -111,6 +112,6 @@ and unsupported Part/handle rejection. See PROGRESS.md for executed results.
 
 This advances Stage 3, not completion of Stages 2–4. General curved B-Rep
 operands, non-axis-separable field restrictions, history/snapping/consumer
-contracts, solid-property persistence and the integrated CAD-style GUI workflow
+contracts and the integrated CAD-style GUI workflow
 remain required. The default workbench gyroid is still the simpler native field
 feature; this factory is not silently run by Add Gyroid or the surface preview.

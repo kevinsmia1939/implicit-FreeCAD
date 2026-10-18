@@ -2,7 +2,8 @@
 
 `BRepClass3d_ImplicitSolidIO` adds schema-1 records for the actual supported
 `TopoDS_Solid` results. This is the prerequisite for a dedicated FreeCAD solid
-geometry property, **not yet that property or FCStd integration**. It does not
+geometry property; that subsequent [property and FCStd owner](native-solid-property.md)
+is now implemented separately. The codec itself does not
 serialize a display mesh, Part shape, arbitrary field or a Boolean recipe to run
 again on load. Existing boundary-property and generic Part APIs reject these
 solid handles rather than silently discarding their result topology.
@@ -100,8 +101,9 @@ corrupt metadata/records, locale/stream precision, locked destinations, ownershi
 classification and safe Part/boundary-property rejection. See PROGRESS.md for
 executed counts and commands.
 
-Next is a dedicated representation-aware solid geometry property/owner with
-FCStd transactions/restoration and actual solid subelement dispatch. Remaining
+The subsequent dedicated representation-aware solid geometry property/owner now
+provides FCStd transactions/restoration and actual solid subelement dispatch.
+Live modelling/GUI integration is still required. Remaining
 Stage 2–4 curved operands, general component restrictions, snapping/history and
 cross-workbench contracts stay in scope; this codec does not complete them.
 

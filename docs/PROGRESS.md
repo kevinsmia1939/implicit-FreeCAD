@@ -4,11 +4,72 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `61f412c1fe` on
+Implementation heads: FreeCAD `46bb773deb` on
 `feature/native-implicit`, OCCT `0e6377579d` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: actual native solid topology persistence
+## Latest increment: actual native solid property and FCStd owner
+
+The OCCT-8 C++ module adds `PropertyNativeSolidGeometry` and
+`NativeSolidFeaturePython`. The geometry is the actual native result, with
+Solid/Shell/Face/NativeFace/Cap/Seam/Edge/Vertex subelements and a separate
+`ImplicitSolidV1_` snapshot digest. Shared NativeFeatureBase handles rigid
+subobject paths and upstream-error invalidation for both owner families without
+inheriting a dummy boundary property into solids. Result component domains give
+field bounds, including enclosed components with no edges; empty results have
+no fabricated source face. The retained source alias owns the complete solid
+snapshot and is used only for explicit mathematical-region queries.
+
+Distinct schema-1 NativeSolidGeometry XML and `.nativesolid` FCStd records reuse
+the actual solid codec. Restore does not numerically rebuild and remains
+unverified; runtime transaction copies retain immutable qualified snapshots.
+Cross-representation assignment, Paste and content transfer reject atomically.
+Inline restoration commits only after its character stream closes. Tests cover
+both mixed operations, separate islands/cavities, full/empty, typed assignment,
+undo/redo, content/FCStd/copy, corrupt payloads, mapped references, lifetime,
+component bounds, container/link poses and skipped-execution source failures.
+Whole classification explicitly covers the authoritative source union, not an
+individual SolidN; selected-region classification refuses.
+
+Existing minimal targets `Implicit ImplicitGui _ImplicitOCCT ImplicitScripts`
+built with two compile/one link jobs; a final `Implicit ImplicitGui` rebuild
+compiled the representation-specific base-setter guard. Logs:
+`/tmp/implicit-solid-property-build.log`, `/tmp/implicit-solid-property-final-build.log`.
+Initial targeted property/reference/element/link/query/runtime tests passed 7/7
+(17.61 seconds). Expanded link/container/invalidation tests passed 2/2 including
+runtime (11.06 seconds). The first expanded test expected an incompatible
+content-transfer exception but omitted OSError from its accepted exception
+types; the test now accepts the actual API error and still checks unchanged
+destination geometry. Logs: `/tmp/implicit-solid-property-targeted.log`,
+`/tmp/implicit-solid-property-expanded.log`,
+`/tmp/implicit-solid-property-expanded-final.log`.
+
+Further reference coverage checks mapped Solid/Shell/Face/component/edge/vertex
+links through clear/undo/FCStd, rejects a changed result's stale mapped name and
+recovers it only for the original snapshot. Its first full-suite run caught a
+test-local `names` variable shadowing the saved object-name tuple during the
+new link iteration; renaming it preserves the corruption assertion. Corrected
+property/runtime tests passed 2/2 (11.36 seconds), log
+`/tmp/implicit-solid-property-references-final.log`. Compatibility passed 25/25
+(116.84 seconds), including unchanged 76 kernel cases (79.31 seconds), log
+`/tmp/implicit-solid-property-compat-final.log`.
+
+Final clean OCCT-8 migration passed **43/43** (216.50 seconds), including the
+expanded solid reference test (10.75 seconds) and all existing GUI regressions.
+Log: `/tmp/implicit-solid-property-migration-clean.log`. The earlier full run
+(`/tmp/implicit-solid-property-migration-final.log`, 42/43, 212.60 seconds)
+failed only at the subsequently corrected test-local variable shadowing noted
+above. Final source checkpoint: FreeCAD `46bb773deb`; OCCT unchanged
+`0e6377579d`. No runtime/library audits overlapped library rebuilds.
+
+This is a low-level native document snapshot owner, not the finished live solid
+GUI workflow. Next add source/settings recompute and actual component-aware
+rendering/picking; do not display the source as the result. Default primitive
+trimming/degeneracies, curved operands, general restrictions, snapping/history
+and broader consumers remain required. No OCCT/dependency/system-library edits
+were needed. See [solid property contracts](native-solid-property.md).
+
+## Previous increment: actual native solid topology persistence
 
 `BRepClass3d_ImplicitSolidIO` schema 1 preserves the actual restricted result's
 component domains, local source-wire assignments, face/shell/material grouping
