@@ -238,6 +238,11 @@ source/result confusion. The subsequent [live solid workflow](live-native-solids
 now adds source-driven recompute and actual component-aware rendering/picking.
 This remains a restricted feature, not generic Part compatibility or completion
 of the broader Stage 2–4 integration requirements.
+The [checked local corner model](native-corner-germs.md) now supplies exact
+lattice identities and explicit closed/regularized material neighborhoods for
+the unchanged default gyroid. Whole trimming, shared root/cap cycles and the
+homotopy/native attachment pipeline must still consume that model before the
+default primitive can become a qualified native solid.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a
 `Handle(Geom_Surface)` plus triangulations. The executable bridge probe in this

@@ -4,11 +4,88 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `8bdaff16bd` on
-`feature/native-implicit`, OCCT `0e6377579d` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `b79fbbe49d` on
+`feature/native-implicit`, OCCT `27ba200574` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: live native-solid feature and component-aware GUI
+## Latest increment: exact corner identities and local material models
+
+OCCT adds `Geom_ImplicitGyroid::LatticeJet`: normalized binary-rational
+quarter-period recognition uses an exact FMA residual and leaves outputs unchanged
+on failure. No near-zero snapping and no Value/Gradient behavior changes.
+TKTopAlgo CheckCornerGerms isolates zero-free or coordinate-monotone inward
+neighborhoods using Lipschitz/Hessian bounds and existing engineering reserves.
+ClassifyCornerGerm separates closed-inequality membership from closure-of-interior
+regularization; outside-neighborhood and uncertain signs remain unresolved.
+The unchanged default gyroid has eight exact corner identities, six split cones
+and an isolated contact at a different corner for each operation.
+
+This is a necessary local kernel model, NOT whole regularity, tracing, topology
+or solid construction/validation. Existing default trim/strict regularity guards
+remain unchanged and tests explicitly require their refusal. The model ignores
+stored trim wires and checks the computational box only. Radius is neighborhood
+size, not a geometric approximation or distance-classification tolerance.
+See [corner contracts](native-corner-germs.md) for the remaining integration.
+
+Three new kernel cases cover exact/nextafter identities, output atomicity,
+scaling and exactly representable period translations, independent derivative
+samples over the neighborhood, both operations/material conventions, source
+immutability, primitive round-trip, tangent/unknown/precision/type/placement
+refusals. Initial targeted tests passed 3/3 in 7 ms; final targeted tests passed
+3/3 in 5 ms. Initial FreeCAD CLI/runtime failed the new primitive round-trip:
+an exact identity transform reloads as a nonempty datum chain. The corner query
+now compares the effective matrix for EXACT identity without mutating topology;
+even a 1e-18 translation still rejects. Final CLI/runtime passed 2/2 (1.12 seconds).
+Logs: `/tmp/implicit-corner-targeted.log`, `/tmp/implicit-corner-targeted-final.log`,
+`/tmp/implicit-corner-cli.log`, `/tmp/implicit-corner-cli-final.log`.
+
+Build commands reused the existing trees:
+
+```sh
+cmake -S OCCT -B build-occt-implicit
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+```
+
+The first OCCT build ran 39 steps; the final identity/radius correction rebuilt
+only TKTopAlgo/dependent links. FreeCAD's requested minimal targets triggered
+their cached header/version dependencies (141 steps, including Part/Gui); no
+all-target build or packages/system-library changes. The final binding target
+check reported up to date, and runtime tests exercised the new exports. Logs:
+`/tmp/implicit-corner-occt-configure.log`, `/tmp/implicit-corner-occt-build.log`,
+`/tmp/implicit-corner-occt-final-build.log`, `/tmp/implicit-corner-tests-build.log`,
+`/tmp/implicit-corner-tests-final-build.log`, `/tmp/implicit-corner-freecad-build.log`,
+`/tmp/implicit-corner-binding-final-build.log`, `/tmp/implicit-corner-harness-configure.log`.
+No library builds overlapped loaded-library audits. Final full regression and
+the fresh OCCT-7 facade guard outcomes follow below.
+
+Final full regression passed **46/46 OCCT-8 migration** (334.76 seconds) and
+**25/25 compatibility** (158.47 seconds), including **79 kernel cases** (119.70
+seconds in that concurrent run). After the compatibility suite completed, its
+script target refreshed the latest facade and the fresh OCCT-7 import guard
+passed **1/1** (0.28 seconds). The unchanged guard must reject before importing
+new private exports; no OCCT 8 headers/libraries enter the OCCT 7 process.
+
+Additional exact sine/cosine-gradient assertions and the all-sine quarter-period
+corner model strengthened the same three new kernel cases. Their final full
+kernel rerun passed **79 cases**, CTest **1/1** (85.53 seconds). This is a
+regression runtime observation, not a performance claim. Final logs:
+`/tmp/implicit-corner-migration-final.log`, `/tmp/implicit-corner-compat-final.log`,
+`/tmp/implicit-corner-compat-scripts-build.log`, `/tmp/implicit-corner-compat-guard-final.log`,
+`/tmp/implicit-corner-tests-strengthened-build.log`, `/tmp/implicit-corner-kernel-final.log`.
+Source checkpoints: OCCT `27ba200574`, FreeCAD `b79fbbe49d`; both branches are
+published before the umbrella gitlinks. No new persistence schema or saved proof
+flags were introduced.
+
+Next extend plane tracing/canonical corner roots/cap cycles, then the nodal-zero
+homotopy reference and actual attachment pipeline, consuming an explicit local
+material policy. Do not perturb the default field, weld corner roots after the
+fact or bypass independent validation gates. Curved/general operands and every
+unfinished Stage 2–4 requirement stay active.
+
+## Previous increment: live native-solid feature and component-aware GUI
 
 `ImplicitSolid.py` adds a source-linked NativeSolidFeaturePython controller and
 actual-result renderer. The typed solid property stays authoritative; saved

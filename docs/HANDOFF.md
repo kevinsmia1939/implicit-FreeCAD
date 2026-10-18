@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 51: exact lattice identities and checked local corner material
+
+OCCT adds Geom_ImplicitGyroid::LatticeJet, using normalized exact quarter-period
+identity recognition without changing Value/Gradient or snapping near-zeros.
+CheckCornerGerms bounds zero-free or coordinate-monotone inward neighborhoods;
+ClassifyCornerGerm reports closed-inequality versus closure-of-interior membership.
+The unchanged default cube has two isolated-contact corners (one per operation)
+and six split cones. Unrecognized zeros, tangent coordinate directions, spatial
+precision exhaustion and queries outside the local neighborhood remain unresolved.
+Exact identity transforms with nonempty restored datum chains work; nonzero
+transforms still reject. No source topology/state is changed.
+
+OCCT-8 FreeCAD exposes check_box_corners and classify_box_corner as owned math
+queries. They do NOT construct native faces/solids, relax strict regularity,
+recertify restored topology or enable the default native trim workflow. Radius
+is a local neighborhood size, not an approximation/accuracy bound. See
+[corner contracts and next integration](native-corner-germs.md).
+
+Next feed exact corner identities/material policy into plane-rectangle tracing,
+canonical box roots and cap/implicit cycles, then extend homotopy/reference and
+actual attachment validation. Do not bypass existing gates, perturb the default
+field or weld one corner's independent edge roots after the fact. Curved/general
+operands, snapping/history, richer editing and broader consumers remain required;
+the full through-Stage-4 goal stays active. Verification is in PROGRESS.md.
+Final verification: **79 kernel cases** (85.53 seconds), **46/46 OCCT-8 migration**
+(334.76 seconds), **25/25 compatibility** (158.47 seconds), plus the refreshed
+OCCT-7 facade guard **1/1**. Existing minimal native targets/builds were reused;
+no packages/system libraries changed. The first CLI round-trip failure and its
+exact-identity fix, commands and full logs are recorded in PROGRESS.md.
+Checkpoint: OCCT `27ba200574`, FreeCAD `b79fbbe49d`. Local models are derived
+queries only; no new topology/property persistence schema or saved proof flags.
+
 ## Milestone 50: live native-solid workflow and component-aware viewport
 
 `ImplicitSolid.py` connects the actual solid property to a live native-boundary
@@ -1375,7 +1407,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 76 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 79 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

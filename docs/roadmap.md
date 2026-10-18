@@ -4,6 +4,7 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Default gyroid corner model | Checked local lattice identities and inward derivative cones | Closed versus regularized local material is explicit; default whole trimming/reference/shell integration still required |
 | Native solid property/FCStd owner | Implemented in OCCT-8 native module | Actual solid/component topology, typed property, immutable transactions and unverified restore |
 | Live native-solid workflow | Restricted source-driven feature and component-aware GUI | Actual semantic solid/shell/face/edge/vertex selection, global source link and independent/followed output placement; broader operands/snapping/history/consumers still required |
 | F and analytical gyroid gradient | Implemented | Double precision |

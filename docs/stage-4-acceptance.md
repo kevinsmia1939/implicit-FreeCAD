@@ -406,3 +406,18 @@ tests, including unchanged 76 kernel cases. This qualifies the documented
 restricted live-solid increment, not completion of Stage 4.
 Checkpoint: FreeCAD `8bdaff16bd`, OCCT unchanged `0e6377579d`. Final focused
 GUI/runtime rerun also passed 3/3 after the primary viewport-capture adjustment.
+
+Next increment: exact quarter-period identities and checked local corner
+neighborhoods distinguish the default gyroid's isolated contacts from its six
+split material cones. A local query explicitly separates closed inequalities
+from closure-of-interior regularization; it never changes current Boolean or
+whole-solid validation policies. Nearby coordinates, unknown zeros, tangent
+coordinate directions and exhausted precision do not receive guessed topology.
+The existing default native trim builder and strict regularity checks still
+reject. This supplies a necessary corner model, not the pending plane tracing,
+shared corner roots, nodal-zero reference, actual attachment or solid workflow.
+Every unfinished Stage 2–4 requirement remains active.
+Verification: 79 kernel cases, 46/46 OCCT-8 migration and 25/25 compatibility
+tests passed; the refreshed OCCT-7 facade guard also passed 1/1. These establish
+the documented local model only, not support for default whole-box trimming.
+Checkpoint: OCCT `27ba200574`, FreeCAD `b79fbbe49d`.
