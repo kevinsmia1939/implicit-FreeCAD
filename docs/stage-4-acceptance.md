@@ -76,6 +76,11 @@ The [corner-aware trim-cycle checker](native-corner-trim.md) now matches complet
 directed cycles with canonical shared corner anchors. Actual native 2-D face
 restriction/membership, isolated-contact exclusion and whole-face validation
 remain necessary before native-solid/default-GUI qualification.
+The [native face-domain restriction](native-face-domain.md) now excludes both
+isolated surface contacts using checked uniform-cone neighborhoods, including
+owned/placed queries and saved topology migration. Whole restricted-face
+attachment and geometric/native-solid qualification are still separate gates;
+this is not a default GUI switch or Stage 4 completion.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

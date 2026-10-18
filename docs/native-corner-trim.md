@@ -34,7 +34,8 @@ corners are shared anchors; neither isolated surface contact is a trim anchor.
 the resolved reference_resolution and reference surface_component_euler,
 surface_component_shells and surface_component_regions, alongside the existing
 seam/loop/component mappings. The component labels describe the REFERENCE,
-not a new native face restriction. Reports remain transient and snapshot-local.
+not themselves a native face restriction. The later [native face-domain work](native-face-domain.md)
+adds that restriction separately. Reports remain transient and snapshot-local.
 
 Source topology/caches and original/restored seam-bound provenance are unchanged.
 No schema or transient C++ result-layout change. Restored records/properties

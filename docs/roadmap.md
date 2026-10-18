@@ -4,6 +4,7 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Native corner face-domain restriction | Regularized face queries exclude both isolated zero contacts | Checked uniform-cone neighborhoods, owned/placed queries and explicit persistence; whole-face attachment/geometry/native-solid/default-GUI gates remain |
 | Corner-aware directed trim cycles | Default native wires attach to the dual-cap/material reference | Canonical corner vs edge-root anchors, full oriented cycle bijections and component labels; actual whole-face/native-solid/default-GUI gates still required |
 | Corner-aware stored graph/cap attachment | Default native graph and all cap regions match fresh math/reference | Fixed-corner homotopy precondition, curve/p-curve bounds and strict common witnesses; full cycles handled separately, whole-face/native-solid/default-GUI gates remain |
 | Closed corner material reference | Default cube caps/grouping resolve for both operations | Shared surface/cap corners, strict-volume connectivity and contact separation; not stored native attachment, solid validity or .1 mm geometry certification |

@@ -22,6 +22,33 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 60: native face-domain exclusion of isolated corner contacts
+
+Regularized mixed construction now stores actual closed exclusion boxes in
+BRep_TImplicitFace, derived from fresh uniform-cone corner bounds. BOTH isolated
+zero contacts are absent from the 2-D face domain; the material's retained corner
+remains cap-only. Six split corners remain. Domain/ray queries and empty copies
+honor restrictions, while Value/Gradient still query the unchanged source field.
+Primitive schema 2 preserves boxes; unrestricted output remains schema 1. Mixed
+schema-2 envelopes embed the new primitive format and migrate older unrestricted
+math records using local corner checks, without retracing topology or recertifying
+saved bounds. Mixed validation checks the exact canonical restriction. Unsupported
+primitive consumers refuse restrictions explicitly. FreeCAD exposes exclusion
+count and existing owned/translated face queries. See [contracts](native-face-domain.md).
+
+Next: whole restricted-face attachment, corner-aware native geometry/shell/solid
+qualification, then default GUI exposure. This does not itself enable native
+default solids or complete any Stage 2–4 gate. Verification: 13/13 focused kernel
+cases (38.467 s), runtime/trim CLI 2/2 (29.20 s), full 96/96 kernel (156.27 s),
+54/54 FreeCAD migration/GUI (435.76 s), and 24/24 compatibility (39.55 s).
+Existing targets/dependencies reused; no packages/system changes. Logs are in
+PROGRESS.md. Restart the rebuilt fork before testing interactively.
+For the shell extension, do not just remove its policy guard: Partition currently
+uses requested resolution and raw nodal F. Corner-aware references use their
+actual odd grid and fixed exact-corner values. Component faces must preserve
+the checked exclusions (clipped to any verified component domain), and reference
+component attachment must cover the whole restricted 2-D face, not just its wires.
+
 ## Milestone 59: complete corner-aware directed trim cycles
 
 CheckTrimAttachment now gives exact split corners canonical IDs distinct from
@@ -1648,7 +1675,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 94 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 96 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

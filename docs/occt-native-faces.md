@@ -96,10 +96,14 @@ Consumers must be rebuilt against the fork: inline Surface guards cannot be
 retroactively installed into binaries compiled with older headers. The changes
 are experimental source-level contracts, not a binary compatibility promise.
 
-## Explicit single-face persistence (schema 1)
+## Explicit single-face persistence (schemas 1–2)
 
 `BRep_ImplicitIO::Write(face, ostream)` and `Read(istream, face)` provide a
 separate experimental stream format, beginning with `OCCT_IMPLICIT_FACE 1`.
+Unrestricted output retains that schema. Faces with explicit closed domain
+exclusions use schema 2 and EXCLUDED_DOMAINS; both versions are readable.
+See [native domain restrictions](native-face-domain.md) for semantics and the
+distinction between a stored restriction and a geometric validity proof.
 It is **not** ASCII/binary BRep, FCStd, OCAF or STEP support. Generic serializer
 guards remain unchanged. It stores exactly one childless native face:
 

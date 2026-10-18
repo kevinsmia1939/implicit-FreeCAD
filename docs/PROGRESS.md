@@ -4,11 +4,54 @@ Updated 2026-10-18. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `8de96c25bd` on
-`feature/native-implicit`, OCCT `0c55d8cf86` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `260d3db804` on
+`feature/native-implicit`, OCCT `86197938d3` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: complete corner-aware directed trim cycles
+## Latest increment: actual native face-domain restrictions
+
+Regularized mixed construction removes both isolated corner zero contacts from
+the native implicit face domain, using fresh uniform-cone neighborhood bounds.
+The retained material corner remains cap-only; six split corners are unchanged.
+Native domain/ray queries, empty copies and primitive schema-2 persistence honor
+closed exclusion boxes. Underlying field evaluation and the outer box are
+unchanged. Existing unrestricted primitive output stays schema 1. Mixed schema-2
+restore migrates old unrestricted math records with local corner checks only,
+without retracing stored topology or recertifying restored seam bounds.
+Mixed validation requires exact canonical restrictions. Unsupported sphere/
+plane-section/split/untrimmed-input consumers reject exclusions explicitly.
+FreeCAD exposes the exclusion count and owned/translated face queries.
+
+See [contracts and remaining gates](native-face-domain.md). Whole-face attachment,
+corner-aware geometry/shell/solid qualification, default GUI exposure, curved
+operands and all unfinished Stage 2–4 requirements remain active. No packages,
+system libraries, default workbench command or geometric budgets were changed.
+Focused native kernel tests pass **13/13** (38.467 s); native runtime/trim CLI
+passes **2/2** (29.20 s). Final kernel after the strict-solid serializer guard
+passes **96/96** (156.27 s), compatibility **24/24** (39.55 s).
+Full FreeCAD migration/GUI verification passes **54/54** (435.76 s).
+
+Build/test logs: `/tmp/implicit-face-domain-build.log`,
+`/tmp/implicit-face-domain-build-final.log`,
+`/tmp/implicit-face-domain-tests-build.log`,
+`/tmp/implicit-face-domain-focused.log`,
+`/tmp/implicit-face-domain-freecad-build.log`,
+`/tmp/implicit-face-domain-cli.log`,
+`/tmp/implicit-face-domain-guard-build.log`,
+`/tmp/implicit-face-domain-kernel-final.log`,
+`/tmp/implicit-face-domain-compat-final.log`,
+`/tmp/implicit-face-domain-migration-final.log`.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+## Previous increment: complete corner-aware directed trim cycles
 
 CheckTrimAttachment now uses canonical exact split-corner anchors distinct from
 the ordered interior box-edge roots (edge IDs 0..11, corner IDs 12..19). It never
