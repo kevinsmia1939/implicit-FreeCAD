@@ -71,8 +71,10 @@ now supplies caps and strict-volume grouping. The [graph/cap checker](native-cor
 now attaches cap regions, and [complete trim cycles](native-corner-trim.md) attach too.
 [Whole restricted-face/native shell attachment](native-corner-shells.md) now exists.
 Next: qualified default native solids and GUI exposure. Mesh Prepare,
-clipped coverage and solid factories still guard
+clipped coverage still guard
 this policy. General curved operands, snapping/history, richer editing and
 cross-workbench dispatch remain part of the unfinished Stage 2–4 requirements.
 The later [cap geometry extension](native-corner-cap-geometry.md) supplies separate
 directed distance bounds without native-solid promotion.
+The separate [native solid factory/persistence extension](native-corner-solids.md)
+now qualifies the default operations through fresh topology and geometry gates.

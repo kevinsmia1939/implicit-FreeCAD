@@ -52,10 +52,10 @@ and actual graph incidence, without tracing or re-certifying seam bounds.
 Native geometry property assignment, FCStd, content transfer and transactions
 retain that representation. See [persistence contracts](native-corner-persistence.md).
 
-Existing mesh/solid factories have explicit policy guards,
+Existing mesh/coverage factories have explicit policy guards,
 independent of I/O support. [Physical-distance queries](native-corner-classification.md)
 now distinguish retained corner witnesses from excluded closed-set contacts.
-These guards prevent false solid qualification. The default Add
+These guards prevent unsupported extraction claims. The default Add
 Gyroid workbench command is unchanged and still creates a field display.
 
 The [whole-domain corner surface reference](native-corner-topology.md) now
@@ -64,7 +64,8 @@ and groups its volumes. [Stored graph/cap attachment](native-corner-attachment.m
 now resolves too, as do [complete trim cycles](native-corner-trim.md).
 [Whole restricted faces/native shells](native-corner-shells.md) now attach too.
 [Corner-aware cap qualification](native-corner-cap-geometry.md) now exists.
-Next: native solid/result/persistence integration and default-workbench exposure. Curved operands and all
+[Native solid/result/persistence integration](native-corner-solids.md) now exists.
+Next: mesh/view/live workflow qualification and default-workbench exposure. Curved operands and all
 remaining Stage 2–4 requirements remain required, including snapping, history,
 richer editing and representation-aware consumer dispatch.
 
@@ -74,7 +75,7 @@ Kernel tests `DefaultCornerBoundaryUsesSharedNativeTopology` and
 `CornerBoundaryRestoredIdentityScaleAndFailurePolicies` cover both operations,
 actual edge identity/incidence, cap validity, excluded contacts, restored exact
 identity, scale/periodic translation, unchanged sources, legacy refusal, budgets,
-placements and guarded solid/persistence consumers. FreeCAD's
+placements and separately qualified solid/persistence consumers. FreeCAD's
 `corner_boundary_smoke.py` tests the actual OCCT-8 binding, handle lifetime,
 inspection, cap copies and atomic property refusal.
 

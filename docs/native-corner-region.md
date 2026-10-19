@@ -82,6 +82,7 @@ now attach too, as do [whole restricted native faces/shells](native-corner-shell
 Next apply representation-aware geometric checks
 and construct/validate default native solids before changing the default GUI.
 [Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate
-directed bounds. Native mesh/solid guards remain in force.
+directed bounds. [Native solids and their codec](native-corner-solids.md) now
+qualify separately; native mesh guards remain in force.
 Curved operands, snapping/history, richer editing and all other unfinished
 Stage 2–4 acceptance gates stay active.

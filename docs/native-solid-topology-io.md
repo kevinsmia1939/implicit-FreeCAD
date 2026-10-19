@@ -1,12 +1,16 @@
 # Explicit native solid topology persistence
 
-`BRepClass3d_ImplicitSolidIO` adds schema-1 records for the actual supported
+`BRepClass3d_ImplicitSolidIO` stores schema-1 (strict) or schema-2 (regularized-corner)
+records for the actual supported
 `TopoDS_Solid` results. This is the prerequisite for a dedicated FreeCAD solid
 geometry property; that subsequent [property and FCStd owner](native-solid-property.md)
 is now implemented separately. The codec itself does not
 serialize a display mesh, Part shape, arbitrary field or a Boolean recipe to run
 again on load. Existing boundary-property and generic Part APIs reject these
 solid handles rather than silently discarding their result topology.
+The [corner-native extension](native-corner-solids.md) adds canonical restricted
+component faces, outer-version/source-policy agreement and schema-2 property
+round trips. Strict output and its schema-1 behavior remain unchanged.
 
 ## What is stored
 

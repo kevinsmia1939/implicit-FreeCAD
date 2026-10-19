@@ -4,11 +4,69 @@ Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `286148bea0` on
-`feature/native-implicit`, OCCT `d8daac4f5e` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `bf547eb55b` on
+`feature/native-implicit`, OCCT `e7aa87d367` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: corner-aware native cap geometry
+## Latest increment: corner-aware native solids and schema-2 solid topology
+
+The native solid factory now admits regularized corner sources through fresh
+whole-face/component/shell attachment, native topology, cap geometry and stored-
+tolerance gates. Both default operations qualify at 0.1 mm and construct actual
+TopoDS solids: one solid/shell, 13 faces, 30 edges, 19 vertices, boundary Euler -2.
+Both isolated contacts stay outside the implicit face; the retained uniform
+corner is cap-only. No mesh/Part/generic UV validity claim.
+
+An overload separates cap-geometry depth from topology/reference depth while
+preserving the original C++ signature/shared defaults. FreeCAD appends
+maximum_geometry_depth=-1 (-1 inherits reference depth). The shifted 20-mm case
+fails safely at geometry depth 16, passes at depth 18 with reference depth 16,
+and keeps the physical 0.1-mm target. Stored-tolerance/resource/parameter failures
+do not publish constructed/validated solid handles.
+
+Solid codec schema 2 now carries regularized sources; strict output remains
+schema 1. Source masks must equal canonical corner exclusions; component masks
+must equal their source/domain intersection. Restore derives and retains those
+restrictions and actual shared topology, with no Boolean retracing. Outer schema
+and source policy must agree. Source/cap/native face identity, domain, wire,
+shell/material and bounded-tolerance checks remain. Lost component restrictions
+reject before output mutation; version-spoofed reads reject atomically.
+
+Restored geometry/topology/validation/Closed flags stay false. Re-saving restored
+actual topology is supported; explicit source rebuilding creates a newly checked
+result without upgrading the old snapshot. FreeCAD tests exercise both operations,
+domain/region queries, source immutability, recheck, native solid properties and
+subelements, runtime undo/redo, FCStd close/reopen and owned lifetime. Obsolete
+corner-solid refusal assertions/helpers were removed, not geometry/topology gates.
+See [contracts and remaining scope](native-corner-solids.md).
+
+Focused kernel **3/3** (36.942 s), runtime/solid CLI **2/2** (33.45 s), full kernel
+**106/106** (179.41 s) and compatibility **24/24** (36.98 s) pass. Full FreeCAD
+migration/GUI passes **57/57** (359.29 s). Existing targets/dependencies only; no system/package
+changes, mesh/view enablement or default-workbench switch. All unfinished Stage
+2–4 requirements stay active, including curved operands and snapping/history.
+
+Logs: `/tmp/implicit-corner-solid-build.log`,
+`/tmp/implicit-corner-solid-tests-build.log`,
+`/tmp/implicit-corner-solid-focused.log`,
+`/tmp/implicit-corner-solid-freecad-build.log`,
+`/tmp/implicit-corner-solid-configure.log`,
+`/tmp/implicit-corner-solid-cli.log`,
+`/tmp/implicit-corner-solid-kernel.log`,
+`/tmp/implicit-corner-solid-compat.log`,
+`/tmp/implicit-corner-solid-migration.log`.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+## Previous increment: corner-aware native cap geometry
 
 CheckCapGeometry now supports regularized side closures. Whole-cell derivative
 cones from exact corner jets and Hessian/radius/reserve bounds exclude isolated

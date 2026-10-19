@@ -22,6 +22,37 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 63: corner-aware native solids and schema-2 solid topology
+
+BuildNativeSolids now accepts regularized corners through the existing fresh
+whole-face/shell/topology, cap geometry and stored-tolerance pipeline. Both default
+operations construct one actual native solid (13 faces/30 edges/19 vertices,
+shell Euler -2), at the 0.1-mm target. No mesh faces, generic Part/BRepCheck/BOP
+or manufacturing claim. The retained uniform corner is cap-only and both isolated
+zero contacts remain absent from the implicit face.
+
+The original C++ signature and default depth behavior are preserved; an overload
+adds independent geometry depth. FreeCAD appends maximum_geometry_depth=-1
+(-1 inherits reference depth). A shifted 20-mm fixture uses geometry depth 18
+at 0.1 mm with reference depth 16, without loosening tolerance.
+
+Native solid codec schema 2 admits regularized sources; strict output remains
+schema 1. Source restrictions must be canonical, component restrictions must
+equal their source/domain intersection, and restored component faces preserve
+those restrictions. Version/source-policy mismatches and lost masks reject
+atomically/preflight. Actual shared topology is restored, not retraced. Restored
+validation/geometry/topology/Closed flags stay false; explicit source rebuilding
+rechecks separately. Existing native solid properties, subelements, runtime
+undo/redo, FCStd close/reopen and owned handles are exercised by the new CLI test.
+See [contracts and next gates](native-corner-solids.md).
+
+Next corner-aware mesh/coverage/view support and live/task/selection qualification
+before changing default Add Gyroid. No default GUI switch yet. Curved operands,
+snapping/history and all unfinished Stage 2–4 requirements remain active.
+Focused kernel 3/3 (36.942 s), runtime/solid CLI 2/2 (33.45 s), full kernel 106/106
+(179.41 s), compatibility 24/24 (36.98 s), and migration/GUI 57/57 (359.29 s) pass;
+results/logs are in PROGRESS.md. Existing builds/dependencies only.
+
 ## Milestone 62: corner-aware native cap geometry
 
 CheckCapGeometry now handles closure of retained area on each physical box side.
@@ -1744,7 +1775,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 103 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 106 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

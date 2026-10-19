@@ -4,6 +4,9 @@ The OCCT-8 fork now provides `Implicit::PropertyNativeSolidGeometry` and
 `Implicit::NativeSolidFeaturePython`. This is actual result topology in FreeCAD's
 ComplexGeoData/property infrastructure, not the original source boundary under
 a solid name, a Part shape or a rebuild recipe.
+The [corner-aware solid extension](native-corner-solids.md) uses the same property
+and owner with schema-2 native topology payloads. The property's XML carrier
+schema remains 1; inner codec versions and verification flags are separate.
 
 ```python
 import FreeCAD as App

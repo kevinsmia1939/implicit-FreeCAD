@@ -5,6 +5,9 @@ objects from the supported gyroid/axis-aligned box region. This is a restricted
 implicit-aware **numerical** validation path at a requested physical tolerance
 (default **0.1 mm**). It does not qualify generic UV-dependent OCCT algorithms,
 ordinary Part solids, STEP export or every implicit field/operand.
+The [corner-aware extension](native-corner-solids.md) now qualifies both unchanged
+default-gyroid operations, retains restricted face membership through schema-2
+solid I/O, and exposes independent geometry depth. Strict behavior stays supported.
 
 ## Construction gates
 

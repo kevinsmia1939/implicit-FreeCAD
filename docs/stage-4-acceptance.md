@@ -46,15 +46,15 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 Latest default-gyroid increment constructs actual corner-aware native trim
 graphs for both operations, including shared canonical corner vertices and
 separate excluded closed-set contacts. The field/domain are unchanged and
-the seam target remains 0.1 mm. This is not whole-default solid qualification:
-corner-aware native geometric/solid qualification is still required before
+the seam target remains 0.1 mm. The later solid extension now qualifies the
+restricted default operations numerically; corner-aware mesh/view/live GUI qualification remains before
 switching the default GUI primitive. Unsupported legacy consumers reject explicitly.
 See [corner boundary contracts](native-corner-boundary.md). The full goal
 and curved-operand/snapping/history/consumer requirements remain active.
 Schema-2 [corner persistence](native-corner-persistence.md) now retains policy,
 contacts and actual native topology in FCStd/content transfer/undo/redo without
 rebuilding. This advances document ownership only; it does not remove the
-explicit mesh/geometric-validation/solid guards above.
+explicit mesh/viewport gates above or replace fresh solid qualification.
 The [corner-aware physical classifier](native-corner-classification.md) now
 supports regularized material, exact retained-corner witnesses and excluded-
 contact distance bounds, including placed/restored native owners. This is
@@ -92,6 +92,12 @@ checks both directed cap-region distance bounds with actual p-curve/edge/vertex
 deviations and regularized side membership. It does not itself construct or
 validate corner-aware native solids; factory/persistence/view integration and
 every other unfinished Stage 2–4 requirement remain required.
+The [corner-aware native solid extension](native-corner-solids.md) now qualifies
+both default operations at 0.1 mm and persists actual restricted solids through
+the native property/FCStd path. Restoration drops proof flags; explicit rebuilding
+rechecks separately. Corner-aware mesh/view/live-task GUI qualification and
+default-command exposure remain open, as do curved operands and every other
+unfinished Stage 2–4 gate. Restricted default solids do not complete the goal.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

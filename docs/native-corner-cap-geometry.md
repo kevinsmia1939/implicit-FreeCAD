@@ -55,14 +55,14 @@ solid_validated; both flags remain false on this diagnostic.
 The field, outer domain, native trim topology, source/restored provenance and
 default workbench command are unchanged. Results are transient diagnostics, not
 new persistence metadata. The existing immutable source property remains owned
-after document close. BuildNativeSolids still explicitly rejects the corner
-policy pending integration/qualification of native solid results and consumers.
-Mesh/coverage and corner-native-solid serialization are not enabled here.
+after document close. The later [corner-native solid extension](native-corner-solids.md)
+integrates these bounds into construction and schema-2 solid persistence.
+Mesh/coverage are not enabled by either diagnostic or factory admission.
 
 The physical target stays 0.1 mm. The shifted 20-mm fixture exhausts default
 depth 16 and resolves with an explicit depth-18 request; the 10-mm default uses
 depth 16. No production default or error threshold was increased. Future solid
-integration needs independent geometry-depth settings: currently its shared
+integration now provides independent geometry depth: its original shared
 depth parameter also feeds graph/reference checks capped at 16. Do not enlarge
 the physical tolerance just to fit a larger model into a smaller work budget.
 
@@ -74,8 +74,7 @@ plane/B-spline geometry, missing/opposite-material caps, restore/provenance,
 budgets and source immutability. FreeCAD tests exercise the diagnostic, owned
 source after close, restored geometry and explicit validity/refusal flags.
 
-Next integrate the new cap qualification into corner-aware native solid
-construction and persistence, preserving restricted face membership and material
-grouping. Then extend the mesh/view path and expose qualified defaults in the
+Corner-aware solid construction and persistence now integrate this cap
+qualification separately. Next extend the mesh/view path and expose qualified defaults in the
 workbench. Curved operands, snapping/history, richer editing and cross-workbench
 contracts remain part of the active full Stage 2–4 goal.

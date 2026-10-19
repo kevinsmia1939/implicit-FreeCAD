@@ -27,8 +27,8 @@ The generic storage constructor merely records restrictions; arbitrary caller-
 supplied boxes have no proof attached. Mixed topology validation requires the
 stored boxes to equal fresh, canonical checked corner exclusions. Existing
 whole-face attachment and native shells are now supported by the later
-[corner shell extension](native-corner-shells.md). Geometric/native-solid
-qualification remains guarded. This domain change alone is not a validated
+[corner shell extension](native-corner-shells.md). [Native solid qualification/I/O](native-corner-solids.md)
+now integrates fresh topology and cap bounds. This domain change alone is not a validated
 default solid, generic OCCT Boolean support, or Stage 4 completion.
 
 ## Persistence and consumers
@@ -66,7 +66,7 @@ physical corners, current and legacy mixed restore, and rejected re-use as an
 untrimmed operand. FreeCAD tests query both isolated contacts and retained split
 corners on source/restored/translated faces and owned properties.
 
-Whole restricted-face attachment/native shells now exist. Next implement
-corner-aware geometric validation, solids and default GUI
+Whole restricted-face attachment/native shells and [qualified native solids](native-corner-solids.md)
+now exist. Next implement corner-aware mesh/view/live workflow qualification and default GUI
 exposure. Curved operands, snapping, history, richer editing and cross-workbench
 consumer requirements remain part of the full Stage 2–4 goal.
