@@ -22,6 +22,51 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 67: native-solid task editing and independent geometry depth
+
+NativeSolid adds MaximumGeometryDepth=-1 (inherit) or 1..24. Only non-default
+depth appends a ninth input setting, preserving legacy fingerprints/default API
+prefixes. Missing properties migrate on restore without rebuilding unchanged
+topology. create(..., maximum_geometry_depth=18) sets it before the initial checked
+build; expected creation failure aborts cleanly before normal recompute logs an
+uncaught traceback. Shifted 20-mm live Part::Box succeeds at 0.1 mm with reference
+depth 16/geometry depth 18; shared defaults fail without leaving an owner.
+
+The first larger-model test exposed the corner recognizer's blanket location
+guard. OCCT now accepts exactly pure translations for conventional boxes and
+each subobject, while preserving exact world-space corner/line/plane, topology,
+domain and precision checks. No operand is moved/snapped/baked. Both operations'
+canonical topology records match directly built boxes. Rotations, scaling and
+placed implicit fields still reject; general placed/link/container BOP is open.
+
+NativeSolidView now opens a staged task panel. Solid tolerances/reference/depth/
+budgets/followed placement and same-document live shared-source operation can be
+edited. It inherits owned transaction/button lifecycle from MixedBoundaryTaskPanel;
+unrelated transactions are protected. Stored/external sources are read-only for
+operation. Numerical preview failures clear result/display/checks and can recover
+or roll back. GUI tests wait for actual visible animated-overlay controls, not
+hidden button invocation. The panel explicitly shows the Tasks view.
+Visual inspection then found a clipped Cancel button despite Qt visibility.
+FreeCAD Gui now grows/reanchors active task overlays to their actual child
+minimum hints and refreshes after the delayed TaskView minimum update. The
+module uses wrapped rows and the existing task scroll area. Tests require full
+button visible regions and an actually visible depth entry; final focused GUI
+3/3 (112.18 s) passes and the capture was visually inspected. Upstream CRLF GUI
+files are preserved; use git -c core.whitespace=cr-at-eol diff --check there.
+See [contracts/workflow](native-solid-editor.md).
+
+Focused translated-box kernel 1/1 (7.629 s), larger/legacy CLI smoke (success),
+initial GUI fixtures/test 3/3 (104.35 s, before the read-only-source safeguard)
+and full kernel 113/113 (242.49 s) pass. Compatibility 24/24 (38.48 s) passes;
+Full migration/GUI 64/64 (757.00 s) passed before the final GUI layout/core fix;
+the complete GUI/runtime/demo subset passes 15/15 (324.33 s) after that fix,
+including the strengthened editor test (109.69 s). Native heads: FreeCAD
+3ed3882985, OCCT 55f6211879. See PROGRESS.md. No new packages/system
+changes or relaxed geometry budgets/tolerance. Default Add Gyroid unchanged.
+Next broader source field/dimension/link editing, creation-time build controls
+and scheduling before default
+exposure; curved operands, snapping/history and all Stage 2–4 gates stay active.
+
 ## Milestone 66: opt-in checked native-solid display buffers
 
 FreeCAD's tessellate_mixed_checked validates the same candidate it returns for
@@ -1811,6 +1856,7 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | GDB | Exported-function/exception debugging; OCCT Release lacks source-line symbols |
 | CTest | Standalone and native regression orchestration |
 | clang-format | Available; use the FreeCAD formatting configuration |
+| unix2dos | Preserve upstream CRLF in the edited Gui overlay/task source files |
 | Xvfb | Available for isolated native GUI regression runs |
 | GoogleTest | 1.18.0 available; new OCCT tests also run through the compatibility build |
 | GCC UBSan | Targeted exact mesh-predicate checks with `-fsanitize=undefined`; not a full sanitized OCCT build |
@@ -1878,7 +1924,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 112 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 113 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

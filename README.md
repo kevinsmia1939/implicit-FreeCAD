@@ -43,6 +43,10 @@ now supplies FCStd topology and native subelements. The
 [live native-solid workflow](docs/live-native-solids.md) adds source-driven
 recompute and actual component-aware rendering/picking under the workbench's
 experimental Native solids menu; the default Add Gyroid command is unchanged.
+The [native-solid task editor](docs/native-solid-editor.md) now adds staged build
+controls/shared-source operation, independent geometry depth, rollback and failure
+recovery. It preserves legacy documents and supports the shifted 20-mm fixture
+at 0.1 mm; general placed/curved operands remain unfinished.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
 resolves all six default cube faces, retaining isolated point contacts separately.

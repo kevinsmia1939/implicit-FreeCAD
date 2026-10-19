@@ -25,10 +25,12 @@ caps pass BRepCheck; implicit faces retain the exact field and have no fake UV
 surface. This does not prove whole-field topology or validity of a solid.
 
 Policy-aware recognition requires exact coordinate-plane intercepts, axis lines
-and corner coordinates, with effective identity placements; it must not snap a
-nearly rectangular operand onto exact corner identities. Exact restored identity
-datum chains work. Unknown near-zero nodes, tangencies, coordinate uncertainty,
-nonidentity placement and exhausted budgets fail explicitly.
+and corner coordinates; it must not snap a nearly rectangular operand onto exact
+corner identities. Exact restored identity datum chains work. The later
+[translation extension](native-solid-editor.md) also accepts exact pure translations
+of conventional boxes/subobjects, with all world-coordinate checks retained.
+Unknown near-zero nodes, tangencies, coordinate uncertainty, rotations/scaling,
+placed implicit fields and exhausted budgets fail explicitly.
 
 ## Accuracy and ownership
 

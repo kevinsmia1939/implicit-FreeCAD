@@ -23,6 +23,10 @@ default operations opt-in with actual native selection. A separate
 0.1-mm target; it is not automatic qualification of GUI buffers or every edit.
 [Opt-in checked display](native-checked-display.md) now adds same-buffer
 binary32-aware proximity and contact checks; it does not qualify every edit.
+The [native-solid task editor](native-solid-editor.md) now covers build settings
+and shared-source operations, independent geometry depth, legacy migration and
+transaction/failure recovery. Exact translated conventional corner boxes are
+supported; arbitrary transforms, curved operands and broader field editing are not.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

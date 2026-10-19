@@ -14,6 +14,9 @@ creates the older field-display feature.
    exact contacts. Closed meshes alone do not establish coverage.
 2. Qualify broader source-parameter edits, task editing, failure invalidation,
    save/reopen and undo/redo for that native-solid workflow.
+   The [solid task editor](native-solid-editor.md) now covers operation and build
+   settings, independent geometry depth, transaction/failure recovery and restore;
+   broader field/dimension/link editing and scheduling remain.
 3. Expose the qualified workflow through the default workbench command, with
    real native boundary edges/vertices and transient smooth surface rendering.
 
@@ -27,6 +30,7 @@ as for conventional CAD surfaces; its triangles are not native CAD faces.
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Live native-solid task editing | Staged build controls/shared source operation and independent geometry depth | Owned Apply/OK/Cancel, legacy fingerprints/migration, larger model at 0.1 mm and exact translated-box inputs; broader field/link editing and scheduling remain |
 | Same-buffer checked native-solid display | Opt-in FreeCAD API/view mode | Binary32 upload displacement, both proximity directions, exact rounded-coordinate contacts, cache invalidation and fresh restore; source-local only, synchronous, not native-solid validation |
 | Corner-aware clipped proximity | Explicit native API supports both default operations at 0.1 mm | Fresh derivative-cone exclusions, retained cap-corner witnesses and exclusion-aware root slabs; separate report, not automatic GUI certification |
 | Corner-aware transient mesh/live display | Both default operations render through opt-in live native solids | Canonical shared corners, odd grid, exclusion checks, exact contact audit and GUI picks; GUI coverage integration/default command and broader Stage 2–4 gates remain |

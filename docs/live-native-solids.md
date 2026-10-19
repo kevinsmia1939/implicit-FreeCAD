@@ -130,3 +130,10 @@ handles the unchanged default cube's trim corners, with [opt-in live display](na
 and a separate [clipped-proximity checker](native-corner-coverage.md). Fresh
 GUI-buffer and broader parameter/task qualification still precede switching
 the default primitive; the other integration requirements above remain open.
+
+The [native solid task editor](native-solid-editor.md) now exposes operation/build
+settings, independent geometry depth and owned preview/rollback. It preserves
+legacy fingerprints and qualifies the shifted 20-mm box fixture at 0.1 mm with
+geometry depth 18. Exact pure translations of conventional corner-aware boxes
+are now accepted; rotated/scaled/placed-field/general input transforms remain
+unsupported. Broader source field/dimension/link editing and scheduling are open.

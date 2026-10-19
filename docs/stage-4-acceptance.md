@@ -43,6 +43,12 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+The [native-solid task editor](native-solid-editor.md) adds staged operation/build
+controls, independent geometry depth, transaction rollback/failure recovery and
+legacy migration. Exact translated corner boxes now preserve the same native
+topology as directly built boxes; this is not general placed/curved-operand BOP.
+Broader source field/dimension/link editing and all remaining gates stay active.
+
 The [opt-in checked native-solid display](native-checked-display.md) now binds
 proximity and exact contact checks to actual binary32 upload buffers, with
 snapshot/settings-aware caching, failure invalidation and fresh restore checks.

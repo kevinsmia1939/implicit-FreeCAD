@@ -4,11 +4,78 @@ Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `b87cddaea1` on
-`feature/native-implicit`, OCCT `1c665b63d3` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `3ed3882985` on
+`feature/native-implicit`, OCCT `55f6211879` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: opt-in same-buffer checked native-solid display
+## Latest increment: live native-solid task editor and independent geometry depth
+
+The live owner exposes MaximumGeometryDepth=-1 or 1..24 and forwards only a
+non-default value as a ninth native input setting. Default descriptors/calls and
+legacy fingerprints are unchanged. Missing-property migration preserves actual
+FCStd topology without numerical rebuilding or restoring proof flags. Atomic
+creation accepts the new option and traps expected initial numerical failure
+before normal document recompute. The shifted 20-mm live Part::Box qualifies at
+the same 0.1-mm target with topology depth 16/geometry depth 18; shared defaults
+fail and creation rolls back completely.
+
+That test exposed a corner-policy location guard. The OCCT recognizer now admits
+only exact pure translations on conventional boxes/subobjects; world-space exact
+vertex/line/plane identities, orientations, domain/precision/corner checks remain.
+No source is snapped, baked or changed. Located and directly built boxes yield
+identical canonical topology records for both operations, with qualified solids.
+Rotated/scaled operands and placed fields remain rejected, not fuzzy-canonicalized.
+
+The new NativeSolidView task panel stages solid geometry/reference/depth/work
+settings, followed placement and the same-document live shared-source operation.
+It reuses owned-transaction lifecycle, warns of shared-source effects, protects
+external transactions, and leaves stored/external source operations read-only.
+Preview failures clear geometry/buffers/checked state and support repair/Cancel.
+Tasks are shown explicitly; tests wait for actual animated-overlay visibility
+before clicking real standard buttons. See [contracts](native-solid-editor.md).
+
+Focused kernel 1/1 (7.629 s), direct larger/legacy CLI smoke, initial GUI fixtures/
+test 3/3 (104.35 s, before the read-only-source safeguard), and full kernel
+113/113 (242.49 s) and compatibility 24/24 (38.48 s) pass. Full migration/GUI
+64/64 (757.00 s) passed before the final layout/core GUI fix described below.
+The initial GUI failures were hidden overlay controls, not ignored button tests;
+the final test pumps Qt's event loop with a bounded wait and still requires them
+visible. An initial location-immutability assertion compared separately allocated
+TopLoc datums; it now compares the preserved original datum identity.
+
+Visual inspection exposed clipped Cancel/body controls despite Qt isVisible.
+The final module wraps rows above fields and uses the native task scroll area.
+Gui OverlayWidgets now honors active task child minimum sizes and reanchors
+expanded rectangles; TaskView refreshes overlays after its delayed minimum-width
+update. Inactive sizing policy is unchanged. Tests require complete action-button
+visible regions within the window and an actually visible geometry-depth entry.
+Final focused GUI/runtime 3/3 (112.18 s) passes; its screenshot was visually
+inspected. The complete GUI/runtime/demo subset passes 15/15 (324.33 s) after
+the core GUI fix, including the final editor test (109.69 s). Native math/CLI
+code is unchanged from the full 64-test run.
+Upstream GUI file CRLF is preserved; native whitespace checks use the temporary
+git -c core.whitespace=cr-at-eol option, not a repository/global setting change.
+
+Logs: `/tmp/implicit-solid-editor-occt-build.log`,
+`/tmp/implicit-solid-editor-kernel-build-final.log`,
+`/tmp/implicit-translated-corner-box-focused-final.log`,
+`/tmp/implicit-solid-settings-focused-final.log`,
+`/tmp/implicit-solid-editor-scripts-final.log`,
+`/tmp/implicit-solid-editor-gui-await-controls.log`,
+`/tmp/implicit-solid-editor-kernel.log`,
+`/tmp/implicit-solid-editor-migration.log`,
+`/tmp/implicit-solid-editor-compat.log`,
+`/tmp/implicit-solid-editor-overlay-build.log`,
+`/tmp/implicit-solid-editor-overlay-gui-final.log`,
+`/tmp/implicit-solid-editor-overlay-gui-regression.log`.
+Actual GUI capture: `/tmp/implicit-solid-editor.png`.
+
+All unfinished Stage 2–4 requirements remain active: broader source parameter/
+dimension/link editing, scheduling, curved operands, snapping/history, consumers
+and placement workflows. Default Add Gyroid unchanged; no new packages/system
+changes or accuracy/algorithm-budget relaxation.
+
+## Previous increment: opt-in same-buffer checked native-solid display
 
 FreeCAD's new tessellate_mixed_checked extracts one candidate, bounds the actual
 binary32 upload displacement, checks original clipped proximity against tolerance
