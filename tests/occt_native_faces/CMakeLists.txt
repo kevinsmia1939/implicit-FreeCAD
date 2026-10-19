@@ -27,4 +27,4 @@ target_include_directories(implicit_occt_native_worker SYSTEM PRIVATE
 target_link_libraries(implicit_occt_native_worker PRIVATE TKBRep)
 enable_testing()
 add_test(NAME implicit_occt_native_faces COMMAND implicit_occt_native_face_tests)
-set_tests_properties(implicit_occt_native_faces PROPERTIES TIMEOUT 180)
+set_tests_properties(implicit_occt_native_faces PROPERTIES TIMEOUT 240)

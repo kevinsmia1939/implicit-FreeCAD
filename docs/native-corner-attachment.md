@@ -58,9 +58,10 @@ Restored snapshots/properties retain ownership after document close.
 
 The [corner-aware trim-cycle extension](native-corner-trim.md) now distinguishes
 shared box corners from incident edge-root anchors and matches full directed
-cycles. Mesh preparation/coverage, cap-geometry validation and native shell/
-solid construction remain guarded. Matching graph/cap/cycle checks cannot enable
-those consumers implicitly. All native validity/construction flags remain false.
+cycles. The later [whole-face/native shell extension](native-corner-shells.md)
+adds separate whole-component checks. Mesh preparation/coverage, cap-geometry
+validation and native-solid construction remain guarded. Graph/cap/cycle reports
+alone still leave native validity/construction flags false.
 
 ## Verification and next work
 
@@ -70,8 +71,7 @@ work/comparison/clearance limits and source immutability. The CLI independently
 checks conventional Part edge distances, policy labels, source/restored property
 lifetime and downstream refusals. Legacy strict paths retain their tests.
 
-Corner-aware directed cycles now attach to the reference. Next establish actual
-native whole-face membership/restriction, including isolated-contact exclusion,
-and whole-face attachment. After that come geometric/native-solid
+Corner-aware whole restricted faces and native shells now attach to the reference.
+Next come geometric/native-solid
 validation and default GUI exposure. Curved operands, surviving-element history,
 snapping, richer editing and all unfinished Stage 2–4 requirements remain active.

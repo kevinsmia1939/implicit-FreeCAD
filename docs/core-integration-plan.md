@@ -260,8 +260,9 @@ volume grouping without joining isolated contacts. [Stored graph/cap attachment]
 now accepts that policy with fresh correspondence and clearance witnesses.
 [Complete corner-aware trim cycles](native-corner-trim.md) now attach to the reference.
 [Native face-domain exclusions](native-face-domain.md) now remove isolated corner
-contacts from actual domain/ray queries. Whole restricted-face attachment is still required before
-native-solid qualification and default-workbench integration. Legacy consumers
+contacts from actual domain/ray queries. [Whole restricted-face attachment and
+native shells](native-corner-shells.md) now preserve that policy. Geometric/native-solid
+qualification remains required before default-workbench integration. Legacy consumers
 retain explicit guards.
 
 The conventional OCCT representation is explicit. `BRep_TFace` stores a

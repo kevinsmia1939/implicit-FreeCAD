@@ -47,14 +47,14 @@ Latest default-gyroid increment constructs actual corner-aware native trim
 graphs for both operations, including shared canonical corner vertices and
 separate excluded closed-set contacts. The field/domain are unchanged and
 the seam target remains 0.1 mm. This is not whole-default solid qualification:
-actual corner-aware native attachment/validation are still required before
+corner-aware native geometric/solid qualification is still required before
 switching the default GUI primitive. Unsupported legacy consumers reject explicitly.
 See [corner boundary contracts](native-corner-boundary.md). The full goal
 and curved-operand/snapping/history/consumer requirements remain active.
 Schema-2 [corner persistence](native-corner-persistence.md) now retains policy,
 contacts and actual native topology in FCStd/content transfer/undo/redo without
 rebuilding. This advances document ownership only; it does not remove the
-explicit mesh/reference/solid guards above.
+explicit mesh/geometric-validation/solid guards above.
 The [corner-aware physical classifier](native-corner-classification.md) now
 supports regularized material, exact retained-corner witnesses and excluded-
 contact distance bounds, including placed/restored native owners. This is
@@ -81,6 +81,12 @@ isolated surface contacts using checked uniform-cone neighborhoods, including
 owned/placed queries and saved topology migration. Whole restricted-face
 attachment and geometric/native-solid qualification are still separate gates;
 this is not a default GUI switch or Stage 4 completion.
+The [corner-aware native shell extension](native-corner-shells.md) now attaches
+whole restricted field faces and constructs actual native shells for both default
+operations. It preserves exclusions, oriented edge pairing, cyclic vertex links,
+face connectivity and reference Euler/material grouping. This is implicit-aware
+topology qualification only: native geometric/solid validation, default GUI,
+curved operands and all unfinished Stage 2–4 requirements remain open.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

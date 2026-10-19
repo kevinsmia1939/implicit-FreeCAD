@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-18. This file is the entry point for a developer or coding
+Last updated: 2026-10-19. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,42 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 61: corner-aware whole native faces and shells
+
+BuildNativeShells now attaches the whole restricted 2-D field face through the
+fixed-corner global homotopy and existing cap/trim-cycle checks. Native component
+faces preserve canonical source exclusions, clipped to verified component boxes;
+seam segment AABBs must exclude these neighborhoods. Both default operations
+construct one native shell with 13 faces, 30 edges, 19 vertices and Euler -2.
+Both uniform contacts remain absent from the implicit face; the retained one
+is cap-only. The existing opposite-edge, cyclic vertex-link, connected face and
+Euler/material grouping checks are retained. No reference triangle is a CAD face.
+
+Partition interpolation uses the actual reference grid and exact fixed-corner
+nodal values. A disconnected regularized case exposed the hard-coded 32-grid
+CheckCorrespondence precondition inside cap attachment. A new overload forwards
+caller witness settings while preserving the original entry point's defaults.
+The disconnected case now resolves at requested 64/actual 63. Solid construction
+still refuses the corner policy explicitly: geometric/cap/coverage gates remain.
+Native API reports corner_policy and reference_resolution on shell snapshots;
+owned field-face queries preserve exclusions and placements. Source FCStd can be
+restored and used to construct shells; no direct shell-property/codec is claimed.
+See [contracts and remaining work](native-corner-shells.md).
+
+Next corner-aware native cap geometry/whole-boundary qualification, then native
+solids/default GUI. Curved operands and every unfinished Stage 2–4 integration
+requirement remain active. The expanded monolithic kernel harness allows 240 s
+instead of 180 s; numerical settings/accuracy budgets are unchanged. Final full
+verification is in PROGRESS.md; existing builds/dependencies are reused. Fresh
+kernel run passes 99/99 cases (136.62 s), runtime/shell CLI 2/2 (13.01 s),
+full FreeCAD migration/GUI 55/55 (327.43 s), and compatibility 24/24 (37.69 s).
+No default-workbench switch; restart the rebuilt fork for interactive API tests.
+For the next geometric gate, preserve closure-of-interior material membership
+through cap witnesses and projections: an isolated field zero is not an implicit
+surface witness, while the retained uniform corner is cap-only. Mesh/coverage
+consumers must honor the actual restricted face domain. Do not remove the solid
+guard merely because native shell incidence now passes.
 
 ## Milestone 60: native face-domain exclusion of isolated corner contacts
 
@@ -1675,7 +1711,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 96 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 99 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

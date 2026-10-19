@@ -43,10 +43,11 @@ retain owned topology after document close. Existing strict-policy paths remain
 unchanged; comparison/work/precision failures do not publish success.
 
 `implicit_face_attachment_validated`, `native_shell_constructed`,
-`topology_validated` and `solid_validated` stay false. Native shell/solid, mesh,
-coverage and cap-geometry consumers still guard the corner policy. Actual 2-D
-face membership must exclude the isolated relative-box zero contacts; merely
-omitting their display-mesh vertices is insufficient.
+`topology_validated` and `solid_validated` stay false on this trim-only report.
+The later [whole-face/native shell extension](native-corner-shells.md) qualifies
+native topology separately. Solid, mesh, coverage and cap-geometry consumers
+still guard the corner policy. Actual face membership excludes isolated contacts;
+merely omitting display-mesh vertices is insufficient.
 
 ## Verification and next work
 
@@ -63,8 +64,7 @@ audits. Both CTest harnesses allow 180 seconds instead of 120; the expanded
 94-case run takes 126.76 seconds on this host. Numerical work/accuracy budgets
 are unchanged. This is test orchestration headroom, not looser geometric gates.
 
-Next implement actual native whole-face restriction/membership, including contact
-exclusion, and representation-aware attachment/validation. Then construct/check
-default native shells/solids and expose the default GUI workflow. All unfinished
+Whole restricted-face attachment/native shells now exist. Next qualify native
+geometry/solids and expose the default GUI workflow. All unfinished
 Stage 2–4 scope remains, including curved operands, snapping/history, richer
 editing and broader consumer/placement integration.

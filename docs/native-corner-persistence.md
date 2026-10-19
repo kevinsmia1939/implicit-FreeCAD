@@ -47,10 +47,12 @@ Owned snapshots and subobjects retain native topology after document close.
 
 This is a low-level persisted boundary owner, not default-workbench exposure or
 a qualified native solid. The workbench's default Add Gyroid remains unchanged.
-Native mesh preparation, whole-face
-attachment and solid-codec source promotion have explicit
+Native mesh preparation, geometric qualification
+and solid-codec source promotion have explicit
 guards until their algorithms support the policy. I/O acceptance cannot enable
 those consumers implicitly.
+[Whole restricted-face/native shell attachment](native-corner-shells.md) is now
+implemented separately; this is not direct native-shell persistence.
 The newer [corner-aware classifier](native-corner-classification.md) now supplies
 physical region queries without upgrading the boundary to a solid.
 The [stored graph/cap checker](native-corner-attachment.md) now supports this

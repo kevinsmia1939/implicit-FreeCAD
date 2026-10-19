@@ -1,14 +1,72 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-18. The user has authorized continuing the full roadmap,
+Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `260d3db804` on
-`feature/native-implicit`, OCCT `86197938d3` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `b9f6e936c9` on
+`feature/native-implicit`, OCCT `fb4df03dae` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: actual native face-domain restrictions
+## Latest increment: whole restricted native faces and corner-aware shells
+
+BuildNativeShells now accepts regularized-corner native boundaries after the
+global fixed-corner homotopy, graph/cap correspondence and full trim cycles.
+Whole component faces preserve the checked domain exclusions, clipped to verified
+component boxes, and reject seam segment bounds that might enter exclusions.
+Existing opposite edge-use, cyclic vertex-link, connected face, Euler and
+material grouping checks remain. Default Common/Cut construct one genuine native
+shell: 13 faces, 30 edges, 19 vertices, Euler -2. Isolated contacts are not implicit
+face members; the retained uniform corner remains cap-only. No reference mesh
+triangles are stored as native faces.
+
+Partition uses actual reference resolution/fixed-corner nodal values. A new
+disconnected regularized test initially failed because cap attachment's graph
+precheck silently used 32 despite a caller requesting 64. The caller-settings
+overload fixes that propagation; the existing entry point preserves its default.
+The disconnected case now resolves at requested 64/actual 63, with checked
+zero-free component separation. First focused run after the fix passes **3/3**
+(29.339 s); later scaled/shifted coverage is included in the full kernel suite.
+
+FreeCAD reports corner_policy/reference_resolution on native shell snapshots.
+Its new CLI test covers both operations, restricted/translated face queries,
+material queries, source immutability, budget refusal, runtime ownership, restored
+provenance and FCStd source close/reopen followed by shell construction. The
+current runtime/shell test passes **2/2** (13.01 s). This is source-boundary
+persistence plus shell reconstruction, NOT a direct shell codec/property.
+
+BuildNativeSolids retains an explicit corner-policy refusal pending geometric
+qualification. Geometry accuracy, solid validity, Part/generic UV compatibility
+and the default GUI remain unchanged. All unfinished Stage 2–4 gates stay active;
+see [contracts and next work](native-corner-shells.md). No packages/system changes
+or numeric/accuracy budget relaxations. Expanded 99-case kernel harness timeout
+is 240 s (previously 180 s), allowing the additional full-reference/shell tests.
+Fresh full kernel verification passes **99/99** (136.62 s), full FreeCAD
+command-line/GUI migration **55/55** (327.43 s), and remaining compatibility
+**24/24** (37.69 s).
+
+Revalidation after the session/runtime reset found no surviving build/test
+processes or old /tmp logs; existing build targets were up to date. Fresh logs:
+`/tmp/implicit-corner-shell-core-oct19.log`,
+`/tmp/implicit-corner-shell-tests-oct19.log`,
+`/tmp/implicit-corner-shell-freecad-oct19.log`,
+`/tmp/implicit-corner-shell-cli-oct19.log`,
+`/tmp/implicit-corner-shell-kernel-oct19.log`,
+`/tmp/implicit-corner-shell-migration-oct19.log`,
+`/tmp/implicit-corner-shell-compat-oct19.log`.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S . -B build
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+## Previous increment: actual native face-domain restrictions
 
 Regularized mixed construction removes both isolated corner zero contacts from
 the native implicit face domain, using fresh uniform-cone neighborhood bounds.
