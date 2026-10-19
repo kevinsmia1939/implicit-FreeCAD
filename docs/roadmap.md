@@ -7,10 +7,10 @@ not the original prototype phases. Restricted box/gyroid native solids and
 opt-in rendering/selection now exist; the default Add Gyroid command still
 creates the older field-display feature.
 
-1. Extend clipped-boundary coverage to regularized corners. Prove both directed
-   distance bounds against the restricted field face and retained planar caps;
-   isolated zero contacts must not become surface/cap witnesses. Closed meshes
-   and clear contact audits alone do not establish coverage.
+1. Explicit [clipped-boundary coverage for regularized corners](native-corner-coverage.md)
+   now checks both directed distance bounds against the restricted field face
+   and retained planar caps. GUI buffer qualification must still consume fresh
+   evidence; closed meshes and clear contact audits alone do not establish coverage.
 2. Qualify broader source-parameter edits, task editing, failure invalidation,
    save/reopen and undo/redo for that native-solid workflow.
 3. Expose the qualified workflow through the default workbench command, with
@@ -26,7 +26,8 @@ as for conventional CAD surfaces; its triangles are not native CAD faces.
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
-| Corner-aware transient mesh/live display | Both default operations render through opt-in live native solids | Canonical shared corners, odd grid, exclusion checks, exact contact audit and GUI picks; clipped coverage/default command and broader Stage 2–4 gates remain |
+| Corner-aware clipped proximity | Explicit native API supports both default operations at 0.1 mm | Fresh derivative-cone exclusions, retained cap-corner witnesses and exclusion-aware root slabs; separate report, not automatic GUI certification |
+| Corner-aware transient mesh/live display | Both default operations render through opt-in live native solids | Canonical shared corners, odd grid, exclusion checks, exact contact audit and GUI picks; GUI coverage integration/default command and broader Stage 2–4 gates remain |
 | Corner-aware native solids and topology I/O | Both default operations qualify at 0.1 mm and persist actual restricted solids | Fresh implicit-aware topology/cap/tolerance gates; schema 2, unverified restore, independent geometry depth; mesh/view/default-GUI and broader Stage 2–4 gates remain |
 | Corner-aware native cap geometry | Both directed coverage bounds support regularized side closures | Exact retained-corner witnesses and monotone empty-cell proofs; 0.1 mm target, no topology/solid/default-GUI promotion |
 | Corner-aware whole native faces/shells | Default Common/Cut build genuine field-backed native shells | Actual restrictions and reference-grid/separator propagation; edge uses/vertex links/Euler checked; solid qualification is separate, mesh/view/default-GUI gates remain |

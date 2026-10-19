@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 65: corner-aware clipped-boundary proximity
+
+CheckCoverage now supports Regularized sources through fresh exact lattice
+corner germs. Whole-cell Hessian bounds prove monotone uniform cones over the
+anchor/cell hull: both isolated signs are absent from the 2-D field face, but
+only unretained in-plane cones exclude cap closure. Retained exact cap corners
+can witness reverse proximity; raw F=0 cannot. Whole normal-line slabs must
+also avoid canonical field-face exclusion boxes. Existing two-way distance,
+numerical reserves, depth/cell/patch limits and source immutability remain.
+
+The FreeCAD explicit API adds regularized_field_cells, regularized_cap_cells,
+corner_witnesses and exclusion_slab_rejections diagnostics. Default Common/Cut
+resolve at 0.1 mm with 8 field/18 cap cone cells, 102 improving corner witnesses
+and 51 slab/exclusion rejections each. This is numerical proximity, not directed
+interval arithmetic, topology/solid validity or generic Part/BOP support.
+No GUI/default-command change: the separate report does not certify future
+buffers or mutate candidate SurfaceCoverageVerified/seam/solid proof flags.
+See [contracts and next gates](native-corner-coverage.md).
+
+Kernel additions include independent harmonic roots/cap samples, both operations,
+shifted/scaled restored sources, missing buffers, forged flags, resource failures
+and spurious field/cap triangles near isolated excluded contacts. CLI covers
+periods 10 and 5 with translation, owned lifetime, restore and provenance.
+Initial focused kernel 3/3 (22.409 s, before the extra cap-negative assertion)
+and CLI/runtime 2/2 (36.55 s) pass. Full kernel 112/112 (232.21 s, including
+the cap-negative test), compatibility 24/24 (28.22 s), and full migration/GUI
+60/60 (456.97 s) pass. Native commits: OCCT 1c665b63d3, FreeCAD 8f523e66c6.
+The expanded kernel
+harness timeout is 300 seconds, not an increased geometry-check work budget.
+Existing dependencies/builds only. Broader source/task editing and fresh GUI
+buffer qualification precede default exposure; all other Stage 2–4 gates remain.
+
 ## Milestone 64: corner-aware transient meshing and opt-in live GUI
 
 Prepare now supports regularized cap topology using native shared vertex/edge
@@ -1807,7 +1839,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 109 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 112 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

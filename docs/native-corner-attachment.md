@@ -62,7 +62,7 @@ cycles. The later [whole-face/native shell extension](native-corner-shells.md)
 adds separate whole-component checks. [Cap geometry](native-corner-cap-geometry.md)
 now has separate directed bounds, and [native solids](native-corner-solids.md)
 use those checks separately. [Mesh/live display](native-corner-mesh.md) is opt-in;
-clipped coverage remains guarded. Graph/cap/cycle reports
+[clipped coverage](native-corner-coverage.md) now has a separate checker. Graph/cap/cycle reports
 alone still leave native validity/construction flags false.
 
 ## Verification and next work

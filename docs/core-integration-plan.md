@@ -263,8 +263,11 @@ now accepts that policy with fresh correspondence and clearance witnesses.
 contacts from actual domain/ray queries. [Whole restricted-face attachment and
 native shells](native-corner-shells.md) now preserve that policy. Geometric/native-solid
 qualification/integration is now supported for the restricted corner path via
-[native solids and their schema-2 codec](native-corner-solids.md). Mesh/view and
-live workflow qualification still remain before default-workbench integration.
+[native solids and their schema-2 codec](native-corner-solids.md).
+[Opt-in transient mesh/live display](native-corner-mesh.md) now works, and
+[corner-aware clipped proximity](native-corner-coverage.md) has a separate
+numerical checker. Fresh GUI-buffer and broader live/task workflow qualification
+still remain before default-workbench integration.
 [Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate
 directed physical-distance bounds, not native solid promotion. Legacy consumers
 retain explicit guards.

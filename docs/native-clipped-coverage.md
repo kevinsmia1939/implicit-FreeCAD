@@ -5,6 +5,8 @@ mixed mesh and the mathematical boundary of `box AND F<=0` (Common) or
 `box AND F>=0` (BoxMinusField). The default physical target is **0.1 mm**.
 This advances Stage 3 proximity validation. It does not prove topological
 equivalence, component preservation, native-solid validity or Stage 4 completion.
+The [regularized corner extension](native-corner-coverage.md) now handles isolated
+field contacts, retained side closure and canonical face exclusions explicitly.
 
 ```python
 import ImplicitOCCT as native

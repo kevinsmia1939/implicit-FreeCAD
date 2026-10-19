@@ -17,6 +17,12 @@ The restricted mixed GUI now exposes [all native edges and vertices](native-edge
 including point extraction, rigid subobjects and seam aliases. This is not
 integrated snapping, edit-stable naming or completion of the default gyroid's
 trimmed-solid workflow.
+The [corner-aware transient display](native-corner-mesh.md) now renders both
+default operations opt-in with actual native selection. A separate
+[corner-aware clipped proximity check](native-corner-coverage.md) supports the
+0.1-mm target; it is not automatic qualification of GUI buffers or every edit.
+Broader live/task workflows and default-command exposure remain required, as do
+curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual
 component/wire/shell/material topology without numerical rebuilding, with restored
 validation flags false. It is a prerequisite, not completion of the dedicated

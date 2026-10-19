@@ -48,7 +48,7 @@ Owned snapshots and subobjects retain native topology after document close.
 This is a low-level persisted boundary owner, not default-workbench exposure or
 a qualified native solid. The workbench's default Add Gyroid remains unchanged.
 [Native transient meshing/live display](native-corner-mesh.md) now supports the
-policy; clipped coverage is still guarded. The later [native solid factory/codec](native-corner-solids.md)
+policy; [clipped coverage](native-corner-coverage.md) is checked separately. The later [native solid factory/codec](native-corner-solids.md)
 qualifies the source separately and persists actual restricted solids as schema 2.
 Boundary I/O acceptance alone does not qualify those results implicitly.
 [Whole restricted-face/native shell attachment](native-corner-shells.md) is now

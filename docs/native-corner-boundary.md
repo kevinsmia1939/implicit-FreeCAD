@@ -52,10 +52,10 @@ and actual graph incidence, without tracing or re-certifying seam bounds.
 Native geometry property assignment, FCStd, content transfer and transactions
 retain that representation. See [persistence contracts](native-corner-persistence.md).
 
-Clipped coverage retains its explicit policy guard,
+[Clipped coverage](native-corner-coverage.md) is checked separately,
 independent of I/O support. [Physical-distance queries](native-corner-classification.md)
 now distinguish retained corner witnesses from excluded closed-set contacts.
-These guards prevent unsupported extraction claims. The default Add
+I/O alone does not qualify display coverage. The default Add
 Gyroid workbench command is unchanged and still creates a field display.
 
 The [whole-domain corner surface reference](native-corner-topology.md) now

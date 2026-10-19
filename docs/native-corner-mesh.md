@@ -95,8 +95,10 @@ and semantic subelement selection, tests undo/redo, and restores/re-renders FCSt
 without rebuilding the saved solid. A viewport capture is written to
 `/tmp/implicit-corner-native-solid.png`.
 
-Corner-aware clipped coverage remains explicitly guarded. The mesh candidate is
+The separate [corner-aware clipped coverage checker](native-corner-coverage.md)
+now supports this policy. Its report does not change candidate metadata or
+automatically qualify the GUI's current buffers. The mesh candidate is
 not proof of whole-field coverage, isotopy or display fidelity for every field/
-parameter change. Next extend and verify that coverage path and broader live/task
+parameter change. Next qualify broader live/task
 editing before changing the default command. Curved operands, snapping/history
 and all other unfinished Stage 2–4 gates remain part of the active goal.

@@ -54,7 +54,7 @@ this milestone does NOT certify the complete native boundary's geometric error.
 later [native solid factory/persistence extension](native-corner-solids.md).
 Shell-only reports still do not promote geometric or solid validity. The later
 [mesh/live-view extension](native-corner-mesh.md) supports transient display;
-clipped coverage remains guarded.
+[clipped coverage](native-corner-coverage.md) is checked separately.
 
 Shell results are owned runtime snapshots. The existing FCStd native property
 stores the source boundary; shells can be constructed again from the restored

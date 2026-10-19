@@ -120,3 +120,9 @@ operands/general field restrictions, integrated snapping, surviving-element
 history, task-panel/source-link editing, broader cross-workbench dispatch and
 full end-to-end placement/consumer qualification. This restricted workflow does
 not complete Stage 4. See stage-4-acceptance.md and PROGRESS.md.
+
+The later [corner-aware native solid extension](native-corner-solids.md) now
+handles the unchanged default cube's trim corners, with [opt-in live display](native-corner-mesh.md)
+and a separate [clipped-proximity checker](native-corner-coverage.md). Fresh
+GUI-buffer and broader parameter/task qualification still precede switching
+the default primitive; the other integration requirements above remain open.

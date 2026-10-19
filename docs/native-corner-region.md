@@ -83,7 +83,7 @@ Next apply representation-aware geometric checks
 and construct/validate default native solids before changing the default GUI.
 [Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate
 directed bounds. [Native solids and their codec](native-corner-solids.md) now
-qualify separately; [mesh/live display](native-corner-mesh.md) is opt-in and clipped
-coverage remains guarded.
+qualify separately; [mesh/live display](native-corner-mesh.md) is opt-in and
+[clipped coverage](native-corner-coverage.md) has a separate checker.
 Curved operands, snapping/history, richer editing and all other unfinished
 Stage 2–4 acceptance gates stay active.

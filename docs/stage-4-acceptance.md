@@ -103,6 +103,11 @@ both default operations opt-in, with canonical trim corners, actual subelement
 picking, undo/redo and FCStd re-rendering. Display coverage remains uncertified
 and the default command unchanged. Clipped coverage, broader live/task/parameter
 workflows, curved operands and other unfinished Stage 2–4 gates still remain.
+The [corner-aware clipped proximity extension](native-corner-coverage.md) now
+supports both default operations through a separate numerical API, with fresh
+uniform-cone exclusions and retained-side corner witnesses. This does not yet
+qualify all GUI buffers/parameter edits or change the default command. Full
+Stage 2–4 acceptance remains unchanged.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

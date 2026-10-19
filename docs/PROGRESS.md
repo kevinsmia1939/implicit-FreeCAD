@@ -4,11 +4,54 @@ Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `27b60c461d` on
-`feature/native-implicit`, OCCT `25b18f5696` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `8f523e66c6` on
+`feature/native-implicit`, OCCT `1c665b63d3` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: corner-aware transient mesh and opt-in live display
+## Latest increment: corner-aware clipped-boundary proximity
+
+The explicit native coverage checker now accepts regularized corners using fresh
+exact lattice germs and whole-hull Hessian derivative bounds. Uniform 3-D cones
+exclude isolated contacts of either sign from the field face. On physical box
+sides, two strictly unretained inward derivatives exclude only cells absent
+from retained area closure. Checked retained in-plane corner rays provide
+reverse cap witnesses. Whole normal-line root slabs must avoid actual canonical
+face exclusions; untrimmed field roots cannot bypass face membership.
+
+Existing two-way proximity bounds, numerical reserves and depth/spatial/patch
+limits remain. The four new work counters are exposed by FreeCAD. Both default
+operations resolve at 0.1 mm: 8 field/18 cap cone exclusions, 102 improving exact
+corner witnesses and 51 exclusion/slab rejections each. There is no automatic
+GUI certificate, generic Part/BOP dispatch, topology/solid or directed-interval
+claim. Source caches/topology/provenance are unchanged, and separate candidate
+metadata SurfaceCoverageVerified stays false. See [contracts](native-corner-coverage.md).
+
+Tests cover both operations, independent harmonic roots/raw cap samples, retained
+cap-only corners, translated period-5 restored sources, missing surfaces/caps,
+forged flags, isolated-contact field/cap triangles and depth/cell/patch limits.
+FreeCAD checks periods 10 and 5, translation, owned lifetime, unverified restore
+and immutable serialization. Initial focused kernel 3/3 (22.409 s, before the
+extra cap-negative assertion) and CLI/runtime 2/2 (36.55 s) pass. Full kernel
+112/112 (232.21 s, including the cap-negative test) and compatibility 24/24
+(28.22 s), and full migration/GUI 60/60 (456.97 s) pass. The enlarged kernel harness
+timeout is 300 seconds (was 240), not
+an increased algorithm work budget or relaxed accuracy target.
+
+Logs: `/tmp/implicit-corner-coverage-build.log`,
+`/tmp/implicit-corner-coverage-tests-build-final.log`,
+`/tmp/implicit-corner-coverage-freecad-build.log`,
+`/tmp/implicit-corner-coverage-configure.log`,
+`/tmp/implicit-corner-coverage-focused-final.log`,
+`/tmp/implicit-corner-coverage-cli.log`,
+`/tmp/implicit-corner-coverage-kernel.log`,
+`/tmp/implicit-corner-coverage-compat.log`,
+`/tmp/implicit-corner-coverage-migration.log`.
+
+Next qualify broader live/task/source edits and fresh GUI buffers before default
+native-workbench exposure. Curved operands, snapping/history, consumers and all
+other unfinished Stage 2–4 requirements remain active. Existing builds only.
+
+## Previous increment: corner-aware transient mesh and opt-in live display
 
 Prepare now admits regularized shared cap topology without source-cache changes.
 Tessellate uses odd per-axis grids and only freshly checked physical corner zeros;

@@ -70,8 +70,8 @@ resolves the default surface and contacts. The [closed material reference](nativ
 now supplies caps and strict-volume grouping. The [graph/cap checker](native-corner-attachment.md)
 now attaches cap regions, and [complete trim cycles](native-corner-trim.md) attach too.
 [Whole restricted-face/native shell attachment](native-corner-shells.md) now exists.
-Next: default GUI exposure after broader qualification. Clipped coverage still guards
-this policy. General curved operands, snapping/history, richer editing and
+Next: default GUI exposure after broader qualification. [Clipped coverage](native-corner-coverage.md)
+now has an explicit separate checker. General curved operands, snapping/history, richer editing and
 cross-workbench dispatch remain part of the unfinished Stage 2–4 requirements.
 The later [cap geometry extension](native-corner-cap-geometry.md) supplies separate
 directed distance bounds without native-solid promotion.
