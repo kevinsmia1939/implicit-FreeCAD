@@ -52,7 +52,7 @@ and actual graph incidence, without tracing or re-certifying seam bounds.
 Native geometry property assignment, FCStd, content transfer and transactions
 retain that representation. See [persistence contracts](native-corner-persistence.md).
 
-Existing mesh/coverage factories have explicit policy guards,
+Clipped coverage retains its explicit policy guard,
 independent of I/O support. [Physical-distance queries](native-corner-classification.md)
 now distinguish retained corner witnesses from excluded closed-set contacts.
 These guards prevent unsupported extraction claims. The default Add
@@ -65,7 +65,8 @@ now resolves too, as do [complete trim cycles](native-corner-trim.md).
 [Whole restricted faces/native shells](native-corner-shells.md) now attach too.
 [Corner-aware cap qualification](native-corner-cap-geometry.md) now exists.
 [Native solid/result/persistence integration](native-corner-solids.md) now exists.
-Next: mesh/view/live workflow qualification and default-workbench exposure. Curved operands and all
+[Opt-in mesh/live display](native-corner-mesh.md) now exists. Next: clipped coverage,
+broader live/task qualification and default-workbench exposure. Curved operands and all
 remaining Stage 2–4 requirements remain required, including snapping, history,
 richer editing and representation-aware consumer dispatch.
 

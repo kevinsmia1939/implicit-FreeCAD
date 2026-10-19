@@ -20,7 +20,7 @@ set_tests_properties(implicit_occt8_runtime PROPERTIES
     PASS_REGULAR_EXPRESSION "native implicit OCCT8 runtime smoke test passed"
     FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
     FIXTURES_SETUP occt8_runtime TIMEOUT 120)
-foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled chart scalar part_linked patch mixed_box mixed_mesh mixed_audit mixed_coverage mixed_regularity corner_germ lattice_section corner_boundary corner_persistence corner_classification corner_topology corner_region corner_attachment corner_trim corner_shell corner_cap_geometry corner_solid mixed_correspondence mixed_topology mixed_region_topology mixed_cap_attachment mixed_trim_attachment native_shell native_solid native_solid_io native_solid_property live_solid native_property native_reference native_element native_link placed_classification native_topology)
+foreach(_smoke IN ITEMS native mesh linked cancellation ray geometry controlled chart scalar part_linked patch mixed_box mixed_mesh mixed_audit mixed_coverage mixed_regularity corner_germ lattice_section corner_boundary corner_persistence corner_classification corner_topology corner_region corner_attachment corner_trim corner_shell corner_cap_geometry corner_solid corner_mesh mixed_correspondence mixed_topology mixed_region_topology mixed_cap_attachment mixed_trim_attachment native_shell native_solid native_solid_io native_solid_property live_solid native_property native_reference native_element native_link placed_classification native_topology)
     add_test(NAME "implicit_occt8_${_smoke}"
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/${_smoke}_smoke.py")
     set_tests_properties("implicit_occt8_${_smoke}" PROPERTIES
@@ -117,6 +117,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
             "${_scripts}/live_solid_gui_smoke.py")
     set_tests_properties(implicit_occt8_gui_live_solid PROPERTIES
         PASS_REGULAR_EXPRESSION "native implicit live solid GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_corner_solid
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/corner-solid-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/corner-solid-system.cfg"
+            "${_scripts}/corner_solid_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_corner_solid PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit corner solid GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)

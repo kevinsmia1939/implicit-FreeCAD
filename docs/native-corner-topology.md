@@ -73,7 +73,8 @@ strict material connectivity; ordinary strict-region queries remain unchanged.
 [Whole restricted faces/native shells](native-corner-shells.md) now attach through
 separate checks. [Cap geometry](native-corner-cap-geometry.md) is qualified
 separately too. [Native solid construction/I/O](native-corner-solids.md) now uses
-fresh qualification. Mesh guards remain; this reference
+fresh qualification. [Mesh/live display](native-corner-mesh.md) is now supported
+opt-in; clipped coverage remains guarded. This reference
 alone does not enable those consumers.
 
 ## Verification and next work

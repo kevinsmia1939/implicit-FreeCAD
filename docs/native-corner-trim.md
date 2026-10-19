@@ -47,7 +47,8 @@ unchanged; comparison/work/precision failures do not publish success.
 The later [whole-face/native shell extension](native-corner-shells.md) qualifies
 native topology separately. [Cap geometry](native-corner-cap-geometry.md) now has
 separate directed bounds; [native solids](native-corner-solids.md) now qualify
-separately, while mesh and coverage still guard the corner policy.
+separately. [Mesh/live display](native-corner-mesh.md) is now opt-in; clipped coverage
+still guards the corner policy.
 Actual face membership excludes isolated contacts;
 merely omitting display-mesh vertices is insufficient.
 

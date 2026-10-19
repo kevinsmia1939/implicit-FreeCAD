@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 64: corner-aware transient meshing and opt-in live GUI
+
+Prepare now supports regularized cap topology using native shared vertex/edge
+sampling, with all source caches kept private. Tessellate uses actual odd grids
+and fresh exact physical-corner identities, preserves six split trim corners,
+and checks whole field-triangle AABBs against canonical exclusions. Cap-only
+retained corners remain on caps. Mesh policy/fixed-corner diagnostics are exposed;
+untrimmed field bound/closed mesh flags do not certify coverage or solids.
+
+The first contact audit hit its existing limit. A balanced 3-D triangle-AABB
+hierarchy replaces the X-only sweep, preserving exact predicates, shared-simplex
+rules, work limits and unresolved-on-limit behavior. BroadTests counts node and
+leaf-box comparisons. A sparse coplanar regression plus injected duplicate and
+both default corner candidates pass without raising any audit budgets.
+
+ImplicitMixed now has explicit CornerPolicy and create(..., corner_policy=...).
+Legacy Reject fingerprints are unchanged; regularized policy participates in
+new fingerprints and unchanged-input checks. The existing native solid view
+renders this opt-in path with smooth field normals and separate cap normals.
+GUI tests cover actual face/vertex ray picking, semantic selection, both operations,
+undo/redo and FCStd restore without solid reconstruction. Default Add Gyroid is
+unchanged. See [contracts and next gates](native-corner-mesh.md).
+
+Focused kernel 4/4 (26.414 s), runtime/mesh CLI 2/2 (33.36 s), GUI fixture/test
+3/3 (28.17 s), full kernel 109/109 (210.09 s), and compatibility 24/24 (38.94 s)
+pass. Full migration/GUI 59/59 (430.74 s) also passes. The actual viewport capture
+was visually inspected: clipped field, separate caps, native boundary edges and
+vertex markers render; some tessellation/shading remains visible. No analytic or
+coverage-certified display claim. Capture: /tmp/implicit-corner-native-solid.png.
+Next corner-aware clipped coverage and broader live/task editing/default exposure.
+All unfinished Stage 2–4 scope remains active. Existing builds/dependencies only.
+
 ## Milestone 63: corner-aware native solids and schema-2 solid topology
 
 BuildNativeSolids now accepts regularized corners through the existing fresh
@@ -1775,7 +1807,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 106 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 109 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

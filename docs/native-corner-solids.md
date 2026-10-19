@@ -60,8 +60,8 @@ FCStd restore preserves topology and drops proof flags; it does not rerun the
 Boolean recipe. Embedded schema-2 bytes participate in existing conservative
 snapshot-digest naming, not surviving-element history.
 
-The default workbench command is unchanged. Corner-aware mesh/coverage and full
-surface viewport extraction remain guarded; this milestone does not claim a new
+The default workbench command is unchanged. The later [mesh/live-view extension](native-corner-mesh.md)
+supports opt-in transient rendering; clipped coverage remains guarded. This milestone alone does not claim a new
 default smooth/crisp GUI result or generic Part consumer support. Source-linked
 live-solid/task workflows need corner-specific GUI qualification before default
 exposure. Curved operands, snapping/history, richer editing and all other
@@ -76,6 +76,6 @@ loss preflight, plus independent depth/tolerance/resource failure. FreeCAD tests
 cover source/classification consistency, explicit recheck, subelements, native
 solid property undo/redo, FCStd ownership and larger-model geometry depth.
 
-Next extend the corner-aware trim-conforming mesh/coverage/view path and qualify
-live property/task/selection workflows, then switch the default workbench command
+Next extend corner-aware clipped coverage and broader live property/task/selection
+qualification, then switch the default workbench command
 only after those gates pass. This is not completion of the full Stage 4 goal.

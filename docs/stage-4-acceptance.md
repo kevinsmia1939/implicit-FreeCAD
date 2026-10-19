@@ -98,6 +98,11 @@ the native property/FCStd path. Restoration drops proof flags; explicit rebuildi
 rechecks separately. Corner-aware mesh/view/live-task GUI qualification and
 default-command exposure remain open, as do curved operands and every other
 unfinished Stage 2–4 gate. Restricted default solids do not complete the goal.
+The [corner-aware mesh/live-view extension](native-corner-mesh.md) now renders
+both default operations opt-in, with canonical trim corners, actual subelement
+picking, undo/redo and FCStd re-rendering. Display coverage remains uncertified
+and the default command unchanged. Clipped coverage, broader live/task/parameter
+workflows, curved operands and other unfinished Stage 2–4 gates still remain.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

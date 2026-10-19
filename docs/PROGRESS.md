@@ -4,11 +4,72 @@ Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `bf547eb55b` on
-`feature/native-implicit`, OCCT `e7aa87d367` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `27b60c461d` on
+`feature/native-implicit`, OCCT `25b18f5696` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: corner-aware native solids and schema-2 solid topology
+## Latest increment: corner-aware transient mesh and opt-in live display
+
+Prepare now admits regularized shared cap topology without source-cache changes.
+Tessellate uses odd per-axis grids and only freshly checked physical corner zeros;
+shared roots use grid identity, not distance welding. Native trim corners remain
+canonical, and whole field-triangle bounds must avoid both uniform-contact
+exclusion boxes. Existing untrimmed-field distance bounds, paired incidence,
+cyclic vertex links and resource limits remain. Reports include corner_policy
+and fixed_corner_count; candidate closure does not certify coverage or solids.
+
+The first default contact audit exhausted its existing budget. A balanced 3-D
+triangle-AABB hierarchy replaces the X-only sweep; exact integer predicates,
+shared-simplex rules and all audit budgets are unchanged. BroadTests now counts
+node/leaf box comparisons. A 4,096-triangle coplanar sparse case stays under a
+small broad limit and detects an injected duplicate. Both default candidates
+audit Clear under default limits. This changes broad-phase work, not the exact
+contact gate. See [contracts and scope](native-corner-mesh.md).
+
+ImplicitMixed adds explicit CornerPolicy and create(..., corner_policy=...).
+Reject fingerprints preserve legacy hashes; regularized fingerprints include
+policy and unchanged-input checks reject mismatched geometry. The opt-in live
+solid view renders transient field triangles with smooth field normals and
+separate cap normals/creases. GUI tests cover actual face/vertex ray picks,
+semantic solid/shell/face/edge/vertex selection, both operations, undo/redo and
+FCStd restore/re-render without rebuilding saved solids. The default Add Gyroid
+command remains unchanged; clipped coverage still explicitly rejects this policy.
+
+Focused kernel **4/4** (26.414 s), runtime/mesh CLI **2/2** (33.36 s), GUI
+fixtures/test **3/3** (28.17 s), and full kernel **109/109** (210.09 s) pass.
+Remaining compatibility **24/24** (38.94 s) and full migration/GUI **59/59**
+(430.74 s) pass. The actual viewport capture was visually inspected: the clipped
+field and flat caps render with distinct boundary edges and native vertex markers.
+Some display tessellation/shading remains visible; this is not an analytic or
+coverage-certified viewport claim. No
+packages/system changes or numerical/accuracy-budget relaxations. All unfinished
+Stage 2–4 requirements remain active, including coverage, broader live/task edits,
+curved operands, snapping/history and default workbench exposure.
+
+Logs: `/tmp/implicit-corner-mesh-build.log`,
+`/tmp/implicit-corner-mesh-bvh-build.log`,
+`/tmp/implicit-corner-mesh-bvh-tests-final-build.log`,
+`/tmp/implicit-corner-mesh-bvh-focused.log`,
+`/tmp/implicit-corner-mesh-freecad-build.log`,
+`/tmp/implicit-corner-mesh-configure.log`,
+`/tmp/implicit-corner-mesh-cli.log`,
+`/tmp/implicit-corner-mesh-gui.log`,
+`/tmp/implicit-corner-mesh-kernel.log`,
+`/tmp/implicit-corner-mesh-migration.log`,
+`/tmp/implicit-corner-mesh-compat.log`.
+Viewport capture: `/tmp/implicit-corner-native-solid.png`.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+## Previous increment: corner-aware native solids and schema-2 solid topology
 
 The native solid factory now admits regularized corner sources through fresh
 whole-face/component/shell attachment, native topology, cap geometry and stored-
