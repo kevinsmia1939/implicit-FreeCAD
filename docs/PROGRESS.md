@@ -4,11 +4,65 @@ Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `b9f6e936c9` on
-`feature/native-implicit`, OCCT `fb4df03dae` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `286148bea0` on
+`feature/native-implicit`, OCCT `d8daac4f5e` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: whole restricted native faces and corner-aware shells
+## Latest increment: corner-aware native cap geometry
+
+CheckCapGeometry now supports regularized side closures. Whole-cell derivative
+cones from exact corner jets and Hessian/radius/reserve bounds exclude isolated
+unretained planar contacts in the mathematical-to-cap direction. Native candidate
+cells are never pruned this way. Strict retained projected points, or exact
+corners with a proved retained side ray, provide physical-distance witnesses.
+The retained uniform corner is cap-only; an excluded zero is not a witness.
+Existing directed coverage, actual p-curve/3-D edge/vertex checks, work budgets
+and source immutability remain. No mesh or residual-to-distance substitution.
+
+The first default test passed its geometry bounds but incorrectly expected
+corner-witness use: default caps were covered by strict interior witnesses.
+Separate actual planar B-spline patches now exercise that path. A redundant patch
+within tolerance of a retained corner passes geometry alone; a similar patch
+near the excluded corner fails. Missing/opposite-material caps and resource
+failures also reject. This demonstrates why geometry alone is NOT topology.
+
+Shifted/scaled tests keep the physical **0.1 mm** target. The 20-mm case exhausted
+default geometry depth 16 and passes with an explicit depth-18 request, without
+changing production defaults or error thresholds. Solid integration needs an
+independent geometry-depth setting: its current shared depth also feeds graph
+routines capped at 16. See [contracts/next work](native-corner-cap-geometry.md).
+
+FreeCAD exposes check_mixed_cap_geometry with directed bounds, policy/counters,
+work/failure diagnostics and false topology/solid validity flags. Its CLI tests
+exercise both operations, restored/owned source lifetime and budgets. Native
+solid factory/codec, mesh/coverage and default GUI remain guarded/unfinished.
+All other Stage 2–4 requirements stay active. No packages/system changes.
+
+Focused kernel **4/4** (8.612 s) and native runtime/cap CLI **2/2** (3.88 s) pass.
+Full kernel passes **103/103** (145.59 s), remaining compatibility **24/24**
+(38.14 s). Full FreeCAD migration/GUI verification passes **56/56** (333.82 s).
+
+Build/test logs: `/tmp/implicit-corner-cap-build.log`,
+`/tmp/implicit-corner-cap-tests-depth-build.log`,
+`/tmp/implicit-corner-cap-freecad-build.log`,
+`/tmp/implicit-corner-cap-configure.log`,
+`/tmp/implicit-corner-cap-focused-depth.log`,
+`/tmp/implicit-corner-cap-cli.log`,
+`/tmp/implicit-corner-cap-kernel.log`,
+`/tmp/implicit-corner-cap-migration.log`,
+`/tmp/implicit-corner-cap-compat.log`.
+
+```sh
+cmake --build build-occt-implicit --target TKMesh --parallel 2
+cmake --build build-occt-implicit/native-face-tests --target implicit_occt_native_face_tests implicit_occt_native_worker --parallel 2
+cmake --build build-freecad-occt8 --target Implicit ImplicitGui _ImplicitOCCT ImplicitScripts --parallel 2
+cmake -S tests/freecad_occt8 -B build-freecad-occt8/migration-tests
+ctest --test-dir build -R '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build -E '^implicit_occt_native_faces$' --output-on-failure
+python3 tools/with_xvfb.py ctest --test-dir build-freecad-occt8/migration-tests --output-on-failure
+```
+
+## Previous increment: whole restricted native faces and corner-aware shells
 
 BuildNativeShells now accepts regularized-corner native boundaries after the
 global fixed-corner homotopy, graph/cap correspondence and full trim cycles.

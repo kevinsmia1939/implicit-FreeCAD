@@ -22,6 +22,39 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 62: corner-aware native cap geometry
+
+CheckCapGeometry now handles closure of retained area on each physical box side.
+Exact corner jets plus whole-cell Hessian derivative bounds exclude cells near
+isolated unretained planar zeros; native candidate cells never use this exclusion.
+Strict retained side points and exact corners with proved retained side rays
+provide physical-distance witnesses. Isolated field zeros are not automatically
+cap witnesses; retained uniform material corners are cap-only. Existing directed
+coverage, actual lifted p-curve/3-D edge/vertex deviations and work limits remain.
+No field residual is treated as a millimetre distance.
+
+FreeCAD exposes check_mixed_cap_geometry with coverage bounds, counter/policy
+diagnostics, resource/precision failure information and false topology/solid flags.
+The test suite includes actual near-corner planar B-spline patches: a redundant
+patch within tolerance of a retained corner can pass geometry alone, but a patch
+near the excluded zero fails. Thus this check does not qualify native topology.
+Default caps use strict interior witnesses without necessarily using corner ones.
+Both operations, shifted/scaled sources, missing/opposite-material caps, restore,
+ownership and budgets are covered. See [contracts](native-corner-cap-geometry.md).
+
+The 0.1-mm target/default depth 16 are unchanged. A shifted 20-mm fixture required
+an explicit depth-18 geometry request; do not relax physical tolerance to pass.
+Native solid integration will need independent geometry depth because its shared
+depth argument also feeds reference routines limited to 16. BuildNativeSolids,
+corner solid-codec, mesh/coverage and default GUI remain guarded/unfinished.
+Next integrate cap qualification into corner-aware native solids and persistence,
+then mesh/view/default-workbench exposure. All Stage 2–4 requirements stay active.
+Focused kernel 4/4 (8.612 s) and runtime/cap CLI 2/2 (3.88 s) pass; full verification
+is recorded in PROGRESS.md. Kernel 103/103 (145.59 s) and compatibility 24/24
+(38.14 s) pass; full FreeCAD migration/GUI passes 56/56 (333.82 s).
+Existing dependencies/builds only; no default-workbench switch. Restart the fork
+before interactive API tests.
+
 ## Milestone 61: corner-aware whole native faces and shells
 
 BuildNativeShells now attaches the whole restricted 2-D field face through the
@@ -1711,7 +1744,7 @@ addon and OCCT-probe tests depend on detected/configured components; inspect
 has 25 tests with the isolated OCCT-face executable, legacy ABI guard, worker tests and migration preflight registered
 (24 without migration preflight; 22 without worker/preflight tests; 21 without
 the isolated native-face entry as well).
-The native-face entry now contains 99 GTest cases. See `occt-native-faces.md` for its
+The native-face entry now contains 103 GTest cases. See `occt-native-faces.md` for its
 separate build and the `IMPLICIT_OCCT_NATIVE_FACE_TESTS` executable-path option.
 Installed `FreeCADCmd` cannot import this fork's native module.
 The new worker/GUI tests additionally use the executable-path cache option

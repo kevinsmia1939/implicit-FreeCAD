@@ -87,6 +87,11 @@ operations. It preserves exclusions, oriented edge pairing, cyclic vertex links,
 face connectivity and reference Euler/material grouping. This is implicit-aware
 topology qualification only: native geometric/solid validation, default GUI,
 curved operands and all unfinished Stage 2–4 requirements remain open.
+The [corner-aware cap geometry extension](native-corner-cap-geometry.md) now
+checks both directed cap-region distance bounds with actual p-curve/edge/vertex
+deviations and regularized side membership. It does not itself construct or
+validate corner-aware native solids; factory/persistence/view integration and
+every other unfinished Stage 2–4 requirement remain required.
 
 At goal start: root `6397787`, OCCT `459f71a3a9`, FreeCAD `dfb000b373`.
 Restricted closed-loop gyroid/box Common/BoxMinusField native boundaries exist;

@@ -45,8 +45,9 @@ unchanged; comparison/work/precision failures do not publish success.
 `implicit_face_attachment_validated`, `native_shell_constructed`,
 `topology_validated` and `solid_validated` stay false on this trim-only report.
 The later [whole-face/native shell extension](native-corner-shells.md) qualifies
-native topology separately. Solid, mesh, coverage and cap-geometry consumers
-still guard the corner policy. Actual face membership excludes isolated contacts;
+native topology separately. [Cap geometry](native-corner-cap-geometry.md) now has
+separate directed bounds; solid, mesh and coverage consumers still guard the
+corner policy. Actual face membership excludes isolated contacts;
 merely omitting display-mesh vertices is insufficient.
 
 ## Verification and next work

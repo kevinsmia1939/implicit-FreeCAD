@@ -51,7 +51,8 @@ BRepCheck and Part compatibility remain false. The 0.1 mm target is unchanged;
 this milestone does NOT certify the complete native boundary's geometric error.
 
 BuildNativeSolids explicitly refuses this corner policy before attempting
-construction: corner-aware cap/whole-boundary geometric qualification is still
+construction. [Corner-aware cap qualification](native-corner-cap-geometry.md) now
+exists separately; native-solid factory/result/persistence integration remains
 required. This preserves the previous refusal without unnecessarily rebuilding
 already-supported shells before failing. Mesh/coverage guards also remain.
 
@@ -70,7 +71,7 @@ disconnected-component fixture additionally exercises caller settings and actual
 separator interpolation. FreeCAD tests cover face queries, translated queries,
 material classification, runtime ownership, and source FCStd close/reopen.
 
-Next: corner-aware cap geometry and whole-boundary proximity/topology validation,
-then qualified native solids and default workbench exposure. Curved operands,
+Next: integrate the new cap qualification into native solids/persistence, then
+extend mesh/view support and default workbench exposure. Curved operands,
 snapping, surviving-element history, richer editing and cross-workbench consumers
 remain required by the full Stage 2–4 goal.

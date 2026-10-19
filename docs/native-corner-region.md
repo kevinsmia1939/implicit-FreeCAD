@@ -81,6 +81,7 @@ cap regions to this reference. [Complete trim cycles](native-corner-trim.md)
 now attach too, as do [whole restricted native faces/shells](native-corner-shells.md).
 Next apply representation-aware geometric checks
 and construct/validate default native solids before changing the default GUI.
-Native mesh/cap-geometry/solid guards remain in force.
+[Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate
+directed bounds. Native mesh/solid guards remain in force.
 Curved operands, snapping/history, richer editing and all other unfinished
 Stage 2–4 acceptance gates stay active.

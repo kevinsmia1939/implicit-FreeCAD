@@ -71,7 +71,8 @@ provenance. No new persistence schema or saved proof flags. The newer
 [closed-region reference](native-corner-region.md) now adds shared caps and
 strict material connectivity; ordinary strict-region queries remain unchanged.
 [Whole restricted faces/native shells](native-corner-shells.md) now attach through
-separate checks. Mesh/geometric-validation/solid guards remain; this reference
+separate checks. [Cap geometry](native-corner-cap-geometry.md) is qualified
+separately too. Mesh/solid guards remain; this reference
 alone does not enable those consumers.
 
 ## Verification and next work

@@ -59,8 +59,9 @@ Restored snapshots/properties retain ownership after document close.
 The [corner-aware trim-cycle extension](native-corner-trim.md) now distinguishes
 shared box corners from incident edge-root anchors and matches full directed
 cycles. The later [whole-face/native shell extension](native-corner-shells.md)
-adds separate whole-component checks. Mesh preparation/coverage, cap-geometry
-validation and native-solid construction remain guarded. Graph/cap/cycle reports
+adds separate whole-component checks. [Cap geometry](native-corner-cap-geometry.md)
+now has separate directed bounds. Mesh preparation/coverage and native-solid
+construction remain guarded. Graph/cap/cycle reports
 alone still leave native validity/construction flags false.
 
 ## Verification and next work

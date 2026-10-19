@@ -4,6 +4,7 @@
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Corner-aware native cap geometry | Both directed coverage bounds support regularized side closures | Exact retained-corner witnesses and monotone empty-cell proofs; 0.1 mm target, no topology/solid/default-GUI promotion |
 | Corner-aware whole native faces/shells | Default Common/Cut build genuine field-backed native shells | Actual restrictions and reference-grid/separator propagation; edge uses/vertex links/Euler checked, but geometry/solid/default-GUI gates remain |
 | Native corner face-domain restriction | Regularized face queries exclude both isolated zero contacts | Checked uniform-cone neighborhoods, owned/placed queries and explicit persistence; geometry/native-solid/default-GUI gates remain |
 | Corner-aware directed trim cycles | Default native wires attach to the dual-cap/material reference | Canonical corner vs edge-root anchors, full oriented cycle bijections and component labels; whole-face/shell attachment is separate, geometry/native-solid/default-GUI gates remain |
