@@ -69,13 +69,18 @@ The enlarged kernel test harness has a 300-second wall-clock timeout (previously
 
 ## Next integration gates
 
+The later [checked display integration](native-checked-display.md) now consumes
+the same candidate and accounts for binary32 upload error in an opt-in native
+solid view mode. The standalone explicit API below still regenerates a separate
+candidate and does not mutate GUI state.
+
 The explicit proximity API does not yet qualify every parameter change or certify
 the GUI's current buffers automatically. Broader source/task editing, failure
 invalidation and default native-workbench exposure remain required. Curved B-Rep
 operands, snapping, surviving-element history and cross-workbench consumers remain
 part of the full Stage 2–4 goal. No generic Part shape or UV-based BOP claim follows.
 
-For the next GUI increment, check the same native `Result` that supplies display
+When extending GUI integration, check the same native `Result` that supplies display
 buffers before publishing them, and bind the report to the source/solid snapshot,
 tolerance and extraction settings. Merely calling the current explicit API
 regenerates a separate candidate. A successful old report must not survive changed

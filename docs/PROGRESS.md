@@ -4,11 +4,54 @@ Updated 2026-10-19. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `8f523e66c6` on
+Implementation heads: FreeCAD `b87cddaea1` on
 `feature/native-implicit`, OCCT `1c665b63d3` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: corner-aware clipped-boundary proximity
+## Latest increment: opt-in same-buffer checked native-solid display
+
+FreeCAD's new tessellate_mixed_checked extracts one candidate, bounds the actual
+binary32 upload displacement, checks original clipped proximity against tolerance
+minus that reserve, and exact-audits rounded triangles before returning those
+coordinates. Both directed bounds include the upload error. The separate
+display_checks contract is source-local binary32, not topology/solid validity,
+directed intervals or world-placement/GPU/pixel precision. Legacy candidate
+SurfaceCoverageVerified and SolidValidated flags stay false. Canonical pre-upload
+coordinates retain actual native component assignment; displayed displacement
+must remain within the report's bound.
+
+NativeSolidView adds opt-in CheckSurfaceDisplay and read-only
+DisplayProximityChecked. Digest/tolerance/resolution/mode bind cached checks;
+camera and edge/vertex visibility reuse them. Changed inputs clear checked state.
+Extraction failure removes the field and cached checks; scene-upload failure
+clears scene nodes/aliases/report, never authoritative geometry. Checked status
+and successful cache keys are published only after a complete upload. Recompute
+can retry repaired failures. FCStd stores the setting, not transient proofs;
+fresh restore checking does not upgrade native-solid qualification.
+See [contracts and workflow](native-checked-display.md).
+
+CLI/runtime 2/2 (59.19 s) passes with both default operations, restored geometry,
+canonical connectivity, exact binary32 coordinates, reduced-budget/invalid input
+failure and non-binary32 strict cap planes. Initial GUI fixtures/test 3/3
+(100.06 s) passed before the explicit scene-upload failure test and final atomic
+publication tightening. Compatibility 24/24 (26.49 s) and full migration/GUI
+62/62 (615.43 s) pass, including the final scene-upload failure GUI test
+(99.39 s). OCCT is unchanged; its 112-case kernel baseline passed at milestone 65.
+
+Logs: `/tmp/implicit-checked-display-build-final.log`,
+`/tmp/implicit-checked-display-scripts-final.log`,
+`/tmp/implicit-checked-display-configure.log`,
+`/tmp/implicit-checked-display-cli-final.log`,
+`/tmp/implicit-checked-display-gui.log`,
+`/tmp/implicit-checked-display-migration.log`,
+`/tmp/implicit-checked-display-compat.log`.
+
+The default Add Gyroid command remains unchanged. Check execution is synchronous;
+broader source/task editing, scheduling, curved operands, snapping/history,
+consumer/placement workflows and all other Stage 2–4 requirements remain active.
+Existing builds/dependencies only; no accuracy or algorithm-budget relaxation.
+
+## Previous increment: corner-aware clipped-boundary proximity
 
 The explicit native coverage checker now accepts regularized corners using fresh
 exact lattice germs and whole-hull Hessian derivative bounds. Uniform 3-D cones

@@ -21,6 +21,8 @@ The [corner-aware transient display](native-corner-mesh.md) now renders both
 default operations opt-in with actual native selection. A separate
 [corner-aware clipped proximity check](native-corner-coverage.md) supports the
 0.1-mm target; it is not automatic qualification of GUI buffers or every edit.
+[Opt-in checked display](native-checked-display.md) now adds same-buffer
+binary32-aware proximity and contact checks; it does not qualify every edit.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

@@ -43,6 +43,13 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+The [opt-in checked native-solid display](native-checked-display.md) now binds
+proximity and exact contact checks to actual binary32 upload buffers, with
+snapshot/settings-aware caching, failure invalidation and fresh restore checks.
+It does not certify world transforms/pixels, alter native-solid proof flags or
+change the default command. Broader source/task editing, scheduling and every
+unfinished Stage 2–4 acceptance requirement remain active.
+
 Latest default-gyroid increment constructs actual corner-aware native trim
 graphs for both operations, including shared canonical corner vertices and
 separate excluded closed-set contacts. The field/domain are unchanged and

@@ -57,6 +57,9 @@ assigned triangles with field normals and separate cap normals, and retains real
 native edge/vertex selection. It still labels display coverage as NOT validated.
 The default Add Gyroid command remains the old field-display feature. This is an
 opt-in live-workflow extension, not completed default workbench integration.
+The later [checked display mode](native-checked-display.md) adds optional
+same-buffer clipped proximity/contact checking, including binary32 upload error.
+Its separate report does not change the ordinary candidate API's false proof flags.
 
 ## Trying the opt-in workflow
 

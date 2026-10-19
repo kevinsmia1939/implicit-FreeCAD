@@ -22,6 +22,45 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 66: opt-in checked native-solid display buffers
+
+FreeCAD's tessellate_mixed_checked validates the same candidate it returns for
+display. It bounds binary64-to-binary32 upload displacement, runs clipped
+proximity at tolerance minus that bound, then exact-audits the actual rounded
+triangles. Returned display_checks add the displacement to both directed bounds;
+native topology/solid and legacy candidate proof flags remain false. Unsupported
+precision, contacts and work limits reject without publishing buffers. Original
+assignment_vertices retain canonical component-domain assignment, with checked
+display displacement; no coordinate welding or CAD mesh faces.
+
+NativeSolidView adds opt-in CheckSurfaceDisplay and read-only
+DisplayProximityChecked. Cache keys bind actual solid digest/tolerance/resolution/
+check mode; visibility/camera reuse is allowed. Failed extraction clears the field
+surface/report; failed scene upload clears all nodes/aliases/report and retains
+native geometry. Successful checked status/cache key is published only after
+complete scene upload. Recompute can retry after repair. FCStd stores settings,
+not checks/buffers; restored solid flags stay unverified while new display checks
+run. All bounds are source-local binary32, not world-transform/GPU/pixel precision.
+See [contracts and workflow](native-checked-display.md).
+
+Expanded CLI/runtime 2/2 (59.19 s) passes, including both default operations,
+restore, exact returned upload values, budgets and non-binary32 strict box caps.
+Initial GUI/fixtures 3/3 (100.06 s) passed before adding an explicit injected
+scene-upload failure check and tightening atomic publication. Final migration/GUI
+62/62 (615.43 s) passes, including the tightened GUI test (99.39 s); compatibility
+24/24 (26.49 s) passes. FreeCAD commit b87cddaea1.
+OCCT is unchanged from milestone 65 (112-case kernel baseline). No packages,
+system libraries, default-command changes or geometry-budget relaxations.
+Checking remains synchronous; broader source/task editing, responsive scheduling,
+curved operands, snapping/history, consumers and all Stage 2–4 gates remain.
+
+Immediate editing follow-up: the native factory already accepts independent
+maximum_geometry_depth, but ImplicitSolid.NativeSolid still forwards only the
+old shared-depth settings. Expose/migrate that setting without changing legacy
+default fingerprints, and qualify larger-model/source/task edits at the same
+0.1-mm target. Do not relax tolerance or remove unresolved states to make edits
+appear supported. Checked display also needs scheduling/cancellation qualification.
+
 ## Milestone 65: corner-aware clipped-boundary proximity
 
 CheckCoverage now supports Regularized sources through fresh exact lattice

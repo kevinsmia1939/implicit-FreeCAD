@@ -98,6 +98,10 @@ surface tolerance and meshing budget. Camera changes do not regenerate anything;
 edge/vertex visibility changes reuse the candidate. Native geometry failure
 clears buffers, aliases, selections and cached candidates. FCStd stores display
 settings, never mesh buffers. Meshing/building remains synchronous.
+The later [checked display mode](native-checked-display.md) adds opt-in
+CheckSurfaceDisplay and read-only DisplayProximityChecked, with same-buffer
+proximity, binary32 upload-error bounds and exact rounded-coordinate contact
+auditing. This is separate from the native solid's qualification flag.
 
 ## Verification and remaining gates
 

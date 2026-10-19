@@ -266,8 +266,9 @@ qualification/integration is now supported for the restricted corner path via
 [native solids and their schema-2 codec](native-corner-solids.md).
 [Opt-in transient mesh/live display](native-corner-mesh.md) now works, and
 [corner-aware clipped proximity](native-corner-coverage.md) has a separate
-numerical checker. Fresh GUI-buffer and broader live/task workflow qualification
-still remain before default-workbench integration.
+numerical checker. The [checked display integration](native-checked-display.md)
+now checks actual source-local binary32 upload buffers opt-in. Broader live/task
+workflow qualification still remains before default-workbench integration.
 [Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate
 directed physical-distance bounds, not native solid promotion. Legacy consumers
 retain explicit guards.

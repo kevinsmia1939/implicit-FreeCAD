@@ -9,8 +9,9 @@ creates the older field-display feature.
 
 1. Explicit [clipped-boundary coverage for regularized corners](native-corner-coverage.md)
    now checks both directed distance bounds against the restricted field face
-   and retained planar caps. GUI buffer qualification must still consume fresh
-   evidence; closed meshes and clear contact audits alone do not establish coverage.
+   and retained planar caps. The [opt-in checked display](native-checked-display.md)
+   consumes fresh same-buffer evidence, including binary32 upload error and
+   exact contacts. Closed meshes alone do not establish coverage.
 2. Qualify broader source-parameter edits, task editing, failure invalidation,
    save/reopen and undo/redo for that native-solid workflow.
 3. Expose the qualified workflow through the default workbench command, with
@@ -26,6 +27,7 @@ as for conventional CAD surfaces; its triangles are not native CAD faces.
 
 | Capability | Status | Representation / accuracy |
 |---|---|---|
+| Same-buffer checked native-solid display | Opt-in FreeCAD API/view mode | Binary32 upload displacement, both proximity directions, exact rounded-coordinate contacts, cache invalidation and fresh restore; source-local only, synchronous, not native-solid validation |
 | Corner-aware clipped proximity | Explicit native API supports both default operations at 0.1 mm | Fresh derivative-cone exclusions, retained cap-corner witnesses and exclusion-aware root slabs; separate report, not automatic GUI certification |
 | Corner-aware transient mesh/live display | Both default operations render through opt-in live native solids | Canonical shared corners, odd grid, exclusion checks, exact contact audit and GUI picks; GUI coverage integration/default command and broader Stage 2–4 gates remain |
 | Corner-aware native solids and topology I/O | Both default operations qualify at 0.1 mm and persist actual restricted solids | Fresh implicit-aware topology/cap/tolerance gates; schema 2, unverified restore, independent geometry depth; mesh/view/default-GUI and broader Stage 2–4 gates remain |

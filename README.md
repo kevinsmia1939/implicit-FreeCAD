@@ -46,8 +46,14 @@ experimental Native solids menu; the default Add Gyroid command is unchanged.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
 resolves all six default cube faces, retaining isolated point contacts separately.
-Whole default-gyroid native trimming/solids still need shared cross-face topology
-and the remaining validation gates; they are not enabled by section success.
+The later [corner-aware native-solid pipeline](docs/native-corner-solids.md)
+now constructs and persists actual restricted default-gyroid solids at 0.1 mm,
+with [opt-in live rendering/selection](docs/native-corner-mesh.md) and
+[corner-aware clipped proximity](docs/native-corner-coverage.md).
+An optional [checked display mode](docs/native-checked-display.md) checks the
+actual binary32 upload buffers for two-way proximity and exact triangle contacts.
+It is source-local numerical evidence, not native-solid/world-rendering validation;
+the default Add Gyroid command still uses the older field preview.
 General curved operands, broader native-solid qualification and the remaining
 Stage 4 integration gates remain open.
 
