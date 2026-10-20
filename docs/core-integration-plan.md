@@ -271,7 +271,9 @@ now checks actual source-local binary32 upload buffers opt-in. Broader live/task
 workflow qualification still remains before default-workbench integration.
 The [native solid task editor](native-solid-editor.md) now delivers staged build/
 operation edits, independent geometry depth, rollback and legacy migration;
-broader field/dimension/link editing and scheduling still remain. Exact translated
+primitive period/level/box dimensions now support shared native peer updates and
+preserved workbench expressions. General field graphs/source-link editing and
+scheduling still remain. Exact translated
 conventional box inputs are supported without moving the implicit field or
 weakening exact coordinate checks; this is not general placed/curved-operand BOP.
 [Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate

@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-19. This file is the entry point for a developer or coding
+Last updated: 2026-10-20. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,38 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 68: shared primitive source parameters
+
+NativeSolidTaskPanel now stages Period/IsoValue and Part::Box dimensions through
+ImplicitSourceEdit.py. It updates authoritative leaf properties inside the owned
+task transaction, not duplicate field definitions or root-to-input expressions.
+Canonical workbench dimension expressions are preserved; ordinary fields without
+dimension aliases work too. Custom expressions are protected. Unchanged rounded
+controls retain exact original doubles. External source edits reject instead of
+being adopted; cross-document shared-input mutation is unsupported.
+
+Shared same-document mixed sources and native solid peers are invalidated before
+changing math and explicitly rebuilt. Failed singular-level previews clear old
+geometry/display/flags, remain repairable and roll back through Cancel. CLI and
+real GUI smoke pass for 10-to-5-mm scaling at the 0.1-mm target, shared
+peers, expressions, undo/redo, singular rejection, repair, rollback and unchanged
+FCStd restore. Full migration/GUI run: 65/66 pass (778.00 s); the only failure
+was a new full-control visibility assertion. Qt's ensureWidgetVisible scrolls a
+spin box's input-method cursor rectangle, leaving its frame clipped. The test
+now scrolls the complete rectangle and retains viewport-containment checks.
+Final focused GUI/fixtures pass 3/3 (48.30 s), and the capture was visually
+inspected. Production code is unchanged from the full run. Expanded CLI/runtime
+checks pass 2/2 (22.60 s): separate Common/BoxMinusField sources sharing inputs,
+plus a saved external App::Link that prevents mutation. See PROGRESS.md.
+FreeCAD implementation: 4cfd5bf1a1; OCCT remains 55f6211879.
+See [editor contracts](native-solid-editor.md). No new OCCT code, packages or
+system changes. Default Add Gyroid is still unchanged.
+
+Next: creation-time build controls,
+broader source/link workflows and responsive scheduling remain before default
+native-solid exposure. Curved operands/general mixed BOP, snapping/history and
+consumer integration remain open Stage 2–4 requirements.
 
 ## Milestone 67: native-solid task editing and independent geometry depth
 

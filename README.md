@@ -45,7 +45,9 @@ recompute and actual component-aware rendering/picking under the workbench's
 experimental Native solids menu; the default Add Gyroid command is unchanged.
 The [native-solid task editor](docs/native-solid-editor.md) now adds staged build
 controls/shared-source operation, independent geometry depth, rollback and failure
-recovery. It preserves legacy documents and supports the shifted 20-mm fixture
+recovery. Primitive period/level and box dimensions can be staged with shared
+native-result updates and preserved source expressions. It preserves legacy
+documents and supports the shifted 20-mm fixture
 at 0.1 mm; general placed/curved operands remain unfinished.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)

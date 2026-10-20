@@ -26,7 +26,10 @@ binary32-aware proximity and contact checks; it does not qualify every edit.
 The [native-solid task editor](native-solid-editor.md) now covers build settings
 and shared-source operations, independent geometry depth, legacy migration and
 transaction/failure recovery. Exact translated conventional corner boxes are
-supported; arbitrary transforms, curved operands and broader field editing are not.
+supported. Primitive shared period/level/box dimensions can now be staged with
+preserved workbench expressions, same-document peer invalidation, rollback and
+unchanged restored-input precision. Arbitrary transforms, curved operands,
+general field graphs and source-link replacement are not covered.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

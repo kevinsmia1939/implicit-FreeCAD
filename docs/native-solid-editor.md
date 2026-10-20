@@ -7,7 +7,8 @@ depth, work budgets and followed placement. For a same-document live mixed sourc
 it also stages Common/BoxMinusField. That operation edits the shared source and
 therefore affects every dependent result; the panel explicitly warns about this.
 Stored boundary snapshots and external sources do not acquire an operation editor.
-Source-link replacement and general field/dimension editing are separate gates.
+Primitive source parameters are now staged as described below. Source-link
+replacement and general field-graph editing remain separate gates.
 
 The panel reuses the mixed-boundary task's owned-transaction/button lifecycle,
 with solid-specific staged controls and validation. It does not adopt or close
@@ -25,6 +26,41 @@ expanded the task child beyond a restored narrow overlay and clipped Cancel.
 Inactive overlays keep their existing size policy. Tests require the entire
 action buttons and selected depth entry to be in their actual visible regions,
 not merely flagged visible in Qt.
+
+## Shared primitive source parameters
+
+For a same-document, identity-placed primitive gyroid and a conventional box,
+the task stages Period, IsoValue and Length/Width/Height. Dimensions are editable
+only for a pure-translated `Part::Box`; other conventional box snapshots expose
+read-only dimensions. An optional fit-domain control updates the authoritative
+field domain to the planned box bounds. The task does not introduce duplicate
+field definitions or backwards property links that create dependency cycles.
+
+The focused workbench's Length/Width/Height properties and canonical DomainMax
+expressions are preserved: fitting updates their length inputs, not the saved
+expressions. Ordinary fields without these aliases use direct domain properties.
+Expression-driven scalar/dimension controls are disabled; custom domain
+expressions disable fitting and are never replaced. Untouched rounded controls
+retain original binary64 input values, including the solid tolerance. This
+prevents opening/applying a task from silently changing saved input precision.
+
+Edits use the task's existing owned transaction. Before modifying shared math,
+all live mixed sources sharing the field or box and their native solid results
+are invalidated. All these same-document native peers are explicitly rebuilt;
+failed geometry previews cannot leave the old native results displayed as valid.
+Errors remain in the task for repair or Cancel. Undo/redo and cancellation restore
+the shared source parameters and dependent geometry together. Changes to observed
+source inputs outside the task require closing/reopening it; cross-document
+shared-input changes reject before mutation. This is not general transactional
+support for arbitrary consumers or cross-document dependency graphs.
+
+The successful 10-mm to 5-mm unit-cell edit retains the 0.1-mm target. Exposing a
+level or dimension control does not qualify every value: native topology,
+regularity, physical tolerance and work-budget checks still apply. In particular,
+the critical gyroid level 1.5 rejects and clears dependent geometry rather than
+guessing a valid solid. Field graphs, transformed fields and source-link
+replacement are outside this primitive editor increment. The default Add Gyroid
+command remains unchanged.
 
 ## Independent geometry checking
 
@@ -90,8 +126,14 @@ sources, staging, real Apply/OK/Cancel, operation/depth undo/redo, budget failur
 and repair, ResetEdit, unrelated transaction protection, checked-display invalidation
 and restore. Full results are recorded in PROGRESS.md.
 A real GUI capture after Apply is saved as `/tmp/implicit-solid-editor.png`.
+The parameter-edit capture is `/tmp/implicit-source-parameters-editor.png`.
+The parameter test scrolls the full control rectangle: Qt's ensureWidgetVisible
+can use a spin box's input-method cursor rectangle, which does not guarantee the
+entire control is inside the viewport. The final test checks that containment
+and all standard task buttons, and the capture is inspected visually.
 
 This is not completed Stage 4. The default Add Gyroid command is unchanged.
-Broader field/parameter/source-link editing, responsive scheduling/cancellation,
+Broader field-graph/source-link editing, creation-time build controls,
+responsive scheduling/cancellation,
 curved conventional operands, snapping, surviving-element history and consumer/
 placement integration remain part of the active acceptance requirements.

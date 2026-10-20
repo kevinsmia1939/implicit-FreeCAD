@@ -47,13 +47,18 @@ The [native-solid task editor](native-solid-editor.md) adds staged operation/bui
 controls, independent geometry depth, transaction rollback/failure recovery and
 legacy migration. Exact translated corner boxes now preserve the same native
 topology as directly built boxes; this is not general placed/curved-operand BOP.
-Broader source field/dimension/link editing and all remaining gates stay active.
+General field graphs/source-link editing and all remaining gates stay active.
 
 The [opt-in checked native-solid display](native-checked-display.md) now binds
 proximity and exact contact checks to actual binary32 upload buffers, with
 snapshot/settings-aware caching, failure invalidation and fresh restore checks.
 It does not certify world transforms/pixels, alter native-solid proof flags or
-change the default command. Broader source/task editing, scheduling and every
+change the default command. The primitive source editor additionally stages
+period/level and Part::Box dimensions, preserving canonical workbench expressions
+and exact unchanged inputs. It invalidates/rebuilds shared same-document native
+peers inside the owned transaction and rejects unsupported custom-expression or
+cross-document mutations. This does not qualify arbitrary parameter families,
+source replacement or field graphs. Broader source/task editing, scheduling and every
 unfinished Stage 2–4 acceptance requirement remain active.
 
 Latest default-gyroid increment constructs actual corner-aware native trim

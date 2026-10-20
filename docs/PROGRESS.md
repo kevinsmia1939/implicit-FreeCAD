@@ -1,14 +1,47 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-19. The user has authorized continuing the full roadmap,
+Updated 2026-10-20. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `3ed3882985` on
+Implementation heads: FreeCAD `4cfd5bf1a1` on
 `feature/native-implicit`, OCCT `55f6211879` on `feature/implicit-distance`.
 The parent repository pins both commits.
 
-## Latest increment: live native-solid task editor and independent geometry depth
+## Milestone 68: shared primitive source-parameter task editing
+
+NativeSolidTaskPanel stages gyroid Period/IsoValue and Part::Box dimensions using
+the new GUI-free ImplicitSourceEdit helper. The field/box stay authoritative.
+All mixed sources sharing these inputs and their native solid peers are
+invalidated before edits and rebuilt explicitly within the task transaction.
+Numerical failure clears native geometry/display/check flags instead of leaving
+old results presented as valid. Repair, Cancel, undo and redo restore the shared
+state through the existing owned lifecycle.
+
+Canonical workbench DomainMax expressions survive fitting by editing their
+length inputs. Ordinary API fields without aliases also work; missing-property
+introspection is guarded because FreeCAD raises AttributeError. Custom expressions
+and external edits are protected; cross-document mutations remain unsupported.
+Untouched rounded controls preserve exact authoritative doubles, including solid
+tolerance, so unchanged FCStd edits need not rebuild or revalidate saved topology.
+
+New CLI and GUI smoke pass for a 10-to-5-mm unit cell at 0.1 mm, shared
+peers, preserved expressions, singular-level rejection, rollback/repair, undo/redo
+and unchanged saved topology. Full migration/GUI: 65/66 pass (778.00 s), with
+only the new viewport-containment assertion failing. Qt ensureWidgetVisible
+uses a spin box's input-method cursor rectangle; the test now scrolls the full
+control rectangle with ensureVisible and still requires complete containment.
+Final focused GUI/fixtures: 3/3 pass (48.30 s), including a visually inspected
+capture. Expanded CLI/runtime checks pass 2/2 (22.60 s), covering distinct
+Common and BoxMinusField sources sharing inputs and a saved external App::Link
+that blocks mutation before geometry is invalidated. Initial external-link
+fixtures needed both documents saved, as required by App::XLink. No production
+changes followed the full run. No OCCT changes, tolerance/budget relaxations, package installs
+or default-command changes. General field graphs/source replacement, creation
+controls, scheduling, curved/general BOP, snapping/history and cross-workbench
+consumers remain open. See [editor contracts](native-solid-editor.md).
+
+## Previous increment: live native-solid task editor and independent geometry depth
 
 The live owner exposes MaximumGeometryDepth=-1 or 1..24 and forwards only a
 non-default value as a ninth native input setting. Default descriptors/calls and

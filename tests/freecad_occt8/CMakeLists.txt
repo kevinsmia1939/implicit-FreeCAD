@@ -13,6 +13,12 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_source_parameters
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/source_parameters_smoke.py")
+set_tests_properties(implicit_occt8_source_parameters PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit source parameters smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 180)
 add_test(NAME implicit_occt8_runtime
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/occt8_runtime_smoke.py")
 set_tests_properties(implicit_occt8_runtime PROPERTIES
@@ -144,6 +150,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
             "${_scripts}/solid_editor_gui_smoke.py")
     set_tests_properties(implicit_occt8_gui_solid_editor PROPERTIES
         PASS_REGULAR_EXPRESSION "native implicit solid editor GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_source_parameters
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/source-parameters-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/source-parameters-system.cfg"
+            "${_scripts}/source_parameters_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_source_parameters PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit source parameters GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)
