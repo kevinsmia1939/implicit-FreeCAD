@@ -47,8 +47,9 @@ The [native-solid task editor](docs/native-solid-editor.md) now adds staged buil
 controls/shared-source operation, independent geometry depth, rollback and failure
 recovery. Primitive period/level and box dimensions can be staged with shared
 native-result updates and preserved source expressions. It preserves legacy
-documents and supports the shifted 20-mm fixture
-at 0.1 mm; general placed/curved operands remain unfinished.
+documents and supports the shifted 20-mm fixture at 0.1 mm. The native-solid
+creation command now offers tolerance, depth and work settings before the first
+build, with atomic failure/retry. General placed/curved operands remain unfinished.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
 resolves all six default cube faces, retaining isolated point contacts separately.

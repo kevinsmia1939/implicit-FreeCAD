@@ -1,5 +1,47 @@
 # Live native-solid task editor and independent geometry depth
 
+## Create with chosen build settings
+
+Select a supported native mixed boundary, then choose **Implicit Modelling →
+Native solids (experimental) → Build live native solid from boundary**. The
+creation task lets you choose tolerance, topology resolution, independent
+geometry depth and all work budgets before the first build. Opening the task
+does not create geometry or an object. Cancel closes it without document changes.
+
+OK performs one atomic build. A failed build removes its temporary owner and
+keeps the task open with the failure reason, so settings can be corrected.
+Successful creation optionally hides the boundary in the same undo transaction;
+undo/redo restores both the result and source visibility. The shifted 20-mm
+fixture succeeds with geometry depth 18 and the unchanged 0.1-mm tolerance.
+More depth or work does not guarantee a supported result. Builds are synchronous.
+
+The console factory retains its existing positional arguments and additionally
+accepts a validated dictionary of integer work/depth limits:
+
+```python
+solid = ImplicitSolid.create(
+    boundary, tolerance=.1, maximum_geometry_depth=18,
+    build_limits={"MaximumGeometryCells": 2000000},
+    hide_source=True,
+)
+```
+
+Allowed dictionary keys are MaximumDepth, MaximumCells, MaximumTests,
+MaximumSeparatorCells, MaximumGeometryCells and MaximumSegmentTests. Independent
+geometry depth remains its dedicated argument. Unknown keys, noninteger values
+and values outside these limits reject before document mutation:
+
+| Limit | Default | Allowed range |
+|---|---:|---:|
+| MaximumDepth | 16 | 0–16 |
+| MaximumCells | 4,000,000 | 1–10,000,000 |
+| MaximumTests | 2,000,000 | 1–10,000,000 |
+| MaximumSeparatorCells | 2,000,000 | 1–10,000,000 |
+| MaximumGeometryCells | 2,000,000 | 1–10,000,000 |
+| MaximumSegmentTests | 8,000,000 | 1–50,000,000 |
+
+## Edit an existing native solid
+
 Double-click a live native solid in the OCCT-8 fork to open its task panel.
 Apply previews changes in one owned transaction; OK commits, Cancel or ResetEdit
 rolls back. The task exposes solid tolerance, topology resolution/depth, geometry
@@ -131,9 +173,12 @@ The parameter test scrolls the full control rectangle: Qt's ensureWidgetVisible
 can use a spin box's input-method cursor rectangle, which does not guarantee the
 entire control is inside the viewport. The final test checks that containment
 and all standard task buttons, and the capture is inspected visually.
+Creation tests also cover no build on open/Cancel, invalid inputs/limits, atomic
+budget failure/retry, the shifted 20-mm result, source visibility undo/redo,
+unchanged FCStd restore and document closure while staging. Captures are
+`/tmp/implicit-solid-creation-settings.png` and `/tmp/implicit-solid-created.png`.
 
 This is not completed Stage 4. The default Add Gyroid command is unchanged.
-Broader field-graph/source-link editing, creation-time build controls,
-responsive scheduling/cancellation,
+Broader field-graph/source-link editing and responsive scheduling/cancellation,
 curved conventional operands, snapping, surviving-element history and consumer/
 placement integration remain part of the active acceptance requirements.

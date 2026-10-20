@@ -11,7 +11,11 @@ remain authoritative; all display triangles are disposable.
 Launch the fork's `build-freecad-occt8/bin/FreeCAD`, choose **Implicit Modelling**,
 then **Native solids (experimental) → Live native solid demo**. Alternatively,
 select an existing supported native mixed-boundary object and choose **Build
-live native solid from boundary**. The default Add Gyroid icon is unchanged:
+live native solid from boundary**. This now opens build settings before creating
+the result; set tolerance, geometry depth and work budgets, then press OK. Failed
+builds leave the task open for correction and remove any temporary result.
+See the [creation/editing workflow](native-solid-editor.md).
+The default Add Gyroid icon is unchanged:
 its 10 mm field preview is not automatically promoted to a trimmed solid.
 
 Python console:

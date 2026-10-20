@@ -4,9 +4,29 @@ Updated 2026-10-20. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `4cfd5bf1a1` on
+Implementation heads: FreeCAD `7ba0ffe031` on
 `feature/native-implicit`, OCCT `55f6211879` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 69: creation-time native solid settings
+
+The native-solid menu command stages build settings before initial construction.
+The new task shares limits/defaults with the existing editor and factory. Cancel
+does not create an owner; failed OK removes temporary geometry and retains the
+task for adjustment. Success can hide the source in the same undo transaction.
+The factory retains its old positional API, with keyword build_limits and
+hide_source. Source type/geometry and integer limit checks precede mutation.
+
+CLI/runtime 4/4 (58.61 s) passes for legacy settings/fingerprints, live owners and
+shared parameter editing. Initial real GUI creation smoke passes for the shifted
+20-mm gyroid at 0.1 mm with geometry depth 18, budget failure/retry, no build on
+open/Cancel, no orphan objects/transactions, source visibility undo/redo, and
+unchanged saved topology. Final affected GUI/runtime regression passes 5/5
+(194.17 s): creation 36.96 s, existing editor 109.37 s and source-parameter editor
+45.76 s, plus runtime fixtures. Controls/buttons are fully contained in the
+visible task viewport/window. The settings and result screenshots were visually
+inspected after camera fitting settled. No OCCT changes or packages;
+construction remains synchronous. See [workflow](native-solid-editor.md).
 
 ## Milestone 68: shared primitive source-parameter task editing
 

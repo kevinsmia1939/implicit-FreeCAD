@@ -161,6 +161,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
         PASS_REGULAR_EXPRESSION "native implicit source parameters GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_solid_create
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/solid-create-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/solid-create-system.cfg"
+            "${_scripts}/solid_create_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_solid_create PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit solid creation GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)
         set(_demo_flags "")
         if(_demo STREQUAL live)

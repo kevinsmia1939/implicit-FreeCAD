@@ -29,7 +29,9 @@ transaction/failure recovery. Exact translated conventional corner boxes are
 supported. Primitive shared period/level/box dimensions can now be staged with
 preserved workbench expressions, same-document peer invalidation, rollback and
 unchanged restored-input precision. Arbitrary transforms, curved operands,
-general field graphs and source-link replacement are not covered.
+general field graphs and source-link replacement are not covered. Native-solid
+creation now stages tolerance/depth/work settings before the first build and
+rolls back failed attempts, with creation/source-visibility undo/redo.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

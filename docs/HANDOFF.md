@@ -22,6 +22,35 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 69: creation-time native solid settings
+
+The existing Build live native solid from boundary menu command now opens
+ImplicitSolidCreate.py's task before any object or numerical solid is created.
+It stages tolerance/resolution, independent geometry depth and all work limits.
+Shared BUILD_LIMITS drives native defaults and both creation/editing controls;
+the old factory positional arguments and default fingerprints remain compatible.
+create additionally accepts validated build_limits and optional hide_source.
+
+OK uses the atomic factory; failure rolls back the temporary owner and leaves
+the task open for repair. Optional source hiding belongs to the creation undo
+transaction. Cancel before building has no document effects. The GUI test covers
+the actual command, a shifted 20-mm model at 0.1 mm/depth 18, budget failure and
+retry, source visibility, undo/redo, save/reopen without rebuilding, invalid
+inputs/limits and closing a document while staging. CLI/runtime 4/4 (58.61 s)
+and final affected GUI/runtime 5/5 (194.17 s) pass, including existing solid and
+source-parameter editors. Actual creation buttons and the depth control are
+fully visible. The settings/result captures were visually inspected; the result
+capture waits for camera fitting to settle. Logs:
+/tmp/implicit-solid-create-cli.log and /tmp/implicit-solid-create-gui-regression.log.
+No OCCT/library changes or package installation. Builds remain synchronous.
+FreeCAD implementation: 7ba0ffe031; OCCT remains 55f6211879.
+See [creation/editing workflow](native-solid-editor.md).
+
+Next: responsive native construction/display scheduling and cancellation,
+broader source/link workflows, default native-solid creation workflow, general
+mixed BOP/curved operands, snapping/history and consumer integration. The full
+Stage 2–4 acceptance goal remains active.
+
 ## Milestone 68: shared primitive source parameters
 
 NativeSolidTaskPanel now stages Period/IsoValue and Part::Box dimensions through

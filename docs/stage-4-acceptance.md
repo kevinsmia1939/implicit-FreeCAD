@@ -58,7 +58,9 @@ period/level and Part::Box dimensions, preserving canonical workbench expression
 and exact unchanged inputs. It invalidates/rebuilds shared same-document native
 peers inside the owned transaction and rejects unsupported custom-expression or
 cross-document mutations. This does not qualify arbitrary parameter families,
-source replacement or field graphs. Broader source/task editing, scheduling and every
+source replacement or field graphs. The creation command now stages tolerance,
+depth and work limits before building, with atomic failure/retry and optional
+source hiding in the same undo transaction. Broader source/task editing, scheduling and every
 unfinished Stage 2–4 acceptance requirement remain active.
 
 Latest default-gyroid increment constructs actual corner-aware native trim
