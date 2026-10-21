@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-20. This file is the entry point for a developer or coding
+Last updated: 2026-10-21. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,68 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 71: asynchronous native-solid creation task
+
+Native heads: FreeCAD 588ebc0cdd; OCCT 44ae271b27.
+
+NativeSolidCreationTaskPanel now submits native jobs and polls with a 50-ms GUI
+timer. Cancel, form destruction and document closure cancel outstanding work.
+Inputs/settings/source identity and unrelated transactions are checked before
+publishing; failures retain the repairable task. No owner/transaction exists
+while numerical construction runs. NativeSolidView consumes the returned initial
+candidate instead of synchronously extracting it again, preserving component
+assignment and atomic scene-upload behavior. Public console create is unchanged.
+
+Initial actual GUI/fixtures pass 3/3 (65.11 s), including Python/Qt event-loop
+heartbeat and forbidden synchronous build/meshing during publication. Expanded
+lifecycle tests additionally exercise cancelled builds, changed settings/inputs,
+external transactions and closing a document during work. Final creation/editor/
+runtime regression passes 4/4 (180.37 s): editor 125.25 s, creation 48.81 s.
+Log: /tmp/implicit-async-create-final.log. No packages or system-library changes.
+Final capture-adjusted GUI/runtime 3/3 passes (46.17 s). The inspected capture
+shows surface/edge/vertex rendering but remains partly cropped by the headless
+dock layout; do not treat it as a full-model visual qualification.
+
+Next: make existing solid editing/recompute and checked display responsive;
+qualify broader source/link workflows and default native-solid creation. Curved
+operands/general mixed dispatch, snapping/history and cross-workbench consumers
+remain required. Stage 4 is not complete. Source serialization, Python result
+conversion, owner publication and Coin uploads still execute on the GUI thread.
+
+## Milestone 70: background native-solid backend
+
+OCCT now has optional thread-local implicit work scopes and cooperative
+cancellation checkpoints through topology, attachments, geometry and meshing.
+FreeCAD's OCCT-8 module has one native worker plus one queued request, private
+serialized source snapshots, phase/status polling, cancellation, one-shot result
+consumption and joined shutdown. Results retain fresh validated native topology
+plus an initial transient surface candidate; no Python/document/Coin work runs
+on the worker. Source serialization and Python result conversion remain on the
+caller thread; cancellation is not a hard real-time guarantee.
+
+The private ImplicitSolid._create(completed=...) publication path rejects
+changed records/settings, dirty dependencies, mismatched/unvalidated handles
+and external transactions before committing an owner. Public create stays
+synchronous and compatible. See [contracts](native-solid-jobs.md).
+
+Focused kernel cancellation tests pass 2/2 (17.975 s). Worker/checked-display/
+runtime checks pass 3/3 (86.58 s); publication/shutdown/live/settings/runtime
+checks pass 5/5 (38.54 s). They cover actual Python heartbeat, both operations,
+topology equivalence, phase cancellation, queue limits/dropped handles,
+source lifetime, normal exit with active work, stale-input rejection and
+transactional publication without numerical rebuild. Full kernel 115/115 passes
+(254.34 s), retained in build-occt-implicit/native-face-tests/Testing/Temporary/LastTest.log.
+No packages or system library changes.
+
+Immediate next step: connect NativeSolidCreationTaskPanel to start/status/
+cancel/take via a GUI timer; bind source identity/settings, handle document
+closure and external edits/transactions, and seed NativeSolidView with the
+initial candidate to avoid main-thread remeshing. Add real GUI heartbeat,
+Cancel/failure/retry/stale-job/close-document coverage. Existing edit/recompute
+and checked-display scheduling remain separate work. The creation GUI is still
+synchronous, default Add Gyroid is unchanged, and all unfinished Stage 2–4
+curved-operand/snapping/history/consumer gates remain active.
 
 ## Milestone 69: creation-time native solid settings
 

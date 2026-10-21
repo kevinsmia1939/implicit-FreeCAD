@@ -1,12 +1,71 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-20. The user has authorized continuing the full roadmap,
+Updated 2026-10-21. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `7ba0ffe031` on
-`feature/native-implicit`, OCCT `55f6211879` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `588ebc0cdd` on
+`feature/native-implicit`, OCCT `44ae271b27` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 71: asynchronous native-solid creation
+
+The actual creation task now submits/polls native work, exposes phase text and
+retains responsive Cancel. Document/form closure cancels outstanding requests;
+changed settings, dirty dependencies, changed source records and unrelated
+transactions prevent publication. Numerical work holds no document transaction
+and creates no temporary owner. Ready results publish atomically and seed the
+view's transient candidate cache without synchronous re-meshing. Component
+assignment, native picking and scene-upload failure policies remain intact.
+
+Initial GUI/runtime 3/3 passed (65.11 s), with a Qt event-loop heartbeat and
+synchronous solid/mesh calls forbidden during successful construction/publication.
+The expanded lifecycle test initially stopped on fixture selection after a
+source edit: recompute correctly cleared that selection. The test now explicitly
+reselects the source; production code did not change for that failure.
+Tests also exercise Cancel, setting/source changes, external transactions and
+document closure during work, alongside the existing 20-mm/0.1-mm build,
+failure/retry, visibility undo/redo and unchanged FCStd restore.
+Final creation/editor/runtime regression passes 4/4 (180.37 s): unchanged editor
+125.25 s and expanded creation 48.81 s, plus runtime fixtures. Log:
+/tmp/implicit-async-create-final.log. A subsequent capture-only test adjustment
+adds camera margin for visual inspection with the headless report dock open.
+Final capture-adjusted GUI/runtime 3/3 passes (46.17 s), with production code
+unchanged from the 4/4 regression. The capture was inspected: native surfaces,
+edges and vertices render; the headless dock layout still crops the top of the
+model, so it is not a full-model visual qualification. Log:
+/tmp/implicit-async-create-margin.log.
+
+Existing editing/recompute and checked-display extraction remain synchronous.
+Source serialization, Python result conversion and scene uploads are still
+main-thread operations. No default-command switch or Stage 4 completion claim.
+See [workflow](native-solid-editor.md) and [job contracts](native-solid-jobs.md).
+
+## Milestone 70: background native-solid backend
+
+OCCT thread-local work scopes propagate cooperative cancellation through the
+existing implicit call graph without changing tolerance or geometry policies.
+FreeCAD now owns a bounded native executor (one worker, one queued request)
+with private source snapshots, status/phase polling, cancellation, one-time
+fresh-result consumption and joined shutdown. The initial display candidate is
+transient and unverified; no Python/document/Coin objects enter the worker.
+
+An internal atomic owner-publication path checks exact input/settings and fresh
+handle provenance, rejects dirty dependencies/external transactions, and reuses
+the completed native topology without rebuilding. Public create is unchanged.
+This backend is not yet connected to the creation dialog; existing GUI creation,
+editing and checked-display execution remain synchronous.
+
+Verification: full kernel 115/115 (254.34 s), focused kernel 2/2 (17.975 s), worker/checked-display/runtime
+3/3 (86.58 s), publication/shutdown/live/settings/runtime 5/5 (38.54 s).
+Logs: /tmp/implicit-work-control-focused.log,
+/tmp/implicit-solid-jobs-regression.log and
+/tmp/implicit-solid-publication-regression.log. Tests exercise Python heartbeat,
+both operations, synchronous/async topology equivalence, phase cancellation,
+bounded queue/capsule cleanup, budget failure/retry, source lifetime, normal
+shutdown during work, stale publication and undo/redo. See
+[job contracts and GUI follow-up](native-solid-jobs.md). No packages or system
+library changes; all remaining Stage 2–4 gates stay active.
 
 ## Milestone 69: creation-time native solid settings
 

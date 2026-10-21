@@ -17,6 +17,10 @@ creates the older field-display feature.
    The [solid task editor](native-solid-editor.md) now covers operation and build
    settings, independent geometry depth, transaction/failure recovery and restore;
    broader field/dimension/link editing and scheduling remain.
+   [Background solid jobs](native-solid-jobs.md) now provide cooperative kernel
+   cancellation, bounded native execution and guarded owner publication. The
+   creation dialog now polls/cancels jobs and reuses their initial display buffers;
+   existing edit/recompute and checked-display scheduling remain.
 3. Expose the qualified workflow through the default workbench command, with
    real native boundary edges/vertices and transient smooth surface rendering.
 

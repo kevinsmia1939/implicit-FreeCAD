@@ -8,12 +8,18 @@ creation task lets you choose tolerance, topology resolution, independent
 geometry depth and all work budgets before the first build. Opening the task
 does not create geometry or an object. Cancel closes it without document changes.
 
-OK performs one atomic build. A failed build removes its temporary owner and
-keeps the task open with the failure reason, so settings can be corrected.
+OK submits a background native build and initial display extraction. A GUI timer
+reports the current phase while keeping Cancel available. No owner or transaction
+is held during numerical construction. A failed build keeps the task open with
+the failure reason, so settings can be corrected. Cancel or document closure
+cancels outstanding work. Changed inputs/settings and unrelated transactions
+prevent stale-result publication. A ready result is published atomically.
 Successful creation optionally hides the boundary in the same undo transaction;
 undo/redo restores both the result and source visibility. The shifted 20-mm
 fixture succeeds with geometry depth 18 and the unchanged 0.1-mm tolerance.
-More depth or work does not guarantee a supported result. Builds are synchronous.
+More depth or work does not guarantee a supported result. The initial candidate
+is reused without GUI-thread remeshing. Console creation, existing solid editing
+and checked-display extraction remain synchronous. See [job contracts](native-solid-jobs.md).
 
 The console factory retains its existing positional arguments and additionally
 accepts a validated dictionary of integer work/depth limits:

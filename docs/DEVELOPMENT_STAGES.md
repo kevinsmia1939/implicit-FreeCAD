@@ -32,6 +32,9 @@ unchanged restored-input precision. Arbitrary transforms, curved operands,
 general field graphs and source-link replacement are not covered. Native-solid
 creation now stages tolerance/depth/work settings before the first build and
 rolls back failed attempts, with creation/source-visibility undo/redo.
+The creation task now uses bounded background native jobs with cooperative
+cancellation, stale-input rejection and initial display reuse. Existing editing,
+recompute and checked-display scheduling remain open.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual
