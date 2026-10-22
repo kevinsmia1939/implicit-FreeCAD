@@ -46,8 +46,10 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 The [background native-solid backend](native-solid-jobs.md) adds private worker
 snapshots, bounded scheduling, cooperative OCCT cancellation and guarded atomic
 owner publication. The creation task now polls/cancels jobs, rejects stale inputs
-and reuses initial display buffers. This does not make existing editing/recompute
-or checked-display extraction asynchronous or close broader integration gates.
+and reuses initial display buffers. Editor Apply/OK now batch affected native-solid
+builds with whole-group success and owned-transaction guards. Ordinary property
+recompute, source boundary preparation and checked-display extraction remain
+synchronous; broader integration gates remain open.
 
 The [native-solid task editor](native-solid-editor.md) adds staged operation/build
 controls, independent geometry depth, transaction rollback/failure recovery and

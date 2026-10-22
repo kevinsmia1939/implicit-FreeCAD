@@ -13,6 +13,12 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_solid_batch
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/solid_batch_smoke.py")
+set_tests_properties(implicit_occt8_solid_batch PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit solid batch smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 add_test(NAME implicit_occt8_solid_job_shutdown
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/solid_job_shutdown_smoke.py")
 set_tests_properties(implicit_occt8_solid_job_shutdown PROPERTIES
@@ -186,6 +192,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
             "${_scripts}/solid_create_gui_smoke.py")
     set_tests_properties(implicit_occt8_gui_solid_create PROPERTIES
         PASS_REGULAR_EXPRESSION "native implicit solid creation GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_solid_batch
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/solid-batch-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/solid-batch-system.cfg"
+            "${_scripts}/solid_batch_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_solid_batch PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit solid batch GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     foreach(_demo IN ITEMS graph live)

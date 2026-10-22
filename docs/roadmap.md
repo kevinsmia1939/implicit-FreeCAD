@@ -20,7 +20,8 @@ creates the older field-display feature.
    [Background solid jobs](native-solid-jobs.md) now provide cooperative kernel
    cancellation, bounded native execution and guarded owner publication. The
    creation dialog now polls/cancels jobs and reuses their initial display buffers;
-   existing edit/recompute and checked-display scheduling remain.
+   editor Apply/OK now batch affected solid builds with guarded group publication.
+   Ordinary property recompute, source tracing and checked-display scheduling remain.
 3. Expose the qualified workflow through the default workbench command, with
    real native boundary edges/vertices and transient smooth surface rendering.
 

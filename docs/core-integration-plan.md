@@ -276,7 +276,10 @@ preserved workbench expressions. Creation settings precede the initial build,
 with atomic failure/retry and source-visibility undo/redo. Creation now uses
 [bounded native jobs](native-solid-jobs.md), cooperative cancellation and guarded
 publication with initial display reuse. General field graphs/source-link editing
-and existing edit/recompute/checked-display scheduling still remain. Exact translated
+and ordinary property recompute/checked-display scheduling still remain. Editor
+Apply/OK now coordinate background native-solid peer batches inside the owned
+transaction, with stale-input guards and no partial publication. Source boundary
+preparation is still synchronous. Exact translated
 conventional box inputs are supported without moving the implicit field or
 weakening exact coordinate checks; this is not general placed/curved-operand BOP.
 [Corner-aware cap geometry](native-corner-cap-geometry.md) now supplies separate

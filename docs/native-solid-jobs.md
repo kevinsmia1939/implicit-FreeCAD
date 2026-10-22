@@ -2,8 +2,8 @@
 
 The OCCT-8 FreeCAD module now provides a bounded native executor for restricted
 solid construction and its initial transient display candidate. This is the
-backend for the asynchronous creation dialog. Existing solid editing/recompute
-and checked-display paths remain synchronous.
+backend for the asynchronous creation dialog and solid-editor previews.
+Ordinary property-driven recompute and checked-display paths remain synchronous.
 
 ## Execution and ownership
 
@@ -61,8 +61,28 @@ publication. Failures leave the task repairable. The view consumes the initial
 candidate without synchronous remeshing, retaining the existing component
 assignment and atomic scene-upload checks. These are still main-thread operations,
 as are result conversion and source serialization; whole-workflow latency and
-memory budgets remain open. Existing edit/recompute and checked-display
-scheduling remain subsequent work. The default Add Gyroid is unchanged.
+memory budgets remain open. Ordinary recompute and checked-display scheduling
+remain subsequent work. The default Add Gyroid is unchanged.
+
+## Shared-solid editor batches
+
+GUI Apply/OK use `ImplicitSolidBatch.SolidBatch` inside the editor's owned
+transaction. Boundary/source preparation is still synchronous. Every affected
+native solid is invalidated before worker submission. Jobs run sequentially;
+fresh results are retained until the whole group succeeds. Publication checks
+source identity, serialized inputs, live recipe fingerprints, dirty dependency
+leaves, settings and transaction ownership, then checks again after publication.
+Pending owners suppress ordinary synchronous solid execution during recompute.
+They expose no old geometry or validity flags while pending.
+
+Cancel discards private work and the editor rolls back its transaction. Lost
+transactions never authorize mutation inside an unrelated transaction. Deleted
+owners and changed controls/inputs cancel the group; failures remain repairable.
+The group retains completed results in memory until publication: only worker
+concurrency and per-job work are bounded, not total document memory. Initial
+default display candidates are reused; custom/checked display and rollback
+display regeneration can still block the GUI. Normal console/task.apply() and
+ordinary property edits retain synchronous execution outside a pending batch.
 
 ## Tests
 

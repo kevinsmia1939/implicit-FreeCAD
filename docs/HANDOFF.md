@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-21. This file is the entry point for a developer or coding
+Last updated: 2026-10-22. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,38 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 72: asynchronous shared-solid editor previews
+
+Native heads: FreeCAD 4e2086008e; OCCT unchanged at 44ae271b27.
+
+Apply/OK now coordinate native solid jobs through ImplicitSolidBatch.SolidBatch.
+The task retains its owned edit transaction, invalidates affected native peers,
+builds them sequentially and publishes only after all results succeed and current
+source/settings/transaction identities match. Pending recompute does not bypass
+the worker with a synchronous solid build. Cancel rolls back the edit; changed
+controls, dirty inputs, missing owners, document closure and lost transactions
+discard pending work. Initial candidate buffers feed the existing view cache.
+Unchanged restored geometry stays unverified; it is not rebuilt merely by opening
+or applying unchanged editor controls. Direct Python task.apply() remains
+synchronous for compatibility; GUI buttons use the background path.
+
+Single-object FreeCAD recompute deliberately leaves Touched set. SourceEdits now
+purges that flag only after each successful owned field/box evaluation, leaving
+downstream invalidation intact. Later external changes still invalidate batches.
+The first shared-parameter GUI regression exposed this distinction; see PROGRESS.md
+for final verification and [batch contracts](native-solid-jobs.md).
+Final affected GUI/runtime tests pass 5/5 (261.73 s), after explicitly testing
+invalidation on preflight failure. The earlier CLI/shared-source/GUI run passed
+6/6 (168.70 s); expanded CLI includes owner deletion and compiled boundary owners
+without a Python Proxy. Logs are recorded in PROGRESS.md.
+
+Next: ordinary property-driven recompute, source boundary construction, checked
+display and rollback display extraction remain synchronous and need scheduling.
+Completed batch results are retained until group publication, not a global
+memory-budget solution. Broader source/link workflows, default native solids,
+curved operands, snapping/history and consumers still block Stage 4 completion.
+No OCCT changes, packages or system library changes in this increment.
 
 ## Milestone 71: asynchronous native-solid creation task
 

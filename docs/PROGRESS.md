@@ -1,12 +1,48 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-21. The user has authorized continuing the full roadmap,
+Updated 2026-10-22. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `588ebc0cdd` on
+Implementation heads: FreeCAD `4e2086008e` on
 `feature/native-implicit`, OCCT `44ae271b27` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 72: asynchronous shared-solid editor previews
+
+GUI Apply/OK now use a main-thread SolidBatch coordinator over the existing
+bounded native worker. Affected peers are invalidated, built sequentially and
+published only after the whole batch succeeds and its source/settings/document/
+transaction descriptors still match. Pending recompute cannot fall back to a
+synchronous solid build. Fresh results feed the existing initial-preview cache.
+Cancel rolls back owned edits; lost transactions never permit mutation of an
+unrelated transaction. Changed controls/inputs, missing owners and document
+closure discard work. Unchanged loaded solids are not silently revalidated.
+
+The first shared-parameter GUI run exposed FreeCAD's single-object recompute
+semantics: successful evaluation leaves Touched set. SourceEdits now clears only
+the successfully evaluated field/box leaf flags, not downstream invalidation or
+later external edits. Runtime/batch/shared-source CLI and GUI checks then passed
+6/6 (168.70 s), including multi-owner Qt heartbeat, forbidden synchronous native
+build/meshing during publication, failure/retry, transaction ownership, undo/redo,
+save/reopen, changed controls and close-during-work. An expanded CLI additionally
+passes owner deletion during a pending batch. Logs: /tmp/implicit-batch-final.log
+and /tmp/implicit-batch-deletion.log.
+
+Final review added explicit invalidation when preflight/submission fails after
+settings were changed but before a batch acquired its owners. The GUI test injects
+this failure and requires old geometry/validity to be cleared before rollback.
+The final affected GUI/runtime suite passes 5/5 (261.73 s): editor 114.76 s,
+shared parameters 49.21 s, batch lifecycle 94.23 s, plus runtime fixtures.
+Log: /tmp/implicit-batch-qualification.log. A final compatibility adjustment uses
+an optional Proxy lookup for compiled native boundary owners; its dedicated CLI
+case covers the same worker/publication path without a Python source recipe.
+Final expanded CLI/runtime passes 2/2 (6.66 s), including deleted owners and the
+compiled-source case; log /tmp/implicit-batch-owner-qualification.log.
+No OCCT, dependency or system-library changes. Direct Python task.apply(), ordinary
+property recompute, source boundary preparation, checked/custom display and some
+rollback rendering remain synchronous. Global result memory budgets, default
+native-solid exposure and all other Stage 2–4 gates remain open.
 
 ## Milestone 71: asynchronous native-solid creation
 

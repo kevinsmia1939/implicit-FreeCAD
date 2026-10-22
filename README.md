@@ -50,8 +50,10 @@ native-result updates and preserved source expressions. It preserves legacy
 documents and supports the shifted 20-mm fixture at 0.1 mm. The native-solid
 creation command now offers tolerance, depth and work settings before the first
 build, with atomic failure/retry. Its [background build path](docs/native-solid-jobs.md)
-keeps Cancel available and rejects stale results; existing editing/recompute and
-checked display still run synchronously. General placed/curved operands remain unfinished.
+keeps Cancel available and rejects stale results. Editor Apply/OK now batch
+affected native-solid builds in the background too; ordinary property recompute,
+boundary tracing and checked display remain synchronous. General placed/curved
+operands remain unfinished.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
 resolves all six default cube faces, retaining isolated point contacts separately.
