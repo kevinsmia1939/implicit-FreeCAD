@@ -48,11 +48,13 @@ snapshots, bounded scheduling, cooperative OCCT cancellation and guarded atomic
 owner publication. The creation task now polls/cancels jobs, rejects stale inputs
 and reuses initial display buffers. Editor Apply/OK now batch affected native-solid
 builds with whole-group success and owned-transaction guards. Ordinary property
-recompute, source boundary preparation and checked-display extraction remain
-synchronous; broader integration gates remain open.
+recompute and source boundary preparation remain synchronous; broader integration
+gates remain open.
 Display-only native jobs now share the worker and run the same checked-buffer
-calculation with cancellable coverage/contact phases. The current view still
-requires scheduling, stale-generation guards and GUI cancellation qualification.
+calculation with cancellable coverage/contact phases. Checked views now coalesce
+jobs, guard generations/settings/live inputs and cancel on hide/deletion/document
+closure. Actual GUI tests qualify heartbeat and solid-batch priority. Unchecked
+fallback extraction remains synchronous; result conversion and upload use the GUI thread.
 
 The [native-solid task editor](native-solid-editor.md) adds staged operation/build
 controls, independent geometry depth, transaction rollback/failure recovery and

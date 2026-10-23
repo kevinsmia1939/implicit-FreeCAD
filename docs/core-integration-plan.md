@@ -1,5 +1,14 @@
 # Core integration plan for an nTop-class FreeCAD
 
+## Current scheduling increment
+
+Checked native-solid views now use coalesced cancellable display jobs on the
+shared native worker. Generation/source/settings guards and successful scene
+upload gate checked status; actual GUI tests cover heartbeat, stale results,
+solid-batch priority and document lifecycle. Ordinary recompute/source preparation,
+unchecked fallback extraction and the wider Stage 2–4 integration gates remain
+open. See [handoff milestone 74](HANDOFF.md#milestone-74-asynchronous-checked-display-view).
+
 ## Direct answer
 
 Yes, FreeCAD must eventually gain upstream/core-level implicit support to make

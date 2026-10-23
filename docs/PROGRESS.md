@@ -4,9 +4,30 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `5d6153ba5e` on
+Implementation heads: FreeCAD `0ec74de0ee` on
 `feature/native-implicit`, OCCT `ad3549601d` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 74: asynchronous checked-display views
+
+NativeSolidView now submits checked extraction through ImplicitSurfaceJobs.
+Weak view references, request coalescing, generation/record/settings guards and
+live-source checks reject stale results. Display work yields to pending solid
+batches; one outstanding display job preserves queue capacity. Hiding, deletion
+and document closure cancel work. Checked status requires successful upload of
+the current checked buffers; manually setting or restoring the flag cannot prove it.
+
+The actual GUI lifecycle test covers heartbeat, rapid settings changes, stale
+callbacks, solid-batch priority, changed source inputs and cancellation. Final
+async-display/editor/runtime tests pass 4/4 (231.97 s); existing checked-display
+GUI passes separately (103.29 s). Initial cleanup failure was test-only and fixed.
+The installed Qt stack required rebuilding the existing GUI targets against
+6.12.0; runtime/GUI library audits pass. No packages or system libraries changed.
+
+Unchecked fallback extraction, ordinary property recompute and source preparation
+remain synchronous. Conversion/component assignment/Coin upload remain on the
+GUI thread. Default native-solid exposure and all broader Stage 2–4 gates remain
+open. OCCT is unchanged in this increment. See HANDOFF.md for continuation.
 
 ## Milestone 73: native checked-display jobs
 

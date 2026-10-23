@@ -21,10 +21,12 @@ creates the older field-display feature.
    cancellation, bounded native execution and guarded owner publication. The
    creation dialog now polls/cancels jobs and reuses their initial display buffers;
    editor Apply/OK now batch affected solid builds with guarded group publication.
-   Ordinary property recompute, source tracing and checked-display scheduling remain.
+   Ordinary property recompute and source tracing remain.
    Display-only jobs now run the checked calculation with coverage/audit
-   cancellation on the shared native worker. View generation/settings guards,
-   coalescing and asynchronous upload lifecycle remain to be connected.
+   cancellation on the shared native worker. Checked views now coalesce jobs,
+   guard generations/settings/live sources and cancel on hide/deletion/closure;
+   actual GUI lifecycle and solid-batch priority tests pass. Unchecked fallback
+   extraction and broader scheduling remain open; Coin upload uses the GUI thread.
 3. Expose the qualified workflow through the default workbench command, with
    real native boundary edges/vertices and transient smooth surface rendering.
 
@@ -39,7 +41,7 @@ as for conventional CAD surfaces; its triangles are not native CAD faces.
 | Capability | Status | Representation / accuracy |
 |---|---|---|
 | Live native-solid task editing | Staged build controls/shared source operation and independent geometry depth | Owned Apply/OK/Cancel, legacy fingerprints/migration, larger model at 0.1 mm and exact translated-box inputs; broader field/link editing and scheduling remain |
-| Same-buffer checked native-solid display | Opt-in FreeCAD API/view mode | Binary32 upload displacement, both proximity directions, exact rounded-coordinate contacts, cache invalidation and fresh restore; source-local only, synchronous, not native-solid validation |
+| Same-buffer checked native-solid display | Opt-in FreeCAD API/background view jobs | Binary32 upload displacement, both proximity directions, exact rounded-coordinate contacts, guarded upload, cancellation and fresh restore; source-local only, separate from native-solid validation |
 | Corner-aware clipped proximity | Explicit native API supports both default operations at 0.1 mm | Fresh derivative-cone exclusions, retained cap-corner witnesses and exclusion-aware root slabs; separate report, not automatic GUI certification |
 | Corner-aware transient mesh/live display | Both default operations render through opt-in live native solids | Canonical shared corners, odd grid, exclusion checks, exact contact audit and GUI picks; GUI coverage integration/default command and broader Stage 2–4 gates remain |
 | Corner-aware native solids and topology I/O | Both default operations qualify at 0.1 mm and persist actual restricted solids | Fresh implicit-aware topology/cap/tolerance gates; schema 2, unverified restore, independent geometry depth; mesh/view/default-GUI and broader Stage 2–4 gates remain |

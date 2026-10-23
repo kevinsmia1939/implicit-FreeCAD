@@ -48,8 +48,11 @@ The same calculation is now available through display-only native jobs:
 `native_job_status` and `take_surface_job` after readiness. These jobs share the
 bounded solid executor and expose coverage/audit cancellation. Their private
 source and full settings descriptor must be checked before GUI publication.
-The current view still calls the synchronous API below; automatic view scheduling
-is the next integration step. See [job contracts](native-solid-jobs.md).
+The view automatically schedules checked work through ImplicitSurfaceJobs.
+Requests coalesce, yield to pending solid batches and cancel on hide/deletion/
+document closure. Generation, record, settings and live-source guards precede
+publication. Conversion and Coin upload run on the GUI thread. The synchronous
+API below remains available. See [job contracts](native-solid-jobs.md).
 
 ```python
 import ImplicitOCCT as native
@@ -58,7 +61,7 @@ report = mesh["display_checks"]
 assert report["boundary_proximity_resolved"]
 assert report["triangle_contacts_clear"]
 
-# Existing live native solid; setting is opt-in and can take several seconds.
+# Existing live native solid; checking runs asynchronously after opting in.
 solid.ViewObject.CheckSurfaceDisplay = True
 print(solid.ViewObject.DisplayProximityChecked)
 print(solid.ViewObject.SurfacePreviewStatus)
@@ -87,8 +90,10 @@ a permanently successful key. Disabled field display clears checked status.
 
 FCStd stores the opt-in setting, not transient buffers or a reusable proof.
 Restore generates and checks fresh buffers; it never upgrades the saved native
-solid's independent unverified qualification flag. Checking remains synchronous;
-whole-workflow scheduling/cancellation and broader editing qualification remain.
+solid's independent unverified qualification flag. Checked status stays false
+while queued/running and becomes true only after successful current-buffer upload.
+Unchecked fallback extraction and ordinary recompute/source preparation remain
+synchronous; broader editing qualification remains open.
 
 ## Verification and remaining scope
 

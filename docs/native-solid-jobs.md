@@ -3,7 +3,8 @@
 The OCCT-8 FreeCAD module now provides a bounded native executor for restricted
 solid construction and its initial transient display candidate. This is the
 backend for the asynchronous creation dialog and solid-editor previews.
-Ordinary property-driven recompute and checked-display paths remain synchronous.
+Checked views also use this worker. Ordinary property-driven recompute and
+unchecked fallback extraction remain synchronous.
 
 ## Execution and ownership
 
@@ -65,8 +66,10 @@ candidate; unchanged geometry/mesh proof flags are separate from display checks.
 
 Python report conversion and analytic normal extraction occur when taking the
 result on the caller thread. Source serialization also runs on that thread.
-The GUI must still bind these descriptors to its live view and publish checked
-status only after successful scene upload; the current view remains synchronous.
+ImplicitSurfaceJobs binds these descriptors to live views with generation/source/
+settings guards and publishes checked status only after successful scene upload.
+It coalesces requests, cancels detached/deleted/hidden views and yields to pending
+solid batches. Only one display job is outstanding; further descriptors wait.
 
 ## Publication prerequisite and next GUI work
 
@@ -85,7 +88,7 @@ publication. Failures leave the task repairable. The view consumes the initial
 candidate without synchronous remeshing, retaining the existing component
 assignment and atomic scene-upload checks. These are still main-thread operations,
 as are result conversion and source serialization; whole-workflow latency and
-memory budgets remain open. Ordinary recompute and checked-display scheduling
+memory budgets remain open. Ordinary recompute and unchecked fallback scheduling
 remain subsequent work. The default Add Gyroid is unchanged.
 
 ## Shared-solid editor batches
@@ -104,8 +107,8 @@ transactions never authorize mutation inside an unrelated transaction. Deleted
 owners and changed controls/inputs cancel the group; failures remain repairable.
 The group retains completed results in memory until publication: only worker
 concurrency and per-job work are bounded, not total document memory. Initial
-default display candidates are reused; custom/checked display and rollback
-display regeneration can still block the GUI. Normal console/task.apply() and
+default display candidates are reused; checked regeneration uses background jobs,
+while unchecked fallback regeneration can still block the GUI. Normal console/task.apply() and
 ordinary property edits retain synchronous execution outside a pending batch.
 
 ## Tests

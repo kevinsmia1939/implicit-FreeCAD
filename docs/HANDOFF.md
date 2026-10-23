@@ -22,6 +22,40 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 74: asynchronous checked-display view
+
+Native heads: FreeCAD 0ec74de0ee; OCCT unchanged at ad3549601d.
+
+ImplicitSurfaceJobs adds a GUI-thread scheduler with weak view
+references, coalesced requests, generation/digest/settings/source guards and
+deletion/document-close cancellation. It submits at most one display job at a
+time, reserves queue capacity for solid work and yields to pending solid batches.
+NativeSolidView now routes CheckSurfaceDisplay through this scheduler and retains
+the existing component-assignment/atomic-upload gate. Restored or manually set
+DisplayProximityChecked cannot become true without a current uploaded cache.
+Unchecked extraction still follows the existing synchronous/initial-cache path.
+The new async_checked_display_gui_smoke.py qualifies heartbeat, request coalescing,
+stale generations, solid-job priority, changed inputs, hiding, deletion and
+document closure. Final async-display/editor GUI and runtime fixtures pass 4/4
+(231.97 s); the existing checked-display GUI separately passes (103.29 s).
+An initial test-only cleanup failure was fixed before that final run. Python
+syntax and whitespace checks pass. CTest LastTest.log retains the final run.
+
+The installed Qt/PySide/Shiboken stack changed to 6.12.0; old GUI binaries required
+missing libpyside6/libshiboken6 6.11 SONAMEs. Existing build configuration was
+refreshed and FreeCADMain/PartGui/ImplicitGui were rebuilt with two compile jobs
+and the existing single-link pool. PythonWrapper.cpp was touched only to force
+compilation against current Shiboken headers; source content/CRLF is unchanged.
+Runtime and GUI library audits pass with Qt/PySide/Shiboken 6.12.0 and the
+existing bundled Coin/Pivy and OCCT 8 libraries. No packages or system libraries
+were modified; the legacy OCCT 7 build was left alone.
+
+Result conversion, component assignment and Coin upload remain on the GUI thread.
+Next: schedule unchecked fallback extraction and ordinary property recompute/source
+tracing; qualify broader sources and default native-solid exposure. Curved mixed
+Booleans, snapping/history and consumer integration remain Stage 2–4 requirements.
+This increment changes FreeCAD only; OCCT remains at ad3549601d.
+
 ## Milestone 73: native checked-display jobs
 
 Native heads: FreeCAD 5d6153ba5e; OCCT ad3549601d.
@@ -2039,7 +2073,7 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | CMake / Ninja | 4.4.3 / 1.13.2; out-of-tree builds |
 | ccache | Enabled by native CMake configuration |
 | Python | 3.13.15; addon, smoke tests, API |
-| Qt / PySide6 / Shiboken6 | 6.11.2 for this native build |
+| Qt / PySide6 / Shiboken6 | 6.12.0 current; earlier checkpoints used 6.11.2 |
 | Installed FreeCAD | 1.1.4, revision 20260928; addon runtime/GUI validation |
 | Fork FreeCAD base | 27.1.0-dev, upstream base `d732e2f13a` |
 | Installed OCCT | 7.9.3 development package; linked by native build/probe |
