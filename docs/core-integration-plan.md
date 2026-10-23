@@ -10,6 +10,11 @@ worker and retains its separate candidate-only status. Ordinary recompute/source
 preparation and the wider Stage 2–4 integration gates remain
 open. See [handoff](HANDOFF.md).
 
+Ordinary GUI property rebuilds now have an opt-in background coordinator with
+undo/transaction/lifecycle guards. Default and headless recompute retain their
+synchronous behavior; source preparation still blocks. See
+[recompute contracts](native-solid-recompute.md).
+
 ## Direct answer
 
 Yes, FreeCAD must eventually gain upstream/core-level implicit support to make

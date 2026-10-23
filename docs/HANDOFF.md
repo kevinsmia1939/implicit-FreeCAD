@@ -22,6 +22,36 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 76: opt-in GUI property recompute
+
+Native heads: FreeCAD 68a34c34e9; OCCT unchanged at ad3549601d.
+
+NativeSolid now has a persisted BackgroundRecompute setting, default false for
+compatibility. When enabled in the GUI, changed build inputs queue private native
+solid work, clear unavailable geometry/proof and return from recompute. A new
+ImplicitSolidRecompute coordinator coalesces requests, checks source/settings/
+owner identity and defers all document writes during unrelated transactions.
+Undo/redo/abort/deletion/document-close observers discard pending work. Successful
+publication triggers downstream recompute on the GUI thread. Source tracing is
+still synchronous. The expanded GUI test passes (81.18 s): heartbeat, coalescing,
+undo/redo and pending undo, unrelated-transaction deferral, dirty-source rejection,
+resource failure/repair, partial publication failure, save/reopen with unverified
+topology, deletion and document closure. Initial focused GUI/runtime run passed
+3/3 (51.50 s); expanded GUI/runtime/editor/batch compatibility passes 5/5
+(301.68 s), including editor 129.08 s and shared batch 87.71 s. Additional
+abort/expression-consumer and headless compatibility checks pass 4/4 (173.25 s),
+including GUI 136.70 s and headless 28.78 s. A final guard rejects direct rebuilds
+of stale mixed recipes before reusing a cached solid or queuing work; final
+focused GUI/runtime checks pass 3/3 (130.25 s), GUI 124.49 s. CTest LastTest.log
+retains that final run. Syntax and whitespace checks pass. The harness now
+registers 76 tests; this increment ran the relevant subsets, not the full suite.
+Broader/default asynchronous recompute remains pending. No OCCT/dependency changes.
+
+Next: qualify task/ordinary-recompute handoff and broader input families before
+default asynchronous exposure; move source tracing/preparation to worker jobs.
+Default native-solid creation, curved mixed operands, snapping/history and
+representation-aware consumer integration remain required for Stage 4.
+
 ## Milestone 75: background unchecked display regeneration
 
 Native heads: FreeCAD b6dcd15aa4; OCCT unchanged at ad3549601d.
@@ -2092,9 +2122,9 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | Tool/component | Version or role |
 |---|---|
 | GCC / C++ | 16.2.1; standalone C++17, native build C++23 |
-| CMake / Ninja | 4.4.3 / 1.13.2; out-of-tree builds |
+| CMake / Ninja | 4.4.4 / 1.13.2 current; earlier checkpoints used CMake 4.4.3 |
 | ccache | Enabled by native CMake configuration |
-| Python | 3.13.15; addon, smoke tests, API |
+| Python | 3.13.16 current; earlier checkpoints used 3.13.15 |
 | Qt / PySide6 / Shiboken6 | 6.12.0 current; earlier checkpoints used 6.11.2 |
 | Installed FreeCAD | 1.1.4, revision 20260928; addon runtime/GUI validation |
 | Fork FreeCAD base | 27.1.0-dev, upstream base `d732e2f13a` |

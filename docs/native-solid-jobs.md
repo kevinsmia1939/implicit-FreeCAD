@@ -3,8 +3,9 @@
 The OCCT-8 FreeCAD module now provides a bounded native executor for restricted
 solid construction and its initial transient display candidate. This is the
 backend for the asynchronous creation dialog and solid-editor previews.
-Checked and unchecked view cache misses also use this worker. Ordinary
-property-driven recompute and source preparation remain synchronous.
+Checked and unchecked view cache misses also use this worker. Ordinary GUI
+property rebuilds can now opt into [background recompute](native-solid-recompute.md).
+Its default remains synchronous; source preparation is still synchronous.
 
 ## Execution and ownership
 
@@ -112,7 +113,8 @@ The group retains completed results in memory until publication: only worker
 concurrency and per-job work are bounded, not total document memory. Initial
 default display candidates are reused; checked and unchecked regeneration use
 background jobs. Normal console/task.apply() and
-ordinary property edits retain synchronous execution outside a pending batch.
+ordinary property edits retain synchronous execution by default outside a pending
+batch; BackgroundRecompute explicitly enables the separate GUI coordinator.
 
 ## Tests
 

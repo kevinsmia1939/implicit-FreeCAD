@@ -52,7 +52,9 @@ creation command now offers tolerance, depth and work settings before the first
 build, with atomic failure/retry. Its [background build path](docs/native-solid-jobs.md)
 keeps Cancel available and rejects stale results. Editor Apply/OK now batch
 affected native-solid builds in the background too; ordinary property recompute,
-boundary tracing remain synchronous. Surface regeneration now runs in cancellable
+boundary tracing remain synchronous by default. Ordinary GUI property rebuilds
+can opt into [background recompute](docs/native-solid-recompute.md), with
+transaction guards and undo/redo cancellation. Surface regeneration runs in cancellable
 background jobs with stale-result guards and guarded scene upload; checked mode
 remains opt-in. General placed/curved
 operands remain unfinished.

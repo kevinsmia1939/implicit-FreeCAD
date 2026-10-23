@@ -21,7 +21,8 @@ creates the older field-display feature.
    cancellation, bounded native execution and guarded owner publication. The
    creation dialog now polls/cancels jobs and reuses their initial display buffers;
    editor Apply/OK now batch affected solid builds with guarded group publication.
-   Ordinary property recompute and source tracing remain.
+   Ordinary GUI property recompute now has an opt-in guarded worker path with
+   undo/transaction/lifecycle tests; default scheduling and source tracing remain.
    Display-only jobs now run the checked calculation with coverage/audit
    cancellation on the shared native worker. Checked views now coalesce jobs,
    guard generations/settings/live sources and cancel on hide/deletion/closure;

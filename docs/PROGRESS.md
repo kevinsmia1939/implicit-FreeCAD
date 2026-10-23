@@ -4,9 +4,37 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `b6dcd15aa4` on
+Implementation heads: FreeCAD `68a34c34e9` on
 `feature/native-implicit`, OCCT `ad3549601d` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 76: opt-in GUI property recompute
+
+BackgroundRecompute is a persisted opt-in native-solid property (default false).
+Changed GUI build inputs clear geometry/validation and queue private native solid
+jobs. ImplicitSolidRecompute coalesces descriptors, guards owner/source/settings,
+waits through foreign transactions and publishes without an extra output
+transaction. Undo/redo/abort/deletion/document closure cancel pending requests;
+downstream recompute follows successful publication on the GUI thread. Failures
+clear partial output and remain repairable. Restored topology is not recertified.
+
+Initial GUI/runtime checks pass 3/3 (51.50 s). Expanded property GUI passes
+(81.18 s), adding dirty source rejection, injected partial-publication failure
+and persisted setting/unverified topology to transaction/lifecycle/heartbeat
+coverage. Expanded GUI/runtime/editor/batch compatibility passes 5/5 (301.68 s),
+including editor 129.08 s and shared batch 87.71 s.
+Additional abort/expression-consumer and headless tests pass 4/4 (173.25 s),
+including GUI 136.70 s and CLI 28.78 s. Final direct-stale-recipe guard and all
+expanded GUI cases pass with runtime fixtures 3/3 (130.25 s), GUI 124.49 s.
+The final CTest LastTest.log retains this result. Syntax and whitespace pass.
+This changes Python components in the native module only; OCCT and system dependencies are
+unchanged. Existing Qt 6.12 runtime audits pass. Configuration now observes
+installed Python 3.13.16 and CMake 4.4.4; only ImplicitScripts was rebuilt/copied.
+
+This remains opt-in. Headless/default recompute and source preparation remain
+synchronous. Broad default scheduling, source families, curved mixed operands,
+snapping/history and consumer integration remain open Stage 2–4 requirements.
+See [property recompute contracts](native-solid-recompute.md).
 
 ## Milestone 75: background unchecked display regeneration
 

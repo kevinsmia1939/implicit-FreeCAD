@@ -48,8 +48,9 @@ snapshots, bounded scheduling, cooperative OCCT cancellation and guarded atomic
 owner publication. The creation task now polls/cancels jobs, rejects stale inputs
 and reuses initial display buffers. Editor Apply/OK now batch affected native-solid
 builds with whole-group success and owned-transaction guards. Ordinary property
-recompute and source boundary preparation remain synchronous; broader integration
-gates remain open.
+recompute now has an opt-in [background path](native-solid-recompute.md) with
+transaction/lifecycle tests. Default recompute and source boundary preparation
+remain synchronous; broader integration gates remain open.
 Display-only native jobs now share the worker and run the same checked-buffer
 calculation with cancellable coverage/contact phases. Checked views now coalesce
 jobs, guard generations/settings/live inputs and cancel on hide/deletion/document
