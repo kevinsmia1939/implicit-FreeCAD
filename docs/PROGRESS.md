@@ -4,9 +4,33 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `0ec74de0ee` on
+Implementation heads: FreeCAD `b6dcd15aa4` on
 `feature/native-implicit`, OCCT `ad3549601d` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 75: background unchecked display regeneration
+
+Both display modes now route cache misses through the same native worker.
+The checked-mode bit is part of the descriptor/key; switching modes rejects stale
+callbacks. Returning to a cached or initial candidate cancels superseded work.
+Unchecked output retains candidate-only status and cannot set checked proof flags.
+Initial solid-job buffers are still reused. No OCCT or dependency changes.
+
+The expanded async GUI test forbids both synchronous extraction APIs and checks
+unchecked coalescing, heartbeat, stale callbacks and mode switching before the
+existing checked lifecycle/priority checks. It passes (117.64 s). Existing corner
+(28.39 s), checked-display (102.16 s), editor (108.41 s) and source-parameter
+(36.20 s) GUI regressions pass on the same implementation. The live-solid test
+was updated for the existing staged creation command; it passes (27.72 s).
+Creation/restore passes (41.01 s) after waiting for its asynchronous display.
+Final focused live/async-display/creation/shared-batch/runtime run passes 6/6
+(244.72 s), including shared-batch GUI 55.61 s. CTest LastTest.log retains it.
+The first regression run exposed two test assumptions (immediate command creation
+and no pending initial views); both were corrected before the focused rerun.
+
+Ordinary solid recompute/source preparation and result conversion/component
+assignment/Coin upload still execute on the caller/GUI thread. Broader scheduling,
+default native-solid exposure and remaining Stage 2–4 gates remain open.
 
 ## Milestone 74: asynchronous checked-display views
 

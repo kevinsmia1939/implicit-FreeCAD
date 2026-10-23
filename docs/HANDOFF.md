@@ -22,6 +22,28 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 75: background unchecked display regeneration
+
+Native heads: FreeCAD b6dcd15aa4; OCCT unchanged at ad3549601d.
+
+NativeSolidView now schedules both checked and unchecked cache misses through
+ImplicitSurfaceJobs. The job descriptor carries the requested checked mode;
+generation/key checks reject mode-switch results. Reusing a cached/initial
+candidate cancels superseded work. Default initial buffers remain immediately
+available. Result conversion/component assignment/Coin upload still run on the
+GUI thread. Ordinary solid recompute and source preparation remain synchronous.
+Focused live-solid, async-display, creation/restore and shared-batch GUI tests plus
+runtime fixtures pass 6/6 (244.72 s). Earlier on this same implementation: corner
+28.39 s, checked display 102.16 s, editor 108.41 s and source parameters 36.20 s
+pass. The first run exposed two test assumptions: immediate command creation
+and no initial pending views. Both are fixed; mode-switch/coalescing tests forbid
+both synchronous extraction APIs. Syntax and whitespace checks pass. CTest
+LastTest.log retains the final focused run. No OCCT or dependency changes.
+
+Next: schedule ordinary solid recompute/source preparation, qualify broader live
+inputs and expose the default native-solid workflow. Curved mixed operands,
+snapping/history and representation-aware consumers remain Stage 2–4 gates.
+
 ## Milestone 74: asynchronous checked-display view
 
 Native heads: FreeCAD 0ec74de0ee; OCCT unchanged at ad3549601d.
@@ -2076,7 +2098,8 @@ Development host: openSUSE Tumbleweed, Linux x86-64. Observed versions:
 | Qt / PySide6 / Shiboken6 | 6.12.0 current; earlier checkpoints used 6.11.2 |
 | Installed FreeCAD | 1.1.4, revision 20260928; addon runtime/GUI validation |
 | Fork FreeCAD base | 27.1.0-dev, upstream base `d732e2f13a` |
-| Installed OCCT | 7.9.3 development package; linked by native build/probe |
+| Installed OCCT | 7.9.3 development package; legacy compatibility build/probe only |
+| Active native runtime | build-freecad-occt8 uses the fork OCCT 8 build; never mix its headers/libraries with 7.9 |
 | OCCT source reference | 8.1.0-dev1, `3d097a0328` |
 | Coin / Pivy | Native configuration uses bundled 4.0.10 / 0.6.11 |
 | PyCXX | Bundled 7.1.11 for native Python bindings |

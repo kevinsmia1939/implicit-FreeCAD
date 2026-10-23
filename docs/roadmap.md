@@ -25,8 +25,9 @@ creates the older field-display feature.
    Display-only jobs now run the checked calculation with coverage/audit
    cancellation on the shared native worker. Checked views now coalesce jobs,
    guard generations/settings/live sources and cancel on hide/deletion/closure;
-   actual GUI lifecycle and solid-batch priority tests pass. Unchecked fallback
-   extraction and broader scheduling remain open; Coin upload uses the GUI thread.
+   actual GUI lifecycle and solid-batch priority tests pass. Unchecked cache misses
+   now share that scheduler too. Broader scheduling remains open; conversion and
+   Coin upload use the GUI thread.
 3. Expose the qualified workflow through the default workbench command, with
    real native boundary edges/vertices and transient smooth surface rendering.
 

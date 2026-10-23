@@ -54,7 +54,7 @@ Display-only native jobs now share the worker and run the same checked-buffer
 calculation with cancellable coverage/contact phases. Checked views now coalesce
 jobs, guard generations/settings/live inputs and cancel on hide/deletion/document
 closure. Actual GUI tests qualify heartbeat and solid-batch priority. Unchecked
-fallback extraction remains synchronous; result conversion and upload use the GUI thread.
+cache misses now use the same scheduler; result conversion and upload use the GUI thread.
 
 The [native-solid task editor](native-solid-editor.md) adds staged operation/build
 controls, independent geometry depth, transaction rollback/failure recovery and

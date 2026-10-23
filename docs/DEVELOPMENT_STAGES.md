@@ -35,8 +35,9 @@ rolls back failed attempts, with creation/source-visibility undo/redo.
 The creation task now uses bounded background native jobs with cooperative
 cancellation, stale-input rejection and initial display reuse. Editor Apply/OK
 now batch affected native-solid builds, with all-peer success required before
-publication. Checked views now schedule cancellable, coalesced jobs with guarded
-publication and solid-batch priority. Ordinary recompute and source tracing remain open.
+publication. Checked and unchecked view cache misses now schedule cancellable,
+coalesced jobs with guarded publication and solid-batch priority. Ordinary
+recompute and source tracing remain open.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

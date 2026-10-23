@@ -92,8 +92,9 @@ FCStd stores the opt-in setting, not transient buffers or a reusable proof.
 Restore generates and checks fresh buffers; it never upgrades the saved native
 solid's independent unverified qualification flag. Checked status stays false
 while queued/running and becomes true only after successful current-buffer upload.
-Unchecked fallback extraction and ordinary recompute/source preparation remain
-synchronous; broader editing qualification remains open.
+Unchecked cache misses also run on the worker, with the mode included in the
+request key; their results never set checked status. Ordinary recompute/source
+preparation remain synchronous; broader editing qualification remains open.
 
 ## Verification and remaining scope
 

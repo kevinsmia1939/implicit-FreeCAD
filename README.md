@@ -52,8 +52,9 @@ creation command now offers tolerance, depth and work settings before the first
 build, with atomic failure/retry. Its [background build path](docs/native-solid-jobs.md)
 keeps Cancel available and rejects stale results. Editor Apply/OK now batch
 affected native-solid builds in the background too; ordinary property recompute,
-boundary tracing remain synchronous. Checked display now runs in cancellable
-background jobs with stale-result guards and guarded scene upload. General placed/curved
+boundary tracing remain synchronous. Surface regeneration now runs in cancellable
+background jobs with stale-result guards and guarded scene upload; checked mode
+remains opt-in. General placed/curved
 operands remain unfinished.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
