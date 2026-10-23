@@ -5,7 +5,8 @@ solid construction and its initial transient display candidate. This is the
 backend for the asynchronous creation dialog and solid-editor previews.
 Checked and unchecked view cache misses also use this worker. Ordinary GUI
 property rebuilds can now opt into [background recompute](native-solid-recompute.md).
-Its default remains synchronous. Source recompute can also opt into
+New GUI owners enable it; synchronous factories and existing false flags keep
+their policy. Source recompute can also use
 [background preparation](native-source-recompute.md).
 The [boundary-job backend](native-boundary-jobs.md) now prepares private sources
 on this same worker; the opt-in GUI source coordinator connects it to ordinary

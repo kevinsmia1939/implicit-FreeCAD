@@ -22,6 +22,35 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 80: GUI creation defaults and cancellable boundary creation
+
+Native heads: FreeCAD c19c28f57e; OCCT unchanged at 0a22e0c5cc.
+
+Mixed Common/BoxMinusField GUI selection now opens ImplicitMixedCreate's staged
+boundary task. It builds from private field/B-Rep snapshots without a provisional
+document owner/transaction, guards live inputs/settings/foreign transactions and
+publishes a completed source atomically. New GUI sources default to regularized
+corner handling, 0.1 mm and BackgroundRecompute=true; operand visibility is changed
+only after success in the creation transaction. GUI solid creation now also sets
+BackgroundRecompute=true on the new owner, without changing existing source flags.
+Console factories and restored false flags retain their existing policy.
+
+Initial default-workflow GUI/runtime passes 3/3 (21.09 s), including cancel,
+strict-policy failure/repair, actual command routing, transient box meshing,
+visibility undo/redo, default source-to-solid edits and save/reopen with unverified
+topology. Existing factory/publication/solid creation compatibility passes 6/6
+(62.06 s), GUI solid creation 40.57 s. Final expanded stale-control, dirty-operand
+and foreign-transaction GUI/runtime checks pass 3/3 (20.27 s), GUI 17.91 s. The
+migration CTest LastTest.log retains that final run. Syntax and whitespace pass.
+The harness registers 81 tests; affected subsets were run here. Only Python/scripts/tests/docs
+change; no OCCT/dependency changes. Basic Add Gyroid remains the compiled field
+primitive; these defaults apply to native boundary/solid GUI commands.
+
+Next: expose pending/failure state clearly in the tree/property workflow, qualify
+broader live input families and switch everyday native-solid primitive commands
+only when their acceptance gates pass. Curved mixed operands, snapping/history
+and representation-aware consumers remain necessary for Stage 4.
+
 ## Milestone 79: staged source preparation in task previews
 
 Native heads: FreeCAD 3752147ec5; OCCT unchanged at 0a22e0c5cc.

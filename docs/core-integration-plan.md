@@ -11,15 +11,18 @@ preparation and the wider Stage 2–4 integration gates remain
 open. See [handoff](HANDOFF.md).
 
 Ordinary GUI property rebuilds now have an opt-in background coordinator with
-undo/transaction/lifecycle guards. Default and headless recompute retain their
-synchronous behavior; source preparation has its separate opt-in below. See
+undo/transaction/lifecycle guards. GUI creation enables it on new owners; legacy,
+synchronous-factory and headless policies remain unchanged. Source preparation
+has its separate policy below. See
 [recompute contracts](native-solid-recompute.md).
 
 The shared worker also has a [private boundary-preparation API](native-boundary-jobs.md)
 with cancellable plane tracing and exact source descriptors. GUI source recompute
 now adopts it through an opt-in guarded source-to-solid pipeline. Both task panels
 stage source preparation before solid builds under their owned transaction.
-Default ordinary scheduling/exposure remain open; curved operand support is unchanged.
+GUI boundary creation now stages worker results and enables background recompute
+on new sources, matching GUI solid creation. Everyday native-solid primitive
+exposure remains open; curved operand support is unchanged.
 
 ## Direct answer
 

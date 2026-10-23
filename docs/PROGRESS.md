@@ -4,9 +4,40 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `3752147ec5` on
+Implementation heads: FreeCAD `c19c28f57e` on
 `feature/native-implicit`, OCCT `0a22e0c5cc` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 80: background defaults for GUI creation
+
+Mixed Common/BoxMinusField selection now opens a cancellable boundary-creation
+task, with no provisional owner/transaction during numerical work. It captures
+logical inputs and original B-Rep records, guards controls/dirty inputs/foreign
+transactions and publishes the completed boundary atomically. Transient meshing
+does not invalidate unchanged logical inputs. Defaults are 0.1 mm, 512 tracing
+cells, Regularized corners and hidden operands after success; visibility and
+creation share one undo transaction.
+
+New GUI boundary and solid owners have BackgroundRecompute=true, so the normal
+GUI sequence gets background source-to-solid property edits without manual flags.
+GUI solid creation does not alter existing source flags. Public synchronous
+factories and legacy/restored false policies retain their behavior. No loaded
+topology is silently revalidated. Basic Add Gyroid remains the compiled primitive.
+
+Initial creation GUI/runtime passes 3/3 (21.09 s). Existing factory/publication/
+solid-creation compatibility passes 6/6 (62.06 s), including GUI solid creation
+40.57 s, headless live solid 17.85 s and mixed boundary 0.50 s. Final expanded
+creation GUI/runtime checks pass 3/3 (20.27 s), GUI 17.91 s: cancel, strict-corner
+failure/repair, actual command routing, transient mesh stability, changed controls,
+dirty operands, foreign transactions, visibility undo/redo, native-solid creation,
+default background edits, save/reopen provenance and document closure. CTest
+LastTest.log retains the final run. Syntax/whitespace checks pass.
+
+Only native-module Python/scripts/tests/docs change; OCCT stays 0a22e0c5cc and
+no dependencies changed. The harness now registers 81 tests; targeted subsets
+were run. Tree pending/failure feedback, broader sources, default native-solid
+primitive exposure and unfinished Stage 2–4 geometry/consumer gates remain open.
+See [GUI creation policy](native-gui-creation.md).
 
 ## Milestone 79: source preparation in task-panel previews
 

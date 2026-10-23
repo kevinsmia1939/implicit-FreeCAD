@@ -51,9 +51,10 @@ documents and supports the shifted 20-mm fixture at 0.1 mm. The native-solid
 creation command now offers tolerance, depth and work settings before the first
 build, with atomic failure/retry. Its [background build path](docs/native-solid-jobs.md)
 keeps Cancel available and rejects stale results. Editor Apply/OK now batch
-affected native-solid builds in the background too; ordinary property recompute,
-boundary tracing remain synchronous by default. Ordinary GUI property rebuilds
-can opt into [background recompute](docs/native-solid-recompute.md), with
+affected native-solid builds in the background too. Newly
+[GUI-created boundaries and solids](docs/native-gui-creation.md) enable
+background property recompute by default. Legacy documents and synchronous
+factories retain their policies; they can opt into [background recompute](docs/native-solid-recompute.md), with
 transaction guards and undo/redo cancellation. Surface regeneration runs in cancellable
 background jobs with stale-result guards and guarded scene upload; checked mode
 remains opt-in. General placed/curved
@@ -62,7 +63,7 @@ The [boundary preparation worker](docs/native-boundary-jobs.md) now supports pri
 cancellable source tracing. [GUI source recompute](docs/native-source-recompute.md)
 can now opt into a guarded source-to-solid pipeline. Both
 [task editors](docs/native-task-sources.md) stage source and solid work in the
-background; default ordinary scheduling/exposure remain subsequent work.
+background. Everyday native-solid primitive exposure and broader inputs remain subsequent work.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
 resolves all six default cube faces, retaining isolated point contacts separately.

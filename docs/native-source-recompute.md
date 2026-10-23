@@ -1,8 +1,9 @@
 # GUI source-to-solid background recompute
 
-The live MixedBoundary owner now has a persisted `BackgroundRecompute` opt-in,
-default false. Enable it together with the downstream native solid setting for
-property-driven GUI edits:
+The live MixedBoundary owner has a persisted `BackgroundRecompute` policy. New
+GUI-created boundaries enable it, matching GUI-created solids. Existing documents
+and synchronous factories retain their previous false defaults. For those owners,
+enable it together with the downstream native solid setting:
 
 ```python
 source.BackgroundRecompute = True

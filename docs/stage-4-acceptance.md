@@ -49,13 +49,15 @@ owner publication. The creation task now polls/cancels jobs, rejects stale input
 and reuses initial display buffers. Editor Apply/OK now batch affected native-solid
 builds with whole-group success and owned-transaction guards. Ordinary property
 recompute now has an opt-in [background path](native-solid-recompute.md) with
-transaction/lifecycle tests. Default recompute and source boundary preparation
-remain synchronous; broader integration gates remain open.
+transaction/lifecycle tests. Newly GUI-created boundaries and solids enable
+background recompute; existing documents and synchronous factories retain their
+policies. Broader integration gates remain open.
 The [boundary preparation worker](native-boundary-jobs.md) now exposes private
 tracing with cooperative cancellation. GUI source recompute now has an opt-in
 guarded source-to-solid pipeline. Task panels now stage source preparation before
-solid batches with transaction/rollback guards. Default ordinary scheduling and
-exposure remain open. This does not broaden the supported conventional operand family.
+solid batches with transaction/rollback guards. GUI boundary creation stages its
+initial work too. Everyday native-solid primitive exposure remains open.
+This does not broaden the supported conventional operand family.
 Display-only native jobs now share the worker and run the same checked-buffer
 calculation with cancellable coverage/contact phases. Checked views now coalesce
 jobs, guard generations/settings/live inputs and cancel on hide/deletion/document

@@ -6,7 +6,8 @@ backend for moving source tracing out of future GUI recompute/task workflows;
 ordinary source recompute can now opt into the
 [GUI source-to-solid coordinator](native-source-recompute.md). Both task editors
 also adopt this backend through [staged preparation](native-task-sources.md).
-Default ordinary asynchronous exposure remains subsequent integration work.
+New GUI owners now enable ordinary background recompute; everyday native-solid
+primitive exposure remains subsequent integration work.
 
 ```python
 job = native.start_boundary_job(field, box_shape, "common", .1, 512, "regularized")

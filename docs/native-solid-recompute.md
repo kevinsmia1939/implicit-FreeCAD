@@ -1,8 +1,8 @@
 # Background property recompute
 
-The native solid owner has a persisted `BackgroundRecompute` property. It defaults
-to false, preserving synchronous console and existing document behavior. Enable
-it explicitly for GUI property edits:
+The native solid owner has a persisted `BackgroundRecompute` property. GUI
+creation enables it for new owners. Synchronous factories and existing false
+flags retain their policy. Enable it explicitly on such owners for GUI edits:
 
 ```python
 solid.BackgroundRecompute = True
@@ -40,7 +40,7 @@ Source tracing now has its own [GUI opt-in](native-source-recompute.md); linked
 native solids wait for pending source geometry before queuing their builds.
 Serialization, result conversion, component assignment, Coin upload and downstream
 recompute still run on the caller/GUI thread. This is an opt-in foundation for ordinary rebuild scheduling, not a
-fully asynchronous document engine. Automatic/default exposure, broader live
+fully asynchronous document engine. Everyday native-solid primitive exposure, broader live
 source families, cross-document consumer scheduling and global memory budgets
 remain open, alongside the wider Stage 2–4 geometry/integration requirements.
 

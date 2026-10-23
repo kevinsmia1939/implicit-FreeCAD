@@ -22,11 +22,13 @@ creates the older field-display feature.
    creation dialog now polls/cancels jobs and reuses their initial display buffers;
    editor Apply/OK now batch affected solid builds with guarded group publication.
    Ordinary GUI property recompute now has an opt-in guarded worker path with
-   undo/transaction/lifecycle tests; default ordinary scheduling remains.
+   undo/transaction/lifecycle tests. GUI-created boundaries and solids now enable
+   background recompute by default, preserving existing documents/factory behavior.
    The [boundary-job backend](native-boundary-jobs.md) now prepares private source
    topology with cancellation; GUI source recompute now adopts it through an
    opt-in guarded source-to-solid pipeline. Task panels now stage source and solid
-   jobs in one owned transaction; default ordinary exposure and broader inputs remain.
+   jobs in one owned transaction. GUI boundary creation also stages private work;
+   everyday native-solid primitive exposure and broader inputs remain.
    Display-only jobs now run the checked calculation with coverage/audit
    cancellation on the shared native worker. Checked views now coalesce jobs,
    guard generations/settings/live sources and cancel on hide/deletion/closure;

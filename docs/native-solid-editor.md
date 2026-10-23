@@ -19,8 +19,12 @@ undo/redo restores both the result and source visibility. The shifted 20-mm
 fixture succeeds with geometry depth 18 and the unchanged 0.1-mm tolerance.
 More depth or work does not guarantee a supported result. The initial candidate
 is reused without GUI-thread remeshing. Console creation stays synchronous;
-ordinary property recompute has separate opt-ins and display extraction uses
+new GUI owners enable background property recompute and display extraction uses
 background jobs. See [job contracts](native-solid-jobs.md).
+
+The mixed-boundary GUI commands now offer their own cancellable creation task;
+new GUI sources also enable background recompute. Legacy source flags remain
+unchanged when creating a new solid. See [creation defaults](native-gui-creation.md).
 
 The console factory retains its existing positional arguments and additionally
 accepts a validated dictionary of integer work/depth limits:

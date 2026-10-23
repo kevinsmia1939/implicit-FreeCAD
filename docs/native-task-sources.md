@@ -41,7 +41,8 @@ background request cancels that private job; cancelling the task can resume the
 prior ordinary recompute through its normal persisted policy.
 
 Task qualification covers same-document primitive gyroid/box source families.
-Ordinary property recompute remains opt-in. Default native-solid command exposure,
+New GUI-created owners enable ordinary background recompute; legacy documents
+and synchronous factories retain their policy. Everyday native-solid primitive exposure,
 broader inputs/placements, curved B-Rep operands, snapping/history and consumer
 integration remain Stage 2–4 work. The 0.1 mm policy is unchanged; generated meshes
 remain transient and independent of native-solid validation.
