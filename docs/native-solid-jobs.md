@@ -37,12 +37,36 @@ Python result conversion still happens on the calling thread.
 Nested scopes restore the previous control; unrelated threads are unaffected.
 Checkpoints in topology, cap/trim attachment, shell construction, geometry
 validation and meshing throw `Standard_AbortiveTransaction` on cancellation.
+Clipped coverage and exact contact auditing now expose their own phases and
+checkpoints, including candidate preparation and recursive spatial traversal.
 The existing synchronous API behaves unchanged without a scope.
 
 Cancellation is cooperative, not a hard latency guarantee. Opaque conventional
 OCCT operations, source serialization/deserialization and some short assembly
 steps can run until the next checkpoint. Geometry and tolerance policies are
 unchanged; cancellation never publishes a partly validated result.
+
+## Display-only native jobs
+
+`start_surface_job(boundary, tolerance=.1, cells=256, nodes=200000,
+triangles=400000, checked=False, depth=14, spatial=2000000, patches=1000000,
+pairs=2000000, broad=50000000)` extracts a private display candidate. With
+checked=True it runs the same native binary32 displacement, clipped proximity
+and exact contact calculation as `tessellate_mixed_checked`. It does not build
+or return native solids.
+
+Use `native_job_status` and `cancel_native_job` for either solid or display jobs.
+`take_surface_job` consumes a ready display result once, returning `surface`,
+`input_record` and a ten-element `input_settings` tuple in the argument order
+above (excluding the boundary). Wrong-kind take calls fail without consuming.
+Both kinds share the existing executor and queue capacity. Dropping handles or
+normal process shutdown cancels outstanding work. A checked failure returns no
+candidate; unchanged geometry/mesh proof flags are separate from display checks.
+
+Python report conversion and analytic normal extraction occur when taking the
+result on the caller thread. Source serialization also runs on that thread.
+The GUI must still bind these descriptors to its live view and publish checked
+status only after successful scene upload; the current view remains synchronous.
 
 ## Publication prerequisite and next GUI work
 

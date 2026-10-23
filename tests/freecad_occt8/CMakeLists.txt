@@ -13,6 +13,18 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_surface_jobs
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/surface_jobs_smoke.py")
+set_tests_properties(implicit_occt8_surface_jobs PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit surface jobs smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 240)
+add_test(NAME implicit_occt8_surface_job_shutdown
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/surface_job_shutdown_smoke.py")
+set_tests_properties(implicit_occt8_surface_job_shutdown PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit surface job shutdown smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 30)
 add_test(NAME implicit_occt8_solid_batch
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/solid_batch_smoke.py")
 set_tests_properties(implicit_occt8_solid_batch PROPERTIES

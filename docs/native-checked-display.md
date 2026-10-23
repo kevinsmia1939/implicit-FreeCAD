@@ -43,6 +43,14 @@ contracts, including unverified restoration.
 
 ## API and view workflow
 
+The same calculation is now available through display-only native jobs:
+`start_surface_job(source.Geometry, .1, 256, 200000, 400000, True)` followed by
+`native_job_status` and `take_surface_job` after readiness. These jobs share the
+bounded solid executor and expose coverage/audit cancellation. Their private
+source and full settings descriptor must be checked before GUI publication.
+The current view still calls the synchronous API below; automatic view scheduling
+is the next integration step. See [job contracts](native-solid-jobs.md).
+
 ```python
 import ImplicitOCCT as native
 mesh = native.tessellate_mixed_checked(source.Geometry, .1)

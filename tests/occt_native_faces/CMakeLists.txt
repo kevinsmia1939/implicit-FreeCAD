@@ -27,4 +27,6 @@ target_include_directories(implicit_occt_native_worker SYSTEM PRIVATE
 target_link_libraries(implicit_occt_native_worker PRIVATE TKBRep)
 enable_testing()
 add_test(NAME implicit_occt_native_faces COMMAND implicit_occt_native_face_tests)
-set_tests_properties(implicit_occt_native_faces PROPERTIES TIMEOUT 300)
+# The two-operation display cancellation/retry case adds about 64 seconds to
+# the previous 254-second suite. This is a runner limit, not a geometry budget.
+set_tests_properties(implicit_occt_native_faces PROPERTIES TIMEOUT 420)

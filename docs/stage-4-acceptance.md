@@ -50,6 +50,9 @@ and reuses initial display buffers. Editor Apply/OK now batch affected native-so
 builds with whole-group success and owned-transaction guards. Ordinary property
 recompute, source boundary preparation and checked-display extraction remain
 synchronous; broader integration gates remain open.
+Display-only native jobs now share the worker and run the same checked-buffer
+calculation with cancellable coverage/contact phases. The current view still
+requires scheduling, stale-generation guards and GUI cancellation qualification.
 
 The [native-solid task editor](native-solid-editor.md) adds staged operation/build
 controls, independent geometry depth, transaction rollback/failure recovery and

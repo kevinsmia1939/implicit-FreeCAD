@@ -1,12 +1,52 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-22. The user has authorized continuing the full roadmap,
+Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `4e2086008e` on
-`feature/native-implicit`, OCCT `44ae271b27` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `5d6153ba5e` on
+`feature/native-implicit`, OCCT `ad3549601d` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 73: native checked-display jobs
+
+OCCT clipped coverage and exact mesh contact auditing now have optional work
+phases and cancellation checkpoints. The new test calibrates progress, cancels
+midway through each algorithm for both default operations, retries successfully,
+and verifies unchanged source records, candidate buffers and proof flags.
+Focused 1/1 passes (63.800 s); full kernel 116/116 passes (326.96 s). The harness
+timeout increases from 300 to 420 s to accommodate that extra test, with all
+numerical budgets/tolerances preserved.
+
+FreeCAD's CheckedDisplay helper performs the same native binary32 displacement,
+clipped proximity and rounded-coordinate exact audit without Python references.
+Synchronous and worker results share a report converter. Display-only native jobs
+reuse the solid executor, retain private source geometry and return buffers with
+exact input record/settings descriptors. Kind guards prevent confusing display
+jobs with native-solid construction. The existing APIs remain available.
+
+The new display-job CLI smoke passes: checked/unchecked output equals the
+synchronous calculation on an identical private snapshot; Python runs while the
+worker computes; mixed solid/display queues remain bounded; coverage and audit
+cancel; limited work fails without a result; one-shot and source lifetime rules
+hold. Earlier checked-display CLI/runtime passes 2/2 (64.59 s) and actual GUI
+smoke passes (104.13 s) before the worker extension. Logs originally:
+/tmp/implicit-display-cancel-focused.log, /tmp/implicit-checked-native-cli.log,
+/tmp/implicit-checked-native-gui.log and /tmp/implicit-surface-jobs-cli.log.
+Full kernel evidence is retained in the native-face-tests CTest LastTest.log.
+Final mixed-job compatibility/runtime/shutdown tests pass 4/4 (32.54 s), including
+normal process exit during coverage and the existing solid-job lifecycle suite.
+Log: /tmp/implicit-surface-job-compatibility.log.
+The expanded display-job/runtime run passes 2/2 (51.61 s), adding the complementary
+BoxMinusField display path and exact snapshot/output comparison. Log:
+/tmp/implicit-surface-jobs-qualified.log.
+
+The GUI is not yet connected to display-only jobs. Ordinary property recompute,
+source tracing and existing checked display remain synchronous. The next change
+must enforce view generation/digest/settings and same-buffer upload checks while
+coalescing/cancelling jobs. Default Add Gyroid and every unfinished Stage 2–4
+curved-operand/snapping/history/consumer gate remain open. No packages or system
+library changes.
 
 ## Milestone 72: asynchronous shared-solid editor previews
 

@@ -22,6 +22,9 @@ creates the older field-display feature.
    creation dialog now polls/cancels jobs and reuses their initial display buffers;
    editor Apply/OK now batch affected solid builds with guarded group publication.
    Ordinary property recompute, source tracing and checked-display scheduling remain.
+   Display-only jobs now run the checked calculation with coverage/audit
+   cancellation on the shared native worker. View generation/settings guards,
+   coalescing and asynchronous upload lifecycle remain to be connected.
 3. Expose the qualified workflow through the default workbench command, with
    real native boundary edges/vertices and transient smooth surface rendering.
 

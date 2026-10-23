@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-22. This file is the entry point for a developer or coding
+Last updated: 2026-10-23. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,47 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 73: native checked-display jobs
+
+Native heads: FreeCAD 5d6153ba5e; OCCT ad3549601d.
+
+Coverage and exact contact auditing now participate in OCCT's optional work
+scope, with Coverage/ContactAudit phases and checkpoints in recursive search,
+triangle validation, integer conversion and audit traversal. A calibrated
+mid-operation cancellation test covers both default operations, successful retry
+and unchanged source/mesh/proof flags. Full kernel 116/116 passes (326.96 s).
+The runner timeout is now 420 s because the new test adds about 64 s to the
+previous 254-s suite; geometry budgets/tolerances are unchanged.
+
+CheckedDisplay.cpp now owns the Python-free binary32 conversion, clipped
+proximity and exact contact checks. Both synchronous bindings and display-only
+worker jobs use it and the same report converter. start_surface_job and
+take_surface_job expose unchecked/checked extraction without constructing solids.
+native_job_status/cancel_native_job control either job kind. Surface and solid
+jobs share one worker and one additional queue slot, private source snapshots,
+capsule cancellation and joined shutdown. Results include surface, input_record
+and the full input_settings descriptor; mismatched take operations reject before
+consuming a result. Existing solid-job APIs remain compatible.
+
+The display-job CLI test passes for exact synchronous/private-snapshot buffer
+equivalence, Python heartbeat, shared queue limits, coverage/audit cancellation,
+budget failure, one-shot consumption and source lifetime/immutability. Earlier
+checked-display CLI/runtime 2/2 passes (64.59 s); the GUI regression passed
+(104.13 s) before extending the worker API. See PROGRESS.md for compatibility
+and shutdown results. No packages or system libraries changed.
+Mixed-job compatibility/runtime/shutdown checks pass 4/4 (32.54 s), including
+normal exit while coverage is running and the existing solid-job lifecycle tests.
+Expanded display-job/runtime checks pass 2/2 (51.61 s), including the complementary
+BoxMinusField path and exact buffer comparison on private snapshots.
+
+Immediate next step: connect NativeSolidView to display-only jobs, coalesce
+settings/geometry changes, cancel on deletion/document close, guard generation/
+digest/settings before scene upload, and publish DisplayProximityChecked only
+after successful upload of that job's buffers. Existing views still execute
+checked display synchronously. Add actual GUI heartbeat, stale-job/failure/restore
+and cancellation tests before changing that workflow. Ordinary recompute, source
+tracing, default native-solid exposure and remaining Stage 2–4 gates stay open.
 
 ## Milestone 72: asynchronous shared-solid editor previews
 
