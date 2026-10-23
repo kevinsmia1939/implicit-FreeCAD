@@ -51,6 +51,9 @@ builds with whole-group success and owned-transaction guards. Ordinary property
 recompute now has an opt-in [background path](native-solid-recompute.md) with
 transaction/lifecycle tests. Default recompute and source boundary preparation
 remain synchronous; broader integration gates remain open.
+The [boundary preparation worker](native-boundary-jobs.md) now exposes private
+tracing with cooperative cancellation. It has not yet replaced GUI source
+preparation, and does not broaden the supported conventional operand family.
 Display-only native jobs now share the worker and run the same checked-buffer
 calculation with cancellable coverage/contact phases. Checked views now coalesce
 jobs, guard generations/settings/live inputs and cancel on hide/deletion/document

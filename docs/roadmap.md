@@ -23,6 +23,8 @@ creates the older field-display feature.
    editor Apply/OK now batch affected solid builds with guarded group publication.
    Ordinary GUI property recompute now has an opt-in guarded worker path with
    undo/transaction/lifecycle tests; default scheduling and source tracing remain.
+   The [boundary-job backend](native-boundary-jobs.md) now prepares private source
+   topology with cancellation; GUI source/task adoption remains to be connected.
    Display-only jobs now run the checked calculation with coverage/audit
    cancellation on the shared native worker. Checked views now coalesce jobs,
    guard generations/settings/live sources and cancel on hide/deletion/closure;

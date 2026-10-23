@@ -4,9 +4,45 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `68a34c34e9` on
-`feature/native-implicit`, OCCT `ad3549601d` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `fc6b5e53c1` on
+`feature/native-implicit`, OCCT `0a22e0c5cc` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 77: native boundary-preparation worker backend
+
+The shared native executor now prepares supported mixed gyroid/box boundaries
+from private primitive-field and conventional B-Rep records. start_boundary_job
+and take_boundary_job retain exact field/box/settings descriptors, enforce kind
+guards before consumption and share queue/cancellation/shutdown rules with solid
+and display jobs. No document/Python/Part object enters the worker; serialization,
+report conversion and conventional cap reconstruction stay on the caller thread.
+GUI source recompute/task adoption remains open.
+
+OCCT plane tracing now accepts an optional caller checkpoint callback, without
+depending on higher-level work-control libraries. Mixed Build bridges it to the
+existing thread-local scope and adds root/side checkpoints. The new calibrated
+kernel test cancels halfway, retries and compares exact curves/bounds/resolution.
+Full kernel 117/117 passes (340.12 s). Initial boundary CLI/runtime 2/2 passes
+(7.03 s), covering both operations, private snapshots, numerical equivalence,
+calibrated tracing cancellation/retry and mixed queue/failure guards. Expanded
+strict-policy coverage uncovered a primitive I/O issue: exact identity matrices
+decoded as nonempty locations and strict Build rejected them. The reader now
+returns an empty location for exact input identity only; a regression protects
+a 1e-15 translation from snapping. Focused kernel 2/2 passes (20 ms); expanded
+boundary/shutdown/runtime 3/3 passes (5.91 s), covering both policies/operations
+and invalid settings. Final full kernel 118/118 passes (321.56 s) after that I/O
+fix. Its CTest LastTest.log retains the result. Final worker/shutdown/runtime/GUI
+compatibility passes 7/7 (186.74 s), including checked-display GUI restore
+100.46 s, solid jobs 27.31 s and surface jobs 51.54 s. The migration CTest log
+retains that run. Syntax and whitespace checks pass; no numerical policies were
+relaxed. The migration harness now registers 78 tests; this was a targeted run.
+
+The optional settings callback extends the fork's native extension ABI. Active
+OCCT 8 libraries, FreeCAD extension and native test/worker consumers were rebuilt
+with matching headers/libraries. No packages/system libraries or OCCT 7 legacy
+build changes. Per-algorithm geometry/tolerance policies are unchanged. See
+[boundary job contracts](native-boundary-jobs.md). Broader/default GUI scheduling,
+curved operands, snapping/history and consumers remain required for Stage 4.
 
 ## Milestone 76: opt-in GUI property recompute
 

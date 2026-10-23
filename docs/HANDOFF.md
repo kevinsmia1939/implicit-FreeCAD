@@ -22,6 +22,41 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 77: native boundary-preparation worker backend
+
+Native heads: FreeCAD fc6b5e53c1; OCCT 0a22e0c5cc.
+
+The shared native executor now accepts primitive-field and conventional box B-Rep
+records, prepares the mixed boundary privately and returns exact input descriptors.
+start_boundary_job/take_boundary_job expose it through ImplicitOCCT. Kind guards
+protect all three take APIs. Caller-thread serialization/report conversion remain;
+no document/Python/Part object enters the worker. Expanded boundary/shutdown/
+runtime checks pass 3/3 (5.91 s), including both operations under both policies,
+same-snapshot synchronous equality, mid-trace cancellation/retry, private source
+lifetime, mixed queue/failure guards and invalid settings.
+
+OCCT plane-section Settings now has an optional WorkCheckpoint function pointer,
+invoked during sampling/edge work/curve assembly. Mixed Build connects it to the
+existing thread-local work control and adds edge-root/side checkpoints. This
+extends the native extension ABI: rebuild direct section consumers with matching
+headers/libraries. Active OCCT 8 TKBRep/TKTopAlgo, FreeCAD _ImplicitOCCT/scripts and
+native-face-tests/worker have been rebuilt; the OCCT 7 legacy build was untouched.
+No packages/system libraries changed. Primitive I/O now preserves explicitly
+empty locations for exact identity input coefficients; strict private snapshots
+therefore remain supported. A 1e-15 translation is not snapped. Final full kernel
+118/118 passes (321.56 s), including exact retry curves and identity/near-identity
+persistence. Its CTest LastTest.log retains that result. No geometry/tolerance
+policy was relaxed. Final existing worker/shutdown/runtime/checked-display GUI
+compatibility passes 7/7 (186.74 s), including actual GUI restore 100.46 s.
+The migration CTest LastTest.log retains that final run. Syntax/whitespace checks
+pass. The harness registers 78 tests; the affected subsets were run here.
+
+Next: connect source recompute/task preparation to these jobs, guard live recipe/
+transaction descriptors, coordinate downstream solid builds and qualify GUI
+cancellation/restore. The current GUI source paths are still synchronous.
+Default exposure, curved operands, snapping/history and consumers remain open.
+See native-boundary-jobs.md for API, ABI and exact build/reproduction commands.
+
 ## Milestone 76: opt-in GUI property recompute
 
 Native heads: FreeCAD 68a34c34e9; OCCT unchanged at ad3549601d.

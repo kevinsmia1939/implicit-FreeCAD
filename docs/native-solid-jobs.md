@@ -6,6 +6,8 @@ backend for the asynchronous creation dialog and solid-editor previews.
 Checked and unchecked view cache misses also use this worker. Ordinary GUI
 property rebuilds can now opt into [background recompute](native-solid-recompute.md).
 Its default remains synchronous; source preparation is still synchronous.
+The [boundary-job backend](native-boundary-jobs.md) now prepares private sources
+on this same worker; GUI source preparation has not yet been connected to it.
 
 ## Execution and ownership
 

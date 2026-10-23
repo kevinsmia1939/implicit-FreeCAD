@@ -15,6 +15,10 @@ undo/transaction/lifecycle guards. Default and headless recompute retain their
 synchronous behavior; source preparation still blocks. See
 [recompute contracts](native-solid-recompute.md).
 
+The shared worker also has a [private boundary-preparation API](native-boundary-jobs.md)
+with cancellable plane tracing and exact source descriptors. GUI source recompute
+and task preparation still need to adopt it; curved operand support is unchanged.
+
 ## Direct answer
 
 Yes, FreeCAD must eventually gain upstream/core-level implicit support to make
