@@ -22,6 +22,45 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 79: staged source preparation in task previews
+
+Native heads: FreeCAD 3752147ec5; OCCT unchanged at 0a22e0c5cc.
+
+ImplicitTaskBatch.PreparedSolidBatch now stages all changed source boundaries
+through SourceBatch before acquiring solid builds. It retains the task-owned
+transaction, freezes target settings, suppresses ordinary recompute through
+pending tokens and publishes sources only after the whole source group succeeds.
+Both source and native-solid task Apply/OK use it without changing persisted
+BackgroundRecompute flags. Direct Python apply() stays synchronous through an
+explicit execute override. Queue-full starts retry from the event loop.
+
+The first task test exposed rollback-order fingerprint clearing; MixedBoundary
+now preserves journaled fingerprints during Document.Transacting. Metadata checks
+still validate unchanged restored geometry. The new task GUI/runtime test then
+passes 3/3 (42.79 s), including two-source atomic preparation, no synchronous
+fallback, cancellation, changed controls, source-panel OK/repair and closure.
+An earlier existing solid-batch GUI passed (51.46 s). Added source preflight
+cleanup and broader compatibility passed source-parameter CLI (20.61 s), solid
+editor GUI (104.09 s), shared-source parameter GUI (32.53 s) and ordinary source
+pipeline GUI (117.44 s). The mixed-editor helper needed asynchronous waiting.
+Its strict translated-box fixture then exposed Part.Shape.copy() coordinate
+rounding. Requests now store the original B-Rep string and submit it with
+start_boundary_job_from_record; exact metadata/tolerance guards remain unchanged.
+The final boundary/editor/property GUI/runtime run passes 6/6 (198.18 s): strict
+mixed editor 5.52 s, boundary jobs 5.02 s, expanded task GUI 67.71 s and ordinary
+source GUI 117.73 s. The task test also covers later-source failure, lost/foreign
+transactions and ordinary-job takeover. Final task/shared-batch checks pass 4/4
+(120.40 s), including task GUI 68.84 s and shared-batch GUI 49.27 s, after tightening
+the later-source-failure assertion. The migration CTest LastTest.log retains
+that final run. No production code changed after the 6/6 run. Syntax and whitespace
+checks pass. The harness registers 80 tests; affected subsets were run here.
+Only native-module Python/scripts/tests/docs change; OCCT remains 0a22e0c5cc.
+
+Next: qualify default background property scheduling, task/tree failure-state
+exposure and broader live sources before switching everyday native-solid commands.
+Curved mixed operands, snapping/history and representation-aware consumers remain
+required for Stage 4. See native-task-sources.md for the staged task contract.
+
 ## Milestone 78: GUI background source-to-solid recompute
 
 Native heads: FreeCAD b2bd0f7844; OCCT unchanged at 0a22e0c5cc.

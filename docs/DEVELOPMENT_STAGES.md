@@ -38,10 +38,11 @@ now batch affected native-solid builds, with all-peer success required before
 publication. Checked and unchecked view cache misses now schedule cancellable,
 coalesced jobs with guarded publication and solid-batch priority. Ordinary
 recompute can now opt into guarded background jobs, with transaction/undo/lifecycle
-tests. Default scheduling and source tracing remain open.
+tests. Default ordinary scheduling and broader source families remain open.
 The private boundary-job backend now supports cancellable source tracing. GUI
-source recompute has an opt-in guarded source-to-solid pipeline; task coordination
-and default exposure remain open.
+source recompute has an opt-in guarded source-to-solid pipeline. Task panels now
+stage source and solid jobs under their owned transaction; default ordinary
+scheduling/exposure remain open.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

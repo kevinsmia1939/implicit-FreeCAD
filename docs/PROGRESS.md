@@ -4,9 +4,46 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `b2bd0f7844` on
+Implementation heads: FreeCAD `3752147ec5` on
 `feature/native-implicit`, OCCT `0a22e0c5cc` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 79: source preparation in task-panel previews
+
+Both source and native-solid task Apply/OK now use PreparedSolidBatch: all changed
+source boundaries prepare privately before their group publishes, then native
+solid peers build and publish with their existing guards. Waiting tokens suppress
+ordinary recompute fallback; target settings/source recipes and the owned edit
+transaction are checked throughout. Queue-full submissions retry. Source and solid
+persisted background flags are unchanged. Direct Python apply() stays synchronous.
+Task previews can take over ordinary background jobs without taking another task's
+tokens; Cancel can resume prior ordinary work through its normal policy.
+
+The new GUI test first exposed fingerprint clearing during rollback. Preserving
+the journaled Geometry/fingerprint pair during Document.Transacting avoids
+retracing unchanged topology; metadata checks still reject inconsistent restores.
+The strict translated-box editor exposed Part.Shape.copy() changing one coordinate's
+last bit. Requests now capture original B-Rep strings and use the new facade
+start_boundary_job_from_record helper, preserving exact metadata checks and all
+geometry/tolerance policies. An old mixed-editor helper was updated to wait for
+asynchronous button actions and tolerate compiled view providers without Proxy.
+
+Initial task GUI/runtime 3/3 passes (42.79 s). Existing source-parameter CLI
+20.61 s, solid-editor GUI 104.09 s, source-parameter GUI 32.53 s and source pipeline
+117.44 s pass. Final boundary/editor/property/runtime checks pass 6/6 (198.18 s),
+including strict mixed editor 5.52 s, expanded task GUI 67.71 s and ordinary source
+GUI 117.73 s. Final task/shared-batch/runtime checks pass 4/4 (120.40 s), including
+task GUI 68.84 s and shared-batch GUI 49.27 s. CTest LastTest.log retains the final
+run; changed Python syntax and whitespace pass. Qualification includes
+atomic two-source preparation, second-source failure, no synchronous fallback,
+changed controls, cancellation/rollback, source preflight repair, deferred OK,
+lost/foreign transaction isolation, ordinary-job takeover and document closure.
+
+Only native-module Python, script packaging, tests and docs change; no OCCT or
+system dependency changes. The 0.1 mm policy is unchanged. Ordinary property
+background scheduling remains opt-in; default native-solid exposure and wider
+Stage 2–4 geometry/consumer requirements remain open. See
+[task source contract](native-task-sources.md).
 
 ## Milestone 78: GUI background source-to-solid recompute
 

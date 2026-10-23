@@ -17,8 +17,9 @@ synchronous behavior; source preparation has its separate opt-in below. See
 
 The shared worker also has a [private boundary-preparation API](native-boundary-jobs.md)
 with cancellable plane tracing and exact source descriptors. GUI source recompute
-now adopts it through an opt-in guarded source-to-solid pipeline. Task preparation
-and default exposure remain open; curved operand support is unchanged.
+now adopts it through an opt-in guarded source-to-solid pipeline. Both task panels
+stage source preparation before solid builds under their owned transaction.
+Default ordinary scheduling/exposure remain open; curved operand support is unchanged.
 
 ## Direct answer
 

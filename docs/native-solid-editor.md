@@ -18,8 +18,9 @@ Successful creation optionally hides the boundary in the same undo transaction;
 undo/redo restores both the result and source visibility. The shifted 20-mm
 fixture succeeds with geometry depth 18 and the unchanged 0.1-mm tolerance.
 More depth or work does not guarantee a supported result. The initial candidate
-is reused without GUI-thread remeshing. Console creation, ordinary property
-recompute and checked-display extraction remain synchronous. See [job contracts](native-solid-jobs.md).
+is reused without GUI-thread remeshing. Console creation stays synchronous;
+ordinary property recompute has separate opt-ins and display extraction uses
+background jobs. See [job contracts](native-solid-jobs.md).
 
 The console factory retains its existing positional arguments and additionally
 accepts a validated dictionary of integer work/depth limits:
@@ -58,13 +59,15 @@ Stored boundary snapshots and external sources do not acquire an operation edito
 Primitive source parameters are now staged as described below. Source-link
 replacement and general field-graph editing remain separate gates.
 
-GUI Apply/OK now build affected native-solid peers in background batches, with
-phase reporting and no partial publication. OK waits for successful completion;
+GUI Apply/OK now prepare changed source groups, then build affected native-solid
+peers in background batches with phase reporting. Each group publishes only after
+all its results succeed. OK waits for successful completion;
 Cancel discards pending work and rolls back. Changed controls/inputs or loss of
 the transaction prevent stale publication. Initial default candidates are reused.
-Source-boundary construction, checked/custom display and rollback rendering can
-still block; this is not whole-workflow asynchronous recompute. Direct Python
-task.apply() remains synchronous. See [batch contracts](native-solid-jobs.md).
+Serialization, planar-cap display, result conversion and Coin upload still run
+on the GUI thread. Cancel preserves the journaled geometry/fingerprint pair,
+avoiding a numerical retrace of unchanged restored topology. Direct Python
+task.apply() remains synchronous. See [staged task contracts](native-task-sources.md).
 
 The panel reuses the mixed-boundary task's owned-transaction/button lifecycle,
 with solid-specific staged controls and validation. It does not adopt or close

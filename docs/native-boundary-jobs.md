@@ -4,8 +4,9 @@ The OCCT 8 FreeCAD module can now prepare supported gyroid/box boundaries on the
 same bounded native worker used for solids and transient display. This is the
 backend for moving source tracing out of future GUI recompute/task workflows;
 ordinary source recompute can now opt into the
-[GUI source-to-solid coordinator](native-source-recompute.md). Task preparation
-and default asynchronous exposure remain subsequent integration work.
+[GUI source-to-solid coordinator](native-source-recompute.md). Both task editors
+also adopt this backend through [staged preparation](native-task-sources.md).
+Default ordinary asynchronous exposure remains subsequent integration work.
 
 ```python
 job = native.start_boundary_job(field, box_shape, "common", .1, 512, "regularized")
@@ -29,6 +30,12 @@ returns the ordinary mixed-boundary report plus `input_field`, `input_box` and
 `input_settings` (operation, tolerance, cells, corner policy). GUI publication must
 compare these descriptors with live inputs and enforce owner/generation/transaction
 guards. Report conversion and cap reconstruction still run on the caller thread.
+
+`start_boundary_job_from_record(field, box_record, operation, tolerance, cells,
+corner_policy)` accepts an already captured conventional B-Rep string with the
+same defaults. GUI coordinators use this helper to preserve the original record
+without Part.Shape.copy() or a second encoding step; exact translated-box
+metadata stays unchanged.
 
 The result is a source boundary, with fresh seam qualification where the kernel
 resolves it; it is not a validated native solid or a display-coverage proof.
@@ -77,4 +84,4 @@ Final qualification: 118/118 kernel tests (321.56 s), boundary/shutdown/runtime
 3/3 (5.91 s), and existing worker/shutdown/runtime/checked-display GUI 7/7
 (186.74 s). The latter includes actual GUI save/reopen and checked-buffer upload
 qualification. GUI source-job adoption is now available through the opt-in
-source-to-solid coordinator; task preparation remains subsequent work.
+source-to-solid coordinator and staged task preparation.

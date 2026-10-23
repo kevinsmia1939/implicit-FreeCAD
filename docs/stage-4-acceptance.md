@@ -53,8 +53,9 @@ transaction/lifecycle tests. Default recompute and source boundary preparation
 remain synchronous; broader integration gates remain open.
 The [boundary preparation worker](native-boundary-jobs.md) now exposes private
 tracing with cooperative cancellation. GUI source recompute now has an opt-in
-guarded source-to-solid pipeline; task coordination and default exposure remain
-open. This does not broaden the supported conventional operand family.
+guarded source-to-solid pipeline. Task panels now stage source preparation before
+solid batches with transaction/rollback guards. Default ordinary scheduling and
+exposure remain open. This does not broaden the supported conventional operand family.
 Display-only native jobs now share the worker and run the same checked-buffer
 calculation with cancellable coverage/contact phases. Checked views now coalesce
 jobs, guard generations/settings/live inputs and cancel on hide/deletion/document

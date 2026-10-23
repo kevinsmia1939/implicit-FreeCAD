@@ -23,7 +23,7 @@ does not retrace or revalidate it.
 ImplicitMixedRecompute reuses the solid coordinator's timer, deletion/document
 observers and undo/redo/abort cancellation. Requests capture owner/proxy/document,
 field/box object identities, canonical recipe fingerprint, private primitive face
-and box copies, exact worker descriptors and initiating transaction. Equivalent
+and original B-Rep record, exact worker descriptors and initiating transaction. Equivalent
 requests coalesce; changed recipes replace old requests. Dirty operands,
 unsupported field definitions/placements or mismatched result descriptors reject
 publication. No status/output writes enter unrelated active transactions. Once
@@ -36,9 +36,10 @@ without an intervening document recompute pass. Native task-owned batches keep
 their own failure/transaction coordinator.
 
 Only the existing primitive gyroid/box source family and same-document pipeline
-are qualified here. Task previews with a background-enabled source, default
-asynchronous exposure, cross-document scheduling and broader input families
-remain open. Serialization, recipe checks, cap reconstruction/tessellation,
+are qualified here. [Task previews](native-task-sources.md) now stage their own
+source and solid jobs with either background flag value. Default asynchronous
+exposure, cross-document scheduling and broader input families remain open.
+Serialization, recipe checks, cap reconstruction/tessellation,
 result conversion, Coin upload and document recompute remain GUI-thread work.
 Field definitions/native topology remain authoritative; all meshes are transient.
 The 0.1 mm default and existing numerical/degeneracy policies are unchanged.

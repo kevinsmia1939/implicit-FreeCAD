@@ -9,7 +9,7 @@ Its default remains synchronous. Source recompute can also opt into
 [background preparation](native-source-recompute.md).
 The [boundary-job backend](native-boundary-jobs.md) now prepares private sources
 on this same worker; the opt-in GUI source coordinator connects it to ordinary
-property recompute. Task-panel source coordination remains open.
+property recompute. Both task panels now use a staged source/solid coordinator.
 
 ## Execution and ownership
 
@@ -101,8 +101,9 @@ subsequent work. The default Add Gyroid is unchanged.
 
 ## Shared-solid editor batches
 
-GUI Apply/OK use `ImplicitSolidBatch.SolidBatch` inside the editor's owned
-transaction. Boundary/source preparation is still synchronous. Every affected
+GUI Apply/OK use `ImplicitTaskBatch.PreparedSolidBatch` inside the editor's owned
+transaction. SourceBatch prepares changed source groups on the worker before
+handing solid owners to `ImplicitSolidBatch.SolidBatch`. Every affected
 native solid is invalidated before worker submission. Jobs run sequentially;
 fresh results are retained until the whole group succeeds. Publication checks
 source identity, serialized inputs, live recipe fingerprints, dirty dependency

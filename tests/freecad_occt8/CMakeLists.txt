@@ -200,6 +200,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
         PASS_REGULAR_EXPRESSION "native implicit async checked display GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_task_source_jobs
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/task-source-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/task-source-system.cfg"
+            "${_scripts}/task_source_jobs_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_task_source_jobs PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit task source jobs GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 240)
     add_test(NAME implicit_occt8_gui_mixed_recompute
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
             --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/mixed-recompute-user.cfg"
