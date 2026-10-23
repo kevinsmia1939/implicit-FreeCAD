@@ -39,8 +39,9 @@ publication. Checked and unchecked view cache misses now schedule cancellable,
 coalesced jobs with guarded publication and solid-batch priority. Ordinary
 recompute can now opt into guarded background jobs, with transaction/undo/lifecycle
 tests. Default scheduling and source tracing remain open.
-The private boundary-job backend now supports cancellable source tracing; GUI
-source recompute/task adoption remains open.
+The private boundary-job backend now supports cancellable source tracing. GUI
+source recompute has an opt-in guarded source-to-solid pipeline; task coordination
+and default exposure remain open.
 Broader live/task workflows and default-command exposure remain required, as do
 curved operands and the other Stage 2–4 acceptance gates.
 The [explicit native solid codec](native-solid-topology-io.md) preserves actual

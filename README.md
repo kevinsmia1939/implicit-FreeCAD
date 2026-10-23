@@ -59,8 +59,9 @@ background jobs with stale-result guards and guarded scene upload; checked mode
 remains opt-in. General placed/curved
 operands remain unfinished.
 The [boundary preparation worker](docs/native-boundary-jobs.md) now supports private,
-cancellable source tracing. GUI source recompute and task preparation still need
-to adopt that backend.
+cancellable source tracing. [GUI source recompute](docs/native-source-recompute.md)
+can now opt into a guarded source-to-solid pipeline; task preparation and default
+exposure remain subsequent work.
 Its [default corner identities and local material cones](docs/native-corner-germs.md)
 now have checked kernel queries. The [lattice-node plane tracer](docs/lattice-plane-sections.md)
 resolves all six default cube faces, retaining isolated point contacts separately.

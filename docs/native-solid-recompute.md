@@ -36,9 +36,10 @@ Restored valid topology retains its independent unverified qualification status;
 merely enabling background recompute does not certify it. Headless execution
 continues synchronously even when the persisted setting is true.
 
-Source boundary tracing/preparation, serialization, result conversion, component
-assignment, Coin upload and downstream recompute still run on the caller/GUI
-thread. This is an opt-in foundation for ordinary rebuild scheduling, not a
+Source tracing now has its own [GUI opt-in](native-source-recompute.md); linked
+native solids wait for pending source geometry before queuing their builds.
+Serialization, result conversion, component assignment, Coin upload and downstream
+recompute still run on the caller/GUI thread. This is an opt-in foundation for ordinary rebuild scheduling, not a
 fully asynchronous document engine. Automatic/default exposure, broader live
 source families, cross-document consumer scheduling and global memory budgets
 remain open, alongside the wider Stage 2–4 geometry/integration requirements.

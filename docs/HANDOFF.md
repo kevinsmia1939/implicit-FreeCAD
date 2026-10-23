@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 78: GUI background source-to-solid recompute
+
+Native heads: FreeCAD b2bd0f7844; OCCT unchanged at 0a22e0c5cc.
+
+MixedBoundary has a persisted BackgroundRecompute opt-in (default false).
+ImplicitMixedRecompute uses private boundary jobs, live recipe/operand/owner
+guards and the existing transaction/lifecycle coordinator. Source publication
+triggers document recompute; opted-in native solids wait without errors while
+the source is pending, then build on the worker. Same-document native consumers
+are invalidated immediately, including direct source rebuilds; source failure
+propagates an explicit unavailable status. Serialization, planar cap display and
+downstream document work still run on the GUI thread.
+
+Initial actual source/solid pipeline GUI/runtime tests pass 3/3 (108.61 s),
+including heartbeat, coalescing, undo/redo/abort, foreign transactions, dirty
+inputs, failure repair, save/reopen, deletion and close. Follow-up qualification
+adds direct rebuild invalidation and failure-status checks: targeted GUI/runtime/
+headless/property/task compatibility passes 6/6 (226.73 s), including source
+pipeline 115.15 s, solid recompute 75.35 s and source-parameter task 32.75 s.
+Final unsupported-definition, direct repair and partial-publication cleanup
+GUI/runtime checks pass 3/3 (143.43 s), GUI 141.21 s. The migration CTest
+LastTest.log retains that final run. Syntax/whitespace checks pass. The harness
+registers 79 tests; only affected subsets were run for this Python increment.
+Only Python/native-module
+scripts and harness/docs change; OCCT remains 0a22e0c5cc, no dependencies changed.
+Task-panel source coordination/default exposure remain subsequent work.
+
+Next: stage source jobs inside the task's owned preview transaction before solid
+batches, with cancel/control-change/accept handling. Then qualify default
+asynchronous exposure and broader live sources. Curved mixed operands,
+snapping/history and representation-aware consumers remain Stage 2–4 gates.
+
 ## Milestone 77: native boundary-preparation worker backend
 
 Native heads: FreeCAD fc6b5e53c1; OCCT 0a22e0c5cc.

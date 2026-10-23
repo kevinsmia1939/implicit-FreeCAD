@@ -4,9 +4,36 @@ Updated 2026-10-23. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `fc6b5e53c1` on
+Implementation heads: FreeCAD `b2bd0f7844` on
 `feature/native-implicit`, OCCT `0a22e0c5cc` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 78: GUI background source-to-solid recompute
+
+MixedBoundary now has a persisted BackgroundRecompute opt-in, default false.
+ImplicitMixedRecompute adopts private boundary jobs with live operand/recipe,
+owner/proxy, exact result descriptor and transaction guards. It reuses the solid
+coordinator's timer/lifecycle cancellation. Native solids report pending source
+preparation without errors; source publication triggers their ordinary recompute,
+and opted-in owners then build on the worker. Direct rebuilds and early input
+failures invalidate same-document native-solid output immediately; source failure
+propagates an explicit unavailable status. Partial publication is cleared.
+
+Initial source pipeline GUI/runtime passes 3/3 (108.61 s). Expanded affected
+headless/GUI/property/task compatibility passes 6/6 (226.73 s): pipeline 115.15 s,
+solid recompute 75.35 s, source-parameter task 32.75 s. Final direct repair,
+unsupported definition, partial-publication failure, restore and lifecycle GUI
+checks pass with runtime fixtures 3/3 (143.43 s), GUI 141.21 s. That final run is
+retained in migration CTest LastTest.log. Changed Python syntax and whitespace pass.
+The headless test saves BackgroundRecompute=true and retains synchronous behavior.
+
+Both source and solid flags must be enabled for the fully background native
+pipeline. Serialization, recipe checks, cap display, result conversion, Coin and
+document recompute remain on the GUI thread. Task previews with a background
+source and default exposure remain unqualified. Only native-module Python,
+script packaging, tests and docs change; OCCT remains 0a22e0c5cc and no dependency
+changes were needed. The 0.1 mm policy is unchanged. See
+[source recompute contracts](native-source-recompute.md).
 
 ## Milestone 77: native boundary-preparation worker backend
 

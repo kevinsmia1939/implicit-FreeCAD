@@ -3,7 +3,9 @@
 The OCCT 8 FreeCAD module can now prepare supported gyroid/box boundaries on the
 same bounded native worker used for solids and transient display. This is the
 backend for moving source tracing out of future GUI recompute/task workflows;
-those workflows currently still prepare sources synchronously.
+ordinary source recompute can now opt into the
+[GUI source-to-solid coordinator](native-source-recompute.md). Task preparation
+and default asynchronous exposure remain subsequent integration work.
 
 ```python
 job = native.start_boundary_job(field, box_shape, "common", .1, 512, "regularized")
@@ -74,4 +76,5 @@ FreeCADCmd or mix OCCT 7 compatibility headers/libraries into this runtime.
 Final qualification: 118/118 kernel tests (321.56 s), boundary/shutdown/runtime
 3/3 (5.91 s), and existing worker/shutdown/runtime/checked-display GUI 7/7
 (186.74 s). The latter includes actual GUI save/reopen and checked-buffer upload
-qualification. GUI source-job adoption remains a separate next milestone.
+qualification. GUI source-job adoption is now available through the opt-in
+source-to-solid coordinator; task preparation remains subsequent work.
