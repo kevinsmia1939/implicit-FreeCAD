@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 85 adds restricted standard Part Common/Cut dispatch with private
+worker staging and atomic source/solid publication. This does not discharge
+general Boolean dispatch, curved operands or native-solid composition gates.
+
 This is the six-stage overview agreed with the user, not the differently
 numbered original prototype phases. The goal is **active**, not achieved by
 the restricted mixed-box prototype. Preserve its full scope across increments.

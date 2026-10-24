@@ -315,6 +315,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
         PASS_REGULAR_EXPRESSION "native implicit source parameters GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_part_boolean
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/part-boolean-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/part-boolean-system.cfg"
+            "${_scripts}/part_boolean_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_part_boolean PROPERTIES
+        PASS_REGULAR_EXPRESSION "native Part Boolean GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 240)
     add_test(NAME implicit_occt8_gui_solid_create
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
             --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/solid-create-user.cfg"

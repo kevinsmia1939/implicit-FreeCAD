@@ -4,9 +4,19 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `cdeb08482e` on
+Implementation heads: FreeCAD `8a24532906` on
 `feature/native-implicit`, OCCT `5a93e48c61` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 85: representation-aware standard Part commands
+
+Part Common and box-first Cut now stage native boundary and solid jobs before
+publishing both live owners in one undo transaction. Explicit rejection prevents
+unsupported native selections from entering generic Part BOP. Ordinary B-Reps
+keep stock dispatch. See [native Part Booleans](native-part-booleans.md).
+OCCT is unchanged; full Stage 4 remains open.
+Expanded Part/creation-default/solid-creation GUI/runtime checks pass 5/5
+(80.08 s), including Part 17.45 s. Syntax and CRLF-aware whitespace pass.
 
 ## Milestone 84: native mathematical face Near queries
 

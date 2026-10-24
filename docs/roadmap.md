@@ -1,5 +1,10 @@
 # Technical roadmap
 
+[Standard Part Boolean dispatch](native-part-booleans.md) now opens a cancellable
+native workflow for primitive gyroid/box Common and box-minus-field Cut, with
+one undo step for source, solid and visibility. Native-solid composition, Fuse,
+curved operands and general mixed BOP remain open.
+
 [Restricted mathematical-face Near snapping](native-face-snapping.md) now uses
 an OCCT bounded local normal-foot/sign-bracket query and respects explicit native
 domains. Planar cap snapping respects trim holes and boundaries. Real Draft face

@@ -22,6 +22,29 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 85: standard Part command dispatch
+
+Native heads: FreeCAD 8a24532906; OCCT unchanged at 5a93e48c61.
+
+Part Common and box-first Cut now recognize native representations before
+generic shape access. Supported primitive gyroid/box selections open a native
+task with the 0.1 mm default. Boundary and solid jobs precede any document
+publication; success creates the live source/validated solid and operand
+visibility in one undo transaction. Failures remain repairable and cancellable.
+Reverse Cut, Fuse, native solid/boundary composition and subelements explicitly
+reject. Ordinary B-Reps retain stock dispatch. OCCT is unchanged.
+
+Rebuilt PartGui and ImplicitScripts with two compile jobs and one link job.
+Real command GUI tests cover cancellation, atomic Common undo/redo, Cut resource
+failure/retry, unsupported representations/order and conventional B-Rep Common.
+Focused Part GUI/runtime passes 3/3 (12.31 s). Expanded Part/creation-default/
+solid-creation GUI/runtime passes 5/5 (80.08 s), including Part 17.45 s,
+creation defaults 18.30 s and solid creation 41.96 s. Syntax and whitespace
+checks pass (CRLF-aware for upstream C++). No packages or OCCT libraries changed.
+See [native Part Booleans](native-part-booleans.md). Stage 4 is still incomplete;
+broader operands/history/consumers remain required. The default Add Gyroid still
+creates the compiled field display rather than this native solid workflow.
+
 ## Milestone 84: restricted mathematical-face Near snapping
 
 Native heads: FreeCAD cdeb08482e; OCCT 5a93e48c61.
