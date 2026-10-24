@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 88 joins periodic cylindrical section graphs with shared seam root
+identity and height-only open ends. Native end-cap sharing, curved trim topology,
+retained regions and cylinder Boolean solids remain unimplemented gates.
+
 Milestone 87 adds native derivative-bounded open-cylinder section queries as a
 curved-operand foundation. It does not complete periodic seams, native cylindrical
 trimming, retained regions or curved-operand Boolean solid acceptance.

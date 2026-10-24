@@ -22,6 +22,35 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 88: periodic cylindrical seam identity
+
+Native heads: FreeCAD 1cc5d33791; OCCT 36578fc4e7.
+
+OCCT TracePeriodic now uses a canonical shared seam grid edge/root identity for
+one full cylindrical turn. Values and root vertex IDs are generated once and
+reused at the opposite chart boundary, without tolerance welding. Seam incidence
+is interior; only height boundaries permit open endpoints. Open Trace is unchanged.
+The explicit periodic API requires AngleMaximum == AngleMinimum + 2*pi.
+Near-zero seam/grid samples remain unresolved; bounded fallback grids retain
+identical derivative and physical-diameter acceptance policies.
+
+FreeCAD exposes this as trace_gyroid_cylinder(..., periodic=True), requiring an
+actual bool and reporting periodic mode without promoting native topology/solid
+proof flags. Existing Settings/Result layouts and primitive records are unchanged.
+Rebuilt TKBRep/native tests and _ImplicitOCCT/ImplicitScripts with two compile
+jobs and one link job. No packages/system-library changes.
+
+Focused cylinder kernel checks pass 5/5 (1.218 s), including independent analytic
+closed-loop coverage, exact closed-point reuse, moved-seam equivalence, height-only
+open endpoints, budget refusal and unresolved zero seam samples. Cylinder/plane
+CLI/runtime passes 3/3 (2.79 s), including periodic restore and explicit policy
+typing. Full native regression passes 126/126 (340.35 s), retained in its native
+harness LastTest.log. Migration LastTest.log retains the 3-test CLI run.
+Syntax/whitespace checks pass. No code changed after the full kernel run.
+See native-cylinder-sections.md.
+Next: shared end-cap roots, oriented native cylindrical trims/retained regions,
+then shell/solid qualification and persistence. Stage 4 remains incomplete.
+
 ## Milestone 87: curved-operand cylindrical section foundation
 
 Native heads: FreeCAD ee0deaec0e; OCCT d7310aa883.

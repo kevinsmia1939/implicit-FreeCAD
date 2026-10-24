@@ -1,9 +1,10 @@
 # Core integration plan for an nTop-class FreeCAD
 
 OCCT now has a [curvature-aware cylindrical section query](native-cylinder-sections.md)
-for finite open gyroid/cylinder charts. Its FreeCAD binding returns bounded
-transient curves with explicit unresolved/proof states. Periodic seam joining,
-end-cap sharing and native curved trim/solid construction remain required.
+for finite open/full-turn gyroid/cylinder charts. Its FreeCAD binding returns
+bounded transient curves with explicit unresolved/proof states; periodic graph
+seams use shared root identity. End-cap sharing and native curved trim/solid
+construction remain required.
 
 OCCT now provides a [restricted local projection query](native-face-snapping.md)
 used by FreeCAD/Draft face Near snapping. It checks stationarity, local numerical

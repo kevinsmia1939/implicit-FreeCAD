@@ -4,9 +4,21 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `ee0deaec0e` on
-`feature/native-implicit`, OCCT `d7310aa883` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `1cc5d33791` on
+`feature/native-implicit`, OCCT `36578fc4e7` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 88: shared periodic cylinder seam
+
+The native cylindrical query now supports explicit full-turn periodic charts.
+One indexed seam root is reused on both chart sides; no distance welding or
+guessed closure. Only height boundaries can contain open graph ends. Closed
+loops reuse their exact first point. FreeCAD exposes periodic=True with a strict
+bool policy and separate false topology/solid flags. Settings/Result layouts
+and records are unchanged. Focused kernel passes 5/5 (1.218 s), including analytic
+closed-loop coverage and moved-seam equivalence; CLI/runtime passes 3/3 (2.79 s).
+Full native regression passes 126/126 (340.35 s); syntax/whitespace pass.
+Native end-cap joining, curved trim topology and Boolean solids remain open.
 
 ## Milestone 87: native open-cylinder section query
 

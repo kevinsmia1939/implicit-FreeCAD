@@ -1,7 +1,8 @@
 # Native gyroid / cylindrical patch sections
 
 `BRep_ImplicitCylinderSection::Trace` adds a native OCCT query for a finite open
-cylindrical patch intersecting a childless exact gyroid face. FreeCAD exposes it
+cylindrical patch intersecting a childless exact gyroid face. A separate periodic
+query also handles one full turn. FreeCAD exposes both modes
 through the ABI-checked `ImplicitOCCT.trace_gyroid_cylinder` facade:
 
 ```python
@@ -17,7 +18,9 @@ if section["resolved"]:
 
 The frame specifies origin, axis and angle-zero X direction. Radius, heights
 and tolerance use model lengths; angles use radians. The angular span must be
-strictly less than a full turn. The conservative oriented square-prism enclosure
+strictly less than a full turn in the default open mode. With explicit
+`periodic=True`, angle_max must equal `angle_min + 2*pi`. The C++ entry point is
+`TracePeriodic`; Settings and Result layouts are unchanged. The conservative oriented square-prism enclosure
 must fit entirely inside the field's computational box. This deliberately rejects
 some admissible small patches whose larger enclosure leaves that domain.
 
@@ -32,21 +35,41 @@ reserves are engineering policies, not outward-rounded interval arithmetic.
 
 Near-zero samples, tangencies, insufficient budgets and ambiguous cells remain
 unresolved. Callers must inspect `resolved`; partial curves are diagnostic.
+The periodic graph indexes each vertical seam edge/root once, reusing its value
+and vertex ID at the opposite chart boundary. This uses the cylinder's exact
+periodic chart identity, without endpoint proximity welding. Seam points must
+have interior incidence; only the two height boundaries can have open ends.
+Closed loops repeat exactly the same stored first point. Near-zero seam samples
+still remain unresolved. Bounded alternative grids can avoid unresolved sampling
+alignments, using identical acceptance tests and the same maximum axis budget.
+
+```python
+import math
+loop = native.trace_gyroid_cylinder(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0),
+    .5, (.27, .27 + 2 * math.pi), (-1.7, 1.3), periodic=True,
+)
+assert loop["resolved"] and loop["periodic"]
+assert loop["curves"][0]["closed"]
+```
+
 The result never sets topology or solid validation flags. C++ supports a
 caller-thread cancellation checkpoint. Primitive field records stay unchanged.
 
 These curves are tolerance-bearing polylines on a mathematical cylindrical
-patch. They are not native trim edges, periodic seam joins, cap regions or
-gyroid/cylinder Boolean solids. No GUI Boolean accepts cylindrical operands as
-a consequence of this query. Next curved-operand work must join periodic
-charts, identify shared roots with planar end caps, construct oriented trims
+patch. Periodic graph seam joins are supported, but these are not native trim
+edges, cap regions or gyroid/cylinder Boolean solids. No GUI Boolean accepts
+cylindrical operands as a consequence of this query. Next curved-operand work must
+identify shared roots with planar end caps, construct oriented trims
 and retained regions, then qualify shell/solid geometry and persistence.
 
 Kernel tests independently solve
 `A*cos(k*z) + B*sin(k*z) + C = 0` at sampled angles and check reference roots
 against the output curves. They also check exact cylinder membership, root
 bracket widths, empty results, budget exhaustion, rigid placement, cancellation
-and invalid/periodic chart rejection. The FreeCAD CLI test covers ownership,
+and invalid chart rejection. Periodic tests check an analytic closed loop,
+moving-seam invariance, height-only open endpoints, budget exhaustion and
+unresolved zero seam samples. The FreeCAD CLI test covers ownership,
 unchanged primitive records, translation, deterministic restored queries and
 separate proof flags.
 
