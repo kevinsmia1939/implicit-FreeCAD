@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 86 makes native-solid creation the primary Implicit Modelling toolbar
+workflow. Private recipe staging precedes atomic field/box/boundary/solid
+publication; expression-driven dimensions feed background recompute. This remains
+restricted gyroid/box support and does not complete the gates below.
+
 Milestone 85 adds restricted standard Part Common/Cut dispatch with private
 worker staging and atomic source/solid publication. This does not discharge
 general Boolean dispatch, curved operands or native-solid composition gates.

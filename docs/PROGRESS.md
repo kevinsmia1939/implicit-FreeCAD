@@ -4,9 +4,24 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `8a24532906` on
+Implementation heads: FreeCAD `e6593326ac` on
 `feature/native-implicit`, OCCT `5a93e48c61` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 86: native gyroid as the primary toolbar workflow
+
+Implicit_NativeGyroid stages mathematical field/box records without document
+owners, then publishes the editable field, expression-driven box, native boundary
+and validated solid in one transaction. Default dimensions/period are 10 mm,
+tolerance 0.1 mm, topology depth 16 and independent geometry depth 18. The latter
+supports the documented 20 mm resize case without weakening validation.
+Original field-display command remains available in the menu. The task shares
+Part dispatch's cancellable worker pipeline, now in a scrollable panel.
+Focused create/resize/save/reopen/undo/redo GUI/runtime passes 3/3 (37.31 s).
+Expanded gyroid/Part/default-creation GUI/runtime passes 5/5 (79.85 s), including
+four-owner rollback after injected publication failure and document-close cancel;
+synchronous native construction is forbidden by the new test. Syntax/whitespace pass.
+See [workbench guide](implicit-modelling-workbench.md). Full Stage 4 remains open.
 
 ## Milestone 85: representation-aware standard Part commands
 

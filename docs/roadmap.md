@@ -19,9 +19,9 @@ intersection snapping, surviving references and broader consumers remain open.
 ## Route to the default native gyroid workflow
 
 The Stage 2–4 numbering below follows [the active acceptance plan](stage-4-acceptance.md),
-not the original prototype phases. Restricted box/gyroid native solids and
-opt-in rendering/selection now exist; the default Add Gyroid command still
-creates the older field-display feature.
+not the original prototype phases. The primary workbench toolbar now creates
+restricted native gyroid solids through private worker staging and one atomic
+four-owner publication. The original field-display command remains in the menu.
 
 [Live build feedback](native-build-feedback.md) now exposes pending, failure,
 dirty-input and unverified states in the tree and View properties for mixed
@@ -64,8 +64,9 @@ decimal translated corners survive private cloning and native-solid construction
    actual GUI lifecycle and solid-batch priority tests pass. Unchecked cache misses
    now share that scheduler too. Broader scheduling remains open; conversion and
    Coin upload use the GUI thread.
-3. Expose the qualified workflow through the default workbench command, with
-   real native boundary edges/vertices and transient smooth surface rendering.
+3. The primary workbench toolbar now exposes the restricted native gyroid
+   workflow, with actual boundary topology and transient field rendering.
+   Broader edit/selection families and display qualification remain separate.
 
 These steps deliver the requested everyday native gyroid experience. They do
 not finish Stage 4 by themselves: curved conventional operands, general mixed

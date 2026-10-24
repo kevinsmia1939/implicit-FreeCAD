@@ -22,6 +22,37 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 86: default toolbar native-solid gyroid creation
+
+Native heads: FreeCAD e6593326ac; OCCT unchanged at 5a93e48c61.
+
+The Implicit Modelling toolbar now opens Implicit_NativeGyroid. Its default
+10 mm primitive/domain recipe is staged privately through the boundary/solid
+worker pipeline; no field, box, boundary or solid exists until both jobs succeed.
+Publication creates all four linked owners and visibility in one transaction.
+The original Implicit_Gyroid field-display command remains in the menu for
+compatibility. The new task exposes dimensions, period, level and build limits
+inside a scrollable panel. Independent geometry depth defaults to 18, retaining
+topology depth 16 and the 0.1 mm tolerance; inherited depth 16 exhausted cap
+geometry on the 20 mm resize fixture, as previously documented for that scale.
+
+Clipping box dimensions reference the editable field dimensions. Ordinary
+background source-to-solid recompute handles dimension changes. Persistence
+retains native geometry with unverified restored proof flags. The initial GUI
+fixture used a nonexistent getExpression accessor; it now checks ExpressionEngine.
+The completed focused create/resize/persistence check passes 3/3 (37.31 s),
+gyroid GUI 34.98 s. Expanded gyroid/Part/default-creation GUI/runtime passes 5/5
+(79.85 s), including gyroid 40.63 s and Part 17.69 s. The gyroid test disables
+synchronous native construction, injects publication failure, verifies all-four
+rollback/retry and document-close cancellation. Syntax and whitespace pass.
+Only ImplicitScripts was rebuilt; no OCCT or packages changed.
+Retained field-display GUI/runtime compatibility passes 3/3 (13.66 s),
+GUI 11.36 s; the migration LastTest.log retains that final run.
+See [workbench guide](implicit-modelling-workbench.md). Stage 4 remains open:
+curved operands, native-solid Boolean composition, surviving history and broader
+consumer contracts remain required. Native solid validation and transient display
+qualification stay separate.
+
 ## Milestone 85: standard Part command dispatch
 
 Native heads: FreeCAD 8a24532906; OCCT unchanged at 5a93e48c61.

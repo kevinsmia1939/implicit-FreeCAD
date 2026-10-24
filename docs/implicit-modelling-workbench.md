@@ -1,9 +1,29 @@
 # Implicit Modelling workbench
 
 Launch `build-freecad-occt8/bin/FreeCAD` and choose **Implicit Modelling**
-from the workbench selector. Click the turquoise **Add gyroid (10 mm cube)**
-icon. A document is created if needed, and a selected **Gyroid** object appears
-in the tree. The older **Native Implicit** experimental workbench remains.
+from the workbench selector. The turquoise toolbar icon now opens **Add native
+gyroid solid (10 mm cube)**. Set dimensions/period/level and build controls,
+then press OK. Boundary tracing and solid validation run as cancellable private
+jobs. Successful creation selects a **Gyroid solid** with native faces, edges
+and vertices. Its boundary source, editable Gyroid field and expression-driven
+GyroidDomain box are created in the same undo step and hidden. Cancel or failure
+creates no partial objects. The older **Native Implicit** workbench remains.
+
+The default geometric tolerance is 0.1 mm with regularized isolated corners.
+Independent geometry depth defaults to 18, retaining topology depth 16; larger
+or harder models can still exhaust explicit budgets. These are restricted
+gyroid/box native solids, not wall-thickness gyroids or general mixed BOP.
+The solid uses a native Geometry property; display meshes are transient and
+display qualification remains separate from solid validation.
+
+Select the hidden Gyroid field in the tree and edit its
+Length/Width/Height, Period and IsoValue properties. Box dimensions follow the
+field expressions and source/solid background recompute follows those changes.
+Unsupported inputs fail explicitly. Saved native topology is restored with its
+validation flags unverified; restore does not silently recertify it.
+
+The menu retains **Add gyroid (10 mm cube)** (`Implicit_Gyroid`) for the older
+field-display workflow described below. Its command identifier remains stable.
 
 On the OCCT 8 build, **Native boundaries (experimental)** also provides a
 [native edge/vertex selection demo](native-edge-vertex-selection.md) with the
@@ -13,8 +33,8 @@ The demo is separate from the default primitive below.
 **Native solids (experimental)** now provides a
 [live native-solid demo and selected-boundary build command](live-native-solids.md).
 These use actual solid/component topology, source-driven recompute and semantic
-selection; they do not change the default Add Gyroid behavior or qualify generic
-Part operations.
+selection. Standard Part Common and box-first Cut also provide restricted native
+dispatch; see [Part Boolean workflow](native-part-booleans.md).
 
 Select Gyroid in the tree and use the Data property editor:
 

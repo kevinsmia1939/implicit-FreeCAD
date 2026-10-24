@@ -5,11 +5,12 @@ field-based workflows, lattices, and mixed implicit/B-Rep operations. The
 long-term target is an nTop-class implicit modelling system.
 
 For editable primitive modelling, use the new [Implicit Modelling workbench](docs/implicit-modelling-workbench.md):
-one toolbar icon creates a native 10 × 10 × 10 mm gyroid with editable dimensions,
-period and level-set value in the tree's property editor.
+one toolbar icon opens native 10 × 10 × 10 mm gyroid-solid creation. Cancellable
+background jobs precede atomic publication of the solid and editable field/box
+sources. Dimensions, period and level-set value remain editable in the tree.
 The OCCT-8 workbench's experimental native-boundary menu now demonstrates
-[topology-backed edge/vertex selection](docs/native-edge-vertex-selection.md),
-distinct from the simple default field preview.
+[topology-backed edge/vertex selection](docs/native-edge-vertex-selection.md).
+The original simple field-preview command remains available in the menu.
 
 New: [native mixed gyroid/Part-box boundaries](docs/native-mixed-box.md), with
 intersection/subtraction, shared box-edge roots and trim wires, planar caps and live
@@ -42,7 +43,7 @@ remain unverified. A [dedicated solid property](docs/native-solid-property.md)
 now supplies FCStd topology and native subelements. The
 [live native-solid workflow](docs/live-native-solids.md) adds source-driven
 recompute and actual component-aware rendering/picking under the workbench's
-experimental Native solids menu; the default Add Gyroid command is unchanged.
+experimental Native solids menu; the primary toolbar now creates native solids.
 The [native-solid task editor](docs/native-solid-editor.md) now adds staged build
 controls/shared-source operation, independent geometry depth, rollback and failure
 recovery. Primitive period/level and box dimensions can be staged with shared
@@ -74,7 +75,7 @@ with [opt-in live rendering/selection](docs/native-corner-mesh.md) and
 An optional [checked display mode](docs/native-checked-display.md) checks the
 actual binary32 upload buffers for two-way proximity and exact triangle contacts.
 It is source-local numerical evidence, not native-solid/world-rendering validation;
-the default Add Gyroid command still uses the older field preview.
+the primary toolbar's native-solid rendering keeps that qualification separate.
 General curved operands, broader native-solid qualification and the remaining
 Stage 4 integration gates remain open.
 
