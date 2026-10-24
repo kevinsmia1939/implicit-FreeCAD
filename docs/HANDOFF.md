@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-23. This file is the entry point for a developer or coding
+Last updated: 2026-10-24. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,42 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 81: live tree/property build feedback
+
+Native heads: FreeCAD 0f618a1b8a; OCCT unchanged at 0a22e0c5cc.
+
+Mixed sources and native solids now expose BuildFeedback in the View tab and
+state badges in the tree. Pending, Failed, Changed, Empty, Unverified and Ready
+derive from live jobs, inputs and separate seam/solid proof flags. Display
+qualification remains independent. Failed geometry remains inspectable in the
+property panel; whole-object selection survives refresh, while snapshot-local
+subelement selections (including links) are still cleared.
+
+Implicit::PropertyBuildFeedback is a small App property subclass that exposes a
+live Python value through the normal editor. Plain PropertyPythonObject has no
+normal editor. ImplicitBuildFeedback calculates text on read and uses a weak
+view registry/timer for icon notifications and repaint. Polling writes no model
+or view status properties, so it does not journal status changes into unrelated
+transactions. The transient property is reconstructed on attach. Failed objects
+must not be confused with deleted objects through isValid().
+
+The native Implicit/ImplicitScripts targets were rebuilt with two compile jobs
+and one link job. Initial GUI/runtime checks pass 3/3 (26.47 s). Expanded feedback,
+mixed-box/surface, native-solid selection and creation-default GUI compatibility
+passes 7/7 (121.42 s), including feedback 42.68 s. These checks cover actual
+property-model text, actual tree icon changes, source/solid failure/repair,
+unverified restore, foreign-transaction repaint, undo, selection preservation and
+stale subelement removal. Final GUI/runtime checks pass 3/3 (29.20 s), including
+feedback 26.02 s, actual reselected property text after undo and empty watcher/
+stopped timer after document closure. Syntax/whitespace checks pass. The migration
+CTest LastTest.log retains this final run. The harness registers 82 tests; affected subsets were
+run. No OCCT or dependency changes. See native-build-feedback.md for the contract.
+
+Next: qualify broader live input/link/container families and implement the
+everyday native-solid primitive workflow against its acceptance gates. Curved
+operands, snapping/history and representation-aware consumers remain required;
+Stage 4 is not complete.
 
 ## Milestone 80: GUI creation defaults and cancellable boundary creation
 

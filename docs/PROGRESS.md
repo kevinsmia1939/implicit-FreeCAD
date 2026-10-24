@@ -1,12 +1,40 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-23. The user has authorized continuing the full roadmap,
+Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `c19c28f57e` on
+Implementation heads: FreeCAD `0f618a1b8a` on
 `feature/native-implicit`, OCCT `0a22e0c5cc` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 81: live native build feedback
+
+Mixed boundaries and native solids now have tree state badges and a read-only
+BuildFeedback View property. Live pending/failure/dirty-input/unverified/ready
+feedback preserves the separation between boundary seams, native solid validity
+and display qualification. Whole-object selection survives geometry refresh,
+keeping the property panel attached; snapshot-local subelement selections are
+still cleared, including link selections.
+
+The native App property subclass supplies a normal editor for a dynamic Python
+value. Transient feedback is calculated on read and recreated on attach. Weak
+view polling emits icon notifications/repaints without status property writes,
+recompute or proof changes, including during unrelated transactions. A failed
+owner remains inspectable rather than being treated as deleted.
+
+Implicit and ImplicitScripts rebuilt with two compile jobs and one link job.
+Initial GUI/runtime passes 3/3 (26.47 s); expanded feedback/selection/surface/
+creation compatibility passes 7/7 (121.42 s), including feedback 42.68 s. Actual
+property text and icon changes, failure/repair, restore provenance, foreign
+transaction repaint, undo and stale selection invalidation are covered.
+Final GUI/runtime passes 3/3 (29.20 s), including feedback 26.02 s, reselected
+property text after undo and empty watcher/stopped timer after closure. Its
+CTest LastTest.log retains that run; syntax/whitespace checks pass.
+The harness registers 82 tests; relevant subsets were run. No OCCT/dependency
+changes. Broader source families, default native-solid primitive exposure,
+curved operands, snapping/history and cross-workbench consumers remain open.
+See [build feedback](native-build-feedback.md).
 
 ## Milestone 80: background defaults for GUI creation
 

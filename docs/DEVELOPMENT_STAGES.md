@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Tree/property build feedback](native-build-feedback.md) now exposes pending and
+failed jobs, stale inputs and unverified restored geometry for mixed sources and
+native solids. Whole-object selection stays available during rebuilds; stale
+subelement references are still removed. This is GUI integration progress, not
+completion of the Stage 2–4 geometry and consumer gates.
+
 This is an acceptance checklist, not a claim that the full nTop-class project
 is complete. `PROGRESS.md` records tested increments; `HANDOFF.md` records how to
 continue. The original prototype phases and the native-kernel roadmap have

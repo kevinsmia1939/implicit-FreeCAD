@@ -43,6 +43,11 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+[Build feedback](native-build-feedback.md) now presents live source/solid state
+through tree badges and a transient read-only View property. It preserves object
+selection during refresh and avoids status writes inside unrelated transactions.
+Boundary seam, solid validation and display qualification remain separate.
+
 The [background native-solid backend](native-solid-jobs.md) adds private worker
 snapshots, bounded scheduling, cooperative OCCT cancellation and guarded atomic
 owner publication. The creation task now polls/cancels jobs, rejects stale inputs

@@ -1,5 +1,11 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Mixed sources and native solids now expose [live tree/property build feedback](native-build-feedback.md).
+Transient dynamic values and icon notifications avoid journaling status writes
+into unrelated transactions. Whole-object selection survives refresh, while
+snapshot-local subelement references are still removed. This does not extend
+the restricted kernel operand family or complete the broader Stage 4 gates.
+
 ## Current scheduling increment
 
 Native-solid view cache misses now use coalesced cancellable display jobs on the

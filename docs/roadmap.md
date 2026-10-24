@@ -7,6 +7,12 @@ not the original prototype phases. Restricted box/gyroid native solids and
 opt-in rendering/selection now exist; the default Add Gyroid command still
 creates the older field-display feature.
 
+[Live build feedback](native-build-feedback.md) now exposes pending, failure,
+dirty-input and unverified states in the tree and View properties for mixed
+sources/native solids. Whole-object selection survives rebuilds; old subelement
+references are still discarded. This presentation layer does not broaden kernel
+operand support or certify display meshes.
+
 1. Explicit [clipped-boundary coverage for regularized corners](native-corner-coverage.md)
    now checks both directed distance bounds against the restricted field face
    and retained planar caps. The [opt-in checked display](native-checked-display.md)
