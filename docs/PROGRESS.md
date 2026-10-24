@@ -4,9 +4,41 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `1e311ea6c5` on
-`feature/native-implicit`, OCCT `a3f13c69ea` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `cdeb08482e` on
+`feature/native-implicit`, OCCT `5a93e48c61` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 84: native mathematical face Near queries
+
+OCCT BRep_ImplicitTool::Project adds a bounded numerical normal-foot query with
+stationarity and tangent minimum checks, line search and an admissible nearby
+sign bracket. Explicit domains, patch predicates and excluded boxes are honored;
+the whole bracket is checked against exclusions. Invalid settings throw and
+unresolved/critical/precision/budget cases report failure. It is a numerical local
+candidate, not global nearestness, arbitrary trim support or interval proof.
+
+FreeCAD native Near snapping now uses it for mathematical faces. Conventional
+planar caps use their actual trim classifier and boundary edges, including holes.
+Native implicit faces never enter Part conversion or UV classification. Rigid
+path placement is applied once; geometry/proof state stays unchanged. The 0.1 mm
+coordinate policy remains independent of seam/solid/display qualification.
+
+Rebuilt TKBRep, native-face tests and FreeCAD Implicit/Draft using two compile
+jobs and one link job. No dependency/system-library changes. Public API is added
+without changing existing layouts or records. Focused kernel tests pass 2/2;
+full kernel passes 121/121 (333.05 s), retained in its separate LastTest.log.
+Expanded CLI/face-GUI/Draft-Line/runtime passes 5/5 (28.76 s), including face GUI
+10.44 s, proving distinct mathematical projection from actual triangle hits.
+Cap results compare to independent ordinary OCCT distance queries, including
+outside/holed faces. Both-operation face/edge/element/link/placed-query CLI/runtime
+passes 6/6 (19.16 s), face CLI 11.38 s. Final solid-display/face-snap/Line GUI/runtime
+passes 5/5 (50.71 s), with GUI 27.49/10.10/10.29 s; migration LastTest.log retains
+that run. Production code did not change after the full kernel run.
+Syntax/whitespace pass. The harness now
+registers 88 tests with GUI/Draft enabled; only affected subsets were run.
+See [face snapping](native-face-snapping.md). Stage 4 remains active; global face
+constraints, intersection/history, curved mixed operands and broader consumers
+remain open.
 
 ## Milestone 83: Draft consumes native vertex/edge snaps
 

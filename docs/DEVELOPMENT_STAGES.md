@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Local native face Near snapping](native-face-snapping.md) now uses OCCT field
+queries with explicit domain/exclusion checks and a nearby sign bracket. Cap
+snaps honor actual trim boundaries/holes. Actual Draft mathematical-face picks
+are tested. General constrained/global face queries, intersection/history and
+earlier curved-operand gates still prevent Stage 4 completion.
+
 [Draft native vertex/edge snapping](draft-native-snapping.md) now uses a core
 selected-topology API, including finite-edge midpoints and nearest points.
 Actual Draft viewport picks, markers and Line creation/save/reopen are tested.

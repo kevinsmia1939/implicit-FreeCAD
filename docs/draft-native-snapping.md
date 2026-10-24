@@ -13,15 +13,17 @@ the selected path's frame. Supported modes are:
 | --- | --- |
 | Endpoint | Actual stored topological vertices; duplicate closed-edge endpoints appear once. |
 | Midpoint | Half the arc length of the stored finite edge. |
-| Near | Closest point on the stored finite edge's piecewise linear B-spline segments, clamped to their bounds. |
+| Near | Finite-edge nearest points; restricted local mathematical-face projection and bounded planar-cap projection are described below. |
 
 Seam aliases work because they refer to native edges. Endpoint snapping does not
 use every curve pole as a vertex. Midpoint and Near do not use display triangles
 or the cursor's unprojected hit position. Geometry calculations use local edge
 coordinates and apply the qualified rigid path placement once. Finite input and
 coordinate-scale checks reject precision exhaustion. Whole-region queries and
-unknown modes fail explicitly. Unsupported face modes return no candidates;
-there is no untrimmed implicit-face projection fallback.
+unknown modes fail explicitly. The later [face Near query](native-face-snapping.md)
+uses explicit domain/component restrictions and a nearby sign bracket. Planar
+caps classify their actual trims and holes. Other unsupported face modes return
+no candidates; there is no untrimmed implicit-face projection fallback.
 
 These are picks on the stored native topology. Its seam approximation/provenance
 remains distinct from exact field evaluation, solid validation and display
@@ -38,9 +40,9 @@ ShapeType or invoking UV-based Part face alignment. Unavailable geometry, stale
 mapped references and unsupported transforms produce no native candidates.
 Existing conventional Part snapping retains its dispatch.
 
-This is endpoint/edge snapping integration, not completion of snapping to native
-implicit faces, cross-representation intersections, edit-surviving references,
-or the full Stage 4 consumer contract.
+Restricted local face Near snapping is now also available. General constrained
+face nearestness, cross-representation intersections, edit-surviving references
+and the full Stage 4 consumer contract remain open.
 
 ## Build and test
 

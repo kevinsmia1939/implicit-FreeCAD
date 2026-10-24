@@ -43,6 +43,12 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+[Local mathematical-face Near snapping](native-face-snapping.md) now checks an
+OCCT projection with stationarity, distance and admissible sign brackets. Planar
+caps honor actual trims/holes. Actual Draft triangle hits return distinct points
+on the mathematical field without Part conversion. General constrained face
+nearestness, intersection snapping/history and broader consumers remain open.
+
 [Draft snapping](draft-native-snapping.md) now consumes stored native vertex and
 finite-edge candidates through the core, without Part conversion or display-mesh
 vertices. Real viewport snapping and Draft Line creation/save/reopen are tested.

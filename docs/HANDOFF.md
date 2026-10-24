@@ -22,6 +22,56 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 84: restricted mathematical-face Near snapping
+
+Native heads: FreeCAD cdeb08482e; OCCT 5a93e48c61.
+
+OCCT BRep_ImplicitTool::Project now solves a bounded local normal-foot problem
+without a UV surface. It reports convergence/reason, stationarity, distance,
+iterations and a nearby geometric sign bracket. Numerical tangent second
+variation, line-search distance and coordinate/iteration guards reject unresolved
+candidates. Domain endpoints plus segment/exclusion-box tests require the whole
+bracket to respect explicit mathematical restrictions. This is an engineering
+numerical local query, not global nearestness, interval certification or support
+for arbitrary added trim wires. Existing record/type layouts are unchanged.
+
+FreeCAD snapNative Near now handles native implicit faces through that query and
+planar caps through conventional trim classification/closest boundary edges.
+Cap holes are respected; implicit faces never enter UV-based classifiers or Part
+conversion. Work is local and selected parent/link placement is applied once.
+Failed projection yields no candidate; endpoint/midpoint face modes remain empty.
+Neither query mutates model geometry, seam/solid validation or display proof.
+The native mixed/component domains and exclusions remain authoritative, and
+the default 0.1 mm coordinate policy is separate from those proof flags.
+
+Rebuilt active OCCT 8 TKBRep/native-face tests and FreeCAD Implicit/Draft with two
+compile jobs and one link job. No packages/system-library changes; the legacy
+OCCT 7 build is untouched. New API requires matching rebuilt consumer/library.
+The initial bracket width was narrowed to leave rounding room under the existing
+strict width acceptance; no tolerance check was relaxed. The first FreeCAD
+negative fixture used the older translated demo where origin is a valid interior
+surface point; it now explicitly builds the default clipped cube for corner
+exclusion checks. See native-face-snapping.md for architecture and reproduction.
+
+Focused new kernel projection tests pass 2/2. Full native suite passes 121/121
+(333.05 s; CTest total 333.06 s), retaining the full run in its LastTest.log.
+Initial face/edge CLI passes edge 3.22 s; default face CLI/runtime passes 2/2
+(4.84 s). Expanded face/hole/Draft GUI/runtime checks pass 5/5 (28.76 s), face
+CLI 4.56 s, actual face GUI 10.44 s and prior Draft Line GUI 10.85 s. Independent
+cap distance queries verify outside/holed-cap results. GUI face hits with nonzero
+field residual must return a distinct field point and the passive snap marker,
+without Part conversion. Final both-operation face/edge/element/link/placed
+classification CLI/runtime checks pass 6/6 (19.16 s), face CLI 11.38 s. Final solid
+display/face-snap/Draft-Line GUI/runtime checks pass 5/5 (50.71 s), including solid
+GUI 27.49 s, face GUI 10.10 s and Line GUI 10.29 s; migration LastTest.log retains
+that run. No production code changed after the full kernel run. Syntax and
+whitespace pass. Harness registers 88 tests with GUI/Draft enabled; affected
+subsets were run, not the entire migration suite.
+
+Next: general constrained/boundary face snapping, intersection snaps and surviving
+references, along with the everyday native-solid primitive workflow, curved
+mixed operands and broader consumers. Stage 4 remains incomplete.
+
 ## Milestone 83: native topology snapping in Draft
 
 Native heads: FreeCAD 1e311ea6c5; OCCT unchanged at a3f13c69ea.

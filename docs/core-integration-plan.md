@@ -1,10 +1,17 @@
 # Core integration plan for an nTop-class FreeCAD
 
+OCCT now provides a [restricted local projection query](native-face-snapping.md)
+used by FreeCAD/Draft face Near snapping. It checks stationarity, local numerical
+minimum conditions and an admissible sign bracket without UV parameterization.
+Planar caps use ordinary trim-aware classification; native implicit faces do not.
+Global/boundary face queries, intersection/history, curved mixed operands and
+broader representation-aware consumer contracts remain active Stage 2–4 gates.
+
 Draft now has a [native topology snapping consumer](draft-native-snapping.md).
 Its dispatch uses owned selected geometry for vertex/finite-edge candidates,
 retaining existing constraints and working-plane projection. Actual viewport
-snaps and Line creation/save/reopen are qualified. This does not provide native
-implicit-face/intersection snapping, surviving topology history or general
+snaps and Line creation/save/reopen are qualified. The later local face Near query
+does not provide general constrained-face/intersection snapping, surviving topology history or general
 cross-workbench compatibility; the full Stage 4 gates remain active.
 
 [Live input instances](native-input-instances.md) now support same-document whole

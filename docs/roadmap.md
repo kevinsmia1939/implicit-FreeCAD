@@ -1,5 +1,11 @@
 # Technical roadmap
 
+[Restricted mathematical-face Near snapping](native-face-snapping.md) now uses
+an OCCT bounded local normal-foot/sign-bracket query and respects explicit native
+domains. Planar cap snapping respects trim holes and boundaries. Real Draft face
+picks are qualified; general boundary/global nearest queries, intersection snaps,
+surviving references and broader Stage 2–4 gates remain open.
+
 [Draft native snapping](draft-native-snapping.md) now consumes stored topological
 vertices and finite-edge endpoint/midpoint/nearest candidates through a core API.
 Actual Draft viewport picks and Line creation are qualified. Native-face and
@@ -123,7 +129,7 @@ as for conventional CAD surfaces; its triangles are not native CAD faces.
 | Native mixed-region classification | Conservative physical-distance separation and cap/root witnesses | Inside/outside/near-boundary/unresolved; independent of preview meshes, not whole-solid validation |
 | Native mixed topology I/O | Explicit versioned math plus shared cap/seam/wire graph | Preserves identities/p-curves, no meshes or retracing; restored bounds unverified |
 | Native mixed geometry property | C++ ComplexGeoData property and typed GeoFeaturePython owner | FCStd topology, transactions, content transfer and static cross-document copy tested; field graphs and broader consumers not migrated |
-| Native mixed subelements/picking | Owned NativeFace/Cap/Seam segments; Coin picking including opt-in surface candidate | Semantic detail paths and Draft vertex/edge snapping; snapshot-local indices, no surviving-element history or native-face/intersection snapping |
+| Native mixed subelements/picking | Owned NativeFace/Cap/Seam segments; Coin picking including opt-in surface candidate | Semantic detail paths and Draft vertex/edge/local-face Near snapping; snapshot-local indices, no surviving-element history or general face/intersection snapping |
 | Native mixed mapped references | Standard element map from stored snapshot digest; typed-owner stale lookup rejection | Unchanged save/copy/undo and LinkSub invalidation/recovery tested; changed topology invalidates conservatively, no surviving-element history |
 | Native mixed subobject extraction | Owned ComplexGeoData from getSubObject and SelectionEx.SubObjects | Selected boundary lines/bounds, once-applied rigid placement and App::Part paths tested; no Part shape, surface sampling, general consumers or App::Link qualification |
 | Native whole/rigid link extraction | Owned whole ComplexGeoData; both LinkTransform modes, mapped caps, Part paths and GUI cap ray picking | Same-document restore and external queries with source loaded tested; no arrays, automatic external-file loading, general consumers or placed-operand BOP |
