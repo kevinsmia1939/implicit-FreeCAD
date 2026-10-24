@@ -1,5 +1,42 @@
 # Native gyroid / cylindrical patch sections
 
+## Explicit cylindrical field-domain restriction
+
+`BRep_TImplicitCylinderPatch` stores a field zero set restricted to the closed
+interior of a finite cylinder. Frame, radius and height limits use field-local
+coordinates; both geometry and instance placements move the equation and mask
+together. The computational box remains a conservative bound. The full oriented
+square-prism enclosure must fit inside it. Existing restrictions and child
+topology are refused rather than replaced.
+
+```python
+import ImplicitOCCT as native
+field = native.gyroid(10, .21, (-10, -10, -10), (10, 10, 10))
+restricted = native.restrict_cylinder_local(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0), 2, (-1, 1),
+)
+assert not native.in_domain(restricted, (1.5, 1.5, 0))
+restored = native.loads(native.dumps(restricted))  # Explicit schema 3.
+```
+
+`IsInDomain` checks the analytic radial/height predicate after converting the
+world point to field-local coordinates. Projection brackets and ray roots must
+respect it. Scalar Value still evaluates the authoritative equation; domain
+membership is separate. Ordinary UV consumers remain unsupported. Existing
+sphere tessellation and box builders reject this subtype rather than ignore its
+mask. No cap regions, trim wires or valid solids follow from the storage type.
+FreeCAD exposes immutable native-face handles and a `cylinder_restricted` flag,
+not Part shapes.
+
+Single-face schema 3 preserves the cylinder predicate, equation, box, tolerance,
+both placements and orientation. Primitive schemas 1/2 remain unchanged. Unknown
+subtypes, unsupported fields and attached topology reject before writing;
+malformed input leaves the destination unchanged. Axis-aligned, oblique and
+placed restrictions, EmptyCopy, malformed records, projection/ray exclusion and
+safe consumer refusal are covered by native tests.
+
+## Cylindrical intersection queries
+
 `BRep_ImplicitCylinderSection::Trace` adds a native OCCT query for a finite open
 cylindrical patch intersecting a childless exact gyroid face. A separate periodic
 query also handles one full turn. FreeCAD exposes both modes
@@ -129,8 +166,8 @@ Circle signs alone do not classify the disk interior: cap construction must also
 find and qualify interior closed implicit contours, including disconnected
 regions and holes. The next disk-section stage must attach circle crossings by
 their retained root identities/brackets and prove cut-cell coverage, rather than
-weld independently traced endpoints. A source family with an explicit cylindrical
-restriction is also required before treating a field face as cylinder-clipped.
+weld independently traced endpoints. Assembly must use the explicit cylinder
+restriction and still provide a complete native topology/source family.
 
 These curves are tolerance-bearing polylines on a mathematical cylindrical
 patch. Periodic graph seam joins are supported, but these are not native trim

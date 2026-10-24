@@ -1,5 +1,10 @@
 # Technical roadmap
 
+An explicit native cylindrical field-domain restriction and schema-3 single-face
+persistence now preserve radial/height masks through query/copy/placement/I/O.
+This supplies the storage predicate for future clipped faces, not cap/trim
+topology or cylinder Boolean solids.
+
 [Native cylindrical section queries](native-cylinder-sections.md) now trace
 finite open/full-turn curved patches against gyroids with curvature-aware bounds
 and canonical periodic graph seam identity. Detailed results retain owned cap

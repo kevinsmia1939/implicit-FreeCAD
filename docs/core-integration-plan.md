@@ -1,5 +1,10 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Native cylinder-restricted field faces now have an explicit storage subtype,
+query predicate and schema-3 persistence. FreeCAD exposes immutable face handles.
+This is a domain foundation; cap/trim topology and solid/source qualification
+remain separate acceptance gates.
+
 OCCT now has a [curvature-aware cylindrical section query](native-cylinder-sections.md)
 for finite open/full-turn gyroid/cylinder charts. Its FreeCAD binding returns
 bounded transient curves with explicit unresolved/proof states; periodic graph

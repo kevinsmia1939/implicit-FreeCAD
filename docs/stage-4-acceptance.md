@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 91 adds explicit cylindrical field-domain storage, guarded queries and
+schema-3 single-face persistence. Native cap regions, attached cylinder trim
+topology, solids and their FreeCAD source/property workflows remain required.
+
 Milestone 90 constructs analytic circular boundary edges sharing cylinder cap
 root vertices, with orientation and sign-interval checks. Planar cap-region
 closure, attached p-curves, cylindrical trim faces and Boolean solids remain

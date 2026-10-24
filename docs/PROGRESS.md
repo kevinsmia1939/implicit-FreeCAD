@@ -4,9 +4,26 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `b76e78c4be` on
-`feature/native-implicit`, OCCT `a63f266983` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `36ba9f6d33` on
+`feature/native-implicit`, OCCT `b7f1edda9b` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 91: native cylindrical query-domain storage and I/O
+
+BRep_TImplicitCylinderPatch stores an analytic finite-cylinder field restriction;
+domain, projection and ray queries honor it with source placements retained.
+Schema 3 preserves this known subtype, while primitive schemas 1/2 are unchanged.
+Unsupported topology/subtypes reject and malformed reads are atomic. Existing
+sphere/box consumers refuse the subtype safely. FreeCAD exposes immutable owned
+faces through restrict_cylinder_local and versioned dumps/loads, not Part shapes.
+Focused restriction checks pass 2/2; CLI/runtime passes 4/4 (5.27 s).
+An initial full run hit the 420-second timeout without assertion failure. Exact
+base-face fast paths now avoid irrelevant patch dispatch without bypassing box
+exclusions or derived restrictions. Final focused cylinder passes 11/11 (1.151 s);
+expanded CLI/runtime passes 5/5 (19.33 s). Full kernel passes 132/132 (417.75 s;
+CTest total 417.77 s) under the unchanged 420-second limit. Syntax/whitespace pass.
+Cap regions, cylinder trim topology, solids and broader Stage 4 remain open.
+See [native cylinder sections](native-cylinder-sections.md).
 
 ## Milestone 90: native analytic boundary-circle edges
 

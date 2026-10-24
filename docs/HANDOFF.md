@@ -22,6 +22,47 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 91: persistent cylindrical field-domain restriction
+
+Native heads: FreeCAD 36ba9f6d33; OCCT b7f1edda9b.
+
+OCCT BRep_TImplicitCylinderPatch is a distinct field-backed face storage subtype
+with an explicit closed radial/height domain in field-local coordinates. Its
+conservative full-prism enclosure must fit the computational box. Restrict
+preserves both source placements and orientation, refuses existing masks/child
+topology and leaves the source unchanged. EmptyCopy retains the subtype/mask.
+IsInDomain, local projection bracket guards and ray filtering honor the cylinder.
+Scalar evaluation still returns the authoritative equation separately from domain
+membership. This is not cap/trim topology or a validated solid.
+
+BRep_ImplicitIO schema 3 stores this known subtype, including frame/radius/height,
+field, box, tolerance, both placements and orientation. Primitive schemas 1/2
+are unchanged; unsupported subtypes/attached topology still reject, and failed
+reads preserve the destination. Sphere tessellation/box builders reject the new
+subtype rather than ignore its domain. No fake UV parameterization is supplied.
+
+FreeCAD restrict_cylinder_local exposes an immutable owned face and metadata
+flag; dumps/loads preserve the mask. Reconfigured existing OCCT for the new
+sources, built TKBRep/native tests and _ImplicitOCCT/ImplicitScripts with two
+compile jobs and one link job. No packages/system-library changes.
+Focused new restriction checks pass 2/2, including oblique frames, geometry and
+instance placements, malformed I/O, EmptyCopy, projection/rays and safe refusal.
+Cylinder/plane/native-property CLI/runtime passes 4/4 (5.27 s).
+The first full regression hit its 420-second runner timeout without assertion
+failure. Exact-base face/query fast paths now skip unrelated patch RTTI checks,
+while retaining box/exclusion checks and all derived-mask guards. Final focused
+cylinder checks pass 11/11 (1.151 s); expanded cylinder/plane/property/face-snap
+CLI/runtime passes 5/5 (19.33 s). Final full native regression passes 132/132
+(417.75 s; CTest total 417.77 s) under the unchanged 420-second limit. Its
+LastTest.log retains the complete run; migration LastTest.log retains the final
+CLI checks. Runner headroom is small on this host. No tolerance, geometry or
+resource check was relaxed. Syntax/whitespace pass; no code changed after the
+successful full kernel run.
+See native-cylinder-sections.md.
+Next: disk cut-cell tracing and interior closed contours, root-identity attachment,
+cap-region closure and cylindrical face trims, then shell/solid qualification,
+source/property persistence and broader Stage 4 consumers. Goal remains active.
+
 ## Milestone 90: analytic cylinder boundary-circle edges
 
 Native heads: FreeCAD b76e78c4be; OCCT a63f266983.
