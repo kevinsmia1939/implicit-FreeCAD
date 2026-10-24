@@ -4,9 +4,20 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `1cc5d33791` on
-`feature/native-implicit`, OCCT `36578fc4e7` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `07509887f9` on
+`feature/native-implicit`, OCCT `d6bab8fc84` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 89: shared cylinder end-cap root anchors
+
+TracePeriodicBoundary retains the side trace's canonical OCCT root vertices,
+brackets and ordered root IDs, with exact open-curve endpoint incidence.
+Unresolved/inconsistent traces publish no anchors. FreeCAD exposes copied root
+descriptors and a separate incidence flag. Native cap regions, cylindrical trim
+edges and Boolean solids remain open; IDs are snapshot-local, not edit history.
+Focused kernel passes 6/6 (1.259 s); CLI/runtime passes 3/3 (2.66 s).
+Full kernel passes 127/127 (351.19 s; CTest total 351.20 s); syntax/whitespace pass.
+See [native cylinder sections](native-cylinder-sections.md).
 
 ## Milestone 88: shared periodic cylinder seam
 

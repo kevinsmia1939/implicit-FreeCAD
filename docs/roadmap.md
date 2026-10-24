@@ -2,7 +2,9 @@
 
 [Native cylindrical section queries](native-cylinder-sections.md) now trace
 finite open/full-turn curved patches against gyroids with curvature-aware bounds
-and canonical periodic graph seam identity. End-cap sharing, native curved trim topology and cylinder
+and canonical periodic graph seam identity. Detailed results retain owned cap
+root vertices/brackets and curve endpoint IDs. End-cap region construction,
+native curved trim topology and cylinder
 Boolean solids remain required Stage 2 work.
 
 [Standard Part Boolean dispatch](native-part-booleans.md) now opens a cancellable

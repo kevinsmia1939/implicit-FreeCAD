@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 89 retains canonical cylinder end-cap root vertices and exact curve
+endpoint IDs, with a separate incidence check and no anchors after failure.
+Native cap regions, cylindrical trim topology and curved Boolean solids remain
+open. Root IDs are snapshot-local and do not discharge surviving-reference gates.
+
 Milestone 88 joins periodic cylindrical section graphs with shared seam root
 identity and height-only open ends. Native end-cap sharing, curved trim topology,
 retained regions and cylinder Boolean solids remain unimplemented gates.

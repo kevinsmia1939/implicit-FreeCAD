@@ -56,11 +56,38 @@ assert loop["curves"][0]["closed"]
 The result never sets topology or solid validation flags. C++ supports a
 caller-thread cancellation checkpoint. Primitive field records stay unchanged.
 
+## End-cap root identities
+
+`TracePeriodicBoundary` retains the side trace's actual height-boundary root
+identities. Its new BoundaryResult owns canonical `TopoDS_Vertex` handles,
+bracket endpoints and unwrapped angular brackets, sorted by bottom/top then
+chart angle. `CurveRoots` links every open curve endpoint to a 1-based root ID;
+closed curves use `(0,0)`. All roots must have exactly one open endpoint use.
+Unresolved or inconsistent results expose no anchors. These IDs are local to
+one result, not edit-surviving or persistent topology names.
+
+```python
+boundary = native.trace_gyroid_cylinder_boundary(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0),
+    .5, (3, 3 + 2 * math.pi), (0, .5),
+)
+assert boundary["resolved"] and boundary["boundary_incidence_verified"]
+roots = boundary["boundary_roots"]
+endpoints = boundary["curve_boundary_roots"]
+```
+
+The FreeCAD API returns copied root descriptors, including vertex tolerance;
+it does not expose mutable OCCT vertices. The native C++ result retains the
+vertices so future side/end-cap trim builders can share the same handles rather
+than reidentify approximate coordinates. The incidence flag qualifies this
+root/curve relation only. No planar end-cap region or cylindrical trim edge is
+constructed yet, and topology/solid validation remain false.
+
 These curves are tolerance-bearing polylines on a mathematical cylindrical
 patch. Periodic graph seam joins are supported, but these are not native trim
 edges, cap regions or gyroid/cylinder Boolean solids. No GUI Boolean accepts
 cylindrical operands as a consequence of this query. Next curved-operand work must
-identify shared roots with planar end caps, construct oriented trims
+consume the shared root anchors in planar end-cap construction, construct oriented trims
 and retained regions, then qualify shell/solid geometry and persistence.
 
 Kernel tests independently solve
@@ -72,6 +99,9 @@ moving-seam invariance, height-only open endpoints, budget exhaustion and
 unresolved zero seam samples. The FreeCAD CLI test covers ownership,
 unchanged primitive records, translation, deterministic restored queries and
 separate proof flags.
+Boundary tests additionally check four distinct ordered cap roots, sign brackets,
+vertex-tolerance containment, exact curve-endpoint identity, copied OCCT handle
+identity, closed-curve sentinel IDs and empty anchors on unresolved queries.
 
 ```sh
 cmake --build build-occt-implicit --target TKBRep --parallel 2

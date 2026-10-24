@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 89: retained cylinder end-cap root anchors
+
+Native heads: FreeCAD 07509887f9; OCCT d6bab8fc84.
+
+OCCT TracePeriodicBoundary now retains canonical owned TopoDS_Vertex handles
+for height-boundary roots, their geometric/angular brackets and 1-based curve
+endpoint IDs. Roots are ordered by bottom/top and chart angle. Each root must
+have exactly one open endpoint use; closed curves use zero IDs. Unresolved or
+inconsistent results publish no anchors. Existing open/periodic section APIs
+and Settings/Result layouts are unchanged; the detailed result is a new type.
+
+FreeCAD trace_gyroid_cylinder_boundary returns copied descriptors and an explicit
+boundary_incidence_verified flag, without mutable OCCT vertex exposure. Root
+identity is snapshot-local; no edit history or persisted naming is implied.
+The flag checks root/curve incidence only, not native trim or solid validity.
+No end-cap region or cylindrical trim edge is built yet. Future C++ builders can
+reuse these exact handles instead of welding independently approximated roots.
+
+Built TKBRep/native tests and _ImplicitOCCT/ImplicitScripts with two compile
+jobs and one link job. No packages/system-library changes. Focused cylinder
+checks pass 6/6 (1.259 s); cylinder/plane CLI/runtime passes 3/3 (2.66 s).
+Tests cover four distinct ordered bottom/top roots, sign brackets, tolerance
+containment, exact endpoint identity, handle reuse, closed-loop sentinel IDs,
+deterministic restored queries and no anchors after budget failure.
+Full kernel regression passes 127/127 (351.19 s; CTest total 351.20 s), retained
+in the native harness LastTest.log. Migration LastTest.log retains the CLI run.
+Syntax/whitespace pass. No code changed after the full kernel run.
+See native-cylinder-sections.md.
+Next: planar end-cap regions consuming these anchors and oriented native
+cylindrical trims, then shell/solid qualification/persistence. Other unfinished
+Stage 2–4 requirements remain active.
+
 ## Milestone 88: periodic cylindrical seam identity
 
 Native heads: FreeCAD 1cc5d33791; OCCT 36578fc4e7.
