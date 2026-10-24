@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 87 adds native derivative-bounded open-cylinder section queries as a
+curved-operand foundation. It does not complete periodic seams, native cylindrical
+trimming, retained regions or curved-operand Boolean solid acceptance.
+
 Milestone 86 makes native-solid creation the primary Implicit Modelling toolbar
 workflow. Private recipe staging precedes atomic field/box/boundary/solid
 publication; expression-driven dimensions feed background recompute. This remains

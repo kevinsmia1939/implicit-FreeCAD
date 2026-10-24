@@ -22,6 +22,39 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 87: curved-operand cylindrical section foundation
+
+Native heads: FreeCAD ee0deaec0e; OCCT d7310aa883.
+
+OCCT BRep_ImplicitCylinderSection adds a derivative-bounded query on finite
+open cylindrical charts of childless exact gyroids. Arc-length/height charts
+include the Lipschitz/radius curvature term in their Hessian bound. Shared-edge
+root brackets, regularity cones, cell diameter and graph checks gate resolved
+curves. Ambiguous samples, insufficient budgets and tangencies remain unresolved.
+Full-turn seams, native trims, end-cap joining and cylinder Boolean solids are
+not implemented by this query. The conservative full-cylinder prism enclosure
+must fit in the computational field box. See native-cylinder-sections.md.
+
+FreeCAD's matching OCCT 8 binding exposes trace_gyroid_cylinder and shares the
+existing plane-section report conversion. Primitive records, existing type
+layouts and proof flags are unchanged. No packages/system libraries changed.
+Reconfigured the existing OCCT build for new sources, then built TKBRep and
+the native tests; FreeCAD rebuilt only _ImplicitOCCT and ImplicitScripts.
+Two compile jobs and one link job were used. No libraries rebuilt during tests.
+
+Focused kernel tests pass 3/3 (0.48 s), including analytic height-root coverage,
+cylinder membership, root brackets, rigid placement, empty/budget/cancellation
+and invalid/full-turn refusal. New-cylinder/plane-section CLI/runtime checks
+pass 3/3 (2.74 s), including deterministic restored queries and source immutability.
+Adjacent face-snap/native-solid-I/O CLI/runtime passes 3/3 (22.93 s).
+Full native regression passes 124/124 (339.05 s; CTest total 339.07 s), retained
+in the native harness LastTest.log. Syntax and whitespace checks pass. Migration
+LastTest.log retains the adjacent 3-test run. No production code changed after
+the successful full kernel run.
+The next curved gates are periodic chart seams, shared end-cap roots and native
+trim/region construction, then shell/solid validation and persistence. Stage 4
+remains active with the other unfinished acceptance requirements unchanged.
+
 ## Milestone 86: default toolbar native-solid gyroid creation
 
 Native heads: FreeCAD e6593326ac; OCCT unchanged at 5a93e48c61.

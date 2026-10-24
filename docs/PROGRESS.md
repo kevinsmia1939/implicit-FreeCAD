@@ -4,9 +4,22 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `e6593326ac` on
-`feature/native-implicit`, OCCT `5a93e48c61` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `ee0deaec0e` on
+`feature/native-implicit`, OCCT `d7310aa883` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 87: native open-cylinder section query
+
+OCCT now traces finite open cylindrical patches against exact gyroid faces with
+curvature-aware derivative bounds and physical cell-diameter acceptance.
+FreeCAD exposes the owned transient query through ImplicitOCCT. Periodic joining,
+end-cap roots, native curved trims and cylinder Boolean solids remain open.
+See [native cylinder sections](native-cylinder-sections.md).
+Focused kernel passes 3/3 (0.48 s); cylinder/plane CLI/runtime passes 3/3 (2.74 s).
+Full kernel passes 124/124 (339.05 s; CTest total 339.07 s). Adjacent face-snap/
+solid-I/O CLI/runtime passes 3/3 (22.93 s). Syntax/whitespace pass; native and
+migration LastTest.log retain the full kernel and adjacent checks, respectively.
+No packages/system libraries or existing type/record layouts changed.
 
 ## Milestone 86: native gyroid as the primary toolbar workflow
 

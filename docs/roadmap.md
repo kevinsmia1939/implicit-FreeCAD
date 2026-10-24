@@ -1,5 +1,10 @@
 # Technical roadmap
 
+[Native cylindrical section queries](native-cylinder-sections.md) now trace
+finite open curved patches against gyroids with curvature-aware bounds.
+Periodic seams, end-cap sharing, native curved trim topology and cylinder
+Boolean solids remain required Stage 2 work.
+
 [Standard Part Boolean dispatch](native-part-booleans.md) now opens a cancellable
 native workflow for primitive gyroid/box Common and box-minus-field Cut, with
 one undo step for source, solid and visibility. Native-solid composition, Fuse,
