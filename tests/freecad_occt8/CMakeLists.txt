@@ -13,6 +13,12 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_native_snap
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/native_snap_smoke.py")
+set_tests_properties(implicit_occt8_native_snap PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit snapping smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 add_test(NAME implicit_occt8_operand_instances
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/operand_instances_smoke.py")
 set_tests_properties(implicit_occt8_operand_instances PROPERTIES
@@ -96,6 +102,7 @@ set_tests_properties(implicit_occt8_native_faces PROPERTIES
     FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 
 option(IMPLICIT_MIGRATION_GUI_TESTS "Test the built OCCT 8 GUI (requires DISPLAY or Xvfb)" OFF)
+option(IMPLICIT_MIGRATION_DRAFT_TESTS "Test built Draft snapping integration (requires Draft and TechDrawGui)" OFF)
 set(IMPLICIT_OCCT_NATIVE_WORKER "" CACHE FILEPATH "Built native OCCT worker for GUI recipe tests")
 if(IMPLICIT_MIGRATION_GUI_TESTS)
     if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD"
@@ -206,6 +213,21 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
         PASS_REGULAR_EXPRESSION "native implicit async checked display GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    if(IMPLICIT_MIGRATION_DRAFT_TESTS)
+        if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/Mod/Draft/draftguitools/gui_snapper.py"
+           OR NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/Ext/lazy_loader/lazy_loader.py")
+            message(FATAL_ERROR "Build Draft and its bundled lazy_loader before enabling Draft GUI checks")
+        endif()
+        add_test(NAME implicit_occt8_gui_draft_snap
+            COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+                --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/draft-snap-user.cfg"
+                --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/draft-snap-system.cfg"
+                "${_scripts}/draft_snap_gui_smoke.py")
+        set_tests_properties(implicit_occt8_gui_draft_snap PROPERTIES
+            PASS_REGULAR_EXPRESSION "native implicit Draft snapping GUI smoke test passed"
+            FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+            FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 240)
+    endif()
     add_test(NAME implicit_occt8_gui_operand_instances
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
             --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/instances-user.cfg"

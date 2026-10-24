@@ -52,7 +52,9 @@ A selected vertex exposes one stored point, no fabricated line or unique surface
 normal, and zero-size bounds. Owned selected geometry is pre-placed exactly once
 through supported rigid feature/container/App::Link paths and survives document
 close. Surface/edge point sampling, nonrigid mutation and unsupported Part
-assignment still reject; this is not integrated Draft snapping or a Part shape.
+assignment still reject. The later [Draft snapping integration](draft-native-snapping.md)
+uses stored native vertices/finite edges through a dedicated core query; this
+selected geometry is still not a Part shape.
 
 `ImplicitOCCT.inspect_mixed` adds local-coordinate `edge_points`, `vertex_points`,
 zero-based `edge_vertices` pairs and `seam_edges` aliases, all derived from actual

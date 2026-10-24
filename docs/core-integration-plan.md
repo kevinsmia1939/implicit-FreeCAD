@@ -1,5 +1,12 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Draft now has a [native topology snapping consumer](draft-native-snapping.md).
+Its dispatch uses owned selected geometry for vertex/finite-edge candidates,
+retaining existing constraints and working-plane projection. Actual viewport
+snaps and Line creation/save/reopen are qualified. This does not provide native
+implicit-face/intersection snapping, surviving topology history or general
+cross-workbench compatibility; the full Stage 4 gates remain active.
+
 [Live input instances](native-input-instances.md) now support same-document whole
 links and translated box containers through guarded source/solid jobs and shared
 primitive editors. Effective field placement remains identity. A local native

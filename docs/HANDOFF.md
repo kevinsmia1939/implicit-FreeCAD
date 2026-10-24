@@ -22,6 +22,59 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 83: native topology snapping in Draft
+
+Native heads: FreeCAD 1e311ea6c5; OCCT unchanged at a3f13c69ea.
+
+Implicit.snapNative accepts owned NativeElementGeometry picks and returns actual
+stored vertex endpoints, finite-edge arc-length midpoints or clamped nearest
+points on their degree-1 B-spline segments. It works locally, applies the rigid
+path placement once and rejects nonfinite inputs/coordinate precision exhaustion.
+Whole-region queries and unknown modes reject; unsupported faces return no
+candidates. It never meshes or performs untrimmed implicit-face projection and
+does not change seam, solid or display proof flags. The 0.1 mm coordinate guard
+is separate from stored seam approximation/provenance.
+
+Draft's snapper detects native geometry properties before Part.getShape, resolves
+the selected complete parent/link path and uses the existing mode switches,
+winner selection, markers, constraints and optional WorkingPlane projection.
+Working-plane auto-alignment now skips non-Part selected geometry safely.
+Native snapshots remain immutable; Draft Line consumes point coordinates rather
+than assigning an arbitrary field/implicit face into a Part Shape.
+
+The active OCCT 8 build now enables Draft, TechDraw, PartDesign, Spreadsheet and
+Import. Sketcher was enabled but its GUI was not built. The real Draft workbench
+required both SketcherGui and TechDrawGui, plus FreeCAD's bundled lazy_loader.
+Draft's target now depends on those GUI libraries, DraftUtils and lazy_loader
+(GUI dependencies conditional on BUILD_GUI), so minimal target builds include
+its runtime requirements. No packages/system libraries changed. All builds used
+two compile jobs and the existing one-link-job pools. See draft-native-snapping.md
+for flags and commands. No OCCT source/header/ABI changes in this increment.
+
+Initial native CLI passed (3.19 s). GUI activation first exposed the missing
+bundled loader, then the unbuilt SketcherGui; neither was a snap geometry failure.
+After building those existing targets, actual Draft GUI/runtime checks pass 3/3
+(13.58 s), GUI 10.64 s: viewport picks/markers, no Part conversion for native
+snaps, working-plane modes, unavailable/unsupported geometry, Draft Line creation,
+stale mapped-reference rejection, conventional Part dispatch and save/reopen.
+The native CLI also covers bounded projections, straight/curved midpoints,
+read-only proof/revision state, rigid parent/link placement, precision and retained
+snapshot lifetime.
+
+Adjacent native snap/element/link/placed-classification and solid-display/feedback
+GUI/runtime compatibility passes 8/8 (59.13 s), including native snap 3.16 s,
+solid GUI 27.00 s and feedback GUI 23.04 s. Its CTest LastTest.log retains that
+final run. Syntax/whitespace pass. No geometry or snap code changed after the
+successful Draft GUI test.
+
+The harness adds the CLI test and an optional Draft GUI test
+through IMPLICIT_MIGRATION_DRAFT_TESTS=ON; it now registers 86 tests with GUI/Draft
+enabled. Relevant subsets were run, not the entire migration suite.
+
+Next: native implicit-face/intersection snapping and edit-surviving topology
+references, alongside the everyday native-solid primitive workflow, curved mixed
+operands and remaining representation-aware consumers. Stage 4 remains incomplete.
+
 ## Milestone 82: live input instances and exact corner persistence
 
 Native heads: FreeCAD 424e3d75fa; OCCT a3f13c69ea.

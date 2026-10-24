@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Draft native vertex/edge snapping](draft-native-snapping.md) now uses a core
+selected-topology API, including finite-edge midpoints and nearest points.
+Actual Draft viewport picks, markers and Line creation/save/reopen are tested.
+Native-face/intersection snaps, surviving references and broader consumers remain
+open; this does not complete Stage 4 or earlier curved-operand requirements.
+
 [Live input instance support](native-input-instances.md) now includes nested
 whole-object aliases and translated box containers, with identity field-instance
 placement. Native source/solid jobs and shared primitive editors use effective

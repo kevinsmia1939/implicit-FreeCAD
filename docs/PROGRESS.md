@@ -4,9 +4,43 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `424e3d75fa` on
+Implementation heads: FreeCAD `1e311ea6c5` on
 `feature/native-implicit`, OCCT `a3f13c69ea` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 83: Draft consumes native vertex/edge snaps
+
+The core now exposes Implicit.snapNative on owned selected geometry. Endpoint
+uses stored topological vertices, Midpoint uses finite-edge arc length, and Near
+clamps to the stored piecewise linear B-spline segments. Local calculations apply
+qualified path placement once and reject coordinate precision exhaustion. No
+display mesh, implicit-face projection or proof mutation is involved.
+
+Draft dispatch recognizes native geometry before Part conversion. Its existing
+mode switches, winner selection, markers, constraints and working-plane projection
+consume native candidates. Auto-alignment safely skips non-Part ComplexGeoData.
+The actual Draft Line command accepts native viewport endpoints and creates a
+conventional coordinate-based line, without embedding an implicit field in Shape.
+Face/intersection snapping and surviving-element history remain open.
+
+The active build enables Draft and its required TechDraw/PartDesign/Spreadsheet/
+Import flags. The corresponding dependencies, SketcherGui and FreeCAD's bundled
+lazy_loader were built from existing sources/dependencies. Draft's CMake target
+now includes required libraries/helpers for minimal builds. No packages/system
+libraries or OCCT source/header/ABI changed; two compile jobs and one link job.
+
+Native CLI initially passes (3.19 s). After resolving the previously unbuilt
+runtime dependencies, real Draft GUI/runtime passes 3/3 (13.58 s), GUI 10.64 s:
+actual picks/markers, conversion guard, native-to-Draft Line creation, working-plane
+behavior, stale/unsupported/unavailable inputs, Part compatibility and save/reopen.
+Adjacent native snap/element/link/placed-classification and solid-display/feedback
+GUI/runtime passes 8/8 (59.13 s), including native snap 3.16 s, solid GUI 27.00 s
+and feedback GUI 23.04 s. Its LastTest.log retains that final run; syntax and
+whitespace pass. No snap/geometry code changed after the successful Draft GUI run.
+Core tests cover stored vertices, finite projections, arc length, immutable
+proof/revision state, path placement, precision and snapshot ownership. There are
+86 migration tests with GUI/Draft enabled; only affected subsets were run.
+See [Draft snapping contract](draft-native-snapping.md). Stage 4 is still active.
 
 ## Milestone 82: live input instances and exact decimal corners
 

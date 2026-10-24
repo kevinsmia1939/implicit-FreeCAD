@@ -43,6 +43,12 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+[Draft snapping](draft-native-snapping.md) now consumes stored native vertex and
+finite-edge candidates through the core, without Part conversion or display-mesh
+vertices. Real viewport snapping and Draft Line creation/save/reopen are tested.
+Working-plane alignment safely skips non-Part geometry. Native-face/intersection
+snapping, edit-surviving references and broader consumers remain required.
+
 [Input instances](native-input-instances.md) now qualify same-document whole
 links, nested aliases and translated box containers in the native pipeline.
 Recipe link-scope migration, effective-matrix fingerprints, container movement,
