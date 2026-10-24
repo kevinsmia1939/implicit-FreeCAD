@@ -83,6 +83,55 @@ than reidentify approximate coordinates. The incidence flag qualifies this
 root/curve relation only. No planar end-cap region or cylindrical trim edge is
 constructed yet, and topology/solid validation remain false.
 
+## Analytic boundary-circle edges
+
+`BuildBoundaryRings` consumes that same native boundary result and constructs
+analytic `Geom_Circle` OCCT edges for both height circles. Adjacent arcs reuse
+the canonical root vertices and retain their brackets/tolerances. Root-free
+circles use two semicircle edges with two shared synthetic vertices, avoiding
+duplicate endpoint parameter ambiguity on a single closed edge.
+
+Each arc records the field sign strictly between root brackets. A periodic
+circle's root count must be even, consecutive signs must alternate, and an
+uncertain sign sample rejects the whole edge batch. Root-free rings require
+one consistent sign. Endpoint neighborhoods retain the original numerical
+uncertainty; this is not an exact material classification inside those brackets.
+Bottom edges are reversed for the outward cap orientation; top edges are forward.
+Root IDs refer to ascending geometric parameters independently of edge orientation.
+
+```python
+rings = native.build_gyroid_cylinder_rings(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0),
+    .5, (3, 3 + 2 * math.pi), (0, .5),
+)
+assert rings["ring_edges_verified"]
+bottom, top = rings["boundary_rings"]
+```
+
+The C++ result owns actual edges and shared vertices. FreeCAD returns copied
+descriptors (ranges, sign, orientation, root IDs, endpoints and tolerance),
+not mutable Part shapes. `ring_edges_verified` qualifies the circle partition,
+incidence and sign-interval checks only. It does not qualify cap regions, attached
+p-curves, cylindrical trim faces, closed shells or Boolean solids. No edges are
+published when any interval or incidence check fails. Existing source geometry,
+records and proof flags remain unchanged.
+Ring coordinate reserves and edge tolerances must also fit the requested
+distance tolerance; a resolved section alone does not establish that ring budget.
+
+Tests additionally run OCCT's conventional edge validator, check exact circle
+curve types, shared root/adjacent-arc vertex identity, full angular coverage,+dense independent gyroid sign samples, root-free positive/negative circles,
+rigid placement and budget failure. Native cap-region construction must still
+respect the stricter ring precision guard, including translated-coordinate cases,
+and
+connect these circle arcs to planar implicit-section curves and qualify the
+retained regions before shell/solid assembly.
+Circle signs alone do not classify the disk interior: cap construction must also
+find and qualify interior closed implicit contours, including disconnected
+regions and holes. The next disk-section stage must attach circle crossings by
+their retained root identities/brackets and prove cut-cell coverage, rather than
+weld independently traced endpoints. A source family with an explicit cylindrical
+restriction is also required before treating a field face as cylinder-clipped.
+
 These curves are tolerance-bearing polylines on a mathematical cylindrical
 patch. Periodic graph seam joins are supported, but these are not native trim
 edges, cap regions or gyroid/cylinder Boolean solids. No GUI Boolean accepts

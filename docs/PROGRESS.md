@@ -4,9 +4,22 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `07509887f9` on
-`feature/native-implicit`, OCCT `d6bab8fc84` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `b76e78c4be` on
+`feature/native-implicit`, OCCT `a63f266983` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 90: native analytic boundary-circle edges
+
+BuildBoundaryRings creates actual OCCT circle edges sharing the side trace's
+cap-root vertices, with bottom/top orientation and field-sign interval checks.
+Root-free rings use two shared-vertex semicircles. Failed batches publish no
+edges. FreeCAD exposes copied descriptors with a separate ring qualification
+flag; cap regions, cylindrical trim faces and Boolean solids remain open.
+Final focused kernel passes 9/9 (1.265 s) and CLI/runtime 3/3 (2.65 s), including
+strict rejection when ring precision or edge tolerance exceeds the requested
+budget. A first full run was intentionally stopped for that guard before rebuild.
+Final full kernel passes 130/130 (348.92 s); syntax/whitespace pass.
+See [native cylinder sections](native-cylinder-sections.md).
 
 ## Milestone 89: shared cylinder end-cap root anchors
 

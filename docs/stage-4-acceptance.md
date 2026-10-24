@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 90 constructs analytic circular boundary edges sharing cylinder cap
+root vertices, with orientation and sign-interval checks. Planar cap-region
+closure, attached p-curves, cylindrical trim faces and Boolean solids remain
+open; ring-edge qualification does not complete those gates.
+
 Milestone 89 retains canonical cylinder end-cap root vertices and exact curve
 endpoint IDs, with a separate incidence check and no anchors after failure.
 Native cap regions, cylindrical trim topology and curved Boolean solids remain

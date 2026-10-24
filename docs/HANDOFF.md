@@ -22,6 +22,46 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 90: analytic cylinder boundary-circle edges
+
+Native heads: FreeCAD b76e78c4be; OCCT a63f266983.
+
+OCCT BuildBoundaryRings now constructs actual Geom_Circle edges partitioning
+both height circles. It consumes one retained boundary result and reuses its
+canonical root vertices; root-free circles use two semicircles with shared
+synthetic vertices. Bottom edges have outward reversed cap orientation and top
+edges are forward. Field signs are sampled strictly between root brackets;
+even root count, alternating signs and strict sign reserves gate the whole batch.
+Endpoint neighborhoods retain root uncertainty. Any failure publishes no edges.
+
+FreeCAD build_gyroid_cylinder_rings returns copied edge descriptors and a separate
+ring_edges_verified flag, not mutable Part shapes. This qualifies circle
+partition/incidence/sign checks only. Cap regions, attached p-curves, cylindrical
+trim faces and Boolean solids remain open. Existing types/records/proof flags
+are unchanged. See native-cylinder-sections.md.
+
+Built TKBRep/native tests and _ImplicitOCCT/ImplicitScripts with two compile
+jobs and one link job. No packages/system libraries changed. Focused cylinder
+initially passed 8/8 (1.277 s); the added rigid-placement edge check passes 1/1 (3 ms).
+Review found that the ring reserve could exceed the requested tolerance even
+when the smaller section reserve passed. The first full run was intentionally
+terminated at 201.05 s to add a strict precision/edge-tolerance guard. The final
+focused cylinder checks pass 9/9 (1.265 s); CLI/runtime passes 3/3 (2.65 s),
+including a resolved-section/refused-ring precision-limit case at translated
+coordinates. Tests validate actual circle
+edges with BRepCheck_Analyzer, shared endpoint identity, angular coverage,
+dense independent sign samples, both root-free signs, orientation, restored
+reports and no edges after budget failure. Final full native regression passes
+130/130 (348.92 s), retained in the native harness LastTest.log. Migration
+LastTest.log retains the final CLI run. Syntax/whitespace pass. No code changed
+after the final full kernel run.
+Next: planar cap-region contours/closure consuming these ring edges and shared
+vertices, then native cylindrical face trims and shell/solid qualification.
+Cap builders must detect interior closed contours/holes; circle signs alone do
+not classify disk material. Use retained root brackets/IDs for cut-cell attachment,
+and add an explicit cylindrical field-domain restriction before exposing clipped faces.
+Stage 4 remains incomplete.
+
 ## Milestone 89: retained cylinder end-cap root anchors
 
 Native heads: FreeCAD 07509887f9; OCCT d6bab8fc84.

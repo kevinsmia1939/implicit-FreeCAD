@@ -4,7 +4,8 @@ OCCT now has a [curvature-aware cylindrical section query](native-cylinder-secti
 for finite open/full-turn gyroid/cylinder charts. Its FreeCAD binding returns
 bounded transient curves with explicit unresolved/proof states; periodic graph
 seams use shared root identity. Detailed results retain canonical cap-root
-vertices/brackets and curve endpoint IDs. End-cap regions and native curved
+vertices/brackets and curve endpoint IDs. Analytic circle-edge partitions now
+share those vertices, with separate orientation/sign checks. End-cap regions and native curved
 trim/solid construction remain required.
 
 OCCT now provides a [restricted local projection query](native-face-snapping.md)
