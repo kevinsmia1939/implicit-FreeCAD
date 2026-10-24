@@ -4,9 +4,43 @@ Updated 2026-10-24. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `0f618a1b8a` on
-`feature/native-implicit`, OCCT `0a22e0c5cc` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `424e3d75fa` on
+`feature/native-implicit`, OCCT `a3f13c69ea` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 82: live input instances and exact decimal corners
+
+Same-document whole App::Link inputs, nested aliases and translated box containers
+now enter native creation/recompute/task paths through effective matrix resolution.
+Gyroid instances must remain effectively identity placed; general transforms,
+scaled/array/subelement inputs, cross-document edits and curved operands remain
+open. New global-scope recipe links and legacy dynamic-link migration remove
+container scope warnings. Instance fingerprints retain target identity and poses;
+direct-root fingerprints retain their previous format. Shallow shape wrappers
+preserve source B-Reps and location precision. Container placement/group changes
+touch dependent recipes; normal worker guards reject stale poses. Shared primitive
+editing resolves targets and invalidates aliases/peers before staged jobs.
+
+OCCT's native boundary codec now preserves binary64 vertex coordinates through a
+private max_digits10 ShapeSet. Its previous 15-digit output lost decimal corner
+identities, causing valid translated boundaries to fail private clone validation
+inside solid construction. Generic B-Rep output, record format, exact graph
+validation and 0.1 mm checks are unchanged. Errors now identify failed invariants.
+TKTopAlgo and native-face tests rebuilt; only FreeCAD ImplicitScripts rebuilt.
+No ABI/header, dependency or system-library changes.
+
+Full kernel 119/119 passes (345.52 s). Headless parameter/mixed/solid-codec/live
+compatibility passes 5/5 (52.47 s). Initial instance CLI/runtime passes 2/2 (9.92 s)
+and GUI/runtime passes 3/3 (34.56 s). Subsequent GUI instance, feedback, creation,
+task-source and parameter checks all pass (32.67/25.61/19.85/74.35/35.42 s).
+The combined run's CLI negative fixture needed a saved external document before
+FreeCAD would permit constructing the link; both documents are now saved first.
+Final instance CLI/GUI/runtime checks pass 4/4 (43.03 s), CLI 10.16 s and GUI
+30.62 s, including clean same-math retargeting rejection before publication.
+Syntax/whitespace pass. Separate native/migration LastTest.log files retain the
+full kernel and final instance runs, respectively.
+The harness registers 84 tests; only relevant subsets were run. See
+[input instances](native-input-instances.md). Wider Stage 2–4 gates remain open.
 
 ## Milestone 81: live native build feedback
 

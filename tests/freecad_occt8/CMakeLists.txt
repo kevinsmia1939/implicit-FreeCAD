@@ -13,6 +13,12 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_operand_instances
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/operand_instances_smoke.py")
+set_tests_properties(implicit_occt8_operand_instances PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit operand instances smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 240)
 add_test(NAME implicit_occt8_boundary_jobs
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/boundary_jobs_smoke.py")
 set_tests_properties(implicit_occt8_boundary_jobs PROPERTIES
@@ -200,6 +206,15 @@ if(IMPLICIT_MIGRATION_GUI_TESTS)
         PASS_REGULAR_EXPRESSION "native implicit async checked display GUI smoke test passed"
         FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
         FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
+    add_test(NAME implicit_occt8_gui_operand_instances
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/instances-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/instances-system.cfg"
+            "${_scripts}/operand_instances_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_operand_instances PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit operand instances GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 300)
     add_test(NAME implicit_occt8_gui_build_feedback
         COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
             --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/feedback-user.cfg"

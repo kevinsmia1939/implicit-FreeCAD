@@ -1,5 +1,12 @@
 # Core integration plan for an nTop-class FreeCAD
 
+[Live input instances](native-input-instances.md) now support same-document whole
+links and translated box containers through guarded source/solid jobs and shared
+primitive editors. Effective field placement remains identity. A local native
+boundary writer policy preserves exact binary64 vertices without changing generic
+OCCT persistence or weakening topology validation. Broader mixed operands and
+Stage 4 consumer/placement gates remain open.
+
 Mixed sources and native solids now expose [live tree/property build feedback](native-build-feedback.md).
 Transient dynamic values and icon notifications avoid journaling status writes
 into unrelated transactions. Whole-object selection survives refresh, while

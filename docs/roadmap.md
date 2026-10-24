@@ -13,6 +13,13 @@ sources/native solids. Whole-object selection survives rebuilds; old subelement
 references are still discarded. This presentation layer does not broaden kernel
 operand support or certify display meshes.
 
+[Live input instances](native-input-instances.md) now cover same-document whole
+links, nested aliases and translated box/container inputs, including staged
+creation, background movement and shared-target edits. Effective field placement
+must remain identity; scale, curved operands and broader transforms remain open.
+Native boundary persistence now retains exact binary64 vertex coordinates so
+decimal translated corners survive private cloning and native-solid construction.
+
 1. Explicit [clipped-boundary coverage for regularized corners](native-corner-coverage.md)
    now checks both directed distance bounds against the restricted field face
    and retained planar caps. The [opt-in checked display](native-checked-display.md)

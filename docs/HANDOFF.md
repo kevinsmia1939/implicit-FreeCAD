@@ -22,6 +22,57 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 82: live input instances and exact corner persistence
+
+Native heads: FreeCAD 424e3d75fa; OCCT a3f13c69ea.
+
+ImplicitOperands resolves same-document whole links/nested aliases with the
+effective FreeCAD instance matrix. Gyroids must remain effectively identity
+placed; linked/container boxes currently require pure translations. Template
+parent containers are excluded from instance paths, while operand parent groups
+are composed. Native root box qualification and the 0.1 mm policy are unchanged.
+Field/Box now use global-scope links; legacy dynamic local links migrate with
+values/expressions retained. Instance fingerprints add resolved targets/matrices
+with signed-zero normalization; legacy direct-root fingerprints remain compatible.
+
+Box snapshots use Part.Shape(shape), a shallow mutable wrapper, then replace its
+location. Document Shape properties are immutable; do not set their Placement or
+call the flattening Shape.copy(). The container observer touches affected sources
+on parent Placement/Group edits without writing geometry/status properties or
+adding dependency cycles. Shared source editors reach primitive targets and
+invalidate all same-document aliases/peers; alias wrappers are recomputed before
+task-owned boundary jobs. Creation, ordinary recompute and task guards use the
+same resolved recipe. Curved operands, arbitrary transforms/arrays/subelements
+and cross-document input editing remain outside this increment.
+
+The instance solid test exposed a kernel persistence bug: TopTools_ShapeSet's
+15-digit per-shape output rounded exact decimal corner vertices, breaking native
+record membership validation during private cloning. BRepClass3d_ImplicitBoxIO
+now uses a private ShapeSet subclass at max_digits10 for per-shape geometry.
+The standard payload format, generic OCCT persistence and exact validation are
+unchanged. Failed record errors identify their invariant. No extension ABI or
+general OCCT headers changed; TKTopAlgo and the native-face tests were rebuilt.
+Only ImplicitScripts was rebuilt for FreeCAD. No packages/system libraries changed.
+
+Full kernel 119/119 passes (345.52 s), including both-operation exact vertex
+round-trip and solid construction. Headless source-parameter/mixed/solid codec/
+live compatibility passes 5/5 (52.47 s). Initial instance CLI/runtime passes 2/2
+(9.92 s); GUI/runtime passes 3/3 (34.56 s), GUI 31.78 s. Broader GUI checks also
+pass: instances 32.67 s, feedback 25.61 s, creation defaults 19.85 s, staged task
+sources 74.35 s and source parameters 35.42 s. That combined run had one fixture
+failure: the external-document negative test attempted to link an unsaved target;
+the fixture now saves both documents before testing rejection. Final instance
+CLI/GUI/runtime checks pass 4/4 (43.03 s), CLI 10.16 s and GUI 30.62 s, including
+legacy scope migration, cross-document rejection and clean same-math link
+retargeting rejection before publication. Syntax/whitespace pass. The separate
+native and migration CTest LastTest.log files retain the full kernel and final
+4-test runs, respectively. The harness registers 84
+tests; affected subsets were run. See native-input-instances.md for the contract.
+
+Next: extend everyday native-solid primitive workflow and remaining placement/
+source families against acceptance gates; implement curved mixed operands,
+snapping/history and representation-aware consumers. Stage 4 remains incomplete.
+
 ## Milestone 81: live tree/property build feedback
 
 Native heads: FreeCAD 0f618a1b8a; OCCT unchanged at 0a22e0c5cc.

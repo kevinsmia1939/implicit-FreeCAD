@@ -43,6 +43,13 @@ or 3 requirements remain missing or merely supported by narrow proxy tests.
 
 ## Current evidence
 
+[Input instances](native-input-instances.md) now qualify same-document whole
+links, nested aliases and translated box containers in the native pipeline.
+Recipe link-scope migration, effective-matrix fingerprints, container movement,
+shared-target task edits and unchanged restore are covered. Native corner
+coordinates now round-trip through boundary records without 15-digit rounding.
+This does not complete general placement, curved operand or consumer gates.
+
 [Build feedback](native-build-feedback.md) now presents live source/solid state
 through tree badges and a transient read-only View property. It preserves object
 selection during refresh and avoids status writes inside unrelated transactions.

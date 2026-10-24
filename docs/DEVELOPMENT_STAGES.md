@@ -1,5 +1,12 @@
 # Development stages and completion gates
 
+[Live input instance support](native-input-instances.md) now includes nested
+whole-object aliases and translated box containers, with identity field-instance
+placement. Native source/solid jobs and shared primitive editors use effective
+inputs. A native codec fix retains exact decimal corner coordinates through
+boundary persistence. General transforms, curved operands and the remaining
+Stage 2–4 gates are still open.
+
 [Tree/property build feedback](native-build-feedback.md) now exposes pending and
 failed jobs, stale inputs and unverified restored geometry for mixed sources and
 native solids. Whole-object selection stays available during rebuilds; stale
