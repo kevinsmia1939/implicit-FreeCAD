@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## After milestone 97: bounded material point classification
+
+Native heads: FreeCAD f67d17d16a; OCCT 7984d918cb.
+
+ClassifyMaterial queries an unchanged owned ShellGeometry reference. It uses
+finite-cylinder projection, the selected field sign, Lipschitz lower distance
+bounds, axial root upper bounds and exact retained-cap witnesses. A local Hessian
+cone sharpens the root bound when the global derivative lower bound is too
+conservative. The first test found the analytic root UNKNOWN at a 1e-7 request;
+the local cone resolves it without changing the requested tolerance or guessing
+zeros. Field residuals are never compared directly to a model-length tolerance.
+
+Results are mathematical IN/OUT/ON/UNKNOWN plus boundary-distance bounds and a
+separate BoundaryAllowanceSeparated flag. ON requires an upper distance bound
+within the query band; IN/OUT require a lower bound outside it and a qualified
+side. Overlapping bands remain UNKNOWN. The separation flag only reports
+clearance beyond the retained boundary allowance; no generic OCCT solid
+classifier is invoked. Source records remain unchanged. FreeCAD
+classify_cylinder_material queries geometry_handle without rebuilding geometry.
+No solid, volume certificate, persistence or GUI workflow is introduced.
+
+Focused native cylinder/cap checks pass 36/36 (28.205 s), including both material
+signs, analytic roots, selected/unselected caps and sides, near-root points,
+explicit ambiguity, bad inputs and translated/reversed frames. Fork runtime/
+cylinder/solid-I/O checks pass 9/9 (17.54 s). The full 157-case suite was not rerun
+for this added query; milestone 97's full 156/156 is separate evidence.
+
+Next: actual solid construction and bounded volume/material qualification for
+the supported path, followed by general partial/multi-sheet correspondence,
+broader dispatch/history, combined persistence and live GUI workflows. Stage 4
+remains active. See the material-query section in native-cylinder-geometry.md.
+
 ## Milestone 97: bidirectional native cylinder boundary geometry
 
 Native heads: FreeCAD 0f74bc5b96; OCCT 7b393c5ba2.

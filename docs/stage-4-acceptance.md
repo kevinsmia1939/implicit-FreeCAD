@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Cylinder material point queries now return mathematical membership with bounded
+spatial tolerance and separate approximation-clearance reporting. They reuse
+owned qualified geometry and preserve UNKNOWN results. This is not native solid
+construction or generic OCCT classifier integration, and does not close Stage 3/4.
+
 Milestone 97 qualifies both directions of native/mathematical boundary distance
 for full-disk cylinder shells through whole-chart coverage and bounded witnesses.
 This remains a sufficient restricted path. It does not construct a solid or

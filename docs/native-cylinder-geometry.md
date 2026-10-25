@@ -82,3 +82,35 @@ cancellation. CLI tests cover owned reports, unchanged source records, false
 solid flags and wrong owner rejection. Accurate volume/material queries, native
 solid promotion, partial/multi-sheet correspondence, combined persistence and
 live GUI workflows remain required by the overall roadmap.
+
+## Material point queries
+
+```python
+point = native.classify_cylinder_material(
+    geometry["geometry_handle"], (0, 0, -.5), point_tolerance=1.e-7,
+)
+assert point["mathematical_state"] in ("IN", "OUT", "ON", "UNKNOWN")
+assert point["distance_lower_bound"] <= point["distance_upper_bound"]
+```
+
+The C++ `ClassifyMaterial` entry point accepts an unchanged qualified
+ShellGeometry reference. FreeCAD requires its immutable geometry owner. Queries
+reuse that reference; they do not rebuild the geometry. The authoritative region
+is the selected field half-space inside the finite cylinder, not an ordinary
+OCCT solid classifier's result. Source fields and graph snapshots are unchanged.
+
+The query projects to the closed finite cylinder before evaluating the field.
+Cylinder clearance and a field Lipschitz cone provide lower distance bounds.
+The selected full end cap and the unique axial field root provide upper-bound
+witnesses. Strictly selected side witnesses can sharpen the upper bound. A local
+Hessian cone over the globally enclosed query-to-root segment can sharpen an
+overly conservative axial derivative bound. Scalar and coordinate reserves are
+retained. `field_value_at_domain_projection` is diagnostic scalar F, not distance.
+
+ON requires the upper bound to fit the model-length query tolerance. IN/OUT
+require the lower bound to exceed it and a definite mathematical side. Otherwise
+the state remains UNKNOWN. Invalid tolerance/points and unqualified references
+reject. `boundary_allowance_separated` means the lower bound exceeds the geometry
+approximation allowance plus the query tolerance. It is separate from the
+mathematical classification and does not authorize an unsupported consumer.
+No native solid or volume claim follows from this point query.

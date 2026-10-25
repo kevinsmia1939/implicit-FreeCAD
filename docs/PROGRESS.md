@@ -7,6 +7,18 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## After milestone 97: bounded material classification
+
+ClassifyMaterial reuses qualified geometry owners and returns mathematical
+IN/OUT/ON/UNKNOWN with model-length boundary-distance bounds. Cylinder/field
+cones, retained cap witnesses and global/local axial cones separate scalar F
+from distance tolerance. Clearance beyond the approximation allowance is a
+separate flag. Both signs, analytic roots, cap/side exclusions, explicit ambiguity
+and translated/reversed frames are tested. Focused checks pass 36/36 (28.205 s),
+and runtime/cylinder/solid-I/O checks pass 9/9 (17.54 s). Full 157-case regression
+was not rerun for the added query. No solid/volume or generic consumer claim is
+introduced. General partial/multi-sheet and Stage 4 requirements remain open.
+
 ## Milestone 97: bidirectional cylinder boundary geometry
 
 CheckShellGeometry covers the entire cylindrical chart with bounded field/native

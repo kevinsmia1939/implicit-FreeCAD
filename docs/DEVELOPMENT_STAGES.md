@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+Qualified cylinder geometry owners now support mathematical material queries
+with spatial distance bounds and explicit UNKNOWN results. The field scalar is
+not treated as signed distance. Native solid construction, volume, generic
+consumer dispatch, partial/multi-sheet and full GUI/persistence gates remain open.
+
 [Bidirectional cylinder boundary geometry](native-cylinder-geometry.md) now
 covers the full chart for qualified full-disk shells, combining field cones,
 native trim distances and witnesses with the stored field-wire allowance.
