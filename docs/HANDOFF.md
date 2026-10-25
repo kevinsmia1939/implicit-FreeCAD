@@ -35,8 +35,16 @@ Built TKBRep and the native harness with two jobs. Focused cylinder/cap tests
 pass 21/21 (1.377 s), including UV reconstruction, source-cell seam incidence,
 closed-loop winding, cap handle identity and failed-budget cleanup. Full native
 regression has not been rerun for this increment. FreeCAD source is unchanged.
-Next: split shared cap ring arcs at the chosen chart seam, construct explicit
-cylinder seam edges with paired p-curves, assemble retained side regions, and
+`BuildChartSkeleton` now also splits wraparound ring arcs at the selected seam,
+retains one shared seam-end vertex per cap and constructs analytic axial seam
+edges between the logical crossing vertices. Each axial edge carries paired
+p-curves on the retained cylindrical surface; all ring arcs carry matching
+cylinder p-curves. Root-free rings keep their two-half-circle topology. Existing
+BuildBoundaryRings/BuildCapSkeleton behavior is unchanged. Focused cylinder/cap
+checks now pass 22/22, including parameter ranges, circle coverage, endpoint
+identity, seam edge chaining and paired-p-curve recognition. Full regression has
+not been rerun. This snapshot has not yet been joined to planar cap regions.
+Next: assemble retained side regions, share the seamed snapshot with cap regions, and
 validate those faces before implicit-face/shell/solid integration. An exploratory
 face made only from periodic circle wires classified sample points but failed
 BRepCheck and gave zero area; do not treat that shortcut as valid side topology.

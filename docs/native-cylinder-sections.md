@@ -43,7 +43,15 @@ unwraps angles using the incident cell branch at a shared seam node. Cap-root
 vertices are shared with its owned BoundaryResult; seam roots have native vertex
 handles, while ordinary interior samples remain points. Unresolved results clear
 all graph arrays. `Verified` describes tracing provenance, not cylinder-side face
-validity. Side p-curves, explicit seam topology and solid assembly remain pending.
+validity. Side-region assembly and solid qualification remain pending.
+
+`BuildChartSkeleton` retains one tracing snapshot and its circle partitions,
+splitting wrap arcs at the selected angular seam. Synthetic seam-end vertices
+are shared between parameter branches; circle root handles remain those of the
+side graph. Its cylindrical surface carries circle p-curves and analytic axial
+seam edges with paired angular p-curves. Axial segments share the logical seam
+crossing vertices. This is boundary infrastructure, not assembled side faces or
+solids; planar cap-region sharing and side material cycles are still required.
 
 `BRep_ImplicitCylinderSection::Trace` adds a native OCCT query for a finite open
 cylindrical patch intersecting a childless exact gyroid face. A separate periodic
