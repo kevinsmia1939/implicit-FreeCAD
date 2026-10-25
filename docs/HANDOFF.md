@@ -22,7 +22,46 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
-## After milestone 96: explicit trim tolerance and shell audit
+## Milestone 97: bidirectional native cylinder boundary geometry
+
+Native heads: FreeCAD 0f74bc5b96; OCCT 7b393c5ba2.
+
+CheckShellGeometry now covers the entire finite cylindrical chart, using physical
+u=R*angle and v=height. Field Lipschitz cones qualify mathematical in/out cells;
+native trim-segment clearance plus stored classification reserves qualify native
+in/out cells. Qualified native centers/trim points and strictly selected field
+centers/axial root brackets give witnesses for both directed distance bounds.
+Each potentially nonempty cell must have both bounds below the request or split.
+Depth/cell/segment budgets, root precision guards and cancellation bound work.
+The final boundary bound also includes the retained field-wire allowance.
+
+Exact field-sheet/full-cap correspondence is inherited from the full-disk
+reference. This is a boundary-set proof under analytic bounds and floating
+reserves, not interval arithmetic or general ordinary-OCCT implicit validation.
+It does not construct a solid or prove volume/general partial-sheet support.
+FreeCAD check_cylinder_shell_geometry/inspect_cylinder_shell_geometry expose
+owned references, directed bounds and counters. Only this separate check can
+set shell_geometry_validated true; solid_validated stays false. See
+native-cylinder-geometry.md for the covering/witness argument and scope.
+
+Focused native checks pass 35/35 (24.846 s), including both signs, 0.1/0.05
+requests, analytic gyroid root comparisons with native face distance, reversed
+axes, translation, partial refusal, depth/cell/segment budgets and late
+cancellation. Fork runtime/cylinder geometry/tolerance/shell/faces/sides/caps/
+sections/solid-I/O pass 9/9 (18.00 s). Full native regression passes 156/156
+(CTest 331.56 s). Python syntax and repository whitespace checks pass. Built
+TKTopAlgo, the existing native harness and _ImplicitOCCT/ImplicitScripts with
+the existing two-job/one-link policy. No libraries changed during tests and no
+functional changes followed the full run. Native/migration LastTest.log files
+retain the evidence.
+
+Next: actual solid construction and material classification/volume qualification
+for the supported path. Partial/multi-sheet correspondence, broader BRep
+dispatch/history, combined native graph persistence and live GUI/source/property
+workflows remain required by the full Stage 4 goal. Do not infer broad support
+or Stage 4 completion from this sufficient full-disk geometry path.
+
+## Earlier prerequisite after milestone 96: explicit trim tolerance and audit
 
 Native heads: FreeCAD 13942e5430; OCCT 30d4313afc.
 

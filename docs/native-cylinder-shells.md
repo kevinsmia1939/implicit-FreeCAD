@@ -1,5 +1,9 @@
 # Native cylinder material shells
 
+The later [boundary geometry check](native-cylinder-geometry.md) separately
+qualifies both directions of boundary correspondence for this supported path.
+The shell builder and tolerance audit alone retain false geometry/solid flags.
+
 `BRepClass3d_ImplicitCylinder::BuildNativeShell` constructs an actual closed
 `TopoDS_Shell` for the qualified full-disk axial-sheet path. It reuses the
 retained planar cap, cylindrical side and native implicit face with shared edge

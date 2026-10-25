@@ -7,7 +7,20 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
-## After milestone 96: trim tolerance coherence
+## Milestone 97: bidirectional cylinder boundary geometry
+
+CheckShellGeometry covers the entire cylindrical chart with bounded field/native
+membership cones and trim/root witnesses. It proves both directed boundary-set
+distance bounds for qualified full-disk material shells, including the retained
+3D field-wire allowance. Explicit geometry budgets and cancellation refuse
+unproved results. FreeCAD exposes owned geometry reports, separate from topology
+and tolerance audits; solid validation stays false. Focused kernel checks pass
+35/35 (24.846 s), and runtime/cylinder/solid-I/O checks pass 9/9 (18.00 s).
+Full native regression passes 156/156 (CTest 331.56 s); syntax and whitespace
+checks pass. Solid/material/volume, partial/multi-sheet support,
+persistence and GUI workflows remain open. See native-cylinder-geometry.md.
+
+## Earlier prerequisite after milestone 96: trim tolerance coherence
 
 Generated implicit cylinder faces now declare the requested trim tolerance after
 the sum of contour and cylinder/chord bounds fits it. Source field tolerances and

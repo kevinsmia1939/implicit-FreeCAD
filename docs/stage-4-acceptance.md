@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 97 qualifies both directions of native/mathematical boundary distance
+for full-disk cylinder shells through whole-chart coverage and bounded witnesses.
+This remains a sufficient restricted path. It does not construct a solid or
+discharge material/volume, partial/multi-sheet, persistence or live GUI gates.
+
 Cylinder trim tolerance coherence is now audited independently of topology:
 combined contour/chord bounds and face/edge/vertex declarations must fit the
 request. Generated field faces use that trim policy while retaining the primitive

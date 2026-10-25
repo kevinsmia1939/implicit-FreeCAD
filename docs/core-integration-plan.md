@@ -1,5 +1,12 @@
 # Core integration plan for an nTop-class FreeCAD
 
+The cylinder path now has a whole-chart bidirectional boundary geometry check,
+with analytic field/native membership bounds, trim/root witnesses and retained
+3D edge allowance. Qualified full-disk shells can report geometry validation
+separately from topology/tolerance; solid validation remains false. Native solid
+and material/volume work is next, with general partial/multi-sheet dispatch,
+persistence and live GUI integration still required. See native-cylinder-geometry.md.
+
 The cylinder path now separates primitive numerical tolerance from the generated
 trim-face policy and checks combined contour/chord allowances plus declared
 shell tolerances. The next global geometry gate must still prove both directions

@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Bidirectional cylinder boundary geometry](native-cylinder-geometry.md) now
+covers the full chart for qualified full-disk shells, combining field cones,
+native trim distances and witnesses with the stored field-wire allowance.
+Actual solid/material/volume qualification, partial/multi-sheet correspondence,
+combined persistence and live GUI workflows remain open.
+
 Cylinder shell tolerance audits now check combined contour/chord bounds and
 stored tolerances. Generated implicit faces have an explicit trim policy without
 mutating the source face's tolerance. This verifies declarations and retained
