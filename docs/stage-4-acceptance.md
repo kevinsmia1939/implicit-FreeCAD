@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Cylinder field-boundary incidence now checks every actual side/cap edge use and
+constructs opposite closed wires by shared native vertex identity. This does not
+qualify interior surface components or wire assignments; implicit-face attachment
+and shell/solid gates remain open, including when the boundary wire list is empty.
+
 Milestone 94 constructs retained conventional cylinder-side material faces with
 bounded field-contour edges and shared cap/seam topology. Both signs and open/
 winding/full/empty cases are tested; FreeCAD exposes owned query snapshots and

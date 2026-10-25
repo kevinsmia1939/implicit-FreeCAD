@@ -7,6 +7,18 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## After milestone 94: cylinder field-boundary incidence
+
+BuildTrimBoundary audits field-edge single incidence and opposite paired uses
+of every other conventional side/cap edge, then constructs oppositely oriented
+closed field-boundary wires by native vertex identity. Open/winding/full/empty
+and cap-only interior-loop fixtures exercise both material signs. It does not
+assign wires to implicit surface components or construct implicit faces/solids.
+The next gate is an interior component reference and wire assignment; existing
+box-shell behavior requires that qualification before face attachment.
+Focused native checks pass 28/28 (6.198 s); adjacent runtime/cylinder checks pass
+4/4 (2.38 s). Full 149-case regression has not been rerun for the new API.
+
 ## Milestone 94: native cylinder-side material regions
 
 BuildSides now assembles actual cylindrical faces from seam-split bounded field

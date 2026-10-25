@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+Cylinder field-boundary wires now close by shared native vertex identity after
+an audit of all actual side/cap face-edge uses. Interior surface components and
+wire-to-component assignments remain unqualified; implicit faces and shells must
+not be inferred from boundary incidence alone.
+
 [Native cylinder-side regions](native-cylinder-sides.md) now use bounded field
 edges, shared cap circles and explicit periodic seams to construct actual
 cylindrical material faces. The owned FreeCAD query API returns detached face

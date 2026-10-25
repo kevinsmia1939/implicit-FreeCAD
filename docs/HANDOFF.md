@@ -22,6 +22,40 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## After milestone 94: shared field-boundary wires
+
+OCCT BuildTrimBoundary now audits all conventional side/cap edge occurrences.
+Each field edge must have exactly one use with its stored orientation; every
+other conventional edge must have exactly two opposite uses. Unused/duplicate
+field edges and unexpected orientations reject. Field edges are then reversed
+and assembled into directed closed wires by actual vertex identity, including
+chart-seam crossings and cap-only interior loops. EdgeWires maps side edges,
+bottom field edges and top field edges to snapshot-local wire indices.
+Failure clears wires/maps; source side/cap geometry remains owned separately.
+Cancellation propagates rather than returning a partial graph.
+
+Focused native cylinder/cap checks pass 28/28 (6.198 s), including both material
+signs, open/winding/full/empty and cap-only interior-loop cases, native edge
+identity, opposite incidence, failed-budget cleanup and late cancellation with
+unchanged source records. Adjacent fork runtime/cylinder checks pass 4/4 (2.38 s).
+Whitespace checks pass. Built only TKTopAlgo and the native harness with two
+jobs; no runtime libraries changed during tests. The full 149-case suite has not
+been rerun for this added API; milestone 94's prior full 148/148 is separate.
+
+This is incidence qualification, not implicit-face construction or surface
+component assignment. The existing box-shell builder requires qualified component
+references before attaching wires; the cylinder path must meet the same contract.
+Do not put every wire on one cylinder-restricted implicit face merely because the
+boundary graph closes. Hidden/disconnected sheets and inner loops need component
+and material-region qualification before shell/solid assembly.
+
+Next: establish an interior field-surface/component reference and assign these
+wires to it, then construct cylinder-restricted implicit faces with matching
+orientation and qualify the assembled shell/solid. A directional-monotonicity
+proof can support regular graph-like sheets, but must explicitly refuse
+unproved cases and cannot replace the general curved-operand Stage 4 gates.
+FreeCAD source/API is unchanged by this boundary-wire increment.
+
 ## Milestone 94: retained native cylinder-side regions
 
 Native heads: FreeCAD f02a70b243; OCCT e4d7fef293.

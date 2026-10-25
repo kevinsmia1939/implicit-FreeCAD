@@ -65,3 +65,22 @@ translation, unchanged source records, failed budgets and late cancellation.
 FreeCAD CLI checks cover typed previews, detached mutation, owned inspection,
 source records and explicit refusal of non-owner handles. No closed cylinder
 Boolean, STEP export or seamless FreeCAD workflow follows from these tests.
+
+## Field-boundary incidence prerequisite
+
+The C++ `BuildTrimBoundary` entry point retains `Source` (the side/cap snapshot),
+`Wires` and `EdgeWires`. It first audits actual face-edge occurrences: each field
+edge is used exactly once with its expected orientation, while every other edge
+has one forward and one reversed use. It rejects duplicate/unused field edges.
+Reversing the field-edge uses then gives the incidence required on implicit
+faces. Directed one-in/one-out vertex checks assemble closed wires using native
+vertex identity; no proximity welding or extra sample vertices are introduced.
+`EdgeWires` follows side-field edges, bottom-field edges, then top-field edges.
+Wire indices are snapshot-local and do not provide persistent topology names.
+
+`IncidenceVerified` proves this boundary graph and ordinary wire validity. It
+does not assign wires to field-surface components, prove interior sheet topology,
+construct implicit faces, or qualify a shell/solid. Even an empty wire list does
+not by itself establish an empty implicit surface. Failed wire batches clear
+both output arrays; independently qualified source regions can remain. Late
+cancellation propagates. This prerequisite is currently C++ only.
