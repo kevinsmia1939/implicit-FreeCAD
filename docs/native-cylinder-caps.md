@@ -1,5 +1,9 @@
 # Native planar cylinder cap regions
 
+The later [cylinder-side builder](native-cylinder-sides.md) reuses a shared
+seamed cap snapshot and constructs retained cylindrical material faces. Its
+implicit-face attachment and closed-solid integration remain open.
+
 `BRepClass3d_ImplicitCylinder::BuildCaps` constructs actual planar OCCT faces
 for the retained field material on both cylinder end disks. The default selects
 F<=0; `negative=False` selects F>=0. This is the cap portion of a future mixed

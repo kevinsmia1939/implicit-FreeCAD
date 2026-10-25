@@ -22,7 +22,42 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
-## In progress after milestone 93: periodic side-chart provenance
+## Milestone 94: retained native cylinder-side regions
+
+Native heads: FreeCAD f02a70b243; OCCT e4d7fef293.
+
+BuildSideBoundary splits regular field contours at logical seam nodes, shares
+cap/seam vertices and constructs degree-1 3D/UV edges with a curvature-based
+cylinder-deviation allowance. Orientation guards reject uncertain contours.
+BuildSides combines those edges with shared cap circles and paired-use axial
+seams, distinguishes UV seam occurrences by identity/branch, checks directed
+cycles, signed chart areas and bounded nesting, and validates actual cylindrical
+faces with BRepCheck_Analyzer. Both signs, open/winding contours and full/empty
+material cases are tested. These are retained conventional cylinder faces, not
+mesh triangles or completed implicit solids.
+
+FreeCAD build_cylinder_sides/inspect_cylinder_sides own the combined source graph
+and expose detached Part.Face previews plus separate cap/side validity, contour,
+surface-deviation and adaptive-area reports. Source fields/settings stay owned;
+preview mutation does not change the graph. No document feature/GUI workflow
+or native graph persistence is introduced. See native-cylinder-sides.md.
+
+Focused native checks pass 27/27 (6.144 s), including source immutability,
+translation, late cancellation, curve/surface agreement, complementary areas and
+sampled material classification. Four adjacent FreeCAD runtime/cylinder tests
+pass (2.86 s). Full native regression passes 148/148 (317.114 s; CTest 317.17 s).
+A later report-only addition exposes side_contour_bound. After that rebuild,
+runtime/cylinder sides/caps/sections/native-solid-I/O pass 5/5 (12.50 s).
+Python syntax and repository whitespace checks pass. Exploratory
+near-maximum fixtures were refused by cap-skeleton qualification and do not prove
+isolated side-loop/hole acceptance. Tolerances/proof policies remain unchanged.
+
+Next: attach the side/cap field seams to actual cylinder-restricted implicit
+faces, identify material components and qualify shell/solid topology/geometry,
+then native graph persistence and live FreeCAD source/property/GUI workflows.
+General BRep dispatch/history and the full Stage 4 acceptance gates remain open.
+
+## Earlier prerequisites after milestone 93: periodic side-chart provenance
 
 `BRep_ImplicitCylinderSection::TracePeriodicGraph` now retains source-cell arcs,
 logical node IDs, canonical angle/height coordinates, continuous per-curve UV

@@ -1,5 +1,11 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Retained native cylinder-side material regions now pass directed-cycle, area,
+nesting and ordinary OCCT face checks. Shared cap topology and bounded 3D/UV field
+edges remain owned through the FreeCAD query API. Actual implicit-face attachment
+and component/shell/solid qualification precede combined persistence and live
+FreeCAD workflows. See [native cylinder sides](native-cylinder-sides.md).
+
 Periodic chart provenance, wrap-split circle edges and paired-p-curve axial seam
 edges now share one boundary snapshot with actual planar cap regions through
 BuildChartCaps. No independent-root matching or proximity welding is needed.

@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 94 constructs retained conventional cylinder-side material faces with
+bounded field-contour edges and shared cap/seam topology. Both signs and open/
+winding/full/empty cases are tested; FreeCAD exposes owned query snapshots and
+detached face previews. This does not attach actual implicit faces, close or
+validate solids, persist the combined graph or supply live GUI/source workflows.
+
 After milestone 93, a periodic chart snapshot now owns logical seam nodes,
 continuous UV coordinates, wrap-split circles and paired-p-curve seam edges.
 Actual planar cap regions reuse those same circle edges and root vertices.

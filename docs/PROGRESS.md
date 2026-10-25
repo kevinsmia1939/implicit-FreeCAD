@@ -7,6 +7,20 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 94: native cylinder-side material regions
+
+BuildSides now assembles actual cylindrical faces from seam-split bounded field
+edges, shared cap rings and paired-p-curve axial seams. Directed UV occurrences,
+material orientation, signed area, bounded nesting and BRepCheck gate the faces.
+Side contour and cylinder/chord deviation policies stay distinct. FreeCAD owns
+the shared graph through build_cylinder_sides/inspect_cylinder_sides and returns
+detached conventional face previews. No mesh triangles become trim faces.
+Focused native checks pass 27/27; full native regression passes 148/148
+(317.114 s). After the final report rebuild, runtime/cylinder/solid-I/O CLI checks
+pass 5/5 (12.50 s). Implicit-face attachment, shell/solid qualification,
+combined graph persistence and live FreeCAD GUI/source workflows remain open.
+See [native-cylinder-sides.md](native-cylinder-sides.md).
+
 ## After milestone 93: shared periodic chart and cap regions
 
 The side tracer retains cell/node provenance and continuous UV coordinates.

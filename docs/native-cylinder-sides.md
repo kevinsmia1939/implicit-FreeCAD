@@ -1,0 +1,67 @@
+# Native cylindrical material regions
+
+`BRepClass3d_ImplicitCylinder::BuildSides` builds actual OCCT cylindrical faces
+for F<=0, or F>=0 with the positive selection. It reuses a single tracing/cap
+snapshot. These are conventional cylinder surfaces with native trim topology,
+not triangle faces. The field equation remains authoritative. Implicit-face
+attachment, component assembly, closed-solid proof, persistence of the combined
+native graph and live GUI source/property workflows remain required.
+
+```python
+import math
+import ImplicitOCCT as native
+field = native.gyroid(10, .21, (-10, -10, -10), (10, 10, 10))
+result = native.build_cylinder_sides(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0),
+    .5, (3, 3 + 2 * math.pi), (0, .5), distance_tolerance=.1,
+)
+assert result["side_topology_validated"], result["side_reason"]
+assert not result["solid_validated"]
+side_faces = result["sides"]
+cap_faces = result["caps"]
+fresh = native.inspect_cylinder_sides(result["sides_handle"])
+```
+
+The fork runtime is `build-freecad-occt8/bin/FreeCADCmd`. The immutable capsule
+owns the graph, field snapshot and settings; the returned Part.Face objects are
+independent previews. Editing a preview does not modify the owned graph. A fresh
+inspection does not retrace the field or reconstruct material regions. Serialized
+individual face previews do not preserve cross-face sharing; that remains in the
+native owner. This is a query API, not yet a document feature or toolbar workflow.
+
+Field contours are split at logical chart-seam crossings and cap endpoints.
+Their degree-1 B-spline edges retain all intermediate samples as internal poles,
+not selectable topological vertices. A closed winding curve is rotated to a
+logical seam node before splitting. No endpoint proximity welding is used.
+The matching UV curve uses the same knot parameters. The cylinder-vs-chord
+deviation on each segment is bounded by R*(delta_angle)^2/8 plus a coordinate
+reserve. The maximum is reported as `side_surface_deviation_bound`; edge
+tolerances include it and the endpoint tolerances and must remain below the user
+tolerance. `side_contour_bound` separately reports the inherited regular-cell
+field-contour bound. These are engineering floating-point policies, not interval
+certificates or a global implicit-solid geometry proof.
+
+Tangent/gradient/Hessian guards orient field edges for the selected material.
+Cap rings use the opposite incidence from their planar faces. Selected axial
+seam intervals have two uses: forward at the upper angle and reversed at the
+lower angle. The two UV occurrences of each seam vertex are distinct in the
+directed graph while retaining the same native vertex handle. Directed degree
+checks, finite signed chart area with a reserve, bounded cycle nesting and
+BRepCheck_Analyzer gate the retained cylinder faces. Nesting uses the existing
+resource policy, with cancellation checkpoints. A failed side batch returns no
+side faces, though a separately qualified source/cap snapshot can remain.
+
+Supported inputs retain the existing restriction to a childless exact gyroid,
+a full-turn finite cylinder and a conservative enclosure inside the field box.
+The side builder requires both cap disks/regions to qualify. Critical/uncertain
+cells, ambiguous circle attachment, orientation uncertainty and nesting budget
+exhaustion reject rather than guess. Exploratory near-maximum cases were refused
+by the cap-skeleton gate; they do not establish isolated-loop/hole support.
+
+Native tests cover both signs, open and closed winding contours, matching UV/3D
+curves, cylinder deviation, shared endpoint identity, complementary side areas,
+material classification away from the uncertainty tube, full/empty sides,
+translation, unchanged source records, failed budgets and late cancellation.
+FreeCAD CLI checks cover typed previews, detached mutation, owned inspection,
+source records and explicit refusal of non-owner handles. No closed cylinder
+Boolean, STEP export or seamless FreeCAD workflow follows from these tests.

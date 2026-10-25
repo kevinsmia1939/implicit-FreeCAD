@@ -1,5 +1,9 @@
 # Native gyroid / cylindrical patch sections
 
+These queries now feed [retained cylinder-side regions](native-cylinder-sides.md)
+with shared cap/seam topology. That builder does not yet assemble implicit faces
+or closed mixed solids.
+
 ## Explicit cylindrical field-domain restriction
 
 `BRep_TImplicitCylinderPatch` stores a field zero set restricted to the closed

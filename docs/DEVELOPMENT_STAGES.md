@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Native cylinder-side regions](native-cylinder-sides.md) now use bounded field
+edges, shared cap circles and explicit periodic seams to construct actual
+cylindrical material faces. The owned FreeCAD query API returns detached face
+previews. Implicit-face attachment, component/shell/solid qualification and
+persistence/live GUI integration remain required; Stage 4 is still active.
+
 Periodic cylinder tracing now retains source-cell/node identity and continuous
 UV coordinates for the forthcoming native side-face builder. Explicit cylinder
 seam edges and ring p-curves now share their chart snapshot with actual planar
