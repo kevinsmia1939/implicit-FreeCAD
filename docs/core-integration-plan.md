@@ -1,5 +1,10 @@
 # Core integration plan for an nTop-class FreeCAD
 
+End-cap disk contour graphs now use accepted Cartesian cell proofs and retained
+circle-root identities, including interior loops without boundary crossings.
+No proximity welding or mesh-to-face conversion is used. Actual oriented/nested
+cap regions and cylinder/solid assembly remain separate acceptance gates.
+
 Native cylinder-restricted field faces now have an explicit storage subtype,
 query predicate and schema-3 persistence. FreeCAD exposes immutable face handles.
 This is a domain foundation; cap/trim topology and solid/source qualification

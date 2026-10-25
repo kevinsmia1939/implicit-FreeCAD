@@ -156,20 +156,61 @@ Ring coordinate reserves and edge tolerances must also fit the requested
 distance tolerance; a resolved section alone does not establish that ring budget.
 
 Tests additionally run OCCT's conventional edge validator, check exact circle
-curve types, shared root/adjacent-arc vertex identity, full angular coverage,+dense independent gyroid sign samples, root-free positive/negative circles,
+curve types, shared root/adjacent-arc vertex identity, full angular coverage,
+dense independent gyroid sign samples, root-free positive/negative circles,
 rigid placement and budget failure. Native cap-region construction must still
 respect the stricter ring precision guard, including translated-coordinate cases,
-and
 connect these circle arcs to planar implicit-section curves and qualify the
 retained regions before shell/solid assembly.
 Circle signs alone do not classify the disk interior: cap construction must also
 find and qualify interior closed implicit contours, including disconnected
-regions and holes. The next disk-section stage must attach circle crossings by
-their retained root identities/brackets and prove cut-cell coverage, rather than
-weld independently traced endpoints. Assembly must use the explicit cylinder
+regions and holes. Disk-section queries now attach circle crossings by retained
+root brackets and accepted cell identities, without welding independently traced
+endpoints. Assembly must use the explicit cylinder
 restriction and still provide a complete native topology/source family.
 
-These curves are tolerance-bearing polylines on a mathematical cylindrical
+## End-cap disk contour graphs
+
+`BRep_ImplicitPlaneSection::TraceGraph` retains accepted Cartesian cells and
+shared root indices. `TraceEndCapDisks` uses those cell proofs to constrain
+each cap's zero set to a disk. Whole inside/outside cells are handled directly;
+cut cells use unambiguous grid-root membership and shared circle-root brackets.
+A circle-root bracket must occupy one unique cell. Accepted cut cells have zero
+or two crossings, with graph/root incidence checked after assembly. Interior
+closed contours are retained even when the circle has no roots.
+
+```python
+disks = native.trace_gyroid_cylinder_disks(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0),
+    .5, (3, 3 + 2 * math.pi), (0, .5),
+)
+assert disks["disk_contours_verified"]
+bottom, top = disks["disks"]
+```
+
+The parent `resolved` flag describes the side section; callers must check
+`disk_contours_verified`. Each cap has its own curves and global circle-root
+endpoint IDs; closed interior curves use `(0,0)`. A failed batch clears both
+caps' curves/IDs and resolved flags, including when the side section succeeded.
+No native cap-region, trim or solid validity is promoted.
+
+Detailed planar roots use tolerance/4096 brackets and shared height-circle
+roots use tolerance/65536. Plane tracing reserves half the requested tolerance
+for the disk stage's additional coordinate guards. These are numerical engineering
+bounds, not interval certification. The full circumscribed square must resolve;
+unknown exterior cells can therefore reject otherwise admissible disks. Circle
+roots near Cartesian grid lines may lack a unique cell owner and also reject.
+Exact lattice nodes retain the existing identity/coordinate-frame restrictions.
+
+Tests solve the independent analytic equation
+`A*sin(k*x) + B*cos(k*x) + C = 0` on sampled cap rows and compare all in-disk
+roots against the output contours. Coverage includes a closed interior island
+with no circle crossings, exact and nonlattice interior zeros, empty and placed
+queries, cancellation, budget failures and genuine interior critical-contact
+refusal. Cap-region orientation, nesting and actual edge/face construction are
+the next stage; these reports remain polylines with root provenance.
+
+The intersection-query curves are tolerance-bearing polylines on a mathematical cylindrical
 patch. Periodic graph seam joins are supported, but these are not native trim
 edges, cap regions or gyroid/cylinder Boolean solids. No GUI Boolean accepts
 cylindrical operands as a consequence of this query. Next curved-operand work must
@@ -201,5 +242,8 @@ ctest --test-dir build-freecad-occt8/migration-tests \
 ```
 
 Reuse the configured OCCT 8 build and matching FreeCAD runtime. After adding
-sources, reconfigure OCCT and both test harnesses first. Existing type layouts
-and record formats are unchanged; this adds a new query class/API.
+sources, reconfigure OCCT and both test harnesses first. Existing section
+Settings/Result layouts and primitive schemas 1/2 are unchanged; schema 3 adds
+the cylinder mask. Cell/disk graphs use new result types. The full native runner
+now allows 600 seconds of wall time after a 417.75-second baseline; numerical
+and per-operation resource checks are unchanged.

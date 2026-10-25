@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 92 traces constrained cap disks, retaining interior closed loops and
+shared circle-root endpoint identities. This does not construct native cap
+regions, cylindrical trims or solids; those and the Stage 4 consumer gates remain.
+
 Milestone 91 adds explicit cylindrical field-domain storage, guarded queries and
 schema-3 single-face persistence. Native cap regions, attached cylinder trim
 topology, solids and their FreeCAD source/property workflows remain required.

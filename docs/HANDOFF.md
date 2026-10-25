@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-24. This file is the entry point for a developer or coding
+Last updated: 2026-10-25. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,50 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 92: constrained end-cap disk contour graphs
+
+Native heads: FreeCAD e0d029f931; OCCT 4b365ac45e.
+
+Plane TraceGraph now retains accepted regular-cell arcs and shared root vertices
+without changing the existing Result layout. TraceEndCapDisks uses those cells
+to clip the zero set to both circular end-cap domains, including closed interior
+loops with no circle crossings. Circle-root brackets must occupy a unique
+Cartesian cell; cut cells require unambiguous inside/outside grid roots and
+zero or two boundary crossings. Graph degree/root incidence gates acceptance.
+No nearest-point welding or polygon clipping substitutes for the field query.
+
+Detailed plane roots and retained height-circle roots use narrower brackets
+for cell attachment (tol/4096 and tol/65536 respectively). Uncertain attachments,
+critical contacts and resource failures invalidate the whole disk batch, clear
+both cap curves/endpoint IDs and set both cap resolved flags false. An initial
+negative fixture resolved correctly through alternative grids; it is retained
+as a positive case, with a genuine interior critical contact testing failure.
+Circle-grid coincidences and unresolved cells in the full circumscribed square
+can still reject admissible disks; this is explicit conservative incompleteness.
+Floating reserves remain engineering policies, not interval certification.
+
+FreeCAD trace_gyroid_cylinder_disks returns copied contour/root reports. Check
+disk_contours_verified: parent resolved describes the side section only. Native
+cap regions, edges/p-curves, cylinder trim faces and solids are not implied.
+Primitive records and existing property layouts are unchanged.
+
+Built TKBRep/native tests and _ImplicitOCCT/ImplicitScripts with two compile
+jobs and one link job; no packages/system libraries changed. Focused new kernel
+checks pass 4/4 (238 ms): analytic x-root coverage on both caps, shared endpoints,
+closed interior islands, exact/nonlattice zeros, empty/placed/cancelled queries,
+budget refusal and failed-batch invalidation. Initial CLI cylinder/plane/runtime
+passes 3/3 (2.17 s); final expanded cylinder/runtime passes 2/2 (1.46 s).
+Final cylinder/plane/face-snap/runtime compatibility passes 4/4 (11.82 s),
+retained in the migration LastTest.log. Syntax/whitespace pass; no code changed
+after the successful full kernel run.
+Full native regression passes 136/136 (294.92 s), retained in its LastTest.log.
+The harness wall limit is now 600 seconds
+because the previous suite reached 417.75 s before these extra plane/disk traces;
+no per-operation numerical, topology, cancellation or resource limit changed.
+See native-cylinder-sections.md. Next: orient/nest contour and circle-edge cycles,
+construct and qualify actual planar cap regions, then cylinder-face trims and
+solid/source/property/GUI integration. Full Stage 4 remains active.
 
 ## Milestone 91: persistent cylindrical field-domain restriction
 

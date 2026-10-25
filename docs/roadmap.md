@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Constrained end-cap disk queries now retain open contours and closed interior
+loops using accepted plane cells and shared circle-root identities. Uncertain
+attachments and critical contacts refuse the whole cap batch. Native cap-cycle
+orientation/nesting, edge/face construction and solid qualification remain open.
+
 An explicit native cylindrical field-domain restriction and schema-3 single-face
 persistence now preserve radial/height masks through query/copy/placement/I/O.
 This supplies the storage predicate for future clipped faces, not cap/trim

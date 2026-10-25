@@ -1,12 +1,25 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-24. The user has authorized continuing the full roadmap,
+Updated 2026-10-25. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `36ba9f6d33` on
-`feature/native-implicit`, OCCT `b7f1edda9b` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `e0d029f931` on
+`feature/native-implicit`, OCCT `4b365ac45e` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 92: constrained disk contour graphs
+
+Native TraceGraph retains accepted Cartesian cell/root identities. Cylinder
+TraceEndCapDisks uses them and narrow shared circle-root brackets to retain
+open contours plus interior closed loops without proximity welding. Ambiguous
+attachments, critical contacts and failed batches publish no disk curves or
+success flags. FreeCAD exposes copied reports with a separate disk qualification
+flag; this is not cap-region or solid validation.
+Focused new kernel passes 4/4 (238 ms); final cylinder/runtime CLI passes 2/2
+(1.46 s). Native cap regions, cylinder trims and full Stage 4 remain open.
+Full kernel regression passes 136/136 (294.92 s); syntax/whitespace pass.
+Final cylinder/plane/face-snap/runtime compatibility passes 4/4 (11.82 s).
 
 ## Milestone 91: native cylindrical query-domain storage and I/O
 
