@@ -22,6 +22,25 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## In progress after milestone 93: periodic side-chart provenance
+
+`BRep_ImplicitCylinderSection::TracePeriodicGraph` now retains source-cell arcs,
+logical node IDs, canonical angle/height coordinates, continuous per-curve UV
+coordinates and native vertices only at cap/seam roots. First/last chart cells
+use the same seam node; cap endpoints retain the identical boundary-root vertex.
+Unresolved passes publish no graph. Existing section/boundary result layouts
+remain unchanged. This is a prerequisite for side topology, not side faces.
+
+Built TKBRep and the native harness with two jobs. Focused cylinder/cap tests
+pass 21/21 (1.377 s), including UV reconstruction, source-cell seam incidence,
+closed-loop winding, cap handle identity and failed-budget cleanup. Full native
+regression has not been rerun for this increment. FreeCAD source is unchanged.
+Next: split shared cap ring arcs at the chosen chart seam, construct explicit
+cylinder seam edges with paired p-curves, assemble retained side regions, and
+validate those faces before implicit-face/shell/solid integration. An exploratory
+face made only from periodic circle wires classified sample points but failed
+BRepCheck and gave zero area; do not treat that shortcut as valid side topology.
+
 ## Milestone 93: actual planar cylinder cap regions
 
 Native heads: FreeCAD d557e423ac; OCCT 47eb2ecfd6.

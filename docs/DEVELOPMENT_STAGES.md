@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+Periodic cylinder tracing now retains source-cell/node identity and continuous
+UV coordinates for the forthcoming native side-face builder. Explicit cylinder
+seam topology, side regions and mixed-solid assembly remain open; this increment
+does not complete the curved-operand or Stage 4 gates.
+
 [Local native face Near snapping](native-face-snapping.md) now uses OCCT field
 queries with explicit domain/exclusion checks and a nearby sign bracket. Cap
 snaps honor actual trim boundaries/holes. Actual Draft mathematical-face picks

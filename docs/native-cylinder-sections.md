@@ -37,6 +37,14 @@ safe consumer refusal are covered by native tests.
 
 ## Cylindrical intersection queries
 
+The C++ `TracePeriodicGraph` entry point additionally retains accepted source-cell
+arcs, logical node IDs and canonical angle/height coordinates. Per-curve `CurveUV`
+unwraps angles using the incident cell branch at a shared seam node. Cap-root
+vertices are shared with its owned BoundaryResult; seam roots have native vertex
+handles, while ordinary interior samples remain points. Unresolved results clear
+all graph arrays. `Verified` describes tracing provenance, not cylinder-side face
+validity. Side p-curves, explicit seam topology and solid assembly remain pending.
+
 `BRep_ImplicitCylinderSection::Trace` adds a native OCCT query for a finite open
 cylindrical patch intersecting a childless exact gyroid face. A separate periodic
 query also handles one full turn. FreeCAD exposes both modes
