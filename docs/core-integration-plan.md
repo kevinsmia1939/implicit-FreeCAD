@@ -1,5 +1,12 @@
 # Core integration plan for an nTop-class FreeCAD
 
+The qualified cylinder path now creates an actual native solid after topology,
+geometry and bounded mathematical volume qualify, preserving the shared native
+field/cylinder/cap graph. Owned FreeCAD queries expose the explicit implicit-aware
+contract and refuse generic consumer claims. Trim-conforming display, versioned
+combined persistence, general partial/multi-sheet dispatch and live GUI geometry
+properties remain required. See native-cylinder-solids.md.
+
 The cylinder path now has a whole-chart bidirectional boundary geometry check,
 with analytic field/native membership bounds, trim/root witnesses and retained
 3D edge allowance. Qualified full-disk shells can report geometry validation

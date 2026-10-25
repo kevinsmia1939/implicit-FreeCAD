@@ -13,6 +13,12 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_cylinder_solid
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_solid_smoke.py")
+set_tests_properties(implicit_occt8_cylinder_solid PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit cylinder solid smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 add_test(NAME implicit_occt8_cylinder_geometry
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_geometry_smoke.py")
 set_tests_properties(implicit_occt8_cylinder_geometry PROPERTIES

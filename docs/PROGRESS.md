@@ -7,7 +7,23 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
-## After milestone 97: bounded material classification
+## Milestone 98: actual cylinder solids and bounded material volume
+
+BoundMaterialVolume uses adaptive disk cells, conservative area intervals and
+whole-cell gradient/Hessian root cones to bound mathematical material volume.
+BuildNativeSolid attaches the shared closed shell to an actual TopoDS_Solid only
+after topology, boundary geometry, material and positive/partial volume gates.
+FreeCAD exposes owned solids, inspection, volume bounds and material queries;
+generic OCCT support remains false. Focused native checks pass 38/38 (36.981 s),
+and runtime/cylinder/solid-I/O checks pass 10/10 (21.69 s). Independent analytic
+root quadrature, complementary volume, actual shape membership, reversed/
+translated frames, budget/coarse-interval refusal and cancellation are tested.
+Full native regression passes 159/159 (CTest 327.90 s); syntax and whitespace
+checks pass. Trim-conforming display, general partial/multi-sheet
+support, broader dispatch, persistence and live GUI/property workflows remain.
+See native-cylinder-solids.md.
+
+## Earlier prerequisite after milestone 97: bounded material classification
 
 ClassifyMaterial reuses qualified geometry owners and returns mathematical
 IN/OUT/ON/UNKNOWN with model-length boundary-distance bounds. Cylinder/field

@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 98 constructs an actual TopoDS_Solid for qualified full-disk cylinder
+material, with topology/boundary geometry and bounded positive mathematical
+volume gates. Validity is the explicit implicit-aware contract; generic OCCT
+consumers are not enabled. Trim-conforming display, general partial/multi-sheet
+support, dispatch/history, persistence and live GUI workflows remain required.
+
 Cylinder material point queries now return mathematical membership with bounded
 spatial tolerance and separate approximation-clearance reporting. They reuse
 owned qualified geometry and preserve UNKNOWN results. This is not native solid

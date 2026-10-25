@@ -22,7 +22,49 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
-## After milestone 97: bounded material point classification
+## Milestone 98: actual native cylinder solids and bounded material volume
+
+Native heads: FreeCAD 1fa3b9f407; OCCT 3ff06caf61.
+
+BoundMaterialVolume integrates the qualified full-disk material with adaptive
+disk rectangles, conservative circle area bounds and gradient/Hessian root-height
+cones. Only proved sign cones update whole-cell root intervals; global end-disk
+signs supply fallback endpoints. Largest-error refinement, explicit rounding
+reserves and cell/root/depth limits gate the requested absolute volume width.
+This bounds mathematical material volume, not generic BRepGProp properties of
+the approximate stored boundary. VolumeSettings callbacks are never retained.
+
+BuildNativeSolid now creates an actual TopoDS_Solid only after the owned topology,
+geometry, material reference and bounded positive/partial volume qualify. It
+attaches the existing shared closed shell and retains all provenance. Validity
+is the explicit implicit-aware contract, not ordinary OCCT consumer support.
+No mesh/UV substitution or arbitrary Part Shape is used. Failures publish no
+solid but retain source diagnostics; cancellation propagates before construction.
+
+FreeCAD build_cylinder_solid/inspect_cylinder_solid own the actual native solid
+and expose native face handles, detached previews, separate validity flags and
+volume intervals. bound_cylinder_material_volume and classify_cylinder_material
+accept geometry or qualified solid owners; failed solid owners reject.
+solid_generic_occt_supported remains false. See native-cylinder-solids.md.
+
+Focused native checks pass 38/38 (36.981 s), including both signs, independent
+analytic-root quadrature/complementary volume enclosure, actual solid type and
+shared implicit face, translated/reversed frames, source immutability, work
+budgets, coarse-volume refusal and late cancellation. Fork runtime/cylinder
+solid/geometry/tolerance/shell/faces/sides/caps/sections/solid-I/O pass 10/10
+(21.69 s). Full native regression passes 159/159 (CTest 327.90 s). Python syntax
+and all repository whitespace checks pass. Built TKTopAlgo, the existing native
+harness and _ImplicitOCCT/ImplicitScripts with the existing two-job/one-link
+policy. No libraries changed during tests and no functional changes followed the
+full run. Native/migration LastTest.log files retain the evidence.
+
+Next: trim-conforming display caches and combined native graph persistence for
+the new cylinder representation, then a dedicated live geometry property and GUI
+workflows. General partial/multi-sheet correspondence, broader BRep dispatch,
+history, placements/links and the complete Stage 2–4 acceptance gates remain
+required. This sufficient full-disk solid is not Stage 4 completion.
+
+## Earlier prerequisite after milestone 97: bounded material classification
 
 Native heads: FreeCAD f67d17d16a; OCCT 7984d918cb.
 

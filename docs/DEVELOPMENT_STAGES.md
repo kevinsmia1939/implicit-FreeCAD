@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Actual native cylinder solids](native-cylinder-solids.md) now construct the
+qualified full-disk material body after topology, geometry and bounded volume
+gates. They retain authoritative fields/shared trims and support owned material
+queries. Generic OCCT consumers, trim-conforming display, combined persistence,
+partial/multi-sheet and live GUI workflows remain open; Stage 4 is not complete.
+
 Qualified cylinder geometry owners now support mathematical material queries
 with spatial distance bounds and explicit UNKNOWN results. The field scalar is
 not treated as signed distance. Native solid construction, volume, generic

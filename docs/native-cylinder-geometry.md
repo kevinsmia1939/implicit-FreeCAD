@@ -1,5 +1,9 @@
 # Bidirectional native cylinder shell geometry
 
+The later [native solid builder](native-cylinder-solids.md) uses this owned
+geometry and bounded mathematical material volume to construct an actual solid.
+The geometry query alone retains its separate no-solid contract.
+
 `BRepClass3d_ImplicitCylinder::CheckShellGeometry` now bounds both directions of
 boundary-set correspondence for the qualified full-disk cylinder material path.
 It retains the topology, tolerance audit and field/component reference. A pass
