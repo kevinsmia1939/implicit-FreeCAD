@@ -22,6 +22,41 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## After milestone 96: explicit trim tolerance and shell audit
+
+Native heads: FreeCAD 13942e5430; OCCT 30d4313afc.
+
+Generated cylinder-restricted implicit faces now use the requested trim tolerance
+on their new TShape, rather than inheriting an unrelated source-face tolerance.
+The primitive field/source record stays unchanged. Attachment first requires the
+sum of the side contour bound and cylinder/chord deviation allowance to fit the
+requested tolerance; separate bounds each fitting are insufficient.
+
+CheckShellTolerance retains the qualified shell and reports the contour bound,
+surface-deviation allowance, their combined field-wire bound and maximum stored
+face/edge/vertex tolerances. All must fit the request; the native field-face
+tolerance must cover the combined bound, and the side-edge tolerance must cover
+the cylinder/chord allowance. This is tolerance coherence, not a global shell
+geometry, material-volume or solid certificate. Existing geometry/solid flags
+remain false. FreeCAD check_cylinder_shell_tolerance/inspect_cylinder_shell_tolerance
+expose owned audit snapshots. No source mutation or system changes are involved.
+
+Focused native checks pass 33/33 (7.857 s), including source tolerances 1e-6 and
+0.5 against a 0.05 trim request, both material signs, source record immutability,
+failed budgets and late cancellation. Fork runtime/cylinder audits/shell/faces/
+sides/caps/sections/solid-I/O pass 8/8 (14.11 s). Full native regression passes
+154/154 (CTest 312.89 s). Python syntax and repository whitespace checks pass.
+Only TKTopAlgo, the native harness and _ImplicitOCCT/ImplicitScripts were built,
+using the existing two-job/one-link policy. No libraries changed during tests
+and no functional changes followed the full run. Evidence remains in the native
+and migration harness LastTest.log files.
+See the tolerance-audit section in native-cylinder-shells.md.
+
+Next: qualify shell geometry in both directions against the mathematical material
+boundary, then bounded material classification and volume before promoting an
+actual solid. Partial/multi-sheet support, combined graph persistence and live
+FreeCAD source/property/GUI workflows remain required by Stage 4.
+
 ## Milestone 96: closed native cylinder shell topology
 
 Native heads: FreeCAD 5753999f46; OCCT 1fb67ecaa1.

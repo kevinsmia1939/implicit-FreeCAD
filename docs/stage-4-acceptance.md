@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Cylinder trim tolerance coherence is now audited independently of topology:
+combined contour/chord bounds and face/edge/vertex declarations must fit the
+request. Generated field faces use that trim policy while retaining the primitive
+source record. Neither the audit nor shell closure completes global geometry,
+material-volume, solid, persistence or GUI acceptance gates.
+
 Milestone 96 constructs an actual closed cylinder material shell for qualified
 full-disk sheets. Native edge pairing, periodic self seams, vertex-link cycles,
 face connectivity and Euler characteristic are checked. It does not validate

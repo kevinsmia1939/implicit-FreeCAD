@@ -7,6 +7,19 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## After milestone 96: trim tolerance coherence
+
+Generated implicit cylinder faces now declare the requested trim tolerance after
+the sum of contour and cylinder/chord bounds fits it. Source field tolerances and
+records remain unchanged. CheckShellTolerance audits that combined bound and all
+stored face/edge/vertex tolerances, including required face/edge allowances.
+FreeCAD exposes owned audits and inspection; geometry and solid flags stay false.
+Focused native checks pass 33/33 (7.857 s), including source tolerances 1e-6 and
+0.5 against a 0.05 trim request. Fork runtime/cylinder/solid-I/O checks pass 8/8
+(14.11 s). Full native regression passes 154/154 (CTest 312.89 s); Python syntax
+and whitespace checks pass. This does not replace global geometry,
+volume, partial/multi-sheet or GUI/persistence requirements.
+
 ## Milestone 96: closed native cylinder shell topology
 
 BuildNativeShell assembles the qualified native implicit face, retained cylinder

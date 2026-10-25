@@ -58,3 +58,39 @@ preview mutation, inspection, explicit geometry/solid false flags and wrong
 owner rejection. Partial/multi-sheet correspondence, solid geometry/volume,
 combined graph persistence, classification dispatch and live GUI consumers remain
 required by the full roadmap.
+
+## Trim tolerance audit
+
+```python
+audit = native.check_cylinder_shell_tolerance(
+    field, (0, 0, 0), (0, 0, 1), (1, 0, 0),
+    .5, (.27, .27 + 2 * math.pi), (-1.7, 1.3), distance_tolerance=.05,
+)
+assert audit["trim_tolerance_verified"], audit["trim_tolerance_reason"]
+assert audit["field_wire_bound"] <= .05
+assert audit["maximum_face_tolerance"] <= .05
+assert not audit["shell_geometry_validated"] and not audit["solid_validated"]
+fresh = native.inspect_cylinder_shell_tolerance(audit["tolerance_handle"])
+```
+
+The C++ `CheckShellTolerance` result retains the qualified shell and reports
+contour, cylinder/chord, combined field-wire and maximum declared face/edge/vertex
+tolerances. It requires the sum of contour and chord allowances to fit the trim
+request. Each declared tolerance must also fit, the native field-face tolerance
+must cover the combined field-wire allowance, and the cylindrical field-edge
+tolerance must cover the chord allowance. Invalid source qualification and late
+cancellation retain the existing refusal/propagation policy.
+
+`BuildImplicitFaces` now gives the generated field face an explicit trim tolerance
+after its combined bound fits. This updates only the new restricted face TShape;
+the primitive field's original numerical tolerance and source record remain
+unchanged. For example, a 0.05 query can produce a 0.05 trimmed face from a source
+with tolerance 1e-6 or 0.5 without changing that source. The mathematical equation
+is unchanged; the generated trim has an independently declared approximation
+policy. `restrict_cylinder_local` alone retains its earlier source-tolerance
+contract.
+
+This audit proves coherence of the retained bounds and declarations under the
+existing floating-reserve policy. It does not supply the missing global
+bidirectional shell-boundary correspondence, solid material classification,
+volume or general consumer support. The geometry and solid flags remain false.

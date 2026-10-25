@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+Cylinder shell tolerance audits now check combined contour/chord bounds and
+stored tolerances. Generated implicit faces have an explicit trim policy without
+mutating the source face's tolerance. This verifies declarations and retained
+allowances; global shell geometry, volume and solid promotion remain open.
+
 [Native cylinder shell topology](native-cylinder-shells.md) now assembles shared
 implicit/cylinder/cap faces and qualifies periodic seams, vertex links, face
 connectivity and Euler characteristic. Geometry/solid proof, partial/multi-sheet

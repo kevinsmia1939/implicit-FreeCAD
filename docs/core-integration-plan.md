@@ -1,5 +1,11 @@
 # Core integration plan for an nTop-class FreeCAD
 
+The cylinder path now separates primitive numerical tolerance from the generated
+trim-face policy and checks combined contour/chord allowances plus declared
+shell tolerances. The next global geometry gate must still prove both directions
+of boundary correspondence before material-volume/solid qualification. Tolerance
+coherence alone is not that proof.
+
 Qualified full-disk cylinder material shells now have checked native edge/seam
 incidence, vertex links, connectivity and Euler characteristic. The next solid
 gate must qualify geometry, approximation/tolerance budgets, material queries

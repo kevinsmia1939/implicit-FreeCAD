@@ -75,6 +75,11 @@ Native attachment is checked by the guarded field-domain/component construction
 and shared trim incidence. No shell, solid, general export or graph persistence
 certificate follows from `FacesAttached`.
 
+Generated field faces now declare the requested trim tolerance after checking
+that contour plus cylinder/chord deviation fits it. The source face retains its
+original tolerance. The later [shell tolerance audit](native-cylinder-shells.md)
+checks these declarations separately from global geometry/solid qualification.
+
 Tests cover both material signs, reversed axes, translated sources, immutable
 source records, shared effective trim incidence, domain restrictions, partial
 sheet refusal and late cancellation. Projected-region tests keep the mathematical
