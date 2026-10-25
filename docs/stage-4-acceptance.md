@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 95 attaches an actual cylinder-restricted implicit face after full-disk
+graph correspondence is qualified by axial derivative and end-disk sign covers.
+Effective shared trim incidence and material orientation are checked. Proxy
+reference validation is separate from mathematical correspondence. Partial and
+multi-sheet attachment, shells/solids, persistence and GUI workflows remain open.
+
 The axial-sheet prerequisite now bounds the axial derivative over a covering of
 the finite cylinder. A strict common sign proves at most one root per fibre;
 it does not establish projected region correspondence, components or wire

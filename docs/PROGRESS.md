@@ -7,7 +7,22 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
-## After milestone 94: axial sheet qualification
+## Milestone 95: full-disk native implicit face attachment
+
+ProjectedRegions now retains planar reference topology and source-wire mappings,
+with exact circular projections for side seams and affine cap projections.
+Full-disk correspondence additionally proves opposite field signs over both end
+disks and a strict axial derivative sign over the cylinder. This sufficient case
+has exactly one connected sheet. BuildImplicitFaces attaches its shared wire to
+an actual cylinder-restricted implicit field face, checking effective incidence
+and material orientation. Partial/multi-sheet correspondence remains unqualified.
+The FreeCAD source adds owned native-face query handles and detached side/cap
+previews; no shell/solid or GUI workflow is inferred. Focused checks pass 31/31.
+Full native regression passes 152/152 (307.735 s); fork runtime/cylinder/solid-I/O
+checks pass 6/6 (12.39 s). Python syntax and whitespace checks pass.
+See [native-cylinder-implicit-faces.md](native-cylinder-implicit-faces.md).
+
+## Earlier prerequisite after milestone 94: axial sheet qualification
 
 CheckAxialSheet adaptively covers the cylinder with Hessian gradient cones and
 requires a single strict axial derivative sign everywhere. Resource and precision

@@ -1,5 +1,12 @@
 # Core integration plan for an nTop-class FreeCAD
 
+The sufficient full-disk axial-sheet path now proves fibre existence/uniqueness
+and attaches an actual cylinder-restricted implicit face with shared trim edges.
+Projected planar references remain diagnostics rather than field geometry.
+Partial/multi-sheet correspondence and shell/solid qualification precede combined
+graph persistence and live GUI workflows. See
+[native cylinder implicit faces](native-cylinder-implicit-faces.md).
+
 Retained native cylinder-side material regions now pass directed-cycle, area,
 nesting and ordinary OCCT face checks. Shared cap topology and bounded 3D/UV field
 edges remain owned through the FreeCAD query API. Actual implicit-face attachment

@@ -1,5 +1,11 @@
 # Development stages and completion gates
 
+[Full-disk native cylinder implicit faces](native-cylinder-implicit-faces.md)
+now have qualified fibre existence/uniqueness, projected reference correspondence
+and shared trim attachment. This is a sufficient restricted sheet path. Partial/
+multi-sheet components, shells, solids, combined persistence and live GUI source
+workflows remain open; it does not complete Stage 4.
+
 A bounded axial Hessian-cone check now qualifies at-most-one-root-per-fibre
 cylinder sheets as a sufficient graph-like-sheet prerequisite. It refuses
 unproved/folded cases and does not assign wires or construct implicit faces.

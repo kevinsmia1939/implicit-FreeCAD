@@ -1,5 +1,9 @@
 # Native cylindrical material regions
 
+The later [implicit-face attachment path](native-cylinder-implicit-faces.md)
+qualifies full-disk axial sheets and reuses these side/cap boundaries. General
+partial/multi-sheet correspondence and shell/solid assembly remain open.
+
 `BRepClass3d_ImplicitCylinder::BuildSides` builds actual OCCT cylindrical faces
 for F<=0, or F>=0 with the positive selection. It reuses a single tracing/cap
 snapshot. These are conventional cylinder surfaces with native trim topology,

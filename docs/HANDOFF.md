@@ -22,7 +22,51 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
-## After milestone 94: axial sheet qualification prerequisite
+## Milestone 95: qualified full-disk native implicit face attachment
+
+Native heads: FreeCAD eb55bab4ab; OCCT 77fabdd18d.
+
+BuildProjectedRegions projects cap field seams affinely and side seams to exact
+circular arcs after angular-monotonicity checks. Shared native vertex identity,
+signed orientation/area, separate-cycle clearance, nesting and ordinary planar
+face checks qualify reference regions and WireRegions. Proxy validation alone
+does not promote mathematical correspondence.
+
+CheckProjectedCorrespondence now qualifies a sufficient full-disk case: one
+complete circular side boundary, no cap field contours, one proxy disk, a strict
+axial derivative sign everywhere, and independently proved opposite field signs
+over both end disks. Lipschitz covers prove existence on every axial fibre;
+monotonicity proves uniqueness. This establishes one connected disk-like sheet.
+BuildImplicitFaces creates its actual BRep_TImplicitCylinderPatch and attaches
+the original shared field wire, with material orientation and effective edge
+incidence checked. Placements convert world cylinder settings to field space.
+No triangle conversion, fake field UV surface or arbitrary Part Shape is used.
+
+FreeCAD source adds build_cylinder_implicit_faces/inspect_cylinder_implicit_faces:
+owned graph handles, immutable native field-face handles, detached side/cap
+previews, separate correspondence/attachment flags and solid_validated false.
+No document feature, GUI command, shell/solid proof or combined persistence is
+introduced. See native-cylinder-implicit-faces.md. Partial/folded/multi-sheet
+correspondence remains open; the sufficient full-disk path does not replace the
+general curved-operand or Stage 4 requirements.
+
+Focused native cylinder/cap checks pass 31/31 (6.901 s), including both signs,
+reversed axes, translation, partial refusal, source immutability and late
+cancellation. Full native regression passes 152/152 (307.735 s; CTest 307.83 s).
+Built TKTopAlgo/native harness and _ImplicitOCCT/ImplicitScripts with two compile
+jobs and one link job. Runtime libraries were not rebuilt during tests.
+Fork runtime/cylinder implicit faces/sides/caps/sections/native-solid-I/O pass
+6/6 (12.39 s), including immutable native handles, detached preview mutation,
+owned inspection, source records and partial-sheet refusal. Python syntax and
+all repository whitespace checks pass. No functional native changes followed
+the full kernel run. Native/CLI evidence remains in the existing CTest logs.
+
+Next: assemble material shells for the qualified full-disk case and qualify solid
+topology/geometry; extend partial/multi-sheet region correspondence as required
+for the full goal. Then combined native graph persistence
+and live FreeCAD source/property/GUI workflows. Stage 4 remains active.
+
+## Earlier prerequisite after milestone 94: axial sheet qualification
 
 OCCT CheckAxialSheet retains the qualified TrimBoundary and adaptively covers
 the finite cylinder with local boxes. A global gyroid Hessian bound, transformed
