@@ -84,3 +84,25 @@ construct implicit faces, or qualify a shell/solid. Even an empty wire list does
 not by itself establish an empty implicit surface. Failed wire batches clear
 both output arrays; independently qualified source regions can remain. Late
 cancellation propagates. This prerequisite is currently C++ only.
+
+## Axial graph qualification prerequisite
+
+The C++ `CheckAxialSheet` result owns that boundary graph and separately reports
+`MonotonicityVerified`, `Direction`, `DerivativeLowerBound`, visited `Cells` and
+`Reason`. It covers the entire finite cylinder with adaptively bisected local
+boxes and uses the global gyroid Hessian norm bound 4*(2*pi/period/model_scale)^2
+to bound variation of the axial derivative. Cells strictly outside the disk plus
+a coordinate reserve can be skipped. Every retained box must have the same
+strict derivative sign. The final lower bound is the minimum accepted signed
+cone bound over the cover. Failure leaves direction and lower bound zero.
+
+Default work limits are 24 binary split levels and 200000 visited cells; maximum
+limits are 32 levels and 2000000 cells. Invalid budgets throw. Unresolved depth,
+cells, precision or direction produce explicit refusal; cancellation propagates.
+This uses analytic derivative bounds with floating reserves, not interval
+arithmetic. It proves at most one field zero along each axial fibre under that
+numerical policy. A field with no zero can still pass. It does not establish
+projected boundary correspondence, existence, connected components or which
+wires bound each component. Those remain required before attaching native
+implicit faces. Folded/multi-sheet cases require the general component path and
+are not covered by this sufficient graph-like-sheet criterion.

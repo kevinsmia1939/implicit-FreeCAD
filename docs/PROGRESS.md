@@ -7,7 +7,18 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
-## After milestone 94: cylinder field-boundary incidence
+## After milestone 94: axial sheet qualification
+
+CheckAxialSheet adaptively covers the cylinder with Hessian gradient cones and
+requires a single strict axial derivative sign everywhere. Resource and precision
+failures refuse; late cancellation propagates. Positive lower bounds publish
+only after complete coverage. This is an at-most-one-root-per-axial-fibre gate,
+not existence, projected region correspondence or component/face attachment.
+General folded/multi-sheet handling remains required by the full roadmap.
+Focused cylinder/cap checks pass 29/29 (6.181 s); fork runtime/cylinder checks
+pass 4/4 (2.20 s). Full 150-case regression has not been rerun for this new guard.
+
+## Earlier prerequisite after milestone 94: cylinder field-boundary incidence
 
 BuildTrimBoundary audits field-edge single incidence and opposite paired uses
 of every other conventional side/cap edge, then constructs oppositely oriented

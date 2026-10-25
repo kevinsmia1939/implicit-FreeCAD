@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+The axial-sheet prerequisite now bounds the axial derivative over a covering of
+the finite cylinder. A strict common sign proves at most one root per fibre;
+it does not establish projected region correspondence, components or wire
+assignment. Folded/multi-sheet cases and actual face/shell/solid attachment
+remain explicit gates. This sufficient subcase does not replace general support.
+
 Cylinder field-boundary incidence now checks every actual side/cap edge use and
 constructs opposite closed wires by shared native vertex identity. This does not
 qualify interior surface components or wire assignments; implicit-face attachment

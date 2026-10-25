@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+A bounded axial Hessian-cone check now qualifies at-most-one-root-per-fibre
+cylinder sheets as a sufficient graph-like-sheet prerequisite. It refuses
+unproved/folded cases and does not assign wires or construct implicit faces.
+General multi-sheet components and the full Stage 4 scope remain open.
+
 Cylinder field-boundary wires now close by shared native vertex identity after
 an audit of all actual side/cap face-edge uses. Interior surface components and
 wire-to-component assignments remain unqualified; implicit faces and shells must

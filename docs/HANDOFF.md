@@ -22,7 +22,35 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
-## After milestone 94: shared field-boundary wires
+## After milestone 94: axial sheet qualification prerequisite
+
+OCCT CheckAxialSheet retains the qualified TrimBoundary and adaptively covers
+the finite cylinder with local boxes. A global gyroid Hessian bound, transformed
+to model coordinates, bounds axial gradient variation over each box. Only boxes
+strictly outside the disk plus a coordinate reserve are skipped. Every remaining
+box must prove the same strict axial derivative sign. Longest-axis bisection,
+depth/cell budgets and cancellation bound work. Direction and a positive signed
+derivative lower bound publish only after the entire cover succeeds; unresolved
+queries retain zero direction/bound and a reason. Floating-point reserves remain
+an engineering policy, not interval certification.
+
+This establishes at most one zero per axial fibre, not existence, projected trim
+correspondence, connectedness, wire/component assignments or implicit-face/solid
+validity. Folded or unproved fields refuse this path. General multi-sheet support
+and the full curved-operand Stage 4 gates remain required. The next step is a
+qualified projected-region/reference construction and assignment of the retained
+wires; monotonicity alone must not authorize attaching all wires to one face.
+This prerequisite is C++ only; FreeCAD source/API is unchanged.
+
+Built TKTopAlgo and the existing native harness with two jobs. Focused native
+cylinder/cap checks pass 29/29 (6.181 s), including reversed axes, translated
+source/frame, sampled derivative comparisons with the lower bound, bounded
+refusal for a folded fixture, empty-surface uniqueness and late cancellation.
+Adjacent fork runtime/cylinder checks pass 4/4 (2.20 s). Whitespace passes.
+No libraries changed during tests. The full 150-case suite was not rerun for this
+added guard; the earlier milestone 94 full 148/148 result remains separate.
+
+## Earlier prerequisite after milestone 94: shared field-boundary wires
 
 OCCT BuildTrimBoundary now audits all conventional side/cap edge occurrences.
 Each field edge must have exactly one use with its stored orientation; every
