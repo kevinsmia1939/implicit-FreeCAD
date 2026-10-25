@@ -51,7 +51,15 @@ are shared between parameter branches; circle root handles remain those of the
 side graph. Its cylindrical surface carries circle p-curves and analytic axial
 seam edges with paired angular p-curves. Axial segments share the logical seam
 crossing vertices. This is boundary infrastructure, not assembled side faces or
-solids; planar cap-region sharing and side material cycles are still required.
+solids; side material cycles are still required.
+
+`BuildChartCapSkeleton` supplies its single periodic boundary snapshot to the
+disk tracer and the seamed ring builder. `BRepClass3d_ImplicitCylinder::BuildChartCaps`
+then constructs planar material regions using those same ring edges. The result
+retains `Chart` and `Regions`; `Regions.TopologyValidated` is the cap-face gate,
+while `Chart.Verified` remains only the tracing/boundary gate. A failed region
+batch publishes no faces or field edges even if the retained source chart is
+valid. Existing BuildCaps and BuildCapSkeleton retain their earlier contracts.
 
 `BRep_ImplicitCylinderSection::Trace` adds a native OCCT query for a finite open
 cylindrical patch intersecting a childless exact gyroid face. A separate periodic

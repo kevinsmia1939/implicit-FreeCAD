@@ -1,5 +1,12 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+After milestone 93, a periodic chart snapshot now owns logical seam nodes,
+continuous UV coordinates, wrap-split circles and paired-p-curve seam edges.
+Actual planar cap regions reuse those same circle edges and root vertices.
+Cylinder-side material cycles, field-edge attachment and shell/solid validation
+remain open. These shared native boundaries do not discharge those gates or the
+remaining FreeCAD source/property/persistence/GUI acceptance requirements.
+
 Milestone 93 constructs actual planar cylinder cap regions with shared vertices,
 matching p-curves, material orientation, holes and ordinary OCCT face validation.
 This qualifies the restricted caps, not cylinder-side or implicit-face assembly,

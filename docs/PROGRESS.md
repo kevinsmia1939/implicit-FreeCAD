@@ -4,9 +4,24 @@ Updated 2026-10-25. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `d557e423ac` on
-`feature/native-implicit`, OCCT `47eb2ecfd6` on `feature/implicit-distance`.
-The parent repository pins both commits.
+The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
+FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
+
+## After milestone 93: shared periodic chart and cap regions
+
+The side tracer retains cell/node provenance and continuous UV coordinates.
+BuildChartSkeleton splits circle wrap arcs and constructs axial seam edges with
+paired p-curves. BuildChartCaps reuses that single boundary snapshot for disk
+tracing and actual planar cap regions, preserving identical root/edge handles.
+Both material signs, full/empty regions, complementary areas and late failure
+cleanup pass the new focused shared-snapshot case. Cylinder-side material cycles,
+implicit-face attachment and closed-solid qualification remain open. No FreeCAD
+source or GUI behavior changes in these kernel prerequisites.
+Full kernel regression passed 144/144 (301.233 s). A subsequent face probe found
+and corrected the seam-p-curve branch order; post-correction focused checks pass
+24/24, including actual complete-cylinder face validity, area and classification.
+The full 145-case suite has not been rerun after the correction. Four adjacent
+FreeCAD runtime/cylinder/solid-I/O tests pass (11.36 s).
 
 ## Milestone 93: native planar cap regions
 

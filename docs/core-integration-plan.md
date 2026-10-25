@@ -1,5 +1,11 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Periodic chart provenance, wrap-split circle edges and paired-p-curve axial seam
+edges now share one boundary snapshot with actual planar cap regions through
+BuildChartCaps. No independent-root matching or proximity welding is needed.
+Retained side-region cycles and implicit-face attachment remain the next kernel
+steps before shell/solid and FreeCAD integration qualification.
+
 Restricted native planar cap-region construction now joins shared circle roots
 and bounded field-contour edges, orients/nests material cycles and validates
 actual OCCT plane faces. Ownership retains the source field and settings.

@@ -2,8 +2,8 @@
 
 Periodic cylinder tracing now retains source-cell/node identity and continuous
 UV coordinates for the forthcoming native side-face builder. Explicit cylinder
-seam edges and ring p-curves now exist in a shared chart snapshot. Side regions,
-cap-region snapshot sharing and mixed-solid assembly remain open; this increment
+seam edges and ring p-curves now share their chart snapshot with actual planar
+cap regions. Side-region and mixed-solid assembly remain open; this increment
 does not complete the curved-operand or Stage 4 gates.
 
 [Local native face Near snapping](native-face-snapping.md) now uses OCCT field

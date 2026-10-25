@@ -43,8 +43,28 @@ cylinder p-curves. Root-free rings keep their two-half-circle topology. Existing
 BuildBoundaryRings/BuildCapSkeleton behavior is unchanged. Focused cylinder/cap
 checks now pass 22/22, including parameter ranges, circle coverage, endpoint
 identity, seam edge chaining and paired-p-curve recognition. Full regression has
-not been rerun. This snapshot has not yet been joined to planar cap regions.
-Next: assemble retained side regions, share the seamed snapshot with cap regions, and
+not been rerun for that individual increment.
+`BuildChartCapSkeleton` now traces the side once and supplies that same boundary
+snapshot to disk tracing and seamed circle partitions. `BuildChartCaps` builds
+actual planar material regions from those rings, retaining the side chart.
+Its cap faces reuse the identical ring edges and root vertices, including the
+synthetic chart-seam ends. Existing BuildCaps remains unchanged in behavior.
+The focused shared-snapshot case passes (26 ms), covering both material signs,
+full/empty caps, complementary areas, native edge/root identity and late budget
+failure cleanup. Full native regression passes 144/144 (301.233 s; CTest
+301.26 s), before the subsequent seam-order correction described below.
+An independent complete-cylinder face probe found the paired seam p-curves had
+the wrong branch order for outward traversal: low/high produced an invalid face
+with negative area; high/low produced a valid face and the expected positive
+area. The order is corrected and a full-face validity/area/classification test
+now covers it. This qualifies the root-free reference face, not general retained
+material side regions. Post-correction cylinder/cap regression passes 24/24.
+The full 145-case suite has not been rerun after that correction. Adjacent fork
+runtime/cylinder caps/sections/native-solid-I/O passes 4/4 (11.36 s), before the
+correction, which changes only the new chart seam edges. No library rebuild
+occurred while runtime regression ran. Native logs remain in the existing CTest
+harness directories. FreeCAD source remains unchanged.
+Next: assemble retained side regions and
 validate those faces before implicit-face/shell/solid integration. An exploratory
 face made only from periodic circle wires classified sample points but failed
 BRepCheck and gave zero area; do not treat that shortcut as valid side topology.
