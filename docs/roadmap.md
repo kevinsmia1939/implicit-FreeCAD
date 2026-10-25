@@ -1,5 +1,11 @@
 # Technical roadmap
 
+[Native planar cylinder cap regions](native-cylinder-caps.md) now build actual
+oriented/nested faces, sharing root vertices and bounded field seams with analytic
+circle edges. Both material signs, holes and native face validity are qualified.
+Cylinder-side retained regions, implicit-face assembly, solids and their full
+FreeCAD lifecycle remain required.
+
 Constrained end-cap disk queries now retain open contours and closed interior
 loops using accepted plane cells and shared circle-root identities. Uncertain
 attachments and critical contacts refuse the whole cap batch. Native cap-cycle

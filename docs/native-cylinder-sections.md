@@ -208,7 +208,8 @@ roots against the output contours. Coverage includes a closed interior island
 with no circle crossings, exact and nonlattice interior zeros, empty and placed
 queries, cancellation, budget failures and genuine interior critical-contact
 refusal. Cap-region orientation, nesting and actual edge/face construction are
-the next stage; these reports remain polylines with root provenance.
+available through the separate [native cap-region builder](native-cylinder-caps.md);
+these disk reports remain polylines with root provenance.
 
 The intersection-query curves are tolerance-bearing polylines on a mathematical cylindrical
 patch. Periodic graph seam joins are supported, but these are not native trim

@@ -4,9 +4,24 @@ Updated 2026-10-25. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
-Implementation heads: FreeCAD `e0d029f931` on
-`feature/native-implicit`, OCCT `4b365ac45e` on `feature/implicit-distance`.
+Implementation heads: FreeCAD `d557e423ac` on
+`feature/native-implicit`, OCCT `47eb2ecfd6` on `feature/implicit-distance`.
 The parent repository pins both commits.
+
+## Milestone 93: native planar cap regions
+
+BRepClass3d_ImplicitCylinder now builds actual bounded planar cap faces with
+shared root vertices, analytic circles, bounded field seams and matching p-curves.
+Directed cycles, material orientation, nesting, finite-area guards and ordinary
+OCCT face validation qualify both caps; holes/islands and complementary signs
+are tested. Work is bounded/cancellable and failed batches publish no faces.
+FreeCAD exposes owned native snapshots plus detached conventional face previews
+through build_cylinder_caps/inspect_cylinder_caps. Field definitions/settings
+remain authoritative. No cylinder-side, shell or solid proof is promoted.
+Focused kernel passes 5/5 (303 ms); cap/runtime CLI passes 2/2 (0.78 s).
+Full kernel passes 141/141 (294.85 s; CTest total 294.86 s), and adjacent
+cap/section/plane/snap/solid-I/O/runtime compatibility passes 6/6 (20.74 s).
+See [native cylinder caps](native-cylinder-caps.md). Full Stage 4 remains open.
 
 ## Milestone 92: constrained disk contour graphs
 

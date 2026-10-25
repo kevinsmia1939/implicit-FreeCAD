@@ -1,5 +1,10 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 93 constructs actual planar cylinder cap regions with shared vertices,
+matching p-curves, material orientation, holes and ordinary OCCT face validation.
+This qualifies the restricted caps, not cylinder-side or implicit-face assembly,
+closed solids, native graph persistence or the broader Stage 4 workflows.
+
 Milestone 92 traces constrained cap disks, retaining interior closed loops and
 shared circle-root endpoint identities. This does not construct native cap
 regions, cylindrical trims or solids; those and the Stage 4 consumer gates remain.

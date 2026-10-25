@@ -22,6 +22,50 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 93: actual planar cylinder cap regions
+
+Native heads: FreeCAD d557e423ac; OCCT 47eb2ecfd6.
+
+TKBRep BuildCapSkeleton now produces one disk/ring snapshot sharing actual
+root vertex handles. TKTopAlgo BRepClass3d_ImplicitCylinder::BuildCaps constructs
+bounded planar regions for F<=0 or F>=0 using analytic circle edges and
+degree-1 B-spline field-contour edges with matching planar p-curves. Gradient/
+Hessian orientation guards, directed endpoint incidence, signed-area reserves,
+cycle nesting and BRepCheck_Analyzer gate both caps. Interior loops become holes
+or positive islands according to material sign. No contour proximity welding,
+mesh-face conversion or arbitrary field assignment to Part Shape is used.
+
+The result retains its authoritative field and settings; callback pointers are
+not retained. Nesting work is bounded (default 2 million, maximum 10 million
+candidate tests) with cooperative cancellation. Failed batches clear faces and
+field edges, including after an earlier cap succeeded. Nonfinite area arithmetic
+refuses construction. Cap topology and inherited contour bounds remain separate
+from cylinder-side topology, shell/solid validation and global geometry proof.
+
+FreeCAD build_cylinder_caps/inspect_cylinder_caps expose immutable owned graph
+handles plus independent conventional planar face previews and source/settings
+descriptors. Preview mutation does not change the retained graph. Adaptive area
+integration is reported separately; initial nonadaptive mass-property assertions
+underresolved the many-knot contours, while adaptive integration passes the
+unchanged partition tolerance. Preview decoding now specializes Part.Face like
+the existing mixed-cap facade, rather than leaving a generic Part.Shape wrapper.
+
+Built TKBRep/TKTopAlgo, native tests and _ImplicitOCCT/ImplicitScripts with two
+compile jobs and one link job. No packages/system libraries changed. Focused
+native cap checks pass 5/5 (303 ms): positive/negative material classification,
+shared root identity, outward orientation, exact complementary area partition,
+holes/islands, full/empty cases, budget/critical/nonfinite refusal, placement and
+cancellation. Cap/runtime CLI passes 2/2 (0.78 s), covering detached previews,
+ownership/inspection, source records, holes, policy types and late budget failure.
+Full native regression passes 141/141 (294.85 s; CTest total 294.86 s),
+retained in the native harness LastTest.log. Adjacent cap/section/plane/snap/
+solid-I/O/runtime compatibility passes 6/6 (20.74 s), retained in migration
+LastTest.log. Syntax/whitespace pass; no code changed after the full kernel run.
+See native-cylinder-caps.md. Next: cylinder-side retained regions/p-curves,
+implicit-face seam attachment/component assembly, then shell/solid qualification,
+native graph persistence and live FreeCAD source/property/GUI workflows. Stage 4
+remains active; these are real cap faces, not a completed cylinder Boolean.
+
 ## Milestone 92: constrained end-cap disk contour graphs
 
 Native heads: FreeCAD e0d029f931; OCCT 4b365ac45e.

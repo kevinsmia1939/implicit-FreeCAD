@@ -1,5 +1,11 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Restricted native planar cap-region construction now joins shared circle roots
+and bounded field-contour edges, orients/nests material cycles and validates
+actual OCCT plane faces. Ownership retains the source field and settings.
+Cylinder-side retained faces, shared implicit-face assembly and solid/native
+persistence/GUI qualification remain separate gates.
+
 End-cap disk contour graphs now use accepted Cartesian cell proofs and retained
 circle-root identities, including interior loops without boundary crossings.
 No proximity welding or mesh-to-face conversion is used. Actual oriented/nested

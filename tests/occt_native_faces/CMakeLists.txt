@@ -11,6 +11,7 @@ endif()
 include("${IMPLICIT_OCCT_NATIVE_BUILD}/OpenCASCADETargets.cmake")
 find_package(GTest REQUIRED)
 add_executable(implicit_occt_native_face_tests
+    ../../OCCT/src/ModelingAlgorithms/TKTopAlgo/GTests/BRepClass3d_ImplicitCylinder_Test.cxx
     ../../OCCT/src/ModelingData/TKBRep/GTests/BRep_ImplicitCylinderSection_Test.cxx
     ../../OCCT/src/ModelingAlgorithms/TKMesh/GTests/BRepMesh_ImplicitBoundary_Test.cxx
     ../../OCCT/src/ModelingAlgorithms/TKTopAlgo/GTests/BRepClass3d_ImplicitBox_Test.cxx
