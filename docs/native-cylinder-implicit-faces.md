@@ -1,5 +1,9 @@
 # Cylinder-restricted native implicit faces
 
+The later [shell builder](native-cylinder-shells.md) assembles these faces with
+the conventional cap/side faces and qualifies closed native topology. It keeps
+geometry and solid validation separate.
+
 `BRepClass3d_ImplicitCylinder::BuildImplicitFaces` now attaches actual native
 implicit faces for qualified full-disk axial sheets. The face remains a
 `BRep_TImplicitCylinderPatch`, carrying the authoritative field and finite

@@ -22,6 +22,47 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 96: closed native cylinder shell topology
+
+Native heads: FreeCAD 5753999f46; OCCT 1fb67ecaa1.
+
+BuildNativeShell reuses the qualified implicit face, one retained cylinder face
+and the material-selected end cap. It checks opposite edge uses, permits a
+same-face pair only for a genuine conventional periodic seam, verifies private
+wire traversal joins, cyclic connected vertex links, connected face adjacency
+and Euler characteristic 2. Only then is an actual TopoDS_Shell marked closed.
+The cylinder's doubled seam corner uses do not fit the older box validator's
+one-corner-per-vertex contract; the new checker retains distinct endpoint germs
+and verifies all joins, rather than weakening that existing contract.
+
+FreeCAD build_cylinder_shell/inspect_cylinder_shell retain immutable shell owners,
+native implicit-face handles, detached conventional previews and topology
+counters. shell_geometry_validated and solid_validated remain false. No ordinary
+Part.Shape conversion, lossy shell serialization or GUI workflow is introduced.
+Failures publish no shell/output face list; source face diagnostics can remain.
+See native-cylinder-shells.md. Partial/multi-sheet support remains required.
+
+Focused native checks pass 32/32 (6.686 s), including both material signs, both
+axis directions, translation, native face membership/counts, partial refusal and
+late cancellation. Fork runtime/cylinder shell/faces/sides/caps/sections/solid-I/O
+checks pass 7/7 (12.06 s). Full native regression passes 153/153 (CTest 300.11 s).
+Python syntax and repository whitespace checks pass; no functional changes
+followed the full run. Evidence remains in the existing native/migration CTest
+LastTest.log files. Built only TKTopAlgo,
+the native harness and _ImplicitOCCT/ImplicitScripts with the existing two-job
+policy. No runtime libraries are rebuilt during tests.
+
+Next: qualify shell/solid geometry and material classification/volume before
+constructing and promoting an actual solid. Extend partial/multi-sheet region
+correspondence, then combined native graph persistence and live FreeCAD
+source/property/GUI workflows. Stage 4 remains active.
+The next geometry gate must also compare inherited source field-face tolerance,
+stored edge tolerances and derived contour/deviation bounds with the requested
+trim tolerance. BRep_TImplicitCylinderPatch::Restrict preserves source tolerance;
+the source need not have the same tolerance as the cylinder settings. The mask's
+Contains predicate is analytic and does not itself enlarge the cylinder by that
+tolerance. Do not promote topology closure into a missing approximation proof.
+
 ## Milestone 95: qualified full-disk native implicit face attachment
 
 Native heads: FreeCAD eb55bab4ab; OCCT 77fabdd18d.

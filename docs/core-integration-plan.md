@@ -1,5 +1,12 @@
 # Core integration plan for an nTop-class FreeCAD
 
+Qualified full-disk cylinder material shells now have checked native edge/seam
+incidence, vertex links, connectivity and Euler characteristic. The next solid
+gate must qualify geometry, approximation/tolerance budgets, material queries
+and volume before promoting an actual solid. Partial/multi-sheet correspondence,
+combined persistence and live GUI workflows remain required. See
+[native cylinder shells](native-cylinder-shells.md).
+
 The sufficient full-disk axial-sheet path now proves fibre existence/uniqueness
 and attaches an actual cylinder-restricted implicit face with shared trim edges.
 Projected planar references remain diagnostics rather than field geometry.

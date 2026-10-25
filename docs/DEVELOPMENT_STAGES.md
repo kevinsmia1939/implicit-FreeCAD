@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+[Native cylinder shell topology](native-cylinder-shells.md) now assembles shared
+implicit/cylinder/cap faces and qualifies periodic seams, vertex links, face
+connectivity and Euler characteristic. Geometry/solid proof, partial/multi-sheet
+correspondence, combined persistence and live GUI workflows remain open.
+
 [Full-disk native cylinder implicit faces](native-cylinder-implicit-faces.md)
 now have qualified fibre existence/uniqueness, projected reference correspondence
 and shared trim attachment. This is a sufficient restricted sheet path. Partial/

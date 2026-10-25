@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 96 constructs an actual closed cylinder material shell for qualified
+full-disk sheets. Native edge pairing, periodic self seams, vertex-link cycles,
+face connectivity and Euler characteristic are checked. It does not validate
+solid geometry/volume, construct a solid, persist the combined graph or complete
+partial/multi-sheet and live GUI acceptance requirements.
+
 Milestone 95 attaches an actual cylinder-restricted implicit face after full-disk
 graph correspondence is qualified by axial derivative and end-disk sign covers.
 Effective shared trim incidence and material orientation are checked. Proxy

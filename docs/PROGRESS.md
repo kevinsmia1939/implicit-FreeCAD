@@ -7,6 +7,19 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 96: closed native cylinder shell topology
+
+BuildNativeShell assembles the qualified native implicit face, retained cylinder
+face and material-selected cap into an actual TopoDS_Shell. Opposite edge uses,
+paired-p-curve self seams, ordered traversal joins, connected cyclic vertex links,
+connected face adjacency and Euler characteristic 2 gate closure. FreeCAD exposes
+owned shell query handles and detached previews with topology counts. Geometry
+and solid validation remain false. Focused kernel checks pass 32/32 (6.686 s);
+runtime/cylinder/solid-I/O checks pass 7/7 (12.06 s). Full native regression
+passes 153/153 (CTest 300.11 s); Python syntax and whitespace checks pass.
+Partial/multi-sheet support, solid geometry/volume, graph persistence and GUI
+workflows remain open. See [native-cylinder-shells.md](native-cylinder-shells.md).
+
 ## Milestone 95: full-disk native implicit face attachment
 
 ProjectedRegions now retains planar reference topology and source-wire mappings,
