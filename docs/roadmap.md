@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Restored cylinder graphs now have an owned boundary-geometry qualification
+result combining fresh topology, material regions, actual-mask domain and
+declared tolerances. The original loaded owner is unchanged. Fresh volume/solid
+qualification and live document/display/GUI integration remain next.
+
 Stored cylinder-side material regions now have a complete oriented periodic
 UV graph audit with fresh field and curve bounds. Combined stored geometry,
 tolerance/ownership and volume/solid requalification remain next before live

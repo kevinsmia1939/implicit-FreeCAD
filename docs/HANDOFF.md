@@ -22,6 +22,31 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Owned restored cylinder geometry
+
+Native heads: FreeCAD 91f83f3e14; OCCT eb5e4fb72a.
+
+CheckGeometry / qualify_stored_cylinder_geometry combine the stored topology,
+cap/side material regions and boundary/tolerance gates without reconstructing
+the graph. Audited world parameters come from the actual native mask; original
+recipe/volume/bound numbers remain provenance. All declared tolerances and
+curve endpoints versus vertex tolerances are checked. The result owns the same
+actual shared solid graph through a distinct immutable geometry capsule.
+
+The original loaded owner stays unqualified; the new owner can report verified
+geometry but volume/solid flags remain false. Failed results are inspectable;
+dictionary edits cannot promote owners. inspect_stored_cylinder_geometry does
+not rebuild. The older construction material/volume APIs still reject this type.
+Focused IO passes 1/1 (4.158 s); fork runtime/IO passes 2/2 (4.77 s).
+Cylinder group passes 22/22 (38.986 s). Earlier full regression is separate
+evidence. Python syntax and repository whitespace checks pass; existing builds
+and dependencies only, no library mutations during tests.
+
+Next: fresh bounded material volume and solid qualification directly on this
+unchanged restored geometry, then document property/display/GUI integration.
+Partial/multi-sheet and all broader Stage 2–4 gates remain open. See
+native-cylinder-persistence.md for contracts and ownership limitations.
+
 ## Stored-cylinder retained-side revalidation
 
 Native heads: FreeCAD c609825193; OCCT f88fdcf9ad.

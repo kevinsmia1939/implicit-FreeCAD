@@ -180,3 +180,32 @@ Reports use `retained_side_verified/bound/intervals/reason`. No flags are promot
 
 Only after these gates should a restored owner become eligible for material
 queries, bounded volume integration, document persistence and live GUI display.
+
+## Owned restored geometry
+
+`CheckGeometry` combines the fresh topology, cap/side material regions and
+whole-boundary distance/tolerance checks for the unchanged stored graph. The
+mathematical domain is derived from the actual native cylinder mask in world
+space. The original source recipe and stored numeric bounds remain provenance;
+they do not replace the geometry being audited. Every declared face/edge/vertex
+tolerance is checked, including curve endpoints against vertex tolerances.
+
+```python
+geometry = native.qualify_stored_cylinder_geometry(loaded["stored_solid_handle"])
+assert geometry["geometry_verified"], geometry["geometry_reason"]
+assert not geometry["volume_verified"] and not geometry["solid_validated"]
+fresh = native.inspect_stored_cylinder_geometry(geometry["stored_geometry_handle"])
+```
+
+The new immutable geometry owner shares the original actual solid graph; it
+does not reconstruct topology or mutate the loaded owner's flags. The original
+owner still reports GeometryVerified/VolumeVerified/SolidValidated false. Failed
+qualification returns an inspectable failed geometry owner. Reports cannot
+alter owner state. C++ callers must preserve the unchanged shared graph, as for
+the existing owned construction contracts.
+
+This establishes the explicit implicit-aware boundary geometry contract for
+the supported full-disk path. It is not generic OCCT consumer support, volume
+qualification or a valid-solid promotion. Restored geometry still needs a fresh
+bounded material-volume/solid gate and representation-aware document/GUI wiring.
+The existing construction-owner material APIs do not yet accept this owner.

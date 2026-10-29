@@ -7,6 +7,17 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Owned restored cylinder geometry
+
+CheckGeometry now combines fresh topology/material/boundary/tolerance gates for
+the unchanged stored solid. It derives the world domain from the actual mask
+and checks all declared tolerances, including curve endpoint/vertex agreement.
+FreeCAD exposes a distinct immutable geometry owner and inspection API. The
+original loaded flags stay false; verified geometry still has no volume/solid
+qualification. Graph identity is preserved. Focused IO passes 1/1 (4.158 s);
+runtime/IO passes 2/2 (4.77 s); cylinder group passes 22/22 (38.986 s). Next are
+restored volume/solid gates and live document/display/GUI work. Stage 4 is open.
+
 ## Stored-cylinder retained-side revalidation
 
 The actual cylinder material face now has a periodic UV-region audit. Fresh
