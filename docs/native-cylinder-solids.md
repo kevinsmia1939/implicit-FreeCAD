@@ -31,7 +31,9 @@ retains the complete source/reference graph and native shape. Reports expose
 native implicit-face handles and detached conventional face previews. Report or
 preview edits do not mutate that owner; inspection does not rebuild. No arbitrary
 field is put in a Part::Feature Shape, and no new document/GUI workflow or
-combined topology persistence is supplied by this API. The explicit
+document persistence is supplied by this construction API. Separate
+[explicit cylinder graph IO](native-cylinder-persistence.md) restores topology
+with geometry/volume/solid qualification cleared. The explicit
 `solid_generic_occt_supported` flag remains false.
 
 ## Construction gates
@@ -99,5 +101,5 @@ quadrature at two resolutions, complementary volume enclosure, actual Solid
 type/closed shell/implicit-face membership, mathematical classification,
 translated/reversed frames, source immutability, all work budgets, overly broad
 interval refusal and late cancellation. Partial/multi-sheet geometry,
-trim-conforming display caches, broad BRep dispatch/history, combined persistence
+trim-conforming display caches, broad BRep dispatch/history, document persistence
 and live FreeCAD source/property/GUI consumers remain required by Stage 4.

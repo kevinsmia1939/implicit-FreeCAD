@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 99 adds bounded explicit persistence of the actual shared cylinder
+solid graph. Restored topology is checked; geometry, volume and solid
+qualification remain false. Stored-graph revalidation, document property/FCStd
+integration and trim-conforming GUI display remain open, along with every
+broader Stage 2–4 gate below.
+
 Milestone 98 constructs an actual TopoDS_Solid for qualified full-disk cylinder
 material, with topology/boundary geometry and bounded positive mathematical
 volume gates. Validity is the explicit implicit-aware contract; generic OCCT

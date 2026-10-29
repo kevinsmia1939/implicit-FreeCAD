@@ -1,5 +1,11 @@
 # Technical roadmap
 
+[Cylinder graph persistence](native-cylinder-persistence.md) now restores actual
+shared native topology through explicit bounded IO and a distinct FreeCAD owner.
+Geometry/volume/solid certificates are cleared. Stored-graph revalidation,
+trim-conforming display, document property/lifecycle and general mixed Boolean
+support remain required before Stage 4 completion.
+
 [Native planar cylinder cap regions](native-cylinder-caps.md) now build actual
 oriented/nested faces, sharing root vertices and bounded field seams with analytic
 circle edges. Both material signs, holes and native face validity are qualified.

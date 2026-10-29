@@ -1,11 +1,33 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-25. The user has authorized continuing the full roadmap,
+Updated 2026-10-29. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
+
+## Milestone 99: explicit cylinder graph IO
+
+OCCT now stores and restores the actual shared three-face cylinder solid graph,
+including native mathematical face, authoritative primitive, analytic curves,
+bounded degree-one splines/p-curves, orientations and tolerances. Explicit schema
+and allocation limits reject unsupported/malformed records atomically. A shared
+structural validator checks shell incidence, wire joins, vertex links and counts.
+No mesh serialization or recipe retracing substitutes for stored topology.
+
+FreeCAD exposes dumps_cylinder_solid, loads_cylinder_solid and
+inspect_stored_cylinder_solid. The restored immutable owner is distinct from a
+qualified solid. Geometry/volume/solid flags remain false and qualified queries
+reject it. Numeric bound provenance cannot become a certificate through report
+dictionary edits. No document property or GUI lifecycle is claimed.
+
+Full native regression passes 160/160 (345.09 s); focused IO passes 1/1 (4.188 s).
+Runtime, cylinder family and legacy solid IO pass 11/11. Tests completed October
+25 and logs were rechecked October 29. Existing builds/dependencies only.
+See [persistence contracts](native-cylinder-persistence.md). Next are stored-graph
+geometric revalidation, trim-conforming display and live property/FCStd/GUI
+integration. General partial/multi-sheet and Stage 2–4 gates stay open.
 
 ## Milestone 98: actual cylinder solids and bounded material volume
 

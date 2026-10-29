@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-25. This file is the entry point for a developer or coding
+Last updated: 2026-10-29. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,35 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 99: explicit shared cylinder graph persistence
+
+Native heads: FreeCAD 8d5c619a77; OCCT 5750846b64.
+
+The OCCT cylinder IO schema stores the actual qualified three-face solid graph,
+original primitive, finite cylinder mask, analytic/spline curves, p-curves,
+orientations, tolerances and shared vertex/edge identities. It does not rebuild
+the boundary from a recipe or serialize meshes. Records are bounded to 16 MiB,
+math blobs to 64 KiB and individual spline pole counts to 65536. Unknown schemas,
+malformed counts, truncation and trailing data reject atomically.
+
+Read checks the restored shared topology and conventional faces but deliberately
+drops geometry, volume and solid qualification. Stored numeric bounds are
+provenance only. The FreeCAD dumps_cylinder_solid/loads_cylinder_solid API owns
+that restored graph through a distinct immutable stored-solid handle; qualified
+classification/volume APIs reject it. inspect_stored_cylinder_solid exposes its
+unverified state without rebuilding. See native-cylinder-persistence.md.
+
+Evidence: full native regression 160/160 (345.09 s), focused round-trip/refusal
+test 1/1 (4.188 s), and all eleven runtime/cylinder/legacy-solid-I/O checks pass.
+Built the existing TKTopAlgo/native harness and _ImplicitOCCT/ImplicitScripts;
+no dependencies or system libraries changed. Tests finished October 25; results
+were rechecked October 29. No runtime process remains active.
+
+Next: revalidate the stored geometry against its mathematical field before
+promoting it, then integrate trim-conforming cylinder display and a dedicated
+live document geometry property with save/reopen and GUI workflows. General
+partial/multi-sheet, Boolean dispatch/history and Stage 2–4 gates remain open.
 
 ## Milestone 98: actual native cylinder solids and bounded material volume
 
