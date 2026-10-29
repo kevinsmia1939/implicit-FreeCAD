@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Stored implicit seam proximity now has directed spatial bounds to unrestricted
+primitive gyroid zeros and cylinder/source-mask-constrained axial witnesses.
+Reverse coverage and retained material regions remain open revalidation gates; loaded solids
+remain unqualified. This does not complete document/GUI integration.
+
 Stored cylinder curve consistency now has an explicit whole-interval audit of
 3D edges versus conventional face p-curves. It preserves unverified field/solid
 state. Field seam and material-region correspondence for the stored graph remain

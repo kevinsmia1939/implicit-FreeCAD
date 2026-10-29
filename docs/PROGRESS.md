@@ -7,6 +7,20 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Stored-cylinder primitive and masked seam proximity prerequisite
+
+The actual stored seam now has a whole-segment spatial distance audit against
+unrestricted primitive gyroid zeros. Endpoint interpolation/Hessian bounds and
+a positive directional derivative cone provide a root-distance bound in model
+length, including world scale/placement and bounded adaptive work. FreeCAD
+exposes check_stored_cylinder_primitive_seam through the distinct stored owner.
+The additional masked query uses bounded radial contraction and axial brackets
+inside the actual convex cylinder/source mask. No stored flags are promoted.
+Focused IO passes 1/1 (6.440 s); runtime/IO passes 2/2 (6.98 s), with both signs,
+translations, altered interior seam and budget failure. Reverse coverage, material regions and
+volume/solid requalification remain required before live document/GUI integration.
+This does not complete Stage 4. See native-cylinder-persistence.md.
+
 ## Stored-cylinder curve coherence prerequisite
 
 The new OCCT CheckCurveCoherence and FreeCAD check_stored_cylinder_curves bound

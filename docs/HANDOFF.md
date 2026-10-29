@@ -22,6 +22,34 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Stored-cylinder revalidation prerequisite: primitive and masked seam proximity
+
+Native heads: FreeCAD fcfe8ef0a8; OCCT a6c34e5668.
+
+CheckPrimitiveSeam and FreeCAD check_stored_cylinder_primitive_seam now bound
+the actual stored implicit-wire spline's distance to unrestricted gyroid zeros.
+Whole-segment residual interpolation and Hessian directional-derivative cones
+produce model-length bounds; source world scale/placement and interval budgets
+are retained. This is not a dimensionless residual threshold or sample-only
+claim. No topology is retraced and no stored certificate is promoted.
+
+CheckMaskedSeam / check_stored_cylinder_masked_seam additionally use bounded
+radial contraction and axial zero brackets whose four endpoint witnesses lie
+inside the stored convex cylinder/source mask. The contraction consumes distance
+budget. This establishes a directed masked-seam bound, not reverse coverage or
+retained material-region correspondence.
+
+Focused IO passes 1/1 (6.440 s); runtime/IO passes 2/2 (6.98 s), including both
+signs, translated source, interior seam corruption and budget failure. Existing
+builds only. The previous 22/22 cylinder and 160/160 full-suite results are
+separate earlier evidence, not new complete regressions for this added query.
+
+Next: establish reverse coverage and retained-region correspondence for the
+unchanged graph. Directed seam proximity alone is insufficient to qualify
+stored geometry or solids.
+Document properties, trim-conforming display, GUI and broader Stage 2–4 gates
+remain open. See native-cylinder-persistence.md for the exact contract.
+
 ## Stored-cylinder revalidation prerequisite: curve coherence
 
 Native heads: FreeCAD 6c8d49d2e0; OCCT 7f3a41e62d.

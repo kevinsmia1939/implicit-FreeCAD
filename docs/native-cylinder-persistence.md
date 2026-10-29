@@ -63,3 +63,41 @@ unsupported curves or inconsistent geometry produce an unverified report with
 a reason. This audit neither retraces the graph nor changes the stored owner.
 It does not verify the field seam, material region or mathematical volume, and
 does not promote GeometryVerified or SolidValidated. Those gates remain open.
+
+## Stored seam proximity to primitive zeros
+
+`CheckPrimitiveSeam` / `check_stored_cylinder_primitive_seam(handle)` checks every
+point of the actual stored implicit-wire spline against the unrestricted gyroid
+zero set. It partitions affine spline spans and bounds the complete segment's
+field residual by endpoint interpolation plus the global gyroid Hessian bound.
+The midpoint gradient defines a fixed direction. A Hessian cone bounds that
+directional derivative away from zero throughout a neighbourhood containing
+every segment point and a tolerance-length displacement in either direction.
+The intermediate value theorem then gives a zero within `residual/lower` model
+length, rather than treating dimensionless field residual as a distance.
+
+World-space period/scale, source placements, floating reserves and explicit
+interval limits are included. A global Lipschitz lower-distance test rejects
+endpoints demonstrably outside the requested distance band. Unresolved or
+budget-exhausted queries return an unverified report. Both material signs and
+translated sources are tested; altered interior geometry rejects.
+
+This is a directed bound to the unrestricted primitive zero set. The witness
+root may lie outside the cylinder mask or source box. Cylinder-masked seam
+correspondence, reverse coverage, retained material regions and solid/volume
+requalification remain required. The query changes no stored-owner flags.
+
+`CheckMaskedSeam` / `check_stored_cylinder_masked_seam(handle)` adds constrained
+axial witnesses. Each affine segment is contracted radially by a bounded amount
+to avoid roundoff putting analytic-cylinder endpoints outside the mask. That
+displacement consumes part of the distance budget. A directional cone along
+the cylinder axis bounds the remaining zero displacement. Both signs of that
+axial displacement at both adjusted segment endpoints must belong to the actual
+stored field face's domain. Its source box and finite cylinder are convex, so
+these four checks contain every intermediate witness. Reports use
+`masked_seam_verified/bound/intervals/reason`; no qualification flags change.
+
+This constrained query proves the directed stored-seam-to-masked-zero distance
+only. It does not establish reverse coverage of the mathematical intersection,
+retained-region correspondence, volume or solid validity. Near-cap witnesses
+that cannot fit the available axial bracket remain unverified.
