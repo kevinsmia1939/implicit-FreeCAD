@@ -7,6 +7,20 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Stored-cylinder curve coherence prerequisite
+
+The new OCCT CheckCurveCoherence and FreeCAD check_stored_cylinder_curves bound
+stored 3D/p-curve consistency over whole knot intervals, using speed and second
+derivative bounds with adaptive subdivision. Stored edge tolerances and the
+200000-interval default budget are preserved. The earlier speed-only method
+exhausted that budget for valid tight circles; interpolation curvature bounds
+resolve the issue. Interior spline corruption and budget exhaustion reject.
+The immutable stored owner's geometry/volume/solid certificates remain false.
+Focused IO passes 1/1 (6.834 s); cylinder core passes 22/22 (42.037 s);
+runtime/IO passes 2/2 (7.75 s).
+This is a prerequisite for full stored-field/region revalidation, not its
+completion. Dedicated document/GUI and general Stage 2–4 gates remain open.
+
 ## Milestone 99: explicit cylinder graph IO
 
 OCCT now stores and restores the actual shared three-face cylinder solid graph,

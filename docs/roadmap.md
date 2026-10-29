@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Stored cylinder curve consistency now has an explicit whole-interval audit of
+3D edges versus conventional face p-curves. It preserves unverified field/solid
+state. Field seam and material-region correspondence for the stored graph remain
+the next revalidation gates before document/GUI integration.
+
 [Cylinder graph persistence](native-cylinder-persistence.md) now restores actual
 shared native topology through explicit bounded IO and a distinct FreeCAD owner.
 Geometry/volume/solid certificates are cleared. Stored-graph revalidation,

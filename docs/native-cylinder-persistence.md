@@ -46,3 +46,20 @@ owner isolation and refusal by qualified query APIs.
 This API does not yet implement a cylinder document property, FCStd integration,
 trim-conforming display or general OCCT consumer support. Those remain required
 for the Stage 4 workflow.
+
+## Stored curve consistency
+
+`CheckCurveCoherence` / `check_stored_cylinder_curves(stored_solid_handle)`
+audits the restored 3D edges against their conventional cap/cylinder p-curves.
+It splits at every 3D and 2D spline knot. Each remaining interval has affine
+spline pieces or analytic circle/line pieces. Constant speed bounds provide
+a Lipschitz bound; second derivative bounds provide an interpolation remainder
+of `M * width**2 / 8`. Adaptive subdivision checks the entire parameter interval
+against the actual stored edge tolerance, with a floating-point reserve.
+Cylinder composition includes both angular curvature and p-curve acceleration.
+
+The default budget is 200000 intervals (hard maximum 2000000). Exhaustion,
+unsupported curves or inconsistent geometry produce an unverified report with
+a reason. This audit neither retraces the graph nor changes the stored owner.
+It does not verify the field seam, material region or mathematical volume, and
+does not promote GeometryVerified or SolidValidated. Those gates remain open.

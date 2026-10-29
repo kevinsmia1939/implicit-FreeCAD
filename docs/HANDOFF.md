@@ -22,6 +22,26 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Stored-cylinder revalidation prerequisite: curve coherence
+
+Native heads: FreeCAD 6c8d49d2e0; OCCT 7f3a41e62d.
+
+CheckCurveCoherence now audits the actual restored 3D edges against conventional
+face p-curves over whole parameter intervals. Knot partitions, speed/curvature
+bounds and adaptive interpolation remainders enforce the stored edge tolerance.
+The initial speed-only approach exhausted its budget on tight valid circles;
+the curvature bound resolves them without raising tolerances or default budgets.
+FreeCAD check_stored_cylinder_curves exposes an immutable report; no geometry,
+volume or solid flag is promoted. Tests include an altered interior spline pole
+and explicit budget failure. See native-cylinder-persistence.md.
+
+Focused IO passes 1/1 (6.834 s); cylinder core passes 22/22 (42.037 s);
+fork runtime/IO passes 2/2 (7.75 s).
+The previous full 160-case regression belongs to milestone 99; it is not new
+evidence for this added query. Next: field seam and retained-region correspondence
+for the unchanged stored graph, followed by volume requalification and live GUI
+integration. This prerequisite alone does not complete restored solid validity.
+
 ## Milestone 99: explicit shared cylinder graph persistence
 
 Native heads: FreeCAD 8d5c619a77; OCCT 5750846b64.
