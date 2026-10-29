@@ -22,6 +22,32 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Stored-cylinder reverse seam coverage
+
+Native heads: FreeCAD e9c83b40cb; OCCT ad2abd80bd.
+
+CheckSeamCoverage and FreeCAD check_stored_cylinder_seam_coverage now bound
+every zero on the full recipe-cylinder side against the unchanged stored seam.
+The pure CheckAxialField cover was extracted from CheckAxialSheet and is reused
+by construction; it performs no tracing and returns no boundary topology.
+Fresh whole-cylinder derivative cones prove uniqueness. Stored closed spline
+angular winding and arc residual/root brackets prove existence at every angle.
+Chord/arc and radial endpoint errors are included in the distance budget.
+
+The first test exhausted useful distance precision through an overly conservative
+global derivative bound; local derivative cones over each arc/tolerance tube
+resolve it without weakening uniqueness or the 0.1 mm distance target. Reports
+are immutable and do not promote loaded geometry/volume/solid flags. Partial/
+multi-sheet support, retained regions and solid requalification remain open.
+
+Focused IO passes 1/1 (5.708 s); runtime/cylinder/legacy-solid-IO passes 11/11
+(26.61 s). Full native regression passes 160/160 (CTest 360.03 s). Python syntax
+and all repository whitespace checks pass. Existing build/dependency trees only;
+no libraries changed during tests and no functional changes followed the run.
+Next: qualify the actual stored retained cap/cylinder regions and their material
+orientation against the field, then geometry/volume/solid restoration and live
+document/display/GUI integration. See native-cylinder-persistence.md.
+
 ## Stored-cylinder revalidation prerequisite: primitive and masked seam proximity
 
 Native heads: FreeCAD fcfe8ef0a8; OCCT a6c34e5668.

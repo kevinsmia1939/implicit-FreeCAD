@@ -101,3 +101,50 @@ This constrained query proves the directed stored-seam-to-masked-zero distance
 only. It does not establish reverse coverage of the mathematical intersection,
 retained-region correspondence, volume or solid validity. Near-cap witnesses
 that cannot fit the available axial bracket remain unverified.
+
+## Reverse seam coverage
+
+`CheckSeamCoverage` / `check_stored_cylinder_seam_coverage(handle)` bounds the
+other direction: every zero on the full recipe-cylinder side must lie near the
+stored seam. `CheckAxialField` reruns a pure whole-cylinder axial derivative
+cover without constructing or retracing topology. Its positive derivative
+bound proves at most one zero on each axial fibre. Its conservative cylinder
+enclosure must fit inside the authoritative primitive's computational box.
+
+The stored closed degree-one spline must wind once with strictly monotone
+angular spans. Each span defines a reference circular arc with affine height;
+the chord/arc deviation and endpoint radial errors are bounded. Gyroid Hessian
+and Lipschitz bounds control the field residual over that whole arc. Global and
+local axial derivative cones bracket a unique zero for every angle, inside the
+finite height range. Angular winding covers the circle, so no other cylinder
+side zeros can be missed. This audits the stored curves, without replacing them.
+
+Reports use `seam_coverage_verified/bound/intervals/reason`; the interval budget
+includes the derivative cover and arc checks. Unsupported angular reversals,
+multiple winding, open curves, missing height brackets, distance overruns or
+budget failures remain unverified. This sufficient full-disk path does not
+qualify partial/multi-sheet geometry, retained conventional regions, caps,
+material volume or solid validity. Stored-owner qualification flags stay false.
+
+## Remaining stored-region acceptance
+
+The next gate must inspect the retained faces already in the graph. Rebuilding
+new faces from source parameters would leave the loaded graph unverified.
+
+- Prove opposite strict field signs over both complete end disks, with fresh
+  adaptive bounds and axial uniqueness; do not trust StoredAxialDirection.
+- Match the retained planar surface, circle geometry, full-disk trim and outward
+  orientation to the correct material end. Check the actual stored cap, including
+  the collinear split circle arcs and their shared vertices.
+- Match the conventional cylinder surface/frame and its actual periodic seam
+  p-curves to the recipe. Establish which UV side of the field seam is retained,
+  with material orientation and complete chart coverage rather than one witness.
+- Recheck stored face/edge/vertex tolerances against fresh geometric bounds.
+  Curve consistency and seam proximity are separate prerequisites.
+- Combine both directions of stored-boundary geometry and material-region
+  correspondence before any geometry/volume/solid qualification. Loaded numeric
+  bounds remain provenance. Add wrong-cap/region/orientation and shifted-surface
+  negative tests, plus translations, budget failures and unchanged-source checks.
+
+Only after these gates should a restored owner become eligible for material
+queries, bounded volume integration, document persistence and live GUI display.

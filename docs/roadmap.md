@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Stored seam reverse coverage now uses a pure axial field cover and monotone
+single angular winding, bounding every full-cylinder-side zero against the
+unchanged stored seam. Retained conventional regions and material orientation
+remain the next revalidation gates before restored solid qualification and GUI.
+
 Stored implicit seam proximity now has directed spatial bounds to unrestricted
 primitive gyroid zeros and cylinder/source-mask-constrained axial witnesses.
 Reverse coverage and retained material regions remain open revalidation gates; loaded solids

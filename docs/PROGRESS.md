@@ -7,6 +7,19 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Stored-cylinder reverse seam coverage
+
+The pure CheckAxialField derivative cover is extracted from construction and
+now runs on stored data without tracing topology. CheckSeamCoverage combines
+fresh axial uniqueness with closed, monotone single angular winding, whole-arc
+field residual bounds and local/global derivative root brackets. Every recipe
+cylinder-side zero is bounded against the stored seam within the requested
+distance, including chord/arc and radial endpoint errors. FreeCAD exposes the
+immutable report. No geometry/volume/solid certificate is promoted. Focused IO
+passes 1/1 (5.708 s); runtime/cylinder/legacy-solid-IO passes 11/11 (26.61 s).
+Full native regression passes 160/160 (CTest 360.03 s). Retained cap/cylinder
+regions, full restoration and all broader Stage 2–4 gates remain open.
+
 ## Stored-cylinder primitive and masked seam proximity prerequisite
 
 The actual stored seam now has a whole-segment spatial distance audit against
