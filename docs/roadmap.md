@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Stored full-disk cap revalidation now recomputes end-disk material signs and
+checks the actual cap's plane, complete circular trim and outward orientation.
+The retained cylinder chart/region, combined geometry/tolerances and restored
+volume/solid qualification remain next; loaded owners still have false flags.
+
 Stored seam reverse coverage now uses a pure axial field cover and monotone
 single angular winding, bounding every full-cylinder-side zero against the
 unchanged stored seam. Retained conventional regions and material orientation

@@ -128,12 +128,24 @@ material volume or solid validity. Stored-owner qualification flags stay false.
 
 ## Remaining stored-region acceptance
 
+`CheckRetainedCap` / `check_stored_cylinder_retained_cap(handle)` now implements
+the full-disk cap prerequisite. It reruns axial uniqueness and adaptive opposite
+end-disk signs without trusting StoredAxialDirection. The selected material sign
+determines which end is retained. The actual stored plane must match that end
+and point outward; both stored analytic circle arcs must cover one consistently
+oriented full circle with shared endpoints. Plane/circle tilt is bounded in
+model length, including radius. Analytic coefficient differences bound complete
+3D/p-curve arcs rather than a few samples. The bounded disk interior and stored
+cap tolerance are checked. Reports use `retained_cap_verified/bound/intervals/reason`.
+The bound describes geometric cap alignment; whole-disk field signs are a
+separate logical gate. No loaded geometry/volume/solid flag is promoted.
+
 The next gate must inspect the retained faces already in the graph. Rebuilding
 new faces from source parameters would leave the loaded graph unverified.
 
-- Prove opposite strict field signs over both complete end disks, with fresh
+- Completed cap prerequisite: prove opposite strict field signs over both complete end disks, with fresh
   adaptive bounds and axial uniqueness; do not trust StoredAxialDirection.
-- Match the retained planar surface, circle geometry, full-disk trim and outward
+- Completed cap prerequisite: match the retained planar surface, circle geometry, full-disk trim and outward
   orientation to the correct material end. Check the actual stored cap, including
   the collinear split circle arcs and their shared vertices.
 - Match the conventional cylinder surface/frame and its actual periodic seam

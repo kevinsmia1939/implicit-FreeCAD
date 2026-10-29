@@ -22,6 +22,29 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Stored-cylinder retained-cap revalidation
+
+Native heads: FreeCAD fc5f421723; OCCT 7db5677b48.
+
+CheckRetainedCap / check_stored_cylinder_retained_cap now rerun whole-cylinder
+axial uniqueness and strict opposite signs over both complete end disks. Fresh
+proofs determine the correct retained material end without trusting stored axial
+direction. The actual stored cap plane, analytic circular arcs, shared endpoints,
+complete oriented circle, bounded interior and declared tolerance must match it.
+Whole-arc 3D/p-curve coefficient bounds and radius-scaled tilt checks qualify
+alignment; no sampled-only geometry test is used. No new faces are rebuilt.
+
+Focused IO passes 1/1 (4.989 s); runtime/IO passes 2/2 (6.51 s), including both
+signs, translated source, shifted-cap refusal, budget failure and recomputation
+despite reversed stored axial provenance. Cylinder group passes 22/22 (42.648 s).
+The earlier full 160/160 suite is separate evidence, not a new run for this query.
+
+Next: match the actual retained cylindrical surface/chart and selected UV region
+to the material, then combine tolerance and bidirectional geometry gates before
+volume/solid requalification. Document property, display and GUI integration,
+partial/multi-sheet and broader Stage 2–4 gates remain open. Stored qualification
+flags stay false. See native-cylinder-persistence.md.
+
 ## Stored-cylinder reverse seam coverage
 
 Native heads: FreeCAD e9c83b40cb; OCCT ad2abd80bd.

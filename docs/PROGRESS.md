@@ -7,6 +7,18 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Stored-cylinder retained-cap revalidation
+
+The actual stored cap now has a material/geometry audit. Fresh axial uniqueness
+and adaptive whole-end-disk signs select the material end. Stored plane, circle
+arcs, shared endpoints, full winding, outward orientation, bounded interior and
+tolerance must match. Analytic coefficient and radius-scaled tilt bounds cover
+complete curve/p-curve arcs. No reconstruction or loaded certificate promotion.
+Focused IO passes 1/1 (4.989 s); runtime/IO passes 2/2 (6.51 s), with shifted-cap
+and budget refusal and independent recomputation of stored axial provenance.
+Cylinder group passes 22/22 (42.648 s). Retained cylinder regions, combined boundary
+validation, volume/solid qualification and all Stage 2–4 gates remain open.
+
 ## Stored-cylinder reverse seam coverage
 
 The pure CheckAxialField derivative cover is extracted from construction and
