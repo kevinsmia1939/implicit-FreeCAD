@@ -22,6 +22,32 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Stored-cylinder retained-side revalidation
+
+Native heads: FreeCAD c609825193; OCCT f88fdcf9ad.
+
+CheckRetainedSide / check_stored_cylinder_retained_side now inspect the actual
+stored cylinder face. Fresh cap/field, curve-consistency and seam coverage
+prerequisites share one budget. Cylinder frame/radius/outward orientation,
+strictly monotone single field graph, two oriented cap arcs, paired periodic
+seams, full angular coverage and ordered UV joins select the correct material
+region. No retracing or replacement face construction occurs.
+
+Combined seam/curve/frame/join bounds must fit the query and implicit trim face;
+exact cylinder surface alignment is checked against its own face tolerance.
+Stored qualification flags stay false. Tests include both signs, translations,
+budget failure, shifted cylinder radius and a field p-curve moved a full turn.
+Cylinder regression passes 22/22 (38.900 s); runtime/cylinder/legacy-solid-IO
+passes 11/11 (25.24 s). Python syntax and repository whitespace checks pass.
+The earlier full suite belongs to the previous checkpoint. Existing
+build/dependency trees only; no library changes during tests.
+
+Next: combine the actual stored topology, cap/side material regions, implicit
+face domain/orientation and all declared tolerances into an owned restored
+geometry contract, then rerun volume/solid qualification without reconstructing
+the graph. Live document/display/GUI and broader Stage 2–4 gates remain open.
+See native-cylinder-persistence.md.
+
 ## Stored-cylinder retained-cap revalidation
 
 Native heads: FreeCAD fc5f421723; OCCT 7db5677b48.

@@ -7,6 +7,19 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Stored-cylinder retained-side revalidation
+
+The actual cylinder material face now has a periodic UV-region audit. Fresh
+cap/field, curve and seam prerequisites share one budget. Frame/radius/outward
+orientation, one monotone field graph, two cap arcs, paired seams and closed
+oriented UV joins establish the selected region across the full angular chart.
+Combined bounds fit the requested/implicit trim tolerance while exact surface
+alignment fits the conventional face tolerance. No retracing or loaded flag
+promotion. Tests cover shifted radius, a full-turn p-curve offset and budgets;
+cylinder group passes 22/22 (38.900 s), runtime/cylinder/legacy-solid-IO passes
+11/11 (25.24 s). Restored geometry ownership,
+volume/solid qualification and all broader Stage 2–4 requirements remain open.
+
 ## Stored-cylinder retained-cap revalidation
 
 The actual stored cap now has a material/geometry audit. Fresh axial uniqueness

@@ -143,12 +143,32 @@ separate logical gate. No loaded geometry/volume/solid flag is promoted.
 The next gate must inspect the retained faces already in the graph. Rebuilding
 new faces from source parameters would leave the loaded graph unverified.
 
+`CheckRetainedSide` / `check_stored_cylinder_retained_side(handle)` now checks
+the actual stored cylindrical material face. It reruns the cap/field,
+curve-consistency and seam-coverage prerequisites with a shared work budget.
+The cylinder frame/radius and outward orientation must match the recipe. Its
+single periodic UV wire must have exactly one strictly monotone field graph,
+two cap arcs, and the paired straight seams at the chart ends. Every graph pole
+must lie inside the finite height range; cap direction, full angular coverage
+and ordered UV joins select the material side determined by the fresh field
+proof. This is a complete simple graph region, not a point-classification test.
+
+For each stored spline span, the seam-coverage arc/root construction bounds
+both its points against cylinder-side roots and every root against the span.
+The curve-consistency bound transfers this correspondence to the stored UV
+graph. Matching material-side orientation selects the corresponding region.
+The combined distance includes seam, curve/surface consistency, frame alignment
+and UV join reserves. It must fit the request and the implicit trim-face
+tolerance. Cylinder surface alignment separately fits its own face tolerance;
+the contour approximation is not charged to that exact surface's tolerance.
+Reports use `retained_side_verified/bound/intervals/reason`. No flags are promoted.
+
 - Completed cap prerequisite: prove opposite strict field signs over both complete end disks, with fresh
   adaptive bounds and axial uniqueness; do not trust StoredAxialDirection.
 - Completed cap prerequisite: match the retained planar surface, circle geometry, full-disk trim and outward
   orientation to the correct material end. Check the actual stored cap, including
   the collinear split circle arcs and their shared vertices.
-- Match the conventional cylinder surface/frame and its actual periodic seam
+- Completed side prerequisite: match the conventional cylinder surface/frame and its actual periodic seam
   p-curves to the recipe. Establish which UV side of the field seam is retained,
   with material orientation and complete chart coverage rather than one witness.
 - Recheck stored face/edge/vertex tolerances against fresh geometric bounds.

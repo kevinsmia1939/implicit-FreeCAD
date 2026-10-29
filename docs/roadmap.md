@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Stored cylinder-side material regions now have a complete oriented periodic
+UV graph audit with fresh field and curve bounds. Combined stored geometry,
+tolerance/ownership and volume/solid requalification remain next before live
+document/display/GUI integration. Loaded flags remain unqualified.
+
 Stored full-disk cap revalidation now recomputes end-disk material signs and
 checks the actual cap's plane, complete circular trim and outward orientation.
 The retained cylinder chart/region, combined geometry/tolerances and restored
