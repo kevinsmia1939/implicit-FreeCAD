@@ -7,6 +7,19 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Cylinder display prerequisite: native boundary sampling
+
+Qualified cylinder snapshots now expose actual native vertices and curve
+polylines through Implicit.nativeGeometry and ComplexGeoData. Shared endpoints
+use native identity; lines/degree-one splines sample stored endpoints/poles and
+circles use whole-arc chord bounds plus endpoint/rounding reserves. Refusal
+policies bound precision and node counts. No source record or CAD topology is
+changed. Unverified owners reject sampling; owned snapshots survive document
+closure. CLI integration passes 17/17 (47.26 s); GUI runtime/property passes 3/3
+(7.61 s), including junction/vertex audits and independent circle checks.
+This is a prerequisite for the shared trim-conforming surface cache, not surface
+rendering or semantic viewport picks. All Stage 2–4 gates remain open.
+
 ## Milestone 101: native cylinder document/property lifecycle
 
 New dedicated complex geometry/property/GeoFeature types own the actual cylinder

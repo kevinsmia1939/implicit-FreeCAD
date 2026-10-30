@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Qualified cylinder snapshots now supply shared native endpoint/curve samples
+for display, with actual CAD vertices and bounded circle chords. The next gate
+is a trim-conforming field/cap/side surface cache using those boundaries, followed
+by rendering and semantic viewport picks. No surface display completion is claimed.
+
 [Cylinder document geometry](native-cylinder-document.md) now has a dedicated
 property/GeoFeature, FCStd graph persistence, unverified restore and explicit
 requalification with undo/redo. GUI tree ownership is tested. Trim-conforming

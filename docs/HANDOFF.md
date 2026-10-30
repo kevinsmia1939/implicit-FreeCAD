@@ -22,6 +22,37 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Cylinder display prerequisite: shared native boundary sampling
+
+Native heads: FreeCAD fedbda5886; OCCT unchanged at 7f042a8496.
+
+Implicit.nativeGeometry now returns an owned CylinderGeometry snapshot for the
+dedicated property. Qualified snapshots expose actual native vertex positions,
+per-element boundary lines and whole-graph sampled curves. Native endpoint
+identity shares junction indices; no distance welding or mesh vertices become
+CAD vertices. Degree-one splines retain their stored poles, lines use native endpoints and
+analytic circles use an R*angle^2/(8*N^2) chord bound, including endpoint and
+floating reserves. Invalid/too-tight accuracy and bounded node limits refuse.
+
+This is transient native-curve sampling, not surface tessellation, mathematical
+field-distance certification or viewport picking. Surface extraction continues
+to refuse. The stored field/topology record remains unchanged. Unverified
+owners expose no sampled geometry; owned snapshots survive document close.
+See native-cylinder-document.md for API/accuracy distinctions.
+
+Runtime/cylinder/property/reference/element/topology checks pass 17/17 (47.26 s).
+GUI runtime/property checks pass 3/3 (7.61 s), exercising the same snapshot APIs
+in the GUI process as well as tree lifecycle. Tests audit native junction degrees,
+three actual vertices, independent circle midpoint errors, refusal paths, source
+immutability and snapshot lifetime. Syntax/whitespace checks pass. Existing
+Implicit build only, two jobs/one link; CMake regeneration relinked dependencies.
+OCCT unchanged; no packages/system libraries changed.
+
+Next: use these shared native boundaries in the trim-conforming field/cap/side
+surface cache, then GUI rendering and semantic picking. Combine field-boundary,
+surface and upload allowances before claiming total display accuracy. Background
+requalification, live editing and all broader Stage 2–4 requirements remain open.
+
 ## Milestone 101: native cylinder document/property lifecycle
 
 Native heads: FreeCAD ea496252d4; OCCT unchanged at 7f042a8496.

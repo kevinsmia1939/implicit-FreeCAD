@@ -55,3 +55,30 @@ Next are that display cache, background cancellable requalification with atomic
 publication, semantic viewport selection and live field/operand parameter
 editing. Restored-owner material queries, broader mixed Booleans and all other
 unfinished Stage 2–4 acceptance gates remain open.
+
+## Native boundary sampling
+
+```python
+snapshot = Implicit.nativeGeometry(obj)
+points, segments = snapshot.getLines(.01)
+vertices, normals = snapshot.getPoints(.01)
+edge_points, edge_lines = snapshot.getLinesFromSubElement("Edge", 1)
+```
+
+These are owned immutable geometry snapshots, not live document references.
+They expose native Solid/Shell/Face/Edge/Vertex counts. getPoints returns only
+actual CAD vertices, with no invented mesh vertices or surface normals.
+getLines shares native endpoint indices across edges, retaining degree-one
+spline poles and native line endpoints. Analytic circles are sampled with a
+whole-arc chord bound `R * angle**2 / (8 * N**2)`, plus actual endpoint mismatch
+and floating reserves. The per-subelement line API uses .01 model units.
+Buffers are transient and never serialized; the authoritative graph is unchanged.
+
+The requested line accuracy is relative to the stored native curves. Their
+existing field-intersection approximation is separate, as is any future GPU
+upload displacement. It is not a total mathematical display-error certificate.
+Precision and a one-million-node limit can refuse sampling. Unverified snapshots
+have zero available-element counts and refuse line/point extraction. Generic
+surface extraction continues to refuse. This provides shared boundaries for
+the next surface-meshing stage; no cylinder surface renderer or viewport
+edge/vertex picking is claimed by this API.
