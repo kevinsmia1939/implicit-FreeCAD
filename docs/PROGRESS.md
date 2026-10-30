@@ -7,6 +7,20 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 102: cylinder surface preview and native picking
+
+The new opt-in preview shares native cap/field boundary samples across a cap,
+cylinder strip and rooted implicit sheet. Analytic normals smooth shading;
+native IDs identify faces/edges/vertices instead of triangles. Owned typed
+subobjects and detail paths resolve identity-placed frozen geometry. View caches
+are transient and clear/rebuild through hide, failure, unverified restoration
+and undo/redo. Surface-distance verification remains false; generic extraction
+still refuses. Selected integration passes 20/20 (62.26 s), including both signs,
+reversed/translated frames, independent roots, incidence, normals, source record
+immutability and actual GUI picks/lifecycle. The actual render was inspected.
+See [preview contract](native-cylinder-preview.md). Global display certification,
+background work, live editing and the wider Stage 2–4 gates remain open.
+
 ## Cylinder display prerequisite: native boundary sampling
 
 Qualified cylinder snapshots now expose actual native vertices and curve

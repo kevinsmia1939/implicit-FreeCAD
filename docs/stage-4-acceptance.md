@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 102 adds an opt-in shared-boundary cylinder surface preview, analytic
+normals and real native face/edge/vertex picking with typed owned subobjects.
+Source geometry remains authoritative. Global surface-distance/contact coverage,
+background work, live edits and broader placement/link/history consumers remain
+open. Closed render incidence is not evidence for completing Stage 3 or 4.
+
 Milestone 101 adds a dedicated cylinder geometry property/GeoFeature with actual
 FCStd graph payloads, unverified restoration and explicit requalification.
 CLI and GUI tree/whole-object lifecycle tests cover save/reopen and undo/redo.

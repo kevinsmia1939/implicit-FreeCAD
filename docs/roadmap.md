@@ -1,5 +1,10 @@
 # Technical roadmap
 
+[Cylinder surface preview](native-cylinder-preview.md) now renders shared-trim
+cap/side/field triangles with analytic normals and native face/edge/vertex picks.
+Its global surface distance remains unverified. Certified display coverage,
+background requalification, live editing and broader integration remain next.
+
 Qualified cylinder snapshots now supply shared native endpoint/curve samples
 for display, with actual CAD vertices and bounded circle chords. The next gate
 is a trim-conforming field/cap/side surface cache using those boundaries, followed

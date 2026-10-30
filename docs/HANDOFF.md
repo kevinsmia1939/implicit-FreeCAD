@@ -22,6 +22,41 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 102: conforming cylinder surface preview and native picks
+
+Native heads: FreeCAD 2465b026a5; OCCT unchanged at 7f042a8496.
+
+Implicit.cylinderPreview builds a transient cap/side/field preview from shared
+native boundary indices. Interior sheet nodes use bracketed field roots with
+spatial bounds; cap/cylinder/analytic field normals respect material orientation.
+Opposite edge incidence, used nodes and Euler characteristic are audited.
+Source records/topology remain unchanged. The surface-distance certificate is
+explicitly false: root-point, source-boundary, curve and upload bounds are
+separate. Generic getFaces still refuses rather than imply a stronger contract.
+
+ImplicitCylinder.attach_view supplies an opt-in Coin renderer with native face/
+edge/vertex tags, typed owned subobject resolution and detail paths. Identity-
+placed frozen snapshots are supported; broad placements/links/history remain
+open. View buffers clear on unverified/hidden/failed states and rebuild through
+qualification/undo/redo. FCStd stores no render buffers. Visual inspection caught
+an RGBA-to-RGB bug, now guarded by a material assertion, and circle sampling now
+scales with resolution for a smoother silhouette. See native-cylinder-preview.md.
+
+Selected CLI/GUI integration passes 20/20 (62.26 s): cylinder families, legacy
+properties/references/elements/topology, both material signs and translated/
+reversed frames, independent roots, mesh incidence, normals, source immutability,
+real viewport face/edge/vertex hits, typed selected geometry, save/reopen,
+hide/failure clearing and undo/redo. Python syntax and whitespace checks pass.
+Built existing Implicit/ImplicitScripts, two compile jobs/one link. OCCT is
+unchanged; no packages or system libraries changed. Current screenshot inspected
+at /tmp/implicit-cylinder-preview.png; optional test env captures it again.
+
+Next: global bidirectional surface/error coverage and triangle-contact checks
+for a total 0.1 mm display contract, cancellable background requalification/
+preview, restored material queries and live field/operand editing. General
+partial/multi-sheet, Boolean dispatch/history/consumer gates remain required.
+This restricted preview does not complete Stage 4.
+
 ## Cylinder display prerequisite: shared native boundary sampling
 
 Native heads: FreeCAD fedbda5886; OCCT unchanged at 7f042a8496.

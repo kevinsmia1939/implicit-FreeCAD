@@ -44,8 +44,9 @@ oversized records and atomic destination preservation. FreeCAD tests also check
 owner isolation and refusal by qualified query APIs.
 
 A separate [native cylinder document property](native-cylinder-document.md)
-now supports FCStd graph ownership and unverified restore. Trim-conforming
-display and general consumer/workbench integration remain Stage 4 requirements.
+now supports FCStd graph ownership and unverified restore. Shared-boundary
+preview rendering is available; global display certification and general
+consumer/workbench integration remain Stage 4 requirements.
 
 ## Stored curve consistency
 
@@ -244,7 +245,7 @@ and 10000000 root tests. Export accepts qualified restored solids using the
 same bounded explicit schema with fresh numeric provenance; Read never restores
 cached validity. This remains the implicit-aware contract, not ordinary OCCT
 mass properties or generic consumer support. A dedicated document property is
-available; live display/background GUI integration and restored-owner
+available with an opt-in display preview; certified/background GUI integration and restored-owner
 material-point queries remain required.
 
 The existing `NativeGeometry.h/.cpp` property implementation owns box-family
@@ -252,5 +253,6 @@ types. `CylinderGeometry.h/.cpp` now add the explicit representation-aware
 property/owner path. Restore reads the actual graph as unverified. Scheduling
 cancellable requalification and atomic publication remain next; field/volume
 qualification must stay outside FCStd parsing. Save uses explicit graph IO; display
-caches remain transient. Semantic topology selection, trim-conforming display,
-undo/redo, failure invalidation and save/reopen tests remain acceptance gates.
+caches remain transient. Frozen identity-placed selection and display/lifecycle
+tests now pass. Global display certification, broader consumer/history support
+and live source editing remain acceptance gates.

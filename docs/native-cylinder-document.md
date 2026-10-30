@@ -3,8 +3,8 @@
 `Implicit::NativeCylinderFeature` owns an
 `Implicit::PropertyNativeCylinderGeometry`, backed by actual native topology.
 It derives from `App::GeoFeature`, not `Part::Feature`; there is no arbitrary
-implicit field in a Part Shape. This is a document/persistence foundation, not
-the completed cylinder display or live source-editing workflow.
+implicit field in a Part Shape. An [opt-in surface preview](native-cylinder-preview.md)
+now renders this geometry with native picks; live source editing remains open.
 
 Use the fork's OCCT 8 runtime. Given a qualified restored-solid result from
 [cylinder persistence](native-cylinder-persistence.md):
@@ -26,7 +26,8 @@ record (which becomes unverified), or None. Invalid assignments are staged and
 reject before altering the current graph. In-memory Copy/Paste and undo/redo
 share immutable owners. Face/edge/vertex counts and native subelement segments
 are available to core geometry consumers only after qualification; persistent
-edit-surviving element history and viewport picking are not implemented here.
+edit-surviving element history remains open. Identity-placed native subobjects
+and preview viewport picking are now supported separately.
 
 FCStd stores the actual graph in a `.nativecylinder` payload, without a mesh or
 cached validity flags. Save/reopen always yields `GeometryState == "Unverified"`.
@@ -45,14 +46,14 @@ saved Ready text cannot override restored qualification. Compressed property
 transfer and inline Base64 XML follow the same policy. Inline payloads have an
 explicit bounded byte length, and unknown property schemas reject.
 
-GUI tests cover native tree ownership, whole-object selection and the same
-save/reopen/requalify/undo/redo lifecycle. They do not claim surface rendering
-or face picking. Generic surface extraction explicitly refuses: a trim-conforming
-transient cylinder display cache remains required. Nonidentity geometry
+GUI tests cover native tree ownership and the same save/reopen/requalify/undo/redo
+lifecycle, plus opt-in preview rendering and native face/edge/vertex hits.
+Generic surface extraction still refuses because global preview surface-distance
+accuracy is not certified. Nonidentity geometry
 transforms also refuse pending a representation-aware placement contract.
 
-Next are that display cache, background cancellable requalification with atomic
-publication, semantic viewport selection and live field/operand parameter
+Next are global display certification, background cancellable requalification
+with atomic publication, broader semantic consumers and live field/operand parameter
 editing. Restored-owner material queries, broader mixed Booleans and all other
 unfinished Stage 2–4 acceptance gates remain open.
 
@@ -80,5 +81,5 @@ upload displacement. It is not a total mathematical display-error certificate.
 Precision and a one-million-node limit can refuse sampling. Unverified snapshots
 have zero available-element counts and refuse line/point extraction. Generic
 surface extraction continues to refuse. This provides shared boundaries for
-the next surface-meshing stage; no cylinder surface renderer or viewport
-edge/vertex picking is claimed by this API.
+the separate surface-preview stage. The line API alone does not render a surface
+or define viewport selection behavior; see the preview contract for those.

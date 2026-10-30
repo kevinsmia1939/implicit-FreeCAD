@@ -1,5 +1,10 @@
 # Development stages and completion gates
 
+The [native cylinder preview](native-cylinder-preview.md) now shares actual
+trim samples across rendered cap/side/field faces and supports native picks.
+Global surface-distance certification remains false; background/live editing
+and broad Stage 2–4 gates remain unfinished.
+
 [Actual native cylinder solids](native-cylinder-solids.md) now construct the
 qualified full-disk material body after topology, geometry and bounded volume
 gates. They retain authoritative fields/shared trims and support owned material
