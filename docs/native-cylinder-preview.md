@@ -113,3 +113,40 @@ unverified. This is distinct from field-face distance and does not establish a
 whole-boundary certificate, triangle contact freedom or Stage 4 completion.
 Independent point-to-triangle tests sample the disk interior and rim against the
 actual uploaded fan, and fan interior samples against the mathematical disk.
+
+
+## Reverse mathematical sheet-to-uploaded-triangle coverage
+
+Milestone 105 adds sheet_reverse_distance_verified,
+sheet_reverse_distance_bound, sheet_reverse_triangles_checked and
+sheet_reverse_reason. A separate proof chart uses concentric uniformly scaled
+rings of an inscribed polygon at radius R minus a numerical inset. Its angular
+gaps are positive, smaller than pi and sum to one turn. The builder's matching
+fan/annulus triangles tile that convex polygon; these coordinates are proof
+witnesses, not substitute geometry or CAD topology. Reference vertices retain
+the actual binary32 uploaded heights. Vertex membership in the actual convex
+masked domain covers whole reference triangles.
+
+The gyroid Hessian bounds the residual over each whole reference triangle.
+Fresh axial uniqueness and the already qualified full-disk root existence give
+vertical distance at most residual/m, where m is a whole-cylinder derivative
+lower bound. Matching barycentric triangles add the maximum uploaded/reference
+vertex displacement D. The disk portion outside the reference polygon has
+planar deficit delta, bounded by radial inset plus circular sagitta. The true
+root graph has slope at most L/m, so the full reverse bound is
+D + delta + numerical_reserve + (maximum_residual + delta*L)/m.
+
+OCCT's original CheckAxialField overload retains its ABI and zero-threshold
+behavior. A new five-argument overload accepts a finite nonnegative minimum
+absolute axial derivative. The same Hessian cell cover refines until every
+accepted cell exceeds that threshold; unattainable requests, depth/cell budgets
+and cancellation still refuse. The display audit derives the required threshold
+from its actual residuals and the requested distance tolerance. It never replaces
+a failed cover by a sampled slope estimate or weakens the target tolerance.
+
+Both directed field flags and the cap flag are separate from the still-false
+overall surface_distance_verified. Side distance and triangle contact checks
+remain required. Reverse samples independently bisect mathematical roots over
+the disk interior/rim and measure distance to the actual uploaded triangles.
+Both material signs, translated/reversed and tilted frames pass. Coarse
+resolution remains unresolved rather than promoted from vertex roots.

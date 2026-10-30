@@ -1,5 +1,9 @@
 # Technical roadmap
 
+Reverse cylinder sheet-to-upload coverage now uses a whole reference-chart
+residual bound and a requested OCCT axial derivative lower bound. Side distance
+and contacts remain before a total display certificate; Stage 4 remains open.
+
 The uploaded cylinder cap fan now has a bidirectional mathematical disk-distance
 bound. Whole-boundary certification still needs reverse sheet coverage, side
 bounds and contacts, alongside the remaining live GUI and general kernel gates.

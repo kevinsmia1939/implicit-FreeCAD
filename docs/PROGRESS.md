@@ -7,6 +7,26 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 105: reverse mathematical sheet display coverage
+
+Native heads: FreeCAD 29ca79ca13; OCCT bf6afd3bc6.
+OCCT cylinder regression passes 23/23 (44.18 s); selected FreeCAD CLI/GUI
+checks pass 20/20 (76.02 s). Both signs, translated/reversed and tilted
+frames pass independent root-to-triangle distance checks; coarse resolution
+remains unverified. Built TKTopAlgo/native harness and matched Implicit/native
+bridge using existing builds. Python syntax and whitespace checks pass.
+No dependencies or system libraries changed.
+
+The uploaded cylinder sheet now has a reverse distance bound from the entire
+mathematical full-disk sheet. A matching concentric reference chart, whole-
+triangle residuals, full-cylinder axial derivative cover and rim graph-slope
+allowance cover triangle interiors and the curved disk rim. OCCT adds an ABI-
+preserving overload to request a minimum derivative lower bound; the display
+computes that threshold from residuals and tolerance instead of sampling slopes.
+The overall display certificate remains false pending side bounds and contacts.
+Background work, restored material queries, live edits and broader kernel/GUI
+Stage 2–4 gates remain open.
+
 ## Milestone 104: bidirectional uploaded cap-disk distance
 
 Native heads: FreeCAD 4598c8c873; OCCT unchanged at 7f042a8496.
