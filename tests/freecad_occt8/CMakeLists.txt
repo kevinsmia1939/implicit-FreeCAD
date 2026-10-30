@@ -13,6 +13,12 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_test(NAME implicit_occt8_cylinder_property
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_property_smoke.py")
+set_tests_properties(implicit_occt8_cylinder_property PROPERTIES
+    PASS_REGULAR_EXPRESSION "native implicit cylinder property smoke test passed"
+    FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 120)
 add_test(NAME implicit_occt8_cylinder_solid_io
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_solid_io_smoke.py")
 set_tests_properties(implicit_occt8_cylinder_solid_io PROPERTIES
@@ -166,6 +172,15 @@ option(IMPLICIT_MIGRATION_GUI_TESTS "Test the built OCCT 8 GUI (requires DISPLAY
 option(IMPLICIT_MIGRATION_DRAFT_TESTS "Test built Draft snapping integration (requires Draft and TechDrawGui)" OFF)
 set(IMPLICIT_OCCT_NATIVE_WORKER "" CACHE FILEPATH "Built native OCCT worker for GUI recipe tests")
 if(IMPLICIT_MIGRATION_GUI_TESTS)
+    add_test(NAME implicit_occt8_gui_cylinder_property
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD" --safe-mode
+            --user-cfg "${CMAKE_CURRENT_BINARY_DIR}/cylinder-property-user.cfg"
+            --system-cfg "${CMAKE_CURRENT_BINARY_DIR}/cylinder-property-system.cfg"
+            "${_scripts}/cylinder_property_gui_smoke.py")
+    set_tests_properties(implicit_occt8_gui_cylinder_property PROPERTIES
+        PASS_REGULAR_EXPRESSION "native implicit cylinder property GUI smoke test passed"
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_gui_runtime TIMEOUT 180)
     if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCAD"
        OR NOT EXISTS "${IMPLICIT_OCCT_NATIVE_WORKER}")
         message(FATAL_ERROR "Build the migration GUI and pass IMPLICIT_OCCT_NATIVE_WORKER")

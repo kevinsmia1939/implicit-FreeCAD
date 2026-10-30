@@ -22,6 +22,38 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 101: native cylinder document/property lifecycle
+
+Native heads: FreeCAD ea496252d4; OCCT unchanged at 7f042a8496.
+
+FreeCAD now registers CylinderGeometry, PropertyNativeCylinderGeometry and
+NativeCylinderFeature. The dedicated complex geometry property owns the actual
+qualified cylinder graph or an unverified stored owner, without a Part Shape.
+It saves explicit graph payloads in FCStd and restores unverified; ordinary
+recompute does not promote them. Property assignment stages validation before
+mutation. Copy/Paste and undo/redo share immutable owners.
+
+The derived GeometryState label is transient. Inline XML stores a bounded byte
+length, fixing the initial content-transfer failure and preventing saved Ready
+text from overriding loaded state. Compressed property transfer and inline
+restore are tested separately. Qualified topology exposes native subelement
+counts/segments to core consumers, but viewport picking/history remain open.
+Surface extraction and nonidentity geometry transforms explicitly refuse.
+
+Runtime/cylinder/legacy property and I/O checks pass 14/14 (41.46 s). GUI runtime
+and new cylinder property lifecycle pass 3/3 (7.63 s), covering real tree ownership,
+whole-object selection, save/reopen, explicit requalification, undo/redo and
+failed assignment preservation. Python syntax and repository whitespace checks
+pass. Built only the existing Implicit target with two jobs/one link; CMake
+regeneration also rebuilt existing Base/App/Part dependencies. No packages or
+system libraries changed. OCCT is unchanged; previous full kernel evidence is
+separate from these property tests. See native-cylinder-document.md.
+
+Next: trim-conforming transient cylinder display, background requalification,
+semantic viewport picks and live field/operand editing. This is not a completed
+cylinder workbench workflow or Stage 4 completion. All broader kernel/consumer/
+placement/history gates remain open.
+
 ## Milestone 100: requalified stored cylinder solids
 
 Native heads: FreeCAD 1b53afda55; OCCT 7f042a8496.

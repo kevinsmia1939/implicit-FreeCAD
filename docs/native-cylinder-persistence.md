@@ -43,9 +43,9 @@ preservation, shared topology, dropped certificates, malformed versions/counts,
 oversized records and atomic destination preservation. FreeCAD tests also check
 owner isolation and refusal by qualified query APIs.
 
-This API does not yet implement a cylinder document property, FCStd integration,
-trim-conforming display or general OCCT consumer support. Those remain required
-for the Stage 4 workflow.
+A separate [native cylinder document property](native-cylinder-document.md)
+now supports FCStd graph ownership and unverified restore. Trim-conforming
+display and general consumer/workbench integration remain Stage 4 requirements.
 
 ## Stored curve consistency
 
@@ -206,8 +206,8 @@ the existing owned construction contracts.
 
 This establishes the explicit implicit-aware boundary geometry contract for
 the supported full-disk path. It is not generic OCCT consumer support, volume
-qualification or a valid-solid promotion. Restored geometry still needs a fresh
-bounded material-volume/solid gate and representation-aware document/GUI wiring.
+qualification or a valid-solid promotion. Restored geometry needs the fresh
+bounded material-volume/solid gate below before solid use.
 The existing construction-owner material APIs do not yet accept this owner.
 
 ## Fresh restored volume and solid qualification
@@ -243,14 +243,14 @@ The default volume settings remain .01 absolute width, depth 24, 200000 cells
 and 10000000 root tests. Export accepts qualified restored solids using the
 same bounded explicit schema with fresh numeric provenance; Read never restores
 cached validity. This remains the implicit-aware contract, not ordinary OCCT
-mass properties or generic consumer support. Dedicated document/GUI integration
-and restored-owner material-point queries remain required.
+mass properties or generic consumer support. A dedicated document property is
+available; live display/background GUI integration and restored-owner
+material-point queries remain required.
 
 The existing `NativeGeometry.h/.cpp` property implementation owns box-family
-types. Cylinder document integration must add an explicit representation-aware
-property/owner path. Restore should read the actual graph as unverified, then
-schedule cancellable requalification and publish the immutable qualified owner
-atomically. It must not perform expensive qualification inside FCStd parsing or
-claim a ready display before qualification. Save uses explicit graph IO; display
+types. `CylinderGeometry.h/.cpp` now add the explicit representation-aware
+property/owner path. Restore reads the actual graph as unverified. Scheduling
+cancellable requalification and atomic publication remain next; field/volume
+qualification must stay outside FCStd parsing. Save uses explicit graph IO; display
 caches remain transient. Semantic topology selection, trim-conforming display,
 undo/redo, failure invalidation and save/reopen tests remain acceptance gates.

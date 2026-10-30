@@ -7,6 +7,19 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 101: native cylinder document/property lifecycle
+
+New dedicated complex geometry/property/GeoFeature types own the actual cylinder
+graph, save FCStd payloads and restore unverified. Invalid assignments preserve
+the current owner; Copy/Paste and undo/redo retain immutable ownership. State
+labels are transient and inline payloads are explicitly framed. No field is put
+in Part Shape. Runtime/cylinder/legacy-property and I/O checks pass 14/14 (41.46 s);
+GUI runtime/property lifecycle passes 3/3 (7.63 s), including tree selection and
+save/reopen/requalify/undo/redo. Existing Implicit/Base/App/Part builds only.
+OCCT is unchanged. Surface rendering, background publication, face picking,
+live source edits and broader Stage 2–4 gates remain open. See
+[document contracts](native-cylinder-document.md).
+
 ## Milestone 100: requalified stored cylinder solids
 
 The verified stored graph now has fresh bounded volume and explicit solid

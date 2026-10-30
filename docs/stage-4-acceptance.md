@@ -1,5 +1,11 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 101 adds a dedicated cylinder geometry property/GeoFeature with actual
+FCStd graph payloads, unverified restoration and explicit requalification.
+CLI and GUI tree/whole-object lifecycle tests cover save/reopen and undo/redo.
+Trim-conforming surface display, background publication, semantic viewport
+selection and live source edits remain open, along with the broader gates below.
+
 Milestone 100 requalifies the unchanged restored cylinder solid with fresh
 geometry and bounded mathematical material volume. Export preserves topology
 with fresh numeric provenance; loading clears certificates. This closes the

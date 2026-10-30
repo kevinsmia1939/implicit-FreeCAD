@@ -1,5 +1,11 @@
 # Technical roadmap
 
+[Cylinder document geometry](native-cylinder-document.md) now has a dedicated
+property/GeoFeature, FCStd graph persistence, unverified restore and explicit
+requalification with undo/redo. GUI tree ownership is tested. Trim-conforming
+surface display, background jobs, face picking and live source editing remain
+required; this does not complete Stage 4.
+
 Restored cylinder solids now undergo fresh bounded-volume qualification on the
 same stored graph, and can be re-exported without serializing certificates.
 Dedicated document/property/FCStd, trim-conforming display and live GUI workflow
