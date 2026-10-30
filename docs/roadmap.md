@@ -1,5 +1,9 @@
 # Technical roadmap
 
+The uploaded cylinder cap fan now has a bidirectional mathematical disk-distance
+bound. Whole-boundary certification still needs reverse sheet coverage, side
+bounds and contacts, alongside the remaining live GUI and general kernel gates.
+
 Whole uploaded field-triangle directed distance is now bounded in the restricted
 cylinder preview. Reverse coverage, cap/side bounds and contact checks remain
 required for a total display certificate; Stage 4 remains incomplete.

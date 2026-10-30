@@ -7,6 +7,21 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 104: bidirectional uploaded cap-disk distance
+
+Native heads: FreeCAD 4598c8c873; OCCT unchanged at 7f042a8496.
+Selected CLI/GUI checks pass 5/5 (18.30 s); final strengthened preview
+checks pass 2/2 (6.86 s). Built Implicit with two jobs; whitespace checks pass.
+
+The preview now compares its entire uploaded cap fan with the mathematical
+retained disk in both directions. A matching ideal inscribed fan, maximum
+binary32 vertex perturbation, checked single angular winding and circular
+sagitta bound cover triangle interiors and the curved rim. Independent disk-to-
+triangle and triangle-to-disk samples exercise both material signs and the
+translated/reversed frame. The field subset remains separately directed;
+reverse sheet coverage, side bounds and triangle contacts remain open before
+any total 0.1 mm display contract. Stage 4 remains incomplete.
+
 ## Milestone 103: whole uploaded field-triangle distance
 
 Native heads: FreeCAD 4322c26a15; OCCT unchanged at 7f042a8496.

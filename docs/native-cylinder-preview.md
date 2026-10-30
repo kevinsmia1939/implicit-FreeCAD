@@ -95,3 +95,21 @@ proof does not establish reverse coverage, cap/side accuracy or triangle contact
 freedom. Tests exercise successful resolution-6 and unresolved resolution-2
 cases, both material signs, translated/reversed frames and independent interior
 root distances using binary32 vertices. Source topology and records are unchanged.
+
+
+## Uploaded cap fan versus the retained mathematical disk
+
+Milestone 104 adds cap_disk_distance_verified, cap_disk_distance_bound and
+cap_disk_reason. The actual cap boundary order must have positive angular gaps
+smaller than pi and wind exactly once about the source axis. An ideal inscribed
+polygon uses the same radial directions at the qualified retained cap height.
+The source fan and ideal fan have matching indexed triangles. Maximum vertex
+perturbation (including the actual binary32 upload and numerical reserve) bounds
+the Hausdorff distance of the two fans by barycentric correspondence. The disk
+outside the ideal convex polygon is bounded by R*maximum_gap^2/8, with an angular
+reserve. Their sum bounds both directions between the entire uploaded cap fan
+and the mathematical retained disk. Failed sufficient checks leave the subset
+unverified. This is distinct from field-face distance and does not establish a
+whole-boundary certificate, triangle contact freedom or Stage 4 completion.
+Independent point-to-triangle tests sample the disk interior and rim against the
+actual uploaded fan, and fan interior samples against the mathematical disk.
