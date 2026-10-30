@@ -150,3 +150,40 @@ remain required. Reverse samples independently bisect mathematical roots over
 the disk interior/rim and measure distance to the actual uploaded triangles.
 Both material signs, translated/reversed and tilted frames pass. Coarse
 resolution remains unresolved rather than promoted from vertex roots.
+
+
+## Bidirectional uploaded cylinder-side distance
+
+Milestone 106 adds side_distance_verified, side_distance_bound,
+side_triangles_checked and side_distance_reason. The existing zipper records
+matching unwrapped (angle,height) triangle witnesses. Both angular boundary
+sequences must increase from zero to one full turn with gaps smaller than pi.
+Field heights must lie strictly on the material side of the retained cap and
+inside the finite cylinder height range. The construction triangulates the
+strip between that cap and a piecewise-linear field-height graph.
+
+For every entire uploaded triangle, matching barycentric points on the curved
+cylinder lift differ by at most the maximum uploaded/reference vertex
+perturbation plus R*angular_span^2/8 and numerical reserves. This uses the actual
+binary32 coordinates, including the periodic seam endpoints. Along each lifted
+field-height boundary interval, the composite field second derivative is bounded
+by H*(R^2 + height_slope^2) + L*R. The whole-interval interpolation residual is
+therefore bounded by endpoint residuals plus
+(H*(R^2*delta_angle^2 + delta_height^2) + L*R*delta_angle^2)/8,
+with reserves. A fresh full-cylinder axial lower bound m converts this to a
+vertical distance to the unique mathematical field root. The required m is
+derived from the remaining distance budget, using the existing requested-bound
+OCCT overload when necessary.
+
+At fixed angle, the reference and mathematical wall intervals share the cap
+endpoint. Their Hausdorff distance is bounded by their field-height endpoint
+difference, giving both directions over the entire wall. The final side bound
+sums the cylinder-lift and field-height allowances. Failed sufficient checks
+remain unverified. No source fields, topology or saved records are changed.
+
+Independent tests sample mathematical wall interiors and both boundaries against
+the actual uploaded triangles, and uploaded triangle interior points against
+explicit valid mathematical wall witnesses. Both material signs and translated,
+reversed and tilted frames pass. The overall surface_distance_verified remains
+false: triangle contacts and the publication policy still need qualification.
+This does not complete Stage 4 or enable generic OCCT consumers.

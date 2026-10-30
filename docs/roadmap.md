@@ -1,5 +1,9 @@
 # Technical roadmap
 
+The restricted cylinder preview now has bidirectional wall-distance bounds in
+addition to field-sheet and cap coverage. Triangle contacts and publication
+policy remain before the overall display certificate; Stage 4 remains open.
+
 Reverse cylinder sheet-to-upload coverage now uses a whole reference-chart
 residual bound and a requested OCCT axial derivative lower bound. Side distance
 and contacts remain before a total display certificate; Stage 4 remains open.

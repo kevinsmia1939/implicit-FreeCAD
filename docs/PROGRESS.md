@@ -7,6 +7,23 @@ concrete increments; the overall nTop-class goal remains a substantial project.
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
 
+## Milestone 106: bidirectional cylinder-side display distance
+
+Native heads: FreeCAD 4835021f99; OCCT unchanged at bf6afd3bc6.
+Preview/runtime checks pass 2/2 (17.87 s); document/GUI lifecycle checks
+pass 4/4 (14.21 s). Built only matched Implicit with two jobs. Python syntax
+and whitespace checks pass. No dependencies or system libraries changed.
+
+The preview now bounds the entire uploaded wall in both directions against the
+mathematical retained cylinder side. Matching unwrapped chart triangles bound
+cylinder curvature/upload perturbations; whole lifted boundary-interval field
+residuals and the OCCT axial cover bound the true field-height graph. Independent
+wall-to-triangle and triangle-to-wall witnesses exercise both material signs,
+translated/reversed and tilted frames. Source records and native topology remain
+authoritative and unchanged. The overall display certificate stays false pending
+triangle-contact checks and publication policy; the remaining background/live
+editing/general kernel and GUI gates still prevent Stage 4 completion.
+
 ## Milestone 105: reverse mathematical sheet display coverage
 
 Native heads: FreeCAD 29ca79ca13; OCCT bf6afd3bc6.
