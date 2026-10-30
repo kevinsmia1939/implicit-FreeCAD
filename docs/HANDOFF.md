@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-29. This file is the entry point for a developer or coding
+Last updated: 2026-10-30. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,38 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 100: requalified stored cylinder solids
+
+Native heads: FreeCAD 1b53afda55; OCCT 7f042a8496.
+
+BoundVolume and QualifySolid now use fresh bounded mathematical material volume
+on the unchanged verified stored graph. Construction and restoration share a
+private integrator; only qualified geometry paths can reach it. Saved volume
+numbers and axial provenance are not certificates. Positive partial volume and
+closed shape gates qualify the same existing TopoDS_Solid, with no reconstruction.
+Work budgets, coarse-volume refusal and final cancellation gates are preserved;
+callbacks are not retained. Validity is the explicit implicit-aware contract.
+
+FreeCAD bound_stored_cylinder_volume/qualify_stored_cylinder_solid accept verified
+stored geometry or qualified restored-solid owners. Failed owners reject;
+inspect_qualified_stored_cylinder_solid reports without rebuilding. Raw loaded
+owners and dictionaries cannot promote themselves. dumps_cylinder_solid now
+also exports qualified restored owners, with fresh volume/bound provenance.
+Read still clears all certificates and checks actual shared topology.
+
+Focused native IO passes 1/1 (6.928 s); runtime/cylinder/legacy-solid-IO passes
+11/11 (26.77 s). Full native regression passes 160/160 (CTest 337.25 s).
+Python syntax and all repository whitespace checks pass. Tests cover both signs,
+translations, original graph identity,
+bogus saved volume provenance, failure budgets, coarse-volume refusal, late
+cancellation, immutable reports and export/read certificate clearing.
+
+Next: trim-conforming cylinder display and a dedicated live document geometry
+property with FCStd restoration/requalification and GUI lifecycle tests. Material
+point queries for restored owners are not yet connected. General mixed Boolean
+dispatch/history, partial/multi-sheet support and broader Stage 2–4 gates remain
+open. Generic OCCT consumers remain unsupported. Existing builds/dependencies only.
 
 ## Owned restored cylinder geometry
 

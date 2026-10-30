@@ -1,11 +1,25 @@
 # Implementation progress and remaining work
 
-Updated 2026-10-29. The user has authorized continuing the full roadmap,
+Updated 2026-10-30. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
+
+## Milestone 100: requalified stored cylinder solids
+
+The verified stored graph now has fresh bounded volume and explicit solid
+qualification, preserving the original actual solid identity. Construction and
+restoration share a private qualified-field integrator. Saved numbers remain
+provenance; failed budgets, insufficient positive/partial bounds and cancellation
+refuse qualification. FreeCAD owns distinct immutable restored-solid results;
+inspection and repeat volume queries reuse geometry without rebuilding. Export
+preserves the graph with fresh provenance; reading still clears certificates.
+Focused native IO passes 1/1 (6.928 s); runtime/cylinder/legacy-solid-IO passes
+11/11 (26.77 s). Full native regression passes 160/160 (CTest 337.25 s).
+Python syntax and whitespace checks pass. Document/property/display/
+GUI workflows, restored material queries and broader Stage 2–4 gates remain open.
 
 ## Owned restored cylinder geometry
 

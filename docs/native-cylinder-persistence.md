@@ -209,3 +209,48 @@ the supported full-disk path. It is not generic OCCT consumer support, volume
 qualification or a valid-solid promotion. Restored geometry still needs a fresh
 bounded material-volume/solid gate and representation-aware document/GUI wiring.
 The existing construction-owner material APIs do not yet accept this owner.
+
+## Fresh restored volume and solid qualification
+
+```python
+solid = native.qualify_stored_cylinder_solid(geometry["stored_geometry_handle"],
+                                            volume_tolerance=.01)
+assert solid["solid_validated"], solid["solid_reason"]
+handle = solid["qualified_stored_solid_handle"]
+volume = native.bound_stored_cylinder_volume(handle, volume_tolerance=.02)
+record = native.dumps_cylinder_solid(handle)
+loaded_again = native.loads_cylinder_solid(record)
+assert not loaded_again["solid_validated"]
+```
+
+`BoundVolume` and `QualifySolid` consume unchanged verified stored geometry.
+They share the construction path's private conservative disk/fibre integrator,
+with adaptive area and Taylor root-height bounds. The requested absolute width
+is in model length cubed, independent of the geometric trim tolerance. Saved
+volume numbers are ignored. A bounded strictly positive volume strictly below
+the full cylinder volume is required to qualify the solid. Coarse bounds can be
+valid volume intervals and still fail that solid gate.
+
+The qualified result retains the same TopoDS_Solid identity. No replacement
+shell, mesh or fitted boundary is created. The original raw/geometry owner stays
+unchanged; the new solid owner has independent immutable qualification. Failed
+geometry/solid owners refuse volume queries. Late cancellation propagates before
+the stored shape is published as qualified; no callbacks are retained.
+
+`inspect_qualified_stored_cylinder_solid` does not rebuild. Both geometry and
+qualified solid owners support repeat `bound_stored_cylinder_volume` queries.
+The default volume settings remain .01 absolute width, depth 24, 200000 cells
+and 10000000 root tests. Export accepts qualified restored solids using the
+same bounded explicit schema with fresh numeric provenance; Read never restores
+cached validity. This remains the implicit-aware contract, not ordinary OCCT
+mass properties or generic consumer support. Dedicated document/GUI integration
+and restored-owner material-point queries remain required.
+
+The existing `NativeGeometry.h/.cpp` property implementation owns box-family
+types. Cylinder document integration must add an explicit representation-aware
+property/owner path. Restore should read the actual graph as unverified, then
+schedule cancellable requalification and publish the immutable qualified owner
+atomically. It must not perform expensive qualification inside FCStd parsing or
+claim a ready display before qualification. Save uses explicit graph IO; display
+caches remain transient. Semantic topology selection, trim-conforming display,
+undo/redo, failure invalidation and save/reopen tests remain acceptance gates.

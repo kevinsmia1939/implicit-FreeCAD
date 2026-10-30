@@ -1,5 +1,12 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Milestone 100 requalifies the unchanged restored cylinder solid with fresh
+geometry and bounded mathematical material volume. Export preserves topology
+with fresh numeric provenance; loading clears certificates. This closes the
+restricted API restoration path, not dedicated document/FCStd, conforming display
+or live GUI lifecycle gates. Restored material queries and all broader Stage 2–4
+requirements remain open; generic OCCT consumers are not enabled.
+
 Milestone 99 adds bounded explicit persistence of the actual shared cylinder
 solid graph. Restored topology is checked; geometry, volume and solid
 qualification remain false. Stored-graph revalidation, document property/FCStd

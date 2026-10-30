@@ -1,5 +1,10 @@
 # Technical roadmap
 
+Restored cylinder solids now undergo fresh bounded-volume qualification on the
+same stored graph, and can be re-exported without serializing certificates.
+Dedicated document/property/FCStd, trim-conforming display and live GUI workflow
+integration remain next. Restored material queries and broader kernel gates stay open.
+
 Restored cylinder graphs now have an owned boundary-geometry qualification
 result combining fresh topology, material regions, actual-mask domain and
 declared tolerances. The original loaded owner is unchanged. Fresh volume/solid
