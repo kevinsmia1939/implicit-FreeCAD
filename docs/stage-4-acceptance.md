@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+Whole uploaded field-triangle directed distance is now bounded in the restricted
+cylinder preview. Reverse coverage, cap/side bounds and contact checks remain
+required for a total display certificate; Stage 4 remains incomplete.
+
 Milestone 102 adds an opt-in shared-boundary cylinder surface preview, analytic
 normals and real native face/edge/vertex picking with typed owned subobjects.
 Source geometry remains authoritative. Global surface-distance/contact coverage,

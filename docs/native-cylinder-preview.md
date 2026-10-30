@@ -71,3 +71,27 @@ save/reopen and undo/redo. The optional test environment variable
 `IMPLICIT_CYLINDER_PREVIEW_SCREENSHOT` captures the actual GUI render. Visual
 inspection caught an RGBA/RGB conversion error; material-value assertions now
 guard that path too.
+
+
+## Whole uploaded field-triangle directed distance
+
+Milestone 103 adds `field_triangle_distance_verified`,
+`field_triangle_distance_bound`, `field_triangles_checked`,
+`field_triangle_reason` and `field_triangle_buffer` to cylinderPreview.
+The buffer is binary32_upload: every input vertex is converted exactly as for
+Coin. Each field triangle is contracted radially by a common affine factor to
+keep its witnesses inside the finite cylinder. The contraction displacement is
+included in the bound. A global gyroid Hessian bound controls the interpolation
+residual over all barycentric points (H*diameter^2/6), and a fixed axial derivative
+cone turns that residual into a spatial root bound. Both ends of the axial
+witness prism must lie inside the actual implicit face domain. Convexity of the
+qualified box/full-cylinder domain then covers all witnesses, including triangle
+interiors. Numerical reserves are included. No sampling-only promotion occurs.
+
+The bound is valid only when the subset flag is true. A failed sufficient test
+reports a reason and a processed prefix, not evidence that the mesh is invalid.
+The overall surface_distance_verified flag remains false: this directed subset
+proof does not establish reverse coverage, cap/side accuracy or triangle contact
+freedom. Tests exercise successful resolution-6 and unresolved resolution-2
+cases, both material signs, translated/reversed frames and independent interior
+root distances using binary32 vertices. Source topology and records are unchanged.

@@ -22,6 +22,20 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 103: whole uploaded field-triangle distance
+
+Native heads: FreeCAD 4322c26a15; OCCT unchanged at 7f042a8496.
+Selected CLI/GUI checks pass 5/5 (19.15 s); Implicit built with two jobs.
+Whitespace checks pass; no dependencies or system libraries changed.
+
+Cylinder previews now bound every field triangle against the masked mathematical
+sheet, using binary32 upload coordinates, a Hessian interpolation bound, axial
+derivative cones and convex masked witness prisms. Resolution-6 tests qualify;
+coarse resolution-2 stays explicitly unresolved. The bound is directed and covers
+only the field face; overall surface verification remains false. Reverse
+coverage, cap/side accuracy, contacts, background work, live edits and broader
+Stage 2–4 requirements remain open. See native-cylinder-preview.md.
+
 ## Milestone 102: conforming cylinder surface preview and native picks
 
 Native heads: FreeCAD 2465b026a5; OCCT unchanged at 7f042a8496.
