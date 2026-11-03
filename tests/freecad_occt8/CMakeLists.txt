@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 cmake_minimum_required(VERSION 3.20)
-project(ImplicitFreeCADOCCT8MigrationTests LANGUAGES NONE)
+project(ImplicitFreeCADOCCT8MigrationTests LANGUAGES CXX)
 
 # Keep the working OCCT 7 umbrella tests untouched. This harness runs only the
 # migration binary, including an actual loaded-library audit before smoke tests.
@@ -13,6 +13,10 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+add_executable(implicit_preview_contact_tests "${_scripts}/PreviewContacts.cpp")
+target_compile_features(implicit_preview_contact_tests PRIVATE cxx_std_17)
+target_include_directories(implicit_preview_contact_tests PRIVATE "${_scripts}/../App")
+add_test(NAME implicit_preview_contacts COMMAND implicit_preview_contact_tests)
 add_test(NAME implicit_occt8_cylinder_preview
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_preview_smoke.py")
 set_tests_properties(implicit_occt8_cylinder_preview PROPERTIES

@@ -1,5 +1,9 @@
 # Active goal: through Stage 4, seamless FreeCAD integration
 
+The restricted cylinder preview now qualifies exact triangle contacts and
+certifies global surface distance (bound <= 0.1 mm) in the GUI. Background
+requalification, live parameter editing and Stage 4 kernel gates remain open.
+
 The restricted cylinder preview now has bidirectional wall-distance bounds in
 addition to field-sheet and cap coverage. Triangle contacts and publication
 policy remain before the overall display certificate; Stage 4 remains open.

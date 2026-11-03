@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-10-30. This file is the entry point for a developer or coding
+Last updated: 2026-11-03. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,24 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 107: exact preview triangle contacts and certified cylinder surface display
+
+Native heads: FreeCAD 96519d45a7; OCCT unchanged at bf6afd3bc6.
+Contact test passes 1/1 (0.02 s); preview/property checks pass 2/2 (23.80 s);
+GUI lifecycle checks pass 1/1 (10.20 s); cylinder regression suite passes
+15/15 (52.88 s). Built matched Implicit/FreeCAD with two jobs. Python syntax
+and whitespace checks pass. No dependencies or system libraries changed.
+
+PreviewContacts now audits uploaded binary32 triangle contacts through exact integer
+arithmetic and separating-axis tests under an AABB sweep-and-prune broad phase.
+With field-triangle distance, reverse sheet coverage, cap-disk distance, side
+distance and triangle contacts all satisfied, the preview certifies
+surface_distance_verified = true and surface_distance_bound <= 0.1 mm. The GUI
+transitions to "Verified preview" and sets SurfaceDistanceVerified/SurfaceDistanceBound.
+Source records and native topology remain authoritative and unchanged.
+Cancellable background requalification, live field/operand parameter editing,
+restored material queries, and general kernel/GUI Stage 2–4 gates remain open.
 
 ## Milestone 106: bidirectional cylinder-side display distance
 

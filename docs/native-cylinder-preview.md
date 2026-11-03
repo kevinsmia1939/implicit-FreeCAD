@@ -187,3 +187,26 @@ explicit valid mathematical wall witnesses. Both material signs and translated,
 reversed and tilted frames pass. The overall surface_distance_verified remains
 false: triangle contacts and the publication policy still need qualification.
 This does not complete Stage 4 or enable generic OCCT consumers.
+
+
+## Exact uploaded triangle contacts and verified display certificate
+
+Milestone 107 adds `PreviewContacts.h` with exact binary32 integer coordinates
+(via Boost multiprecision), separating-axis tests, ray intersection, and coplanar
+containment/crossing predicates across an AABB sweep-and-prune broad phase.
+Triangle pairs sharing an indexed vertex or edge cannot contact across interiors;
+pairs with disjoint indices must strictly separate. Unindexed coincident vertices,
+spurious intersections, and degenerate/duplicate triangles refuse.
+
+With field-triangle distance, reverse sheet coverage, cap-disk distance,
+side distance, and triangle contacts all verified, `surface_distance_verified`
+evaluates to true and `surface_distance_bound <= 0.1` mm is certified for
+conforming cylinder previews. In `ImplicitCylinder.py`, `CylinderView` publishes
+`SurfaceDistanceVerified = True`, sets `SurfaceDistanceBound`, and transitions to
+`PreviewState = "Verified preview"`. Coarse resolutions remain unresolved and
+report `SurfaceDistanceVerified = False`.
+
+This certifies the display representation against the authoritative mathematical
+field; it does not replace the native topology or convert meshes into CAD faces.
+Background cancellable requalification, live parameter editing, generic
+mixed Booleans, and broader Stage 2–4 gates remain open.
