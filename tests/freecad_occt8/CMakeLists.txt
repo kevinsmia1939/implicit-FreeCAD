@@ -13,6 +13,17 @@ if(NOT EXISTS "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd"
 endif()
 set(_scripts "${_root}/FreeCAD/src/Mod/Implicit/Tests")
 enable_testing()
+foreach(_case IN ITEMS jobs job_shutdown)
+    add_test(NAME "implicit_occt8_cylinder_${_case}"
+        COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_${_case}_smoke.py")
+    set_tests_properties("implicit_occt8_cylinder_${_case}" PROPERTIES
+        FAIL_REGULAR_EXPRESSION "Traceback|Exception while processing file"
+        FIXTURES_REQUIRED occt8_runtime TIMEOUT 180)
+endforeach()
+set_tests_properties(implicit_occt8_cylinder_jobs PROPERTIES
+    PASS_REGULAR_EXPRESSION "native cylinder jobs smoke test passed")
+set_tests_properties(implicit_occt8_cylinder_job_shutdown PROPERTIES
+    PASS_REGULAR_EXPRESSION "native cylinder job shutdown smoke test passed" TIMEOUT 45)
 add_executable(implicit_preview_contact_tests "${_scripts}/PreviewContacts.cpp")
 target_compile_features(implicit_preview_contact_tests PRIVATE cxx_std_17)
 target_include_directories(implicit_preview_contact_tests PRIVATE "${_scripts}/../App")

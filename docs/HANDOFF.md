@@ -22,6 +22,32 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 110: shared native cylinder background jobs
+
+Native heads: FreeCAD 1e28a66c16; OCCT unchanged at 9944ab1fdb.
+New cylinder job/shutdown/runtime checks pass 3/3 (14.93 s). Existing cylinder,
+worker, shutdown/publication, solid-batch and GUI checks pass 25/25 (276.80 s).
+Python syntax and whitespace checks pass. Built matched Implicit/native work
+and execution-test targets with two compile jobs and the existing link pool.
+No packages or system libraries changed.
+
+ImplicitNativeWork now holds the native worker, checked display and cylinder
+preview code for both Implicit and _ImplicitOCCT. There is one shared worker and
+one additional queue slot. Cylinder jobs own a serialized graph and resolution;
+they privately restore/requalify geometry and volume, then build a preview.
+submitCylinderJob/takeCylinderJob return owned geometry, preview and exact input
+record/settings without changing the document. Existing native status/cancel APIs
+apply. Model builds preempt new cylinder presentation jobs. Tests cover source
+edits/deletion, both signs, matching uploaded buffers, Python responsiveness,
+queue sharing/limits, cancellation, result-kind guards and joined shutdown.
+See [cylinder jobs](native-cylinder-jobs.md).
+
+The cylinder GUI still uses the synchronous API. Next implement a GUI controller
+with polling, source/settings/generation guards, coalescing and cancellation on
+hide/delete/close, then enable background publication only after lifecycle tests.
+Live source editing and broader Stage 2–4 Boolean/history/consumer gates remain.
+The user requested commit/push and a goal pause after publishing this milestone.
+
 ## Milestone 109: cooperative cylinder execution control
 
 Native heads: FreeCAD 71ce218aff; OCCT 9944ab1fdb.

@@ -219,3 +219,11 @@ scope, including whole-distance coverage and exact contacts. See
 [native-cylinder-work.md](native-cylinder-work.md) for cancellation, atomic buffer
 publication, tests and the remaining worker/GUI scheduling milestone. The view
 still calls the preview synchronously; no background GUI completion is claimed.
+
+
+## Background backend
+
+[Cylinder jobs](native-cylinder-jobs.md) now run private requalification and this
+preview on the shared bounded native worker. They return exact input fingerprints
+and owned results. The view still calls synchronously; a guarded GUI controller
+is the next milestone. No automatic document adoption occurs in the worker.

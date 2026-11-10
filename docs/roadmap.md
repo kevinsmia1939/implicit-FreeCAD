@@ -1,5 +1,10 @@
 # Technical roadmap
 
+[Cylinder background jobs](native-cylinder-jobs.md) now privately requalify and
+preview serialized graphs on the same bounded worker as box jobs. Document
+adoption is explicit. GUI polling/publication guards and live editing remain
+next; Stage 4 remains open.
+
 [Cylinder execution control](native-cylinder-work.md) now propagates shared
 cooperative cancellation through restored qualification, preview distance proofs
 and exact contacts. Atomic sampling publication and recovery are tested. GUI
