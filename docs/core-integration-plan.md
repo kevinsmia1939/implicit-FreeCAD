@@ -1,5 +1,10 @@
 # Core integration plan for an nTop-class FreeCAD
 
+[Restored cylinder material queries](native-cylinder-material.md) now accept
+freshly verified stored geometry/solids with spatial bounds and explicit UNKNOWN.
+Raw restoration still refuses until requalified. Background cylinder work,
+live edits and general mixed Boolean/consumer gates remain; Stage 4 is open.
+
 The qualified cylinder path now creates an actual native solid after topology,
 geometry and bounded mathematical volume qualify, preserving the shared native
 field/cylinder/cap graph. Owned FreeCAD queries expose the explicit implicit-aware

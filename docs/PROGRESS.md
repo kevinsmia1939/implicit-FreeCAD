@@ -1,11 +1,33 @@
 # Implementation progress and remaining work
 
-Updated 2026-11-03. The user has authorized continuing the full roadmap,
+Updated 2026-11-10. The user has authorized continuing the full roadmap,
 including FreeCAD/OCCT core modifications, commits and pushes. This log records
 concrete increments; the overall nTop-class goal remains a substantial project.
 
 The parent repository pins the authoritative FreeCAD/OCCT submodule heads.
 FreeCAD remains on `feature/native-implicit`, OCCT on `feature/implicit-distance`.
+
+## Milestone 108: restored cylinder material queries
+
+Native heads: FreeCAD d98436b164; OCCT f4884c9e7b.
+OCCT cylinder regression passes 23/23 (44.10 s); selected FreeCAD CLI/GUI
+checks pass 14/14 (59.92 s). Python syntax and whitespace checks pass.
+Built existing TKTopAlgo (including stale dependency objects), the native test
+harness, matched _ImplicitOCCT and ImplicitScripts with two compile jobs.
+No packages or system libraries changed.
+
+The OCCT construction and restoration paths now share a private spatial material
+classifier. Qualified restored geometry recomputes whole-cylinder axial bounds
+and uses actual world-space parameters and the fresh boundary allowance. The
+FreeCAD facade accepts verified restored geometry and solid owners. Raw loads,
+failed owners and invalid queries refuse; UNKNOWN and cancellation remain
+explicit. Tests cover both signs, numeric bounds, analytic roots/caps, transformed
+frames, source-record immutability, FCStd load/requalification and undo/redo.
+See [restored material queries](native-cylinder-material.md).
+
+Background cylinder requalification/preview, live field/operand editing and the
+broader partial/multi-sheet Boolean, history/consumer and GUI Stage 2–4 gates
+remain open. This closes the restricted restored query API, not Stage 4.
 
 ## Milestone 107: exact preview triangle contacts and certified cylinder surface display
 

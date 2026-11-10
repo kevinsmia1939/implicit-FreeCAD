@@ -1,6 +1,6 @@
 # Development handoff
 
-Last updated: 2026-11-03. This file is the entry point for a developer or coding
+Last updated: 2026-11-10. This file is the entry point for a developer or coding
 agent continuing the project. Read [`PROGRESS.md`](PROGRESS.md) for the latest
 FreeCAD GUI, live Part dependencies, native projection/probes/quality, ray queries, background meshing,
 benchmarks and OCCT core increments.
@@ -21,6 +21,28 @@ budget-exhausted targeted case passes without weakening the geometry checks.
 See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
+
+## Milestone 108: restored cylinder material queries
+
+Native heads: FreeCAD d98436b164; OCCT f4884c9e7b.
+OCCT cylinder regression passes 23/23 (44.10 s); selected FreeCAD CLI/GUI
+checks pass 14/14 (59.92 s). Python syntax and whitespace checks pass.
+Built existing TKTopAlgo (including stale dependency objects), the native test
+harness, matched _ImplicitOCCT and ImplicitScripts with two compile jobs.
+No packages or system libraries changed.
+
+The OCCT construction and restoration paths now share a private spatial material
+classifier. Qualified restored geometry recomputes whole-cylinder axial bounds
+and uses actual world-space parameters and the fresh boundary allowance. The
+FreeCAD facade accepts verified restored geometry and solid owners. Raw loads,
+failed owners and invalid queries refuse; UNKNOWN and cancellation remain
+explicit. Tests cover both signs, numeric bounds, analytic roots/caps, transformed
+frames, source-record immutability, FCStd load/requalification and undo/redo.
+See [restored material queries](native-cylinder-material.md).
+
+Background cylinder requalification/preview, live field/operand editing and the
+broader partial/multi-sheet Boolean, history/consumer and GUI Stage 2–4 gates
+remain open. This closes the restricted restored query API, not Stage 4.
 
 ## Milestone 107: exact preview triangle contacts and certified cylinder surface display
 

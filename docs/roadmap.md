@@ -1,5 +1,10 @@
 # Technical roadmap
 
+[Restored cylinder material queries](native-cylinder-material.md) now accept
+freshly verified stored geometry/solids with spatial bounds and explicit UNKNOWN.
+Raw restoration still refuses until requalified. Background cylinder work,
+live edits and general mixed Boolean/consumer gates remain; Stage 4 is open.
+
 The restricted cylinder preview now qualifies exact triangle contacts and
 certifies global surface distance (bound <= 0.1 mm) in the GUI. Background
 requalification, live parameter editing and Stage 4 kernel gates remain open.
