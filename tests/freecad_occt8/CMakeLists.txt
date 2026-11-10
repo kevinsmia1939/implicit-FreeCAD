@@ -17,6 +17,11 @@ add_executable(implicit_preview_contact_tests "${_scripts}/PreviewContacts.cpp")
 target_compile_features(implicit_preview_contact_tests PRIVATE cxx_std_17)
 target_include_directories(implicit_preview_contact_tests PRIVATE "${_scripts}/../App")
 add_test(NAME implicit_preview_contacts COMMAND implicit_preview_contact_tests)
+add_test(NAME implicit_occt8_cylinder_work
+    COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/ImplicitCylinderWorkTests")
+set_tests_properties(implicit_occt8_cylinder_work PROPERTIES
+    PASS_REGULAR_EXPRESSION "native cylinder cancellation tests passed"
+    FIXTURES_REQUIRED occt8_runtime TIMEOUT 180)
 add_test(NAME implicit_occt8_cylinder_preview
     COMMAND "${IMPLICIT_MIGRATION_BUILD}/bin/FreeCADCmd" "${_scripts}/cylinder_preview_smoke.py")
 set_tests_properties(implicit_occt8_cylinder_preview PROPERTIES

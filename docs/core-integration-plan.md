@@ -1,5 +1,10 @@
 # Core integration plan for an nTop-class FreeCAD
 
+[Cylinder execution control](native-cylinder-work.md) now propagates shared
+cooperative cancellation through restored qualification, preview distance proofs
+and exact contacts. Atomic sampling publication and recovery are tested. GUI
+worker scheduling/publication is still next; this does not complete Stage 4.
+
 [Restored cylinder material queries](native-cylinder-material.md) now accept
 freshly verified stored geometry/solids with spatial bounds and explicit UNKNOWN.
 Raw restoration still refuses until requalified. Background cylinder work,

@@ -22,6 +22,34 @@ See [restricted native solids](native-solids.md) for the new actual-solid
 construction policy, owned FreeCAD API and the remaining GUI/persistence gates.
 Do not infer Stage 4 completion from this restricted factory or GUI increment.
 
+## Milestone 109: cooperative cylinder execution control
+
+Native heads: FreeCAD 71ce218aff; OCCT 9944ab1fdb.
+Cancellation/contact/runtime checks pass 3/3 (7.18 s); existing cylinder CLI/GUI
+checks pass 14/14 (58.01 s); OCCT cylinder regression passes 23/23 (43.80 s).
+Whitespace checks pass. Reused the native builds with two compile jobs and the
+existing FreeCAD link pool; no packages or system libraries changed.
+
+Restored cylinder read/requalification/volume and FreeCAD preview processing now
+honor the per-thread shared work scope. Cancellation propagates through stored
+geometry checks rather than becoming failed numeric certificates. Preview phases
+cover Meshing, Coverage and ContactAudit, including exact binary32 predicates.
+Boundary buffers are prepared privately and published only after the final
+checkpoint, without callbacks or allocation during that commit. Source records,
+raw-owner flags, 0.1 mm policies and contact budgets remain unchanged.
+
+The new explicit ImplicitCylinderWorkTests target tests early/middle/final
+cancellation in restoration, qualification, volume, preview phases and sampling,
+source/destination preservation and recovery. Build that excluded-from-all target
+before its migration test. See [execution control](native-cylinder-work.md).
+
+Next: owned serialized cylinder worker requests on the bounded native scheduler,
+private restoration/requalification/preview, and source/settings/generation-
+guarded GUI publication. Cancel/coalesce on edit, hide, deletion and closure;
+join workers at shutdown and retain native build priority. Python/document/Coin
+objects must stay on the GUI thread. The current cylinder view is still
+synchronous. Live editing and broader Stage 2–4 Boolean/consumer gates remain.
+
 ## Milestone 108: restored cylinder material queries
 
 Native heads: FreeCAD d98436b164; OCCT f4884c9e7b.

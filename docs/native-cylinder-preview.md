@@ -210,3 +210,12 @@ This certifies the display representation against the authoritative mathematical
 field; it does not replace the native topology or convert meshes into CAD faces.
 Background cancellable requalification, live parameter editing, generic
 mixed Booleans, and broader Stage 2–4 gates remain open.
+
+
+## Cooperative execution
+
+The native requalification and preview now honor the shared per-thread work
+scope, including whole-distance coverage and exact contacts. See
+[native-cylinder-work.md](native-cylinder-work.md) for cancellation, atomic buffer
+publication, tests and the remaining worker/GUI scheduling milestone. The view
+still calls the preview synchronously; no background GUI completion is claimed.
